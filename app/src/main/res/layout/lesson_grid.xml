@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <com.balysv.materialripple.MaterialRippleLayout
+        app:mrl_rippleAlpha="0.5"
         app:mrl_rippleDuration="500"
         android:id="@+id/ripple"
         android:layout_width="match_parent"

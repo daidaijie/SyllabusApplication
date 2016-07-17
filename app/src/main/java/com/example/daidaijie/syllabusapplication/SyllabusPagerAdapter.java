@@ -14,7 +14,7 @@ public class SyllabusPagerAdapter extends FragmentStatePagerAdapter{
 
     @Override
     public Fragment getItem(int position) {
-        return BlankFragment.newInstance();
+        return SyllabusFragment.newInstance();
     }
 
     @Override

@@ -4,9 +4,12 @@ package com.example.daidaijie.syllabusapplication;
 import android.animation.Animator;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -20,22 +23,29 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BlankFragment extends Fragment {
+public class SyllabusFragment extends Fragment {
 
+    /**
+     * 布局
+     */
     private GridLayout syllabusGridLayout;
     private LinearLayout dateLinearLayout;
     private LinearLayout timeLinearLayout;
+    private SyllabusScrollView syllabusScrollView;
+    private SwipeRefreshLayout syllabusRefreshLayout;
 
+    /**
+     * 长宽,像素为单位
+     */
     private int deviceWidth;
     private int devideHeight;
-
     private int timeWidth;
-
     private int gridWidth;
     private int gridHeight;
 
-    public static BlankFragment newInstance() {
-        BlankFragment fragment = new BlankFragment();
+
+    public static SyllabusFragment newInstance() {
+        SyllabusFragment fragment = new SyllabusFragment();
         return fragment;
     }
 
@@ -48,7 +58,33 @@ public class BlankFragment extends Fragment {
         syllabusGridLayout = (GridLayout) view.findViewById(R.id.syllabusGridLayout);
         dateLinearLayout = (LinearLayout) view.findViewById(R.id.dateLinearLayout);
         timeLinearLayout = (LinearLayout) view.findViewById(R.id.timeLinearLayout);
+        syllabusRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.syllabusRefreshLayout);
+        syllabusScrollView = (SyllabusScrollView) view.findViewById(R.id.syllabusScrollView);
 
+        syllabusRefreshLayout.setColorSchemeResources(
+                R.color.colorPrimary,
+                R.color.colorAccent,
+                android.R.color.holo_green_light,
+                android.R.color.holo_purple
+        );
+
+        syllabusScrollView.setSwipeRefreshLayout(syllabusRefreshLayout);
+        syllabusRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Snackbar.make(
+                                syllabusGridLayout,
+                                "课表同步成功",
+                                Snackbar.LENGTH_SHORT
+                        ).show();
+                        syllabusRefreshLayout.setRefreshing(false);
+                    }
+                },2000);
+            }
+        });
 
         deviceWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
         devideHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
@@ -66,6 +102,9 @@ public class BlankFragment extends Fragment {
         return view;
     }
 
+    /**
+     * 显示时间
+     */
     private void showTime() {
         for (int i = 1; i <= 13; i++) {
             TextView timeTextView = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.week_grid, null, false);
@@ -77,6 +116,9 @@ public class BlankFragment extends Fragment {
 
     }
 
+    /**
+     * 显示日期
+     */
     private void showDate() {
         {
             TextView blankTextView = (TextView) LayoutInflater.from(getActivity())
@@ -97,6 +139,9 @@ public class BlankFragment extends Fragment {
         }
     }
 
+    /**
+     * 显示课程表
+     */
     private void showSyllabus() {
         syllabusGridLayout.removeAllViews();
 
@@ -110,11 +155,12 @@ public class BlankFragment extends Fragment {
 
                 GradientDrawable shape = (GradientDrawable) getResources().getDrawable(R.drawable.grid_background);
 
+                StateListDrawable drawable = new StateListDrawable();
+
                 int r = (int) (Math.random() * 256);
                 int g = (int) (Math.random() * 256);
                 int b = (int) (Math.random() * 256);
-
-                shape.setColor(Color.argb(160, r, g, b));
+                shape.setColor(Color.argb(180, r, g, b));
 
 
                 LinearLayout lessonLinearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
@@ -122,6 +168,7 @@ public class BlankFragment extends Fragment {
                 lessonTextView.setText("第" + i + "天\n第" + j + "节课");
                 lessonTextView.setWidth(gridWidth);
                 lessonTextView.setBackgroundDrawable(shape);
+
 
                 int span = 1;
                 if (i % 2 == 1 && j == 0 || j == 12) {
@@ -145,6 +192,10 @@ public class BlankFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        /**
+         * 圆形展开动画
+         */
         syllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -153,7 +204,7 @@ public class BlankFragment extends Fragment {
                 }
                 for (int i = 0; i < syllabusGridLayout.getChildCount(); i++) {
                     View syllabusGridview = syllabusGridLayout.getChildAt(i);
-                    Animator animator = animator = ViewAnimationUtils.createCircularReveal(
+                    Animator animator =  ViewAnimationUtils.createCircularReveal(
                             syllabusGridview,
                             syllabusGridview.getWidth() / 2,
                             syllabusGridview.getHeight() / 2,
