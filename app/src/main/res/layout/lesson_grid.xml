@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lessonLinearLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.balysv.materialripple.MaterialRippleLayout
+        app:mrl_rippleDuration="500"
+        android:id="@+id/ripple"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:gravity="center"
+            tools:background="@drawable/grid_background"
+            android:padding="6dp"
+            android:textSize="10sp"
+            android:id="@+id/lessonTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            tools:text="test" />
+    </com.balysv.materialripple.MaterialRippleLayout>
+
+</LinearLayout>
