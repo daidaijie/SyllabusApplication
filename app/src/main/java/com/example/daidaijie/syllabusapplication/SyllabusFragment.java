@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -28,6 +29,7 @@ public class SyllabusFragment extends Fragment {
     /**
      * 布局
      */
+    private CoordinatorLayout syllabusRootLayout;
     private GridLayout syllabusGridLayout;
     private LinearLayout dateLinearLayout;
     private LinearLayout timeLinearLayout;
@@ -55,6 +57,7 @@ public class SyllabusFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
+        syllabusRootLayout = (CoordinatorLayout) view.findViewById(R.id.syllabusRootLayout);
         syllabusGridLayout = (GridLayout) view.findViewById(R.id.syllabusGridLayout);
         dateLinearLayout = (LinearLayout) view.findViewById(R.id.dateLinearLayout);
         timeLinearLayout = (LinearLayout) view.findViewById(R.id.timeLinearLayout);
