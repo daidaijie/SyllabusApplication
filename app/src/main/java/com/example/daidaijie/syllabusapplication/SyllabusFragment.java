@@ -5,8 +5,8 @@ import android.animation.Animator;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,7 +26,6 @@ import java.util.List;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -126,6 +125,13 @@ public class SyllabusFragment extends Fragment {
         for (int i = 1; i <= 13; i++) {
             TextView timeTextView = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.week_grid, null, false);
             timeTextView.setText(i + "");
+            if (i == 13) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    timeTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_time_end));
+                }else{
+                    timeTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_grid_time_end));
+                }
+            }
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     timeWidth, gridHeight);
             timeLinearLayout.addView(timeTextView, layoutParams);
@@ -147,9 +153,17 @@ public class SyllabusFragment extends Fragment {
         }
         for (int i = 0; i < 7; i++) {
             String[] weekString = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+
             TextView weekTextView = (TextView) LayoutInflater.from(getActivity())
                     .inflate(R.layout.week_grid, null, false);
             weekTextView.setText(weekString[i]);
+            if (i + 1 == 7) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    weekTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_week_end));
+                }else{
+                    weekTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_grid_week_end));
+                }
+            }
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     gridWidth, ViewGroup.LayoutParams.MATCH_PARENT);
             dateLinearLayout.addView(weekTextView, layoutParams);
@@ -249,7 +263,7 @@ public class SyllabusFragment extends Fragment {
                 "O3o",
                 "query",
                 "2015-2016"
-                ,"1"
+                , "1"
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UserInfo>() {
