@@ -11,6 +11,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -20,11 +21,23 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class SyllabusFragment extends Fragment {
+
+    private String TAG = "SyllabusFragment";
 
     /**
      * 布局
@@ -75,7 +88,8 @@ public class SyllabusFragment extends Fragment {
         syllabusRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+                getSyllabus();
+                /*new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         Snackbar.make(
@@ -85,7 +99,7 @@ public class SyllabusFragment extends Fragment {
                         ).show();
                         syllabusRefreshLayout.setRefreshing(false);
                     }
-                },2000);
+                }, 2000);*/
             }
         });
 
@@ -207,7 +221,7 @@ public class SyllabusFragment extends Fragment {
                 }
                 for (int i = 0; i < syllabusGridLayout.getChildCount(); i++) {
                     View syllabusGridview = syllabusGridLayout.getChildAt(i);
-                    Animator animator =  ViewAnimationUtils.createCircularReveal(
+                    Animator animator = ViewAnimationUtils.createCircularReveal(
                             syllabusGridview,
                             syllabusGridview.getWidth() / 2,
                             syllabusGridview.getHeight() / 2,
@@ -219,5 +233,53 @@ public class SyllabusFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void getSyllabus() {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://119.29.95.245:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        UserInfoService service = retrofit.create(UserInfoService.class);
+        service.getUserInfo(
+                "13yjli3",
+                "O3o",
+                "query",
+                "2015-2016"
+                ,"1"
+        ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<UserInfo>() {
+                    @Override
+                    public void onCompleted() {
+                        Log.d(TAG, "onCompleted: ");
+                        Snackbar.make(
+                                syllabusRootLayout,
+                                "课表同步成功",
+                                Snackbar.LENGTH_SHORT
+                        ).show();
+                        syllabusRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                        syllabusRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onNext(UserInfo userInfo) {
+                        List<Lesson> lessons = userInfo.getClasses();
+                        if (lessons != null) {
+                            for (Lesson lesson : lessons) {
+                                Log.d(TAG, "onNext: " + lesson.getName());
+                            }
+                        }
+                    }
+                });
+
     }
 }
