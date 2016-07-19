@@ -13,6 +13,7 @@ public class Lesson {
     private String duration;
     private String name;
 
+
     public Days getDays() {
         return days;
     }

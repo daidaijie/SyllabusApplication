@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
@@ -46,6 +47,9 @@ import rx.schedulers.Schedulers;
 public class SyllabusFragment extends Fragment {
 
     private String TAG = "SyllabusFragment";
+
+    //储存用户的课表
+    private Syllabus mSyllabus;
 
     /**
      * 布局
