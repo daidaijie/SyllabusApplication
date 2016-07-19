@@ -33,8 +33,10 @@ import java.util.List;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -185,12 +187,10 @@ public class SyllabusFragment extends Fragment {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 13; j++) {
-
                 if ((i + j) % 2 == 1) {
                     if (i % 2 == 1 && j == 0) ;
                     else continue;
                 }
-
                 GradientDrawable shape = (GradientDrawable) getResources().getDrawable(R.drawable.grid_background);
 
                 StateListDrawable drawable = new StateListDrawable();
@@ -272,8 +272,14 @@ public class SyllabusFragment extends Fragment {
                 "2015-2016"
                 , "1"
         ).subscribeOn(Schedulers.io())
+                .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
+                    @Override
+                    public Observable<Lesson> call(UserInfo userInfo) {
+                        return Observable.from(userInfo.getClasses());
+                    }
+                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<UserInfo>() {
+                .subscribe(new Subscriber<Lesson>() {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted: ");
@@ -290,7 +296,7 @@ public class SyllabusFragment extends Fragment {
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
-
+                        syllabusRefreshLayout.setRefreshing(false);
                         SnackbarUtil.LongSnackbar(
                                 syllabusRootLayout,
                                 "课表同步失败",
@@ -302,18 +308,11 @@ public class SyllabusFragment extends Fragment {
                                 getSyllabus();
                             }
                         }).show();
-
-                        syllabusRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
-                    public void onNext(UserInfo userInfo) {
-                        List<Lesson> lessons = userInfo.getClasses();
-                        if (lessons != null) {
-                            for (Lesson lesson : lessons) {
-                                Log.d(TAG, "onNext: " + lesson.getName());
-                            }
-                        }
+                    public void onNext(Lesson lesson) {
+                        Log.d(TAG, "onNext: " + lesson.getName());
                     }
                 });
 
