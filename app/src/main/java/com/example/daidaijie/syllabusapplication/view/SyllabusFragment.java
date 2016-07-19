@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
@@ -276,17 +277,32 @@ public class SyllabusFragment extends Fragment {
                     @Override
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted: ");
-                        Snackbar.make(
+
+                        SnackbarUtil.ShortSnackbar(
                                 syllabusRootLayout,
                                 "课表同步成功",
-                                Snackbar.LENGTH_SHORT
+                                SnackbarUtil.Confirm
                         ).show();
+
                         syllabusRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
+
+                        SnackbarUtil.LongSnackbar(
+                                syllabusRootLayout,
+                                "课表同步失败",
+                                SnackbarUtil.Alert
+                        ).setAction("再次同步", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                syllabusRefreshLayout.setRefreshing(true);
+                                getSyllabus();
+                            }
+                        }).show();
+
                         syllabusRefreshLayout.setRefreshing(false);
                     }
 

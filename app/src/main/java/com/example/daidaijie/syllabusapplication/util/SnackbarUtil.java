@@ -128,7 +128,7 @@ public class SnackbarUtil {
                 break;
             case Alert:
                 setSnackbarColor(snackbar, Color.YELLOW, red);
-                setSnackbarActionColor(snackbar,android.R.color.white);
+                setSnackbarActionColor(snackbar,Color.WHITE);
                 break;
         }
     }
