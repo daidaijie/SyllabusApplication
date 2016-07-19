@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication;
+package com.example.daidaijie.syllabusapplication.bean;
 
 /**
  * Created by daidaijie on 2016/7/17.

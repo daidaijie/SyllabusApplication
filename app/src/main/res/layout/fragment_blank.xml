@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/syllabusRootLayout"
-    tools:context=".SyllabusFragment">
+    tools:context=".view.SyllabusFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/syllabusRefreshLayout"
@@ -21,7 +21,7 @@
                 android:layout_alignParentTop="true"
                 android:orientation="horizontal">
             </LinearLayout>
-            <com.example.daidaijie.syllabusapplication.SyllabusScrollView
+            <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
                 android:id="@+id/syllabusScrollView"
                 android:layout_width="match_parent"
                 android:scrollbars="none"
@@ -46,7 +46,7 @@
                         android:layout_toRightOf="@+id/timeLinearLayout">
                     </GridLayout>
                 </RelativeLayout>
-            </com.example.daidaijie.syllabusapplication.SyllabusScrollView>
+            </com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView>
 
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>

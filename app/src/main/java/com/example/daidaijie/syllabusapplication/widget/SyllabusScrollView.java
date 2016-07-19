@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication;
+package com.example.daidaijie.syllabusapplication.widget;
 
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;

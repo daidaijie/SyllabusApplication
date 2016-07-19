@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication;
+package com.example.daidaijie.syllabusapplication.bean;
 
 import java.util.List;
 

@@ -1,9 +1,8 @@
-package com.example.daidaijie.syllabusapplication;
+package com.example.daidaijie.syllabusapplication.service;
 
-import java.util.Map;
+import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 
 import retrofit2.http.Field;
-import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;

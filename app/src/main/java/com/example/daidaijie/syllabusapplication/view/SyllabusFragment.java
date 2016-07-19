@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication;
+package com.example.daidaijie.syllabusapplication.view;
 
 
 import android.animation.Animator;
@@ -20,6 +20,12 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
+import com.example.daidaijie.syllabusapplication.service.UserInfoService;
+import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 
 import java.util.List;
 

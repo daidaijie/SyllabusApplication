@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication;
+package com.example.daidaijie.syllabusapplication.util;
 
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.example.daidaijie.syllabusapplication.R;
 
 /**
  * Created by daidaijie on 2016/7/18.
