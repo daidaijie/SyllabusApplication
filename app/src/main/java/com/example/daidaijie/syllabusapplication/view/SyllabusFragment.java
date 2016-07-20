@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -23,11 +24,16 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
+import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -76,6 +82,12 @@ public class SyllabusFragment extends Fragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus mEventBus = EventBus.getDefault();
+        mEventBus.register(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -101,17 +113,6 @@ public class SyllabusFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getSyllabus();
-                /*new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Snackbar.make(
-                                syllabusGridLayout,
-                                "课表同步成功",
-                                Snackbar.LENGTH_SHORT
-                        ).show();
-                        syllabusRefreshLayout.setRefreshing(false);
-                    }
-                }, 2000);*/
             }
         });
 
@@ -319,6 +320,11 @@ public class SyllabusFragment extends Fragment {
                         Log.d(TAG, "onNext: " + lesson.getName());
                     }
                 });
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshSyllabus(SyllabusEvent syllabusEvent){
 
     }
 }
