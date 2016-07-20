@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,8 @@ public class Lesson {
     private String teacher;
     private String duration;
     private String name;
+
+    private int bgColor;
 
     private List<TimeGird> mTimeGirds;
 
@@ -76,6 +80,29 @@ public class Lesson {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<TimeGird> getTimeGirds() {
+        return mTimeGirds;
+    }
+
+    public void setTimeGirds(List<TimeGird> timeGirds) {
+        mTimeGirds = timeGirds;
+    }
+
+    public int getBgColor() {
+        return bgColor;
+    }
+
+    public void setBgColor(int bgColor) {
+        this.bgColor = bgColor;
+    }
+
+    public String getTrueName() {
+        if (name.indexOf(']') != name.length()) {
+            return name.substring(name.indexOf(']') + 1);
+        }
+        return name;
     }
 
     public static class TimeGird {
@@ -182,6 +209,7 @@ public class Lesson {
 
         timeGrid = convertForWn(this.getDays().getW6(), 6);
         if (timeGrid != null) mTimeGirds.add(timeGrid);
+//        Log.d("convertDays", "convertDays: " + mTimeGirds.size());
     }
 
     /**
@@ -201,6 +229,7 @@ public class Lesson {
                 timeGird.setWeekOfTime(16, TimeGird.WeekEum.FULL);
                 timeGird.setTimeList(timeOfWeek);
             }
+            return timeGird;
         }
 
         return null;

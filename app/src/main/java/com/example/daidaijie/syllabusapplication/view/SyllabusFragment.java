@@ -2,6 +2,8 @@ package com.example.daidaijie.syllabusapplication.view;
 
 
 import android.animation.Animator;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -11,6 +13,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.SharedPreferencesCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,11 +28,13 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
+import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -95,6 +101,8 @@ public class SyllabusFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_blank, container, false);
         syllabusRootLayout = (CoordinatorLayout) view.findViewById(R.id.syllabusRootLayout);
@@ -116,19 +124,9 @@ public class SyllabusFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getSyllabus();
-                /*new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Snackbar.make(
-                                syllabusGridLayout,
-                                "课表同步成功",
-                                Snackbar.LENGTH_SHORT
-                        ).show();
-                        syllabusRefreshLayout.setRefreshing(false);
-                    }
-                }, 2000);*/
             }
         });
+
 
         deviceWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
         devideHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
@@ -141,6 +139,20 @@ public class SyllabusFragment extends Fragment {
 
         showTime();
 
+        SharedPreferences sharedPreferencesCompat = getActivity()
+                .getSharedPreferences(Syllabus.SYLLABUS_GSON_FILE, Context.MODE_PRIVATE);
+
+        String syllabusGson = sharedPreferencesCompat.getString(Syllabus.SYLLABUS_GSON, null);
+
+        if (syllabusGson != null) {
+            Gson gson = new Gson();
+            mSyllabus = gson.fromJson(syllabusGson, Syllabus.class);
+//            Log.d(TAG, "onCreateView: " + syllabusGson);
+        } else {
+            mSyllabus = new Syllabus();
+            syllabusRefreshLayout.setRefreshing(true);
+            getSyllabus();
+        }
         showSyllabus();
 
         return view;
@@ -203,56 +215,64 @@ public class SyllabusFragment extends Fragment {
      */
     private void showSyllabus() {
         syllabusGridLayout.removeAllViews();
-
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 13; j++) {
-                if ((i + j) % 2 == 1) {
-                    if (i % 2 == 1 && j == 0) ;
-                    else continue;
+                SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids().get(i).get(j);
+                Lesson lesson = null;
+                if (syllabusGrid.getLessons().size() != 0) {
+                    lesson = syllabusGrid.getLessons().get(0);
                 }
-                GradientDrawable shape = (GradientDrawable) getResources().getDrawable(R.drawable.grid_background);
-
-                StateListDrawable drawable = new StateListDrawable();
-
-                int r = (int) (Math.random() * 256);
-                int g = (int) (Math.random() * 256);
-                int b = (int) (Math.random() * 256);
-                shape.setColor(Color.argb(180, r, g, b));
-
-
                 LinearLayout lessonLinearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
                 TextView lessonTextView = (TextView) lessonLinearLayout.findViewById(R.id.lessonTextView);
-                lessonTextView.setText("第" + i + "天\n第" + j + "节课");
-                lessonTextView.setWidth(gridWidth);
-                lessonTextView.setBackgroundDrawable(shape);
-
-
                 int span = 1;
-                if (i % 2 == 1 && j == 0 || j == 12) {
-                    lessonTextView.setHeight(gridHeight);
-                } else {
-                    lessonTextView.setHeight(gridHeight * 2);
-                    span = 2;
-                }
 
+                if (lesson != null) {
+                    GradientDrawable shape = (GradientDrawable) getResources().getDrawable(R.drawable.grid_background);
+                    StateListDrawable drawable = new StateListDrawable();
+
+                    /*int r = (int) (Math.random() * 256);
+                    int g = (int) (Math.random() * 256);
+                    int b = (int) (Math.random() * 256);*/
+                    shape.setColor(ColorUtils.setAlphaComponent(getResources().getColor(
+                            lesson.getBgColor()), 180));
+                    lessonTextView.setText(lesson.getTrueName() + "\n@" + lesson.getRoom());
+
+                    lessonTextView.setBackgroundDrawable(shape);
+                    for (int k = j + 1; k < 13; k++) {
+                        SyllabusGrid nextSyllabusGrid = mSyllabus.getSyllabusGrids().get(i).get(k);
+                        if (nextSyllabusGrid.getLessons().size() == 0) break;
+                        Lesson nextlesson = nextSyllabusGrid.getLessons().get(0);
+                        if (nextlesson.getId().equals(lesson.getId())) {
+                            span++;
+                        }
+                    }
+
+                } else {
+                    lessonLinearLayout.setVisibility(View.INVISIBLE);
+                }
+                lessonTextView.setWidth(gridWidth);
+                lessonTextView.setHeight(gridHeight * span);
                 GridLayout.Spec rowSpec = GridLayout.spec(j, span);
                 GridLayout.Spec columnSpec = GridLayout.spec(i);
                 syllabusGridLayout.addView(lessonLinearLayout, new GridLayout.LayoutParams(rowSpec, columnSpec));
+                j += span - 1;
 
             }
 
         }
-        syllabusGridLayout.requestLayout();
+
 
     }
 
-    @Override
+    /*@Override
     public void onResume() {
         super.onResume();
 
-        /**
-         * 圆形展开动画
-         */
+        */
+
+    /**
+     * 圆形展开动画
+     *//*
         syllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -273,8 +293,7 @@ public class SyllabusFragment extends Fragment {
                 }
             }
         });
-    }
-
+    }*/
     private void getSyllabus() {
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -299,17 +318,31 @@ public class SyllabusFragment extends Fragment {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<Lesson>() {
+
+                    private int colorIndex = 0;
+
                     @Override
                     public void onCompleted() {
+
                         Log.d(TAG, "onCompleted: ");
 
-                        SnackbarUtil.ShortSnackbar(
-                                syllabusRootLayout,
-                                "课表同步成功",
-                                SnackbarUtil.Confirm
-                        ).show();
+                        if (!this.isUnsubscribed()) {
+                            SnackbarUtil.ShortSnackbar(
+                                    syllabusRootLayout,
+                                    "课表同步成功",
+                                    SnackbarUtil.Confirm
+                            ).show();
 
-                        syllabusRefreshLayout.setRefreshing(false);
+                            SharedPreferences sharedPreferencesCompat = getActivity()
+                                    .getSharedPreferences(Syllabus.SYLLABUS_GSON_FILE, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferencesCompat.edit();
+
+                            editor.putString(Syllabus.SYLLABUS_GSON, new Gson().toJson(mSyllabus));
+                            editor.commit();
+                            showSyllabus();
+                            syllabusRefreshLayout.setRefreshing(false);
+                        }
+
                     }
 
                     @Override
@@ -336,7 +369,31 @@ public class SyllabusFragment extends Fragment {
                         //将lesson的时间格式化
                         lesson.convertDays();
 
+                        lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
+                        Log.d(TAG, "onNext: " + colorIndex);
 
+                        //获取该课程上的节点上的时间列表
+                        List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
+
+                        if (timeGirds.size() != 0) {
+                            Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
+                        }
+
+                        for (int i = 0; i < timeGirds.size(); i++) {
+                            Lesson.TimeGird timeGrid = timeGirds.get(i);
+                            for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
+                                char x = timeGrid.getTimeList().charAt(j);
+                                int time = Syllabus.chat2time(x);
+
+                                SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids()
+                                        .get(timeGrid.getWeekDate())
+                                        .get(time);
+
+                                //将该课程添加到时间节点上去
+                                syllabusGrid.getLessons().add(lesson);
+//                                Log.d(TAG, "onNext: " + lesson.getName() + " add");
+                            }
+                        }
                     }
                 });
 

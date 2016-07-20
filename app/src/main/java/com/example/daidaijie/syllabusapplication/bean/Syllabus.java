@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.example.daidaijie.syllabusapplication.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +11,52 @@ import java.util.List;
  */
 public class Syllabus {
 
+    public static final String SYLLABUS_GSON_FILE = "SyllabusGson";
+    public static final String SYLLABUS_GSON = "SyllabusGson";
+
+    public static int countOfDay = 7;
+    public static int countOfTime = 13;
+
     private List<List<SyllabusGrid>> mSyllabusGrids;
 
-    public Syllabus(){
+    private static final String timeLists = "1234567890ABC";
+
+    public static int[] bgColors = {
+//            R.color.material_amber_500,
+            R.color.material_orange_200,
+            R.color.material_orange_300,
+            R.color.material_orange_400,
+            R.color.material_orange_500,
+            R.color.material_orange_A100,
+            R.color.material_orange_A200,
+            R.color.material_orange_A400,
+            R.color.material_deepOrange_200,
+            R.color.material_deepOrange_300,
+            R.color.material_deepOrange_400,
+            R.color.material_deepOrange_500,
+            R.color.material_deepOrange_A100,
+            R.color.material_deepOrange_A200,
+            R.color.material_deepOrange_A400,
+//            R.color.material_cyan_500,
+//            R.color.material_deepOrange_500,
+//            R.color.material_blueGrey_500,
+//            R.color.material_orange_500,
+//            R.color.material_teal_500,
+//            R.color.material_deepPurple_500,
+//            R.color.material_red_500,
+//            R.color.material_indigo_500,
+//            R.color.material_brown_500,
+//            R.color.material_lightBlue_500,
+//            R.color.material_pink_500,
+//            R.color.material_lightGreen_500,
+//            R.color.material_primaryIndigo_500,
+//            R.color.material_grey_500,
+//            R.color.material_Lime_500,
+//            R.color.material_yellow_500,
+    };
+
+
+    public Syllabus() {
         mSyllabusGrids = new ArrayList<>(new ArrayList());
         for (int i = 0; i < 7; i++) {
             List<SyllabusGrid> daySyllabusGrids = new ArrayList<>();
@@ -28,5 +73,25 @@ public class Syllabus {
 
     public void setSyllabusGrids(List<List<SyllabusGrid>> syllabusGrids) {
         mSyllabusGrids = syllabusGrids;
+    }
+
+    /**
+     * 将0 1 2 3 转化为课程表上的对应时间
+     *
+     * @param x 课程表字符
+     * @return
+     */
+    public static int chat2time(char x) {
+        return timeLists.indexOf(x);
+    }
+
+    public static int time2char(int time) {
+        if (time < 10) {
+            return time + '0';
+        } else if (time > 10) {
+            return 'A' + (time - 11);
+        } else {
+            return '0';
+        }
     }
 }

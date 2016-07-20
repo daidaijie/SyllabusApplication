@@ -6,7 +6,7 @@
         android:left="-2dp"
         android:top="-2dp">
         <shape android:shape="rectangle">
-            <solid android:color="#282b2b2b" />
+            <solid android:color="@color/gridColor" />
             <stroke
                 android:width="1px"
                 android:color="@android:color/white" />

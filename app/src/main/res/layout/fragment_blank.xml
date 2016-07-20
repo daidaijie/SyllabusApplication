@@ -11,46 +11,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-        <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
-            android:id="@+id/syllabusScrollView"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none">
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
+                android:id="@+id/dateLinearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/week_grid_height"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="horizontal">
+            </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/dateLinearLayout"
+            <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
+                android:id="@+id/syllabusScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/week_grid_height"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:orientation="horizontal">
-                </LinearLayout>
+                    android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:layout_below="@+id/dateLinearLayout"
-                    android:id="@+id/timeLinearLayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/timeLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                <GridLayout
-                    android:layout_below="@+id/dateLinearLayout"
-                    android:id="@+id/syllabusGridLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/timeLinearLayout">
-                </GridLayout>
-            </RelativeLayout>
-        </com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView>
+                    </LinearLayout>
+
+                    <GridLayout
+                        android:id="@+id/syllabusGridLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_toRightOf="@+id/timeLinearLayout">
+                    </GridLayout>
+                </RelativeLayout>
+            </com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView>
+
+        </LinearLayout>
+
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
