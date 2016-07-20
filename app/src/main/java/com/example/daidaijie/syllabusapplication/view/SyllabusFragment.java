@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -48,8 +49,13 @@ public class SyllabusFragment extends Fragment {
 
     private String TAG = "SyllabusFragment";
 
+    private static final String WEEK_DAY = "WeekDate";
+
     //储存用户的课表
     private Syllabus mSyllabus;
+
+    //这里除了显示，在程序中皆从0开始，为第一周
+    private int mWeek;
 
     /**
      * 布局
@@ -71,11 +77,20 @@ public class SyllabusFragment extends Fragment {
     private int gridHeight;
 
 
-    public static SyllabusFragment newInstance() {
+    public static SyllabusFragment newInstance(int week) {
         SyllabusFragment fragment = new SyllabusFragment();
+        Bundle args = new Bundle();
+        args.putInt(WEEK_DAY, week);
+        fragment.setArguments(args);
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mWeek = getArguments().getInt(WEEK_DAY);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -141,7 +156,7 @@ public class SyllabusFragment extends Fragment {
             if (i == 13) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     timeTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_time_end));
-                }else{
+                } else {
                     timeTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_grid_time_end));
                 }
             }
@@ -173,7 +188,7 @@ public class SyllabusFragment extends Fragment {
             if (i + 1 == 7) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                     weekTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_week_end));
-                }else{
+                } else {
                     weekTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_grid_week_end));
                 }
             }
@@ -317,6 +332,11 @@ public class SyllabusFragment extends Fragment {
                     @Override
                     public void onNext(Lesson lesson) {
                         Log.d(TAG, "onNext: " + lesson.getName());
+
+                        //将lesson的时间格式化
+                        lesson.convertDays();
+
+
                     }
                 });
 

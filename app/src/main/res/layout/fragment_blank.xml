@@ -1,54 +1,57 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/syllabusRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/syllabusRootLayout"
     tools:context=".view.SyllabusFragment">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/syllabusRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
+
+
+        <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
+            android:id="@+id/syllabusScrollView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <LinearLayout
-                android:id="@+id/dateLinearLayout"
+            android:layout_height="match_parent"
+            android:scrollbars="none">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/week_grid_height"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:orientation="horizontal">
-            </LinearLayout>
-            <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
-                android:id="@+id/syllabusScrollView"
-                android:layout_width="match_parent"
-                android:scrollbars="none"
                 android:layout_height="match_parent">
 
-                <RelativeLayout
+                <LinearLayout
+                    android:id="@+id/dateLinearLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="@dimen/week_grid_height"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:orientation="horizontal">
+                </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/timeLinearLayout"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
+                <LinearLayout
+                    android:layout_below="@+id/dateLinearLayout"
+                    android:id="@+id/timeLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    </LinearLayout>
+                </LinearLayout>
 
-                    <GridLayout
-                        android:id="@+id/syllabusGridLayout"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_toRightOf="@+id/timeLinearLayout">
-                    </GridLayout>
-                </RelativeLayout>
-            </com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView>
+                <GridLayout
+                    android:layout_below="@+id/dateLinearLayout"
+                    android:id="@+id/syllabusGridLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@+id/timeLinearLayout">
+                </GridLayout>
+            </RelativeLayout>
+        </com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView>
 
-        </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 

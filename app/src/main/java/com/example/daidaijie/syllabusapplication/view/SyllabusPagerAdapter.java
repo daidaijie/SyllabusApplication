@@ -9,14 +9,14 @@ import com.example.daidaijie.syllabusapplication.view.SyllabusFragment;
 /**
  * Created by daidaijie on 2016/7/17.
  */
-public class SyllabusPagerAdapter extends FragmentStatePagerAdapter{
+public class SyllabusPagerAdapter extends FragmentStatePagerAdapter {
     public SyllabusPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-        return SyllabusFragment.newInstance();
+        return SyllabusFragment.newInstance(position );
     }
 
     @Override

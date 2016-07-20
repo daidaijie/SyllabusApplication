@@ -1,5 +1,8 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by daidaijie on 2016/7/17.
  */
@@ -13,6 +16,11 @@ public class Lesson {
     private String duration;
     private String name;
 
+    private List<TimeGird> mTimeGirds;
+
+    public Lesson() {
+        mTimeGirds = new ArrayList<>();
+    }
 
     public Days getDays() {
         return days;
@@ -70,6 +78,133 @@ public class Lesson {
         this.name = name;
     }
 
+    public static class TimeGird {
+
+        public static enum WeekEum {
+            FULL,
+            SINGLE,
+            DOUBLE,
+        }
+
+        /**
+         * 总周数16
+         * 单周 周一 34
+         * mWeekOfTime 0b0101_0101_0101_0101
+         * mWeekDate 1
+         * mTimeList "34"
+         */
+
+        //所在周数
+        private long mWeekOfTime;
+
+        //所在星期
+        private int mWeekDate;
+
+        //所在时间
+        private String mTimeList;
+
+        public long getWeekOfTime() {
+            return mWeekOfTime;
+        }
+
+        public void setWeekOfTime(long weekOfTime) {
+            mWeekOfTime = weekOfTime;
+        }
+
+        public int getWeekDate() {
+            return mWeekDate;
+        }
+
+        public void setWeekDate(int weekDate) {
+            mWeekDate = weekDate;
+        }
+
+        public String getTimeList() {
+            return mTimeList;
+        }
+
+        public void setTimeList(String timeList) {
+            mTimeList = timeList;
+        }
+
+        /**
+         * 通用的设置
+         *
+         * @param sumOfweek 该课程总周数
+         * @param weekEum   默认的周数类型，单周还是双周还是全部
+         */
+        public void setWeekOfTime(int sumOfweek, WeekEum weekEum) {
+            mWeekOfTime = 0;
+            switch (weekEum) {
+                case FULL:
+                    for (long i = 0, bit = 1; i < sumOfweek; i++, bit *= 2) {
+                        mWeekOfTime += bit;
+                    }
+                    break;
+                case SINGLE:
+                    for (long i = 0, bit = 1; i < sumOfweek; i += 2, bit *= 2) {
+                        mWeekOfTime += bit;
+                    }
+                    break;
+                case DOUBLE:
+                    for (long i = 1, bit = 1; i < sumOfweek; i += 2, bit *= 2) {
+                        mWeekOfTime += bit;
+                    }
+                    break;
+            }
+        }
+    }
+
+    /**
+     * 将获取的w0,w1,w2,w3等转化成TimeGird类型
+     * 以便于使用
+     */
+    public void convertDays() {
+        TimeGird timeGrid;
+
+        timeGrid = convertForWn(this.getDays().getW0(), 0);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW1(), 1);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW2(), 2);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW3(), 3);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW4(), 4);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW5(), 5);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW6(), 6);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+    }
+
+    /**
+     *
+     */
+    private TimeGird convertForWn(String timeOfWeek, int week) {
+        TimeGird timeGird = new TimeGird();
+        if (!timeOfWeek.trim().equals("None")) {
+            timeGird.setWeekDate(week);
+            if (timeOfWeek.charAt(0) == '单') {
+                timeGird.setWeekOfTime(16, TimeGird.WeekEum.SINGLE);
+                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
+            } else if (timeOfWeek.charAt(0) == '双') {
+                timeGird.setWeekOfTime(16, TimeGird.WeekEum.DOUBLE);
+                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
+            } else {
+                timeGird.setWeekOfTime(16, TimeGird.WeekEum.FULL);
+                timeGird.setTimeList(timeOfWeek);
+            }
+        }
+
+        return null;
+    }
 
     /**
      * w1 : None
