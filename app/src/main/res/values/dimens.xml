@@ -6,4 +6,6 @@
     <dimen name="week_grid_height">32dp</dimen>
 
     <dimen name="syllabus_grid_height">44dp</dimen>
+
+    <dimen name="toolbar_height">44dp</dimen>
 </resources>

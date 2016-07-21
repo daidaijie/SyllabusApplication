@@ -17,7 +17,7 @@
             android:gravity="center"
             tools:background="@drawable/grid_background"
             android:padding="6dp"
-            android:textSize="10sp"
+            android:textSize="9sp"
             android:id="@+id/lessonTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -307,7 +307,7 @@ public class SyllabusFragment extends Fragment {
                 "13yjli3",
                 "O3o",
                 "query",
-                "2015-2016"
+                "2013-2014"
                 , "1"
         ).subscribeOn(Schedulers.io())
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
@@ -320,6 +320,12 @@ public class SyllabusFragment extends Fragment {
                 .subscribe(new Subscriber<Lesson>() {
 
                     private int colorIndex = 0;
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        mSyllabus = new Syllabus();
+                    }
 
                     @Override
                     public void onCompleted() {

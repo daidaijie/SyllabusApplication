@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/material_orange_500</color>
-    <color name="colorPrimaryDark">@color/material_orange_700</color>
+    <color name="colorPrimary">@color/material_blue_500</color>
+    <color name="colorPrimaryDark">@color/material_blue_700</color>
     <color name="colorAccent">#FF4081</color>
 
     <color name="gridColor">#402b2b2b</color>
+
 </resources>
