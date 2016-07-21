@@ -234,7 +234,7 @@ public class SyllabusFragment extends Fragment {
                     int g = (int) (Math.random() * 256);
                     int b = (int) (Math.random() * 256);*/
                     shape.setColor(ColorUtils.setAlphaComponent(getResources().getColor(
-                            lesson.getBgColor()), 180));
+                            lesson.getBgColor()), 188));
                     lessonTextView.setText(lesson.getTrueName() + "\n@" + lesson.getRoom());
 
                     lessonTextView.setBackgroundDrawable(shape);

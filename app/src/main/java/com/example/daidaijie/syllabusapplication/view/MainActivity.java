@@ -1,15 +1,17 @@
 package com.example.daidaijie.syllabusapplication.view;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.example.daidaijie.syllabusapplication.R;
@@ -21,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private SyllabusPagerAdapter syllabusPagerAdapter;
     private Toolbar mToolbar;
 
-    private LinearLayout mMainLinearLayout;
+    private LinearLayout mMainRootLayout;
 
     private final static String SAVED_PAGE_POSITION = "pagePositon";
 
@@ -31,9 +33,22 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mMainLinearLayout = (LinearLayout) findViewById(R.id.mainLinearLayout);
+        mMainRootLayout = (LinearLayout) findViewById(R.id.mainRootLayout);
         syllabusViewPager = (ViewPager) findViewById(R.id.syllabusViewPager);
         mToolbar = (Toolbar) findViewById(R.id.mToolbar);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            // Translucent status bar
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+//            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        }
 
         FragmentManager manager = getSupportFragmentManager();
         syllabusPagerAdapter = new SyllabusPagerAdapter(manager);
@@ -45,16 +60,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mToolbar.setTitle("第 " + (pageIndex + 1) + " 周");
-        mMainLinearLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.background4));
-        BitmapDrawable drawable = (BitmapDrawable) mMainLinearLayout.getBackground();
+        mMainRootLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
+        BitmapDrawable drawable = (BitmapDrawable) mMainRootLayout.getBackground();
 
         Palette.from(drawable.getBitmap()).generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
-                Palette.Swatch swatch = palette.getVibrantSwatch()  ;
-                mToolbar.setBackgroundColor(swatch.getRgb());
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    getWindow().setStatusBarColor(swatch.getRgb());
+                Palette.Swatch swatch = palette.getVibrantSwatch();
+                if (swatch != null) {
+                    mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(swatch.getRgb()
+                            , 188));
+                    /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        getWindow().setStatusBarColor(swatch.getRgb());
+                    }*/
                 }
             }
         });
