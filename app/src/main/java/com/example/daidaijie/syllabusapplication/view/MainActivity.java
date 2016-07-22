@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager syllabusViewPager;
     private SyllabusPagerAdapter syllabusPagerAdapter;
     private Toolbar mToolbar;
+    private TextView titleTextView;
 
     private LinearLayout mMainRootLayout;
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mMainRootLayout = (LinearLayout) findViewById(R.id.mainRootLayout);
         syllabusViewPager = (ViewPager) findViewById(R.id.syllabusViewPager);
         mToolbar = (Toolbar) findViewById(R.id.mToolbar);
+        titleTextView = (TextView) findViewById(R.id.titleTextView);
         mToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +71,9 @@ public class MainActivity extends AppCompatActivity {
             pageIndex = savedInstanceState.getInt(SAVED_PAGE_POSITION);
         }
 
-        mToolbar.setTitle("第 " + (pageIndex + 1) + " 周");
+        mToolbar.setTitle("");
+        titleTextView.setText("第 " + (pageIndex + 1) + " 周");
+
         mMainRootLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
         BitmapDrawable drawable = (BitmapDrawable) mMainRootLayout.getBackground();
 
@@ -95,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                mToolbar.setTitle("第 " + (position + 1) + " 周");
+                titleTextView.setText("第 " + (position + 1) + " 周");
             }
 
             @Override

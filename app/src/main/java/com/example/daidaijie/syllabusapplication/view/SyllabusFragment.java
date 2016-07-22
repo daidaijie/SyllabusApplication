@@ -57,6 +57,8 @@ public class SyllabusFragment extends Fragment {
 
     private static final String WEEK_DAY = "WeekDate";
 
+    private static final String IS_SWIPE_ENABLE = "isSwipeEnable";
+
     //储存用户的课表
     private Syllabus mSyllabus;
 
@@ -96,6 +98,7 @@ public class SyllabusFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         mWeek = getArguments().getInt(WEEK_DAY);
+
     }
 
     @Override
@@ -156,6 +159,21 @@ public class SyllabusFragment extends Fragment {
         showSyllabus();
 
         return view;
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_SWIPE_ENABLE, syllabusRefreshLayout.isEnabled());
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            syllabusRefreshLayout.setEnabled(savedInstanceState.getBoolean(IS_SWIPE_ENABLE));
+        }
     }
 
     /**
