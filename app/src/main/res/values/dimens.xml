@@ -3,9 +3,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <dimen name="week_grid_height">28dp</dimen>
+    <dimen name="week_grid_height">24dp</dimen>
 
     <dimen name="syllabus_grid_height">44dp</dimen>
 
-    <dimen name="toolbar_height">62dp</dimen>
+    <dimen name="toolbar_height">42dp</dimen>
 </resources>

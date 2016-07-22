@@ -10,11 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
 
     private final static String SAVED_PAGE_POSITION = "pagePositon";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +38,22 @@ public class MainActivity extends AppCompatActivity {
         mMainRootLayout = (LinearLayout) findViewById(R.id.mainRootLayout);
         syllabusViewPager = (ViewPager) findViewById(R.id.syllabusViewPager);
         mToolbar = (Toolbar) findViewById(R.id.mToolbar);
-
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SnackbarUtil.ShortSnackbar(mToolbar, "点击了Toolbar", SnackbarUtil.Confirm).show();
+            }
+        });
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            Window window = getWindow();
+//            Window window = getWindow();
             // Translucent status bar
-            window.setFlags(
+           /* window.setFlags(
                     WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);*/
 //            //透明状态栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            ViewGroup.LayoutParams layoutParams = mToolbar.getLayoutParams();
+            layoutParams.height = layoutParams.height + getStatusBarHeight();
 
 //            //透明导航栏
 //            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
@@ -60,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mToolbar.setTitle("第 " + (pageIndex + 1) + " 周");
-        mMainRootLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg6));
+        mMainRootLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
         BitmapDrawable drawable = (BitmapDrawable) mMainRootLayout.getBackground();
 
         Palette.from(drawable.getBitmap()).generate(new Palette.PaletteAsyncListener() {
@@ -71,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(swatch.getRgb()
                             , 188));
                     /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        getWindow().setStatusBarColor(swatch.getRgb());
+                        getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(swatch.getRgb()
+                                , 188));
                     }*/
                 }
             }
@@ -101,4 +111,21 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVED_PAGE_POSITION, syllabusViewPager.getCurrentItem());
     }
+
+    public int getStatusBarHeight() {
+
+        int result = 0;
+
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+
+        if (resourceId > 0) {
+
+            result = getResources().getDimensionPixelSize(resourceId);
+
+        }
+
+        return result;
+
+    }
+
 }

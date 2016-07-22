@@ -61,7 +61,7 @@ public class Syllabus {
             R.color.material_teal_300,
             R.color.material_deepPurple_300,
             R.color.material_red_300,
-            R.color.material_indigo_300,
+//            R.color.material_indigo_300,
             R.color.material_brown_300,
             R.color.material_lightBlue_300,
             R.color.material_pink_300,

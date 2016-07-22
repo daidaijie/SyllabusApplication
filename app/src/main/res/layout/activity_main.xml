@@ -5,15 +5,18 @@
               android:id="@+id/mainRootLayout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              tools:context=".view.MainActivity"
-              android:orientation="vertical">
+
+              android:orientation="vertical"
+              tools:context=".view.MainActivity">
 
     <android.support.v7.widget.Toolbar
+        android:fitsSystemWindows="true"
+        android:clipToPadding="true"
         android:id="@+id/mToolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="?attr/colorPrimary"
-        android:fitsSystemWindows="true"
+
         tool_bar:titleTextColor="@android:color/white">
     </android.support.v7.widget.Toolbar>
 
