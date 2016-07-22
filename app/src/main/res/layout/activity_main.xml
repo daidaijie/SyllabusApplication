@@ -30,19 +30,20 @@
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
 
-        <com.andexert.library.RippleView
+        <com.balysv.materialripple.MaterialRippleLayout
+            app:mrl_rippleOverlay="true"
+            app:mrl_rippleRoundedCorners="@dimen/toolbar_height"
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_gravity="right"
             android:layout_width="@dimen/toolbar_height"
             android:layout_height="@dimen/toolbar_height"
-            android:padding="4dp"
-            app:rv_centered="true">
+            android:padding="4dp">
             <ImageView
                 android:layout_gravity="right"
                 android:src="@drawable/ic_magic_syllabus"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
-        </com.andexert.library.RippleView>
+        </com.balysv.materialripple.MaterialRippleLayout>
 
     </android.support.v7.widget.Toolbar>
 

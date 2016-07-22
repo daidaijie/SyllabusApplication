@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.0"
+    buildToolsVersion "24.0.1"
 
     defaultConfig {
         applicationId "com.example.daidaijie.syllabusapplication"
@@ -35,5 +35,4 @@ dependencies {
     compile 'org.greenrobot:eventbus:3.0.0'
     compile 'com.zzhoujay.materialcolors:materialcolors:1.0.0'
     compile 'com.android.support:palette-v7:24.1.1'
-    compile 'com.github.traex.rippleeffect:library:1.3'
 }

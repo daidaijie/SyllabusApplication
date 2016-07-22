@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         mToolbar.setTitle("");
         titleTextView.setText("第 " + (pageIndex + 1) + " 周");
 
-        mMainRootLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
+        mMainRootLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.background4));
         BitmapDrawable drawable = (BitmapDrawable) mMainRootLayout.getBackground();
 
         Palette.from(drawable.getBitmap()).generate(new Palette.PaletteAsyncListener() {
