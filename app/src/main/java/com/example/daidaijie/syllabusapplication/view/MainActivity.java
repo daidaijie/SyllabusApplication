@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -41,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         syllabusViewPager = (ViewPager) findViewById(R.id.syllabusViewPager);
         mToolbar = (Toolbar) findViewById(R.id.mToolbar);
         titleTextView = (TextView) findViewById(R.id.titleTextView);
+
+        /*mToolbar.inflateMenu(R.menu.menu_syllabus);
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });*/
         mToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 Palette.Swatch swatch = palette.getVibrantSwatch();
                 if (swatch != null) {
                     mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(swatch.getRgb()
-                            , 188));
+                            , 192));
                     /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                         getWindow().setStatusBarColor(ColorUtils.setAlphaComponent(swatch.getRgb()
                                 , 188));
@@ -108,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        setSupportActionBar(mToolbar);
     }
 
     @Override

@@ -10,6 +10,7 @@
               tools:context=".view.MainActivity">
 
     <android.support.v7.widget.Toolbar
+        tool_bar:popupTheme="@style/AppTheme.PopupOverlay"
         android:id="@+id/mToolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
@@ -28,6 +29,21 @@
             android:text="第 1 周"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
+
+        <com.andexert.library.RippleView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="right"
+            android:layout_width="@dimen/toolbar_height"
+            android:layout_height="@dimen/toolbar_height"
+            android:padding="4dp"
+            app:rv_centered="true">
+            <ImageView
+                android:layout_gravity="right"
+                android:src="@drawable/ic_magic_syllabus"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </com.andexert.library.RippleView>
+
     </android.support.v7.widget.Toolbar>
 
     <!--<Button

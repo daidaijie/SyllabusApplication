@@ -29,6 +29,9 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
+import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
@@ -148,8 +151,7 @@ public class SyllabusFragment extends Fragment {
         String syllabusGson = sharedPreferencesCompat.getString(Syllabus.SYLLABUS_GSON, null);
 
         if (syllabusGson != null) {
-            Gson gson = new Gson();
-            mSyllabus = gson.fromJson(syllabusGson, Syllabus.class);
+            mSyllabus = GsonUtil.getDefault().fromJson(syllabusGson, Syllabus.class);
 //            Log.d(TAG, "onCreateView: " + syllabusGson);
         } else {
             mSyllabus = new Syllabus();
@@ -252,7 +254,7 @@ public class SyllabusFragment extends Fragment {
                     int g = (int) (Math.random() * 256);
                     int b = (int) (Math.random() * 256);*/
                     shape.setColor(ColorUtils.setAlphaComponent(getResources().getColor(
-                            lesson.getBgColor()), 188));
+                            lesson.getBgColor()), 192));
                     lessonTextView.setText(lesson.getTrueName() + "\n@" + lesson.getRoom());
 
                     lessonTextView.setBackgroundDrawable(shape);
@@ -278,19 +280,6 @@ public class SyllabusFragment extends Fragment {
             }
 
         }
-
-
-    }
-
-    /*@Override
-    public void onResume() {
-        super.onResume();
-
-        */
-
-    /**
-     * 圆形展开动画
-     *//*
         syllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -311,16 +300,13 @@ public class SyllabusFragment extends Fragment {
                 }
             }
         });
-    }*/
+
+    }
+
     private void getSyllabus() {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://119.29.95.245:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
 
-        UserInfoService service = retrofit.create(UserInfoService.class);
+        UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
         service.getUserInfo(
                 "13yjli3",
                 "O3o",
@@ -361,7 +347,7 @@ public class SyllabusFragment extends Fragment {
                                     .getSharedPreferences(Syllabus.SYLLABUS_GSON_FILE, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferencesCompat.edit();
 
-                            editor.putString(Syllabus.SYLLABUS_GSON, new Gson().toJson(mSyllabus));
+                            editor.putString(Syllabus.SYLLABUS_GSON, GsonUtil.getDefault().toJson(mSyllabus));
                             editor.commit();
                             showSyllabus();
                             syllabusRefreshLayout.setRefreshing(false);
