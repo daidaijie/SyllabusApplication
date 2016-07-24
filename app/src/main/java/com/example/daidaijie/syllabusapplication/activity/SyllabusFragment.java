@@ -1,19 +1,14 @@
-package com.example.daidaijie.syllabusapplication.view;
+package com.example.daidaijie.syllabusapplication.activity;
 
 
 import android.animation.Animator;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.SharedPreferencesCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -29,7 +24,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
-import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -37,13 +32,9 @@ import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
-import com.google.gson.Gson;
 
 import java.util.List;
 
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -234,6 +225,7 @@ public class SyllabusFragment extends Fragment {
      * 显示课程表
      */
     private void showSyllabus() {
+
         syllabusGridLayout.removeAllViews();
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 13; j++) {
@@ -248,11 +240,7 @@ public class SyllabusFragment extends Fragment {
 
                 if (lesson != null) {
                     GradientDrawable shape = (GradientDrawable) getResources().getDrawable(R.drawable.grid_background);
-                    StateListDrawable drawable = new StateListDrawable();
 
-                    /*int r = (int) (Math.random() * 256);
-                    int g = (int) (Math.random() * 256);
-                    int b = (int) (Math.random() * 256);*/
                     shape.setColor(ColorUtils.setAlphaComponent(getResources().getColor(
                             lesson.getBgColor()), 192));
                     lessonTextView.setText(lesson.getTrueName() + "\n@" + lesson.getRoom());
@@ -280,6 +268,7 @@ public class SyllabusFragment extends Fragment {
             }
 
         }
+
         syllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -301,6 +290,7 @@ public class SyllabusFragment extends Fragment {
             }
         });
 
+
     }
 
     private void getSyllabus() {
@@ -317,6 +307,7 @@ public class SyllabusFragment extends Fragment {
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
                     @Override
                     public Observable<Lesson> call(UserInfo userInfo) {
+                        User.getInstance().setUserInfo(userInfo);
                         return Observable.from(userInfo.getClasses());
                     }
                 })
@@ -336,6 +327,10 @@ public class SyllabusFragment extends Fragment {
 
                         Log.d(TAG, "onCompleted: ");
 
+                        if (SyllabusFragment.this.isDetached()) {
+                            return;
+                        }
+
                         if (!this.isUnsubscribed()) {
                             SnackbarUtil.ShortSnackbar(
                                     syllabusRootLayout,
@@ -350,6 +345,8 @@ public class SyllabusFragment extends Fragment {
                             editor.putString(Syllabus.SYLLABUS_GSON, GsonUtil.getDefault().toJson(mSyllabus));
                             editor.commit();
                             showSyllabus();
+                            SyllabusActivity activity = (SyllabusActivity) getActivity();
+                            activity.setDrawerLayoutInfo();
                             syllabusRefreshLayout.setRefreshing(false);
                         }
 

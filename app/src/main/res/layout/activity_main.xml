@@ -1,63 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tool_bar="http://schemas.android.com/apk/res-auto"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/mainRootLayout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool_bar="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="end">
 
-              android:orientation="vertical"
-              tools:context=".view.MainActivity">
-
-    <android.support.v7.widget.Toolbar
-        tool_bar:popupTheme="@style/AppTheme.PopupOverlay"
-        android:id="@+id/mToolbar"
+    <LinearLayout
+        android:id="@+id/mainRootLayout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:background="?attr/colorPrimary"
-        android:clipToPadding="true"
-        android:fitsSystemWindows="true"
-        tool_bar:titleTextColor="@android:color/white">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".activity.SyllabusActivity">
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="第 1 周"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"/>
-
-        <com.balysv.materialripple.MaterialRippleLayout
-            app:mrl_rippleOverlay="true"
-            app:mrl_rippleRoundedCorners="@dimen/toolbar_height"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_gravity="right"
-            android:layout_width="@dimen/toolbar_height"
+        <android.support.v7.widget.Toolbar
+            android:gravity="center_vertical"
+            android:id="@+id/mToolbar"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
-            android:padding="4dp">
-            <ImageView
+            android:background="?attr/colorPrimary"
+            android:clipToPadding="true"
+            android:fitsSystemWindows="true"
+            android:theme="@style/AppTheme.PopupOverlay"
+            tool_bar:titleTextColor="@android:color/white">
+
+            <TextView
+                android:paddingTop="8dp"
+                android:id="@+id/titleTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="第 1 周"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"/>
+
+            <!--<com.balysv.materialripple.MaterialRippleLayout
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="@dimen/toolbar_height"
+                android:layout_height="@dimen/toolbar_height"
                 android:layout_gravity="right"
-                android:src="@drawable/ic_magic_syllabus"
+                android:padding="4dp"
+                app:mrl_rippleColor="#fff"
+                app:mrl_rippleOverlay="true"
+                app:mrl_rippleRoundedCorners="@dimen/toolbar_height">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:src="@drawable/ic_magic_syllabus"/>
+            </com.balysv.materialripple.MaterialRippleLayout>-->
+
+        </android.support.v7.widget.Toolbar>
+
+        <!--<Button
+            android:id="@+id/testButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="test" />-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <android.support.v4.view.ViewPager
+                android:id="@+id/syllabusViewPager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </com.balysv.materialripple.MaterialRippleLayout>
+                android:layout_height="match_parent">
+            </android.support.v4.view.ViewPager>
+        </ScrollView>i
 
-    </android.support.v7.widget.Toolbar>
+    </LinearLayout>
 
-    <!--<Button
-        android:id="@+id/testButton"
+        <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="test" />-->
-    <android.support.v4.view.ViewPager
-        android:id="@+id/syllabusViewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </android.support.v4.view.ViewPager>
-
-
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer"/>
+</android.support.v4.widget.DrawerLayout>

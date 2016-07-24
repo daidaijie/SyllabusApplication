@@ -71,5 +71,7 @@ public class UserInfo {
         this.classes = classes;
     }
 
+    private static UserInfo mUserInfo;
+
 
 }
