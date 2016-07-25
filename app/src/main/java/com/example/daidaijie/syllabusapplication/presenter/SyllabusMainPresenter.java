@@ -1,13 +1,11 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
@@ -53,7 +51,7 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
         // TODO: 2016/7/25 这里暂时没获取壁纸，先假装有壁纸
 
         Bitmap wallPaperBitmap = BitmapFactory.decodeResource(mView.getActivityResources()
-                , R.drawable.background);
+                    , R.drawable.background);
         mView.setBackground(wallPaperBitmap);
     }
 
@@ -115,10 +113,9 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
 
                         //获取该课程上的节点上的时间列表
                         List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
-                        if (timeGirds.size() != 0) {
+                        /*if (timeGirds.size() != 0) {
                             Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
-                        }
-
+                        }*/
                         for (int i = 0; i < timeGirds.size(); i++) {
                             Lesson.TimeGird timeGrid = timeGirds.get(i);
                             for (int j = 0; j < timeGrid.getTimeList().length(); j++) {

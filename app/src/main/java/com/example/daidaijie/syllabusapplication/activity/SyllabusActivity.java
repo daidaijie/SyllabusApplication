@@ -15,6 +15,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -81,9 +82,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         //解决滑动冲突
         mSyllabusScrollView.setSwipeRefreshLayout(mSyllabusRefreshLayout);
 
-        setupToolbar();
-
         mSyllabusRefreshLayout.setOnRefreshListener(this);
+
+        setupToolbar();
+        showDate();
 
         mSyllabusMainPresenter.setUserInfo();
         mSyllabusMainPresenter.loadWallpaper();
@@ -162,6 +164,38 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     }
 
+    private void showDate() {
+        int deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
+//        int devideHeight = getWindowManager().getDefaultDisplay().getHeight();
+        int gridWidth = deviceWidth * 2 / 15;
+        int timeWidth = deviceWidth - gridWidth * 7;
+        {
+            TextView blankTextView = (TextView) getLayoutInflater()
+                    .inflate(R.layout.week_grid, null, false);
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    timeWidth, ViewGroup.LayoutParams.MATCH_PARENT
+            );
+            mDateLinearLayout.addView(blankTextView, layoutParams);
+        }
+        for (int i = 0; i < 7; i++) {
+            String[] weekString = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+
+            TextView weekTextView = (TextView) getLayoutInflater()
+                    .inflate(R.layout.week_grid, null, false);
+            weekTextView.setText(weekString[i]);
+            if (i + 1 == 7) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    weekTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_week_end));
+                } else {
+                    weekTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_grid_week_end));
+                }
+            }
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    gridWidth, ViewGroup.LayoutParams.MATCH_PARENT);
+            mDateLinearLayout.addView(weekTextView, layoutParams);
+        }
+    }
 
     @Override
     public void setHeadImageView(Uri uri) {
@@ -246,6 +280,5 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     public void onRefresh() {
         mSyllabusMainPresenter.getSyllabus();
     }
-
 
 }
