@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

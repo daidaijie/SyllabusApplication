@@ -9,17 +9,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitUtil {
 
-    private static Retrofit mRetrofit;
+    private static Retrofit mRetrofit=new Retrofit.Builder()
+            .baseUrl("http://119.29.95.245:8080/")
+            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();;
 
     public static Retrofit getDefault() {
-
-        if (mRetrofit == null) {
-            mRetrofit = new Retrofit.Builder()
-                    .baseUrl("http://119.29.95.245:8080/")
-                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-        }
         return mRetrofit;
     }
 

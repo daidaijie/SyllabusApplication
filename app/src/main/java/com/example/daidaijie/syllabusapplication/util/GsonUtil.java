@@ -8,14 +8,11 @@ import com.google.gson.GsonBuilder;
  */
 public class GsonUtil {
 
-    private static Gson mGson;
+    private static Gson mGson = new GsonBuilder()
+            .setPrettyPrinting()
+            .create();
 
     public static Gson getDefault() {
-        if (mGson == null) {
-            mGson = new GsonBuilder()
-                    .setPrettyPrinting()
-                    .create();
-        }
         return mGson;
     }
 
