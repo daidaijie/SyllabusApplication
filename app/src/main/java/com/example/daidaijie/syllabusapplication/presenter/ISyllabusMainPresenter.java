@@ -5,8 +5,15 @@ import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 /**
  * Created by daidaijie on 2016/7/25.
  */
-public abstract class ISyllabusMainPresenter extends BasePresenter<ISyllabusMainView>{
+public abstract class ISyllabusMainPresenter extends BasePresenter<ISyllabusMainView> {
 
     //获取用户信息
-    public abstract void getUserInfo();
+    public abstract void setUserInfo();
+
+    //加载背景
+    public abstract void loadWallpaper();
+
+    //获取课表
+    public abstract void getSyllabus();
+
 }

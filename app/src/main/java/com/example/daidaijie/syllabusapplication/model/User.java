@@ -16,19 +16,19 @@ public class User {
     //example 13yjli3
     private String mAccount;
 
-    private static User sUser;
+    private static User sUser = new User();
 
     private UserInfo mUserInfo;
 
-    public Map<String, Syllabus> mSyllabusMap;
+//    public Map<String, Syllabus> mSyllabusMap;
+
+    //现在只测试一个学期的情况
+    public Syllabus mSyllabus;
 
     private User() {
     }
 
     public static User getInstance() {
-        if (sUser == null) {
-            sUser = new User();
-        }
         return sUser;
     }
 

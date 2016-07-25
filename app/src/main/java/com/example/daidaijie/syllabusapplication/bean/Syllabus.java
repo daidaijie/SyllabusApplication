@@ -11,8 +11,6 @@ import java.util.List;
  */
 public class Syllabus {
 
-    public static final String SYLLABUS_GSON_FILE = "SyllabusGson";
-    public static final String SYLLABUS_GSON = "SyllabusGson";
 
     public static int countOfDay = 7;
     public static int countOfTime = 13;

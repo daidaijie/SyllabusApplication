@@ -6,26 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".activity.SyllabusFragment">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/syllabusRefreshLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/dateLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/week_grid_height"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="horizontal">
-            </LinearLayout>
+
 
             <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
                 android:id="@+id/syllabusScrollView"
@@ -58,7 +46,6 @@
         </LinearLayout>
 
 
-    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

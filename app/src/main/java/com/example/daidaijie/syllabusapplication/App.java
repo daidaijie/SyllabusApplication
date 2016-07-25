@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 /**
  * Created by daidaijie on 2016/7/24.
