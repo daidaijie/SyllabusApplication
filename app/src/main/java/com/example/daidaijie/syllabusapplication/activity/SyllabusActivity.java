@@ -208,7 +208,9 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                     mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(
                             getResources().getColor(R.color.colorPrimary)
                             , 192));
-                    navHeadRelativeLayout.setBackgroundColor(R.color.colorPrimary);
+                    navHeadRelativeLayout.setBackgroundColor(getResources().getColor(
+                            R.color.colorPrimary
+                    ));
                 }
             }
         });
