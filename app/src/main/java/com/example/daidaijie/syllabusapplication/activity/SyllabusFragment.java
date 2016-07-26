@@ -36,7 +36,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class SyllabusFragment extends Fragment implements ISyllabusFragmentView, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.timeLinearLayout)
@@ -55,6 +54,8 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
     private String TAG = "SyllabusFragment";
 
     private static final String WEEK_DAY = "WeekDate";
+
+    private static final String IS_SWIPE_ENABLE = "isSwipeEnable";
 
     private SyllabusFragmentPresenter mSyllabusFragmentPresenter = new SyllabusFragmentPresenter();
 
@@ -126,6 +127,20 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         EventBus.getDefault().unregister(this);
     }
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(IS_SWIPE_ENABLE, mSyllabusRefreshLayout.isEnabled());
+    }
+
+    @Override
+    public void onViewStateRestored(Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState != null) {
+            mSyllabusRefreshLayout.setEnabled(savedInstanceState.getBoolean(IS_SWIPE_ENABLE));
+        }
+    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleUpdateSyllabus(SyllabusEvent event) {
