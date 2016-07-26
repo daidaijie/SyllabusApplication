@@ -33,42 +33,10 @@
             android:textSize="20sp"/>
 
     </android.support.v7.widget.Toolbar>
-
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/syllabusRefreshLayout"
+    <com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager
+        android:id="@+id/syllabusViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:id="@+id/dateLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/week_grid_height"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="horizontal">
-            </LinearLayout>
-
-            <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
-                android:id="@+id/syllabusScrollView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fillViewport="true">
-
-                <android.support.v4.view.ViewPager
-                    android:id="@+id/syllabusViewPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="596dp">
-                </android.support.v4.view.ViewPager>
-            </com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView>
-
-        </LinearLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager>
 
 </LinearLayout>

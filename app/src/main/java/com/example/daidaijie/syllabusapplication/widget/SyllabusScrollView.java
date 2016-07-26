@@ -17,11 +17,6 @@ public class SyllabusScrollView extends ScrollView {
         super(context, attrs);
     }
 
-
-    public SwipeRefreshLayout getSwipeRefreshLayout() {
-        return swipeRefreshLayout;
-    }
-
     public void setSwipeRefreshLayout(SwipeRefreshLayout swipeRefreshLayout) {
         this.swipeRefreshLayout = swipeRefreshLayout;
     }
@@ -35,4 +30,5 @@ public class SyllabusScrollView extends ScrollView {
             swipeRefreshLayout.setEnabled(true);
         }
     }
+
 }

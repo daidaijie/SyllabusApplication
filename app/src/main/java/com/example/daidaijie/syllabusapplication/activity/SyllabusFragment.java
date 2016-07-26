@@ -1,18 +1,14 @@
-/*
 package com.example.daidaijie.syllabusapplication.activity;
 
 
 import android.animation.Animator;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -23,61 +19,45 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
-import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPresenter;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
-import com.example.daidaijie.syllabusapplication.service.UserInfoService;
-import com.example.daidaijie.syllabusapplication.bean.Lesson;
-import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
-*/
-/**
- * A simple {@link Fragment} subclass.
- *//*
+public class SyllabusFragment extends Fragment implements ISyllabusFragmentView, SwipeRefreshLayout.OnRefreshListener {
 
-public class SyllabusFragment extends Fragment {
+    @BindView(R.id.timeLinearLayout)
+    LinearLayout mTimeLinearLayout;
+    @BindView(R.id.syllabusGridLayout)
+    GridLayout mSyllabusGridLayout;
+    @BindView(R.id.syllabusRootLayout)
+    LinearLayout mSyllabusRootLayout;
+    @BindView(R.id.dateLinearLayout)
+    LinearLayout mDateLinearLayout;
+    @BindView(R.id.syllabusScrollView)
+    SyllabusScrollView mSyllabusScrollView;
+    @BindView(R.id.syllabusRefreshLayout)
+    SwipeRefreshLayout mSyllabusRefreshLayout;
 
     private String TAG = "SyllabusFragment";
 
     private static final String WEEK_DAY = "WeekDate";
 
-    private static final String IS_SWIPE_ENABLE = "isSwipeEnable";
-
-    //储存用户的课表
-    private Syllabus mSyllabus;
+    private SyllabusFragmentPresenter mSyllabusFragmentPresenter = new SyllabusFragmentPresenter();
 
     //这里除了显示，在程序中皆从0开始，为第一周
     private int mWeek;
-
-    */
-/**
-     * 布局
-     *//*
-
-    private CoordinatorLayout syllabusRootLayout;
-    private GridLayout syllabusGridLayout;
-    private LinearLayout dateLinearLayout;
-    private LinearLayout timeLinearLayout;
-    private SyllabusScrollView syllabusScrollView;
-    private SwipeRefreshLayout syllabusRefreshLayout;
-
-    */
-/**
-     * 长宽,像素为单位
-     *//*
 
     private int deviceWidth;
     private int devideHeight;
@@ -97,126 +77,64 @@ public class SyllabusFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mWeek = getArguments().getInt(WEEK_DAY);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
+        mSyllabusFragmentPresenter.attach(this);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_blank, container, false);
-        syllabusRootLayout = (CoordinatorLayout) view.findViewById(R.id.syllabusRootLayout);
-        syllabusGridLayout = (GridLayout) view.findViewById(R.id.syllabusGridLayout);
-        dateLinearLayout = (LinearLayout) view.findViewById(R.id.dateLinearLayout);
-        timeLinearLayout = (LinearLayout) view.findViewById(R.id.timeLinearLayout);
-        syllabusRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.syllabusRefreshLayout);
-        syllabusScrollView = (SyllabusScrollView) view.findViewById(R.id.syllabusScrollView);
-
-        syllabusRefreshLayout.setColorSchemeResources(
-                R.color.colorPrimary,
-                R.color.colorAccent,
-                android.R.color.holo_green_light,
-                android.R.color.holo_purple
-        );
-
-        syllabusScrollView.setSwipeRefreshLayout(syllabusRefreshLayout);
-        syllabusRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getSyllabus();
-            }
-        });
-
+        View view = inflater.inflate(R.layout.fragment_syllabus, container, false);
+        ButterKnife.bind(this, view);
 
         deviceWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
         devideHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
-
         gridWidth = deviceWidth * 2 / 15;
         timeWidth = deviceWidth - gridWidth * 7;
         gridHeight = getResources().getDimensionPixelOffset(R.dimen.syllabus_grid_height);
 
-        showDate();
+        //解决滑动冲突
+        mSyllabusScrollView.setSwipeRefreshLayout(mSyllabusRefreshLayout);
 
+        mSyllabusRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
+        mSyllabusRefreshLayout.setOnRefreshListener(this);
+
+
+        showDate();
         showTime();
 
-        SharedPreferences sharedPreferencesCompat = getActivity()
-                .getSharedPreferences(Syllabus.SYLLABUS_GSON_FILE, Context.MODE_PRIVATE);
-
-        String syllabusGson = sharedPreferencesCompat.getString(Syllabus.SYLLABUS_GSON, null);
-
-        if (syllabusGson != null) {
-            mSyllabus = GsonUtil.getDefault().fromJson(syllabusGson, Syllabus.class);
-//            Log.d(TAG, "onCreateView: " + syllabusGson);
-        } else {
-            mSyllabus = new Syllabus();
-            syllabusRefreshLayout.setRefreshing(true);
-            getSyllabus();
-        }
-        showSyllabus();
+        mSyllabusFragmentPresenter.showSyllabus();
 
         return view;
     }
 
-
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(IS_SWIPE_ENABLE, syllabusRefreshLayout.isEnabled());
+    public void onDetach() {
+        super.onDetach();
+        mSyllabusFragmentPresenter.detach();
+        EventBus.getDefault().unregister(this);
     }
-
-    @Override
-    public void onViewStateRestored(Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState != null) {
-            syllabusRefreshLayout.setEnabled(savedInstanceState.getBoolean(IS_SWIPE_ENABLE));
-        }
-    }
-
-    */
-/**
-     * 显示时间
-     *//*
-
-    private void showTime() {
-        for (int i = 1; i <= 13; i++) {
-            TextView timeTextView = (TextView) LayoutInflater.from(getActivity()).inflate(R.layout.week_grid, null, false);
-            timeTextView.setText(i + "");
-            if (i == 13) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    timeTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_time_end));
-                } else {
-                    timeTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_grid_time_end));
-                }
-            }
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    timeWidth, gridHeight);
-            timeLinearLayout.addView(timeTextView, layoutParams);
-        }
-
-    }
-
-    */
-/**
-     * 显示日期
-     *//*
 
     private void showDate() {
         {
-            TextView blankTextView = (TextView) LayoutInflater.from(getActivity())
+            TextView blankTextView = (TextView) getActivity().getLayoutInflater()
                     .inflate(R.layout.week_grid, null, false);
+
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     timeWidth, ViewGroup.LayoutParams.MATCH_PARENT
             );
-            dateLinearLayout.addView(blankTextView, layoutParams);
+            mDateLinearLayout.addView(blankTextView, layoutParams);
         }
         for (int i = 0; i < 7; i++) {
             String[] weekString = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
 
-            TextView weekTextView = (TextView) LayoutInflater.from(getActivity())
+            TextView weekTextView = (TextView) getActivity().getLayoutInflater()
                     .inflate(R.layout.week_grid, null, false);
             weekTextView.setText(weekString[i]);
             if (i + 1 == 7) {
@@ -228,21 +146,37 @@ public class SyllabusFragment extends Fragment {
             }
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     gridWidth, ViewGroup.LayoutParams.MATCH_PARENT);
-            dateLinearLayout.addView(weekTextView, layoutParams);
+            mDateLinearLayout.addView(weekTextView, layoutParams);
         }
     }
 
-    */
-/**
-     * 显示课程表
-     *//*
+    /**
+     * 显示时间
+     */
+    private void showTime() {
+        for (int i = 1; i <= 13; i++) {
+            TextView timeTextView = (TextView) LayoutInflater
+                    .from(getActivity()).inflate(R.layout.week_grid, null, false);
+            timeTextView.setText(Syllabus.time2char(i) + "");
+            if (i == 13) {
+                timeTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_time_end));
+            }
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    timeWidth, gridHeight);
+            mTimeLinearLayout.addView(timeTextView, layoutParams);
+        }
 
-    private void showSyllabus() {
+    }
 
-        syllabusGridLayout.removeAllViews();
+    @Override
+    public void showSyllabus(Syllabus syllabus) {
+        if (syllabus == null) {
+            return;
+        }
+        mSyllabusGridLayout.removeAllViews();
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 13; j++) {
-                SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids().get(i).get(j);
+                SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
                 Lesson lesson = null;
                 if (syllabusGrid.getLessons().size() != 0) {
                     lesson = syllabusGrid.getLessons().get(0);
@@ -260,7 +194,7 @@ public class SyllabusFragment extends Fragment {
 
                     lessonTextView.setBackgroundDrawable(shape);
                     for (int k = j + 1; k < 13; k++) {
-                        SyllabusGrid nextSyllabusGrid = mSyllabus.getSyllabusGrids().get(i).get(k);
+                        SyllabusGrid nextSyllabusGrid = syllabus.getSyllabusGrids().get(i).get(k);
                         if (nextSyllabusGrid.getLessons().size() == 0) break;
                         Lesson nextlesson = nextSyllabusGrid.getLessons().get(0);
                         if (nextlesson.getId().equals(lesson.getId())) {
@@ -275,21 +209,21 @@ public class SyllabusFragment extends Fragment {
                 lessonTextView.setHeight(gridHeight * span);
                 GridLayout.Spec rowSpec = GridLayout.spec(j, span);
                 GridLayout.Spec columnSpec = GridLayout.spec(i);
-                syllabusGridLayout.addView(lessonLinearLayout, new GridLayout.LayoutParams(rowSpec, columnSpec));
+                mSyllabusGridLayout.addView(lessonLinearLayout, new GridLayout.LayoutParams(rowSpec, columnSpec));
                 j += span - 1;
 
             }
 
         }
 
-        syllabusGridLayout.post(new Runnable() {
+        /*mSyllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
-                if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                     return;
                 }
-                for (int i = 0; i < syllabusGridLayout.getChildCount(); i++) {
-                    View syllabusGridview = syllabusGridLayout.getChildAt(i);
+                for (int i = 0; i < mSyllabusGridLayout.getChildCount(); i++) {
+                    View syllabusGridview = mSyllabusGridLayout.getChildAt(i);
                     Animator animator = ViewAnimationUtils.createCircularReveal(
                             syllabusGridview,
                             syllabusGridview.getWidth() / 2,
@@ -301,13 +235,63 @@ public class SyllabusFragment extends Fragment {
                     animator.start();
                 }
             }
-        });
-
-
+        });*/
     }
 
-    private void getSyllabus() {
+    @Override
+    public void showSuccessBanner() {
+        SnackbarUtil.ShortSnackbar(
+                mSyllabusRootLayout,
+                "课表同步成功",
+                SnackbarUtil.Confirm
+        ).show();
+    }
 
+    @Override
+    public void showFailBannner() {
+        SnackbarUtil.LongSnackbar(
+                mSyllabusRootLayout,
+                "课表同步失败",
+                SnackbarUtil.Alert
+        ).setAction("再次同步", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSyllabusRefreshLayout.setRefreshing(true);
+                mSyllabusFragmentPresenter.updateSyllabus();
+            }
+        }).show();
+    }
+
+    @Override
+    public void showLoading() {
+        mSyllabusRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        mSyllabusRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void setViewPagerEnable(boolean enable) {
+        SyllabusActivity fatherActivity = (SyllabusActivity) getActivity();
+        fatherActivity.setViewPagerEnable(enable);
+    }
+
+    @Override
+    public void onRefresh() {
+        mSyllabusFragmentPresenter.updateSyllabus();
+    }
+
+    @Override
+    public void setHeadImageView(Uri uri) {
+        SyllabusActivity fatherActivity = (SyllabusActivity) getActivity();
+        fatherActivity.setHeadImageView(uri);
+    }
+
+    @Override
+    public void setNickName(String nickName) {
+        SyllabusActivity fatherActivity = (SyllabusActivity) getActivity();
+        fatherActivity.setNickName(nickName);
     }
 }
-*/

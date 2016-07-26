@@ -100,11 +100,11 @@ public class Syllabus {
         return timeLists.indexOf(x);
     }
 
-    public static int time2char(int time) {
+    public static char time2char(int time) {
         if (time < 10) {
-            return time + '0';
+            return (char) (time + '0');
         } else if (time > 10) {
-            return 'A' + (time - 11);
+            return (char) ('A' + (time - 11));
         } else {
             return '0';
         }

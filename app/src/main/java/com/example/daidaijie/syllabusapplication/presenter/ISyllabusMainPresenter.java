@@ -13,7 +13,5 @@ public abstract class ISyllabusMainPresenter extends BasePresenter<ISyllabusMain
     //加载背景
     public abstract void loadWallpaper();
 
-    //获取课表
-    public abstract void getSyllabus();
 
 }

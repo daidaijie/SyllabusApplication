@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
+import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -8,15 +9,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
@@ -24,15 +23,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter;
-import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
-import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
+import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
 
-public class SyllabusActivity extends BaseActivity implements ISyllabusMainView, SwipeRefreshLayout.OnRefreshListener {
+public class SyllabusActivity extends BaseActivity implements ISyllabusMainView {
 
 
     @BindView(R.id.titleTextView)
@@ -40,25 +39,22 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.syllabusViewPager)
-    ViewPager mSyllabusViewPager;
+    SyllabusViewPager mSyllabusViewPager;
     @BindView(R.id.mainRootLayout)
     LinearLayout mMainRootLayout;
     @BindView(R.id.nav_view)
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-    @BindView(R.id.dateLinearLayout)
-    LinearLayout mDateLinearLayout;
-    @BindView(R.id.syllabusScrollView)
-    SyllabusScrollView mSyllabusScrollView;
-    @BindView(R.id.syllabusRefreshLayout)
-    SwipeRefreshLayout mSyllabusRefreshLayout;
+
 
     private RelativeLayout navHeadRelativeLayout;
     private SimpleDraweeView headImageDraweeView;
     private TextView nicknameTextView;
 
-//    private SyllabusPagerAdapter syllabusPagerAdapter;
+    private SyllabusPagerAdapter syllabusPagerAdapter;
+
+    private int pageIndex;
 
     private final static String SAVED_PAGE_POSITION = "pagePositon";
 
@@ -66,7 +62,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     @Override
     protected int getContentView() {
-        return R.layout.activity_main;
+        return R.layout.activity_syllabus;
     }
 
     @Override
@@ -79,53 +75,17 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         headImageDraweeView = (SimpleDraweeView) navHeadRelativeLayout.findViewById(R.id.headImageDraweeView);
         nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
 
-        //解决滑动冲突
-        mSyllabusScrollView.setSwipeRefreshLayout(mSyllabusRefreshLayout);
-
-        mSyllabusRefreshLayout.setOnRefreshListener(this);
-
         setupToolbar();
-        showDate();
+        setupViewPager();
 
+        //加载信息
         mSyllabusMainPresenter.setUserInfo();
         mSyllabusMainPresenter.loadWallpaper();
-
-        /*FragmentManager manager = getSupportFragmentManager();
-        syllabusPagerAdapter = new SyllabusPagerAdapter(manager);
-        mSyllabusViewPager.setAdapter(syllabusPagerAdapter);
-
-        int pageIndex = 0;
-        if (savedInstanceState != null) {
-            pageIndex = savedInstanceState.getInt(SAVED_PAGE_POSITION);
-        }
-
-        mToolbar.setTitle("");
-        mTitleTextView.setText("第 " + (pageIndex + 1) + " 周");
-
-        mMainRootLayout.setBackgroundDrawable(getResources().getDrawable(R.drawable.background));
-        BitmapDrawable drawable = (BitmapDrawable) mMainRootLayout.getBackground();
-
-
-        mSyllabusViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position
-                    , float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                mTitleTextView.setText("第 " + (position + 1) + " 周");
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });*/
-
     }
 
     private void setupToolbar() {
         mToolbar.setTitle("");
+        setToolBarTitle("第 " + (pageIndex + 1) + " 周");
         //透明状态栏并且适应Toolbar的高度
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -139,6 +99,30 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private void setupViewPager() {
+        pageIndex = 0;
+        FragmentManager manager = getSupportFragmentManager();
+        syllabusPagerAdapter = new SyllabusPagerAdapter(manager);
+        mSyllabusViewPager.setAdapter(syllabusPagerAdapter);
+        mSyllabusViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position
+                    , float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setToolBarTitle("第 " + (position + 1) + " 周");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
     }
 
@@ -162,39 +146,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         }
         return result;
 
-    }
-
-    private void showDate() {
-        int deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
-//        int devideHeight = getWindowManager().getDefaultDisplay().getHeight();
-        int gridWidth = deviceWidth * 2 / 15;
-        int timeWidth = deviceWidth - gridWidth * 7;
-        {
-            TextView blankTextView = (TextView) getLayoutInflater()
-                    .inflate(R.layout.week_grid, null, false);
-
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    timeWidth, ViewGroup.LayoutParams.MATCH_PARENT
-            );
-            mDateLinearLayout.addView(blankTextView, layoutParams);
-        }
-        for (int i = 0; i < 7; i++) {
-            String[] weekString = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
-
-            TextView weekTextView = (TextView) getLayoutInflater()
-                    .inflate(R.layout.week_grid, null, false);
-            weekTextView.setText(weekString[i]);
-            if (i + 1 == 7) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    weekTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_week_end));
-                } else {
-                    weekTextView.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg_grid_week_end));
-                }
-            }
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    gridWidth, ViewGroup.LayoutParams.MATCH_PARENT);
-            mDateLinearLayout.addView(weekTextView, layoutParams);
-        }
     }
 
     @Override
@@ -237,38 +188,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         });
     }
 
-    @Override
-    public void showSuccessBanner() {
-        SnackbarUtil.ShortSnackbar(
-                mMainRootLayout,
-                "课表同步成功",
-                SnackbarUtil.Confirm
-        ).show();
-    }
-
-    @Override
-    public void showFailBannner() {
-        SnackbarUtil.LongSnackbar(
-                mMainRootLayout,
-                "课表同步失败",
-                SnackbarUtil.Alert
-        ).setAction("再次同步", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSyllabusRefreshLayout.setRefreshing(true);
-                mSyllabusMainPresenter.getSyllabus();
-            }
-        }).show();
-    }
-
-    @Override
-    public void showLoading() {
-        mSyllabusRefreshLayout.setRefreshing(true);
-    }
-
-    @Override
-    public void hideLoading() {
-        mSyllabusRefreshLayout.setRefreshing(false);
+    public void setViewPagerEnable(boolean enable) {
+        mSyllabusViewPager.setScrollable(enable);
     }
 
     @Override
@@ -276,9 +197,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         return getResources();
     }
 
-    @Override
-    public void onRefresh() {
-        mSyllabusMainPresenter.getSyllabus();
+    public SyllabusMainPresenter getSyllabusMainPresenter() {
+        return mSyllabusMainPresenter;
     }
-
 }
