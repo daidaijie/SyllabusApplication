@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -22,6 +23,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
+import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPresenter;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
@@ -84,6 +86,8 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mSyllabusFragmentPresenter.attach(this);
+        mSyllabusFragmentPresenter.setWeek(mWeek);
+        EventBus.getDefault().register(this);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_syllabus, container, false);
         ButterKnife.bind(this, view);
@@ -119,6 +123,18 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         super.onDetach();
         mSyllabusFragmentPresenter.detach();
         EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleUpdateSyllabus(SyllabusEvent event){
+        if (event.messageWeek!=mWeek){
+            Log.d(TAG, "handleUpdateSyllabus: "+mWeek);
+            if (mSyllabusFragmentPresenter!=null){
+                mSyllabusFragmentPresenter.reloadSyllabus();
+                mSyllabusFragmentPresenter.showSyllabus();
+            }
+        }
     }
 
     private void showDate() {

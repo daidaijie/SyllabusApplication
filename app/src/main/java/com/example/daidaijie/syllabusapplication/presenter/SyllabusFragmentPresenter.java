@@ -7,12 +7,15 @@ import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -31,12 +34,11 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
     private Syllabus mSyllabus;
 
+    private int mWeek;
 
     public SyllabusFragmentPresenter() {
         // TODO: 2016/7/26 目前暂时不保存UserInfo和User
-        String syllabusJsonString = SharedPreferencesUtil
-                .getString(SharedPreferencesUtil.SYLLABUS_GSON);
-        mSyllabus = GsonUtil.getDefault().fromJson(syllabusJsonString, Syllabus.class);
+        reloadSyllabus();
     }
 
     @Override
@@ -85,6 +87,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         mView.showSuccessBanner();
                         mView.hideLoading();
                         mView.setViewPagerEnable(true);
+                        EventBus.getDefault().post(new SyllabusEvent(mWeek));
                     }
 
                     @Override
@@ -134,4 +137,18 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         }
     }
 
+    @Override
+    public void reloadSyllabus() {
+        String syllabusJsonString = SharedPreferencesUtil
+                .getString(SharedPreferencesUtil.SYLLABUS_GSON);
+        mSyllabus = GsonUtil.getDefault().fromJson(syllabusJsonString, Syllabus.class);
+    }
+
+    public int getWeek() {
+        return mWeek;
+    }
+
+    public void setWeek(int week) {
+        mWeek = week;
+    }
 }

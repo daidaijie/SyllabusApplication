@@ -15,4 +15,8 @@ public abstract class ISyllabusFragmentPresenter extends BasePresenter<ISyllabus
 
     //更新用户信息
     public abstract void updateUserInfo();
+
+    //从gson中重新加载课表
+    public abstract void reloadSyllabus();
+
 }
