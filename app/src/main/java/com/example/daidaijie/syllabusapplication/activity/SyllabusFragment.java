@@ -114,6 +114,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         showTime();
 
         mSyllabusFragmentPresenter.showSyllabus();
+        rippleSyllabus();
 
         return view;
     }
@@ -127,10 +128,10 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void handleUpdateSyllabus(SyllabusEvent event){
-        if (event.messageWeek!=mWeek){
-            Log.d(TAG, "handleUpdateSyllabus: "+mWeek);
-            if (mSyllabusFragmentPresenter!=null){
+    public void handleUpdateSyllabus(SyllabusEvent event) {
+        if (event.messageWeek != mWeek) {
+            Log.d(TAG, "handleUpdateSyllabus: " + mWeek);
+            if (mSyllabusFragmentPresenter != null) {
                 mSyllabusFragmentPresenter.reloadSyllabus();
                 mSyllabusFragmentPresenter.showSyllabus();
             }
@@ -233,7 +234,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         }
     }
 
-    public void rippleSyllabus(){
+    public void rippleSyllabus() {
         mSyllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -242,15 +243,18 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                 }
                 for (int i = 0; i < mSyllabusGridLayout.getChildCount(); i++) {
                     View syllabusGridview = mSyllabusGridLayout.getChildAt(i);
-                    Animator animator = ViewAnimationUtils.createCircularReveal(
-                            syllabusGridview,
-                            syllabusGridview.getWidth() / 2,
-                            syllabusGridview.getHeight() / 2,
-                            0,
-                            Math.max(syllabusGridview.getHeight(), syllabusGridview.getWidth()));
-                    animator.setInterpolator(new AccelerateInterpolator());
-                    animator.setDuration(500);
-                    animator.start();
+                    if (!SyllabusFragment.this.isDetached()) {
+                        Animator animator = ViewAnimationUtils.createCircularReveal(
+                                syllabusGridview,
+                                syllabusGridview.getWidth() / 2,
+                                syllabusGridview.getHeight() / 2,
+                                0,
+                                Math.max(syllabusGridview.getHeight(), syllabusGridview.getWidth()));
+                        animator.setInterpolator(new AccelerateInterpolator());
+                        animator.setDuration(500);
+
+                        animator.start();
+                    }
                 }
             }
         });
