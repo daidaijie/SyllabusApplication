@@ -86,6 +86,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         updateUserInfo();
                         mView.showSuccessBanner();
                         mView.hideLoading();
+                        mView.rippleSyllabus();
                         mView.setViewPagerEnable(true);
                         EventBus.getDefault().post(new SyllabusEvent(mWeek));
                     }

@@ -13,6 +13,9 @@ public interface ISyllabusFragmentView extends MvpView,IUserInfoView{
     //展示课表
     void showSyllabus(Syllabus syllabus);
 
+    //让课表展开
+    void rippleSyllabus();
+
     //设置成功获取数据显示后的Bannner
     void showSuccessBanner();
 
@@ -27,4 +30,6 @@ public interface ISyllabusFragmentView extends MvpView,IUserInfoView{
 
     //设置ViewPager滑动
     void setViewPagerEnable(boolean enable);
+
+
 }

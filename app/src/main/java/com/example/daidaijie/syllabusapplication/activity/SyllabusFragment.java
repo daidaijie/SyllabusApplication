@@ -231,8 +231,10 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
             }
 
         }
+    }
 
-        /*mSyllabusGridLayout.post(new Runnable() {
+    public void rippleSyllabus(){
+        mSyllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
@@ -251,7 +253,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                     animator.start();
                 }
             }
-        });*/
+        });
     }
 
     @Override
