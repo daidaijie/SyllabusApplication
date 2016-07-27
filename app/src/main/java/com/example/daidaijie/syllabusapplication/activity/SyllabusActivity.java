@@ -41,6 +41,10 @@ import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class SyllabusActivity extends BaseActivity implements ISyllabusMainView, NavigationView.OnNavigationItemSelectedListener {
 
@@ -57,7 +61,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-
 
     private RelativeLayout navHeadRelativeLayout;
     private SimpleDraweeView headImageDraweeView;
@@ -115,7 +118,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             ViewGroup.LayoutParams layoutParams = mToolbar.getLayoutParams();
             layoutParams.height = layoutParams.height + getStatusBarHeight();
-        }else{
+        } else {
             devideHeight -= getStatusBarHeight();
         }
         setSupportActionBar(mToolbar);
@@ -236,36 +239,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         if (id == R.id.nav_camera) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            //配置功能
-            FunctionConfig functionConfig = new FunctionConfig.Builder()
-                    .setEnableCamera(false)
-                    .setEnableEdit(true)
-                    .setEnableCrop(true)
-                    .setEnableRotate(true)
-                    .setCropHeight(devideHeight)
-                    .setCropWidth(deviceWidth)
-                    .setEnablePreview(false)
-                    .setCropReplaceSource(false)//配置裁剪图片时是否替换原始图片，默认不替换
-                    .setForceCrop(true)//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
-                    .build();
-
-
-            GalleryFinal.openGallerySingle(200, functionConfig, new GalleryFinal.OnHanlderResultCallback() {
-                @Override
-                public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                    PhotoInfo info = resultList.get(0);
-
-                    Bitmap bitmap = BitmapFactory.decodeFile(info.getPhotoPath());
-                    setBackground(bitmap);
-                }
-
-                @Override
-                public void onHanlderFailure(int requestCode, String errorMsg) {
-
-                }
-            });
-
-
+            mSyllabusMainPresenter.setWallpaper();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -278,5 +252,15 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         //点击后关闭drawerLayout
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public int getDeviceWidth() {
+        return deviceWidth;
+    }
+
+    @Override
+    public int getDevideHeight() {
+        return devideHeight;
     }
 }

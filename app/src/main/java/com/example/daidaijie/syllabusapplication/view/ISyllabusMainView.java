@@ -21,5 +21,9 @@ public interface ISyllabusMainView extends MvpView, IUserInfoView {
     // TODO: 2016/7/25 这个记得在后面删掉啊，哭死了
     Resources getActivityResources();
 
+    //获取设备宽度
+    int getDeviceWidth();
 
+    //获取设备高度
+    int getDevideHeight();
 }
