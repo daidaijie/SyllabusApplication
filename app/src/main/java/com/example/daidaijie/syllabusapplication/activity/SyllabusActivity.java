@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -79,6 +80,9 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     private SyllabusMainPresenter mSyllabusMainPresenter = new SyllabusMainPresenter();
 
+    private boolean singleLock = false;
+
+
     @Override
     protected int getContentView() {
         return R.layout.activity_syllabus;
@@ -115,7 +119,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         setToolBarTitle("第 " + (pageIndex + 1) + " 周");
         //透明状态栏并且适应Toolbar的高度
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             ViewGroup.LayoutParams layoutParams = mToolbar.getLayoutParams();
             layoutParams.height = layoutParams.height + getStatusBarHeight();
         } else {
@@ -192,9 +195,13 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     }
 
     @Override
-    public void setBackground(Bitmap bitmap) {
+    public void setBackground(final Bitmap bitmap) {
         Drawable drawable = new BitmapDrawable(getResources(), bitmap);
         mMainRootLayout.setBackground(drawable);
+        setMainColor(bitmap, true);
+    }
+
+    private void setMainColor(final Bitmap bitmap, final boolean isFirst) {
         Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
             @Override
             public void onGenerated(Palette palette) {
@@ -208,12 +215,22 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                                 , 188));
                     }
                 } else {
-                    mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(
-                            getResources().getColor(R.color.colorPrimary)
-                            , 192));
-                    navHeadRelativeLayout.setBackgroundColor(getResources().getColor(
-                            R.color.colorPrimary
-                    ));
+                    if (isFirst) {
+                        if (swatch == null) {
+                            Bitmap bitmap2 = Bitmap.createBitmap(
+                                    bitmap, 0, 0,
+                                    bitmap.getWidth(), bitmap.getHeight() / 4
+                            );
+                            setMainColor(bitmap2, false);
+                        }
+                    } else {
+                        mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(
+                                getResources().getColor(R.color.colorPrimary)
+                                , 192));
+                        navHeadRelativeLayout.setBackgroundColor(getResources().getColor(
+                                R.color.colorPrimary
+                        ));
+                    }
                 }
             }
         });
@@ -262,5 +279,28 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     @Override
     public int getDevideHeight() {
         return devideHeight;
+    }
+
+    public boolean isSingleLock() {
+        return singleLock;
+    }
+
+    public void setSingleLock(boolean singleLock) {
+        this.singleLock = singleLock;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        Log.d(TAG, "onActivityResult: " + requestCode);
+        if (requestCode == 200) {
+            singleLock = false;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (singleLock)return;
+        super.onBackPressed();
     }
 }

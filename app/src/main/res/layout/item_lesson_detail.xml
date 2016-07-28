@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:orientation="horizontal"
+                tools:background="?attr/colorPrimary">
+
+    <ImageView
+        android:id="@+id/detailItemImageView"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        tools:src="@drawable/ic_magic_syllabus"/>
+
+    <EditText
+        android:id="@+id/detailItemEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/detailItemImageView"
+        android:background="@android:color/transparent"
+        android:textColor="@color/material_white"
+        android:textSize="16sp"
+        tools:text="程序设计基础"
+        />
+
+    <View
+        android:id="@+id/lineView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/material_grey_200"/>
+</RelativeLayout>

@@ -32,16 +32,6 @@ public class App extends Application {
     private void initGalleryFinal() {
         ThemeConfig theme = new ThemeConfig.Builder()
                 .build();
-//        配置功能
-        /*FunctionConfig functionConfig = new FunctionConfig.Builder()
-                .setEnableEdit(true)
-                .setEnableCrop(true)
-                .setEnableRotate(true)
-                .setForceCrop(true)
-                .setCropSquare(false)
-                .setForceCropEdit(true)
-                .setEnablePreview(true)
-                .build();*/
 
         ImageLoader imageloader = new FrescoImageLoader(this);
         CoreConfig coreConfig = new CoreConfig.Builder(context, imageloader, theme)

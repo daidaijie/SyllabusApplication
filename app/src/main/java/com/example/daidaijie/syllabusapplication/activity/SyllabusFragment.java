@@ -2,10 +2,12 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.renderscript.Script;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,12 +21,14 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPresenter;
+import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
@@ -110,7 +114,6 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         );
         mSyllabusRefreshLayout.setOnRefreshListener(this);
 
-
         showDate();
         showTime();
 
@@ -126,7 +129,6 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         mSyllabusFragmentPresenter.detach();
         EventBus.getDefault().unregister(this);
     }
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -213,7 +215,8 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                 if (syllabusGrid.getLessons().size() != 0) {
                     lesson = syllabusGrid.getLessons().get(0);
                 }
-                LinearLayout lessonLinearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
+                final LinearLayout lessonLinearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
+                MaterialRippleLayout lessonRippleLayout = (MaterialRippleLayout) lessonLinearLayout.findViewById(R.id.lessonRipple);
                 TextView lessonTextView = (TextView) lessonLinearLayout.findViewById(R.id.lessonTextView);
                 int span = 1;
 
@@ -233,6 +236,19 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                             span++;
                         }
                     }
+                    final Lesson finalLesson = lesson;
+                    lessonRippleLayout.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            SyllabusActivity activity = (SyllabusActivity) getActivity();
+                            if (!activity.isSingleLock()) {
+                                activity.setSingleLock(true);
+                                Intent intent = new Intent(getActivity(), LessonInfoActivity.class);
+                                CircularAnimUtil.startActivityForResult(getActivity(), intent, 200,
+                                        lessonLinearLayout, finalLesson.getBgColor());
+                            }
+                        }
+                    });
 
                 } else {
                     lessonLinearLayout.setVisibility(View.INVISIBLE);
@@ -331,4 +347,5 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         SyllabusActivity fatherActivity = (SyllabusActivity) getActivity();
         fatherActivity.setNickName(nickName);
     }
+
 }

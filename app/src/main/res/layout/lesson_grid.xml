@@ -10,7 +10,7 @@
     <com.balysv.materialripple.MaterialRippleLayout
         app:mrl_rippleAlpha="0.5"
         app:mrl_rippleDuration="500"
-        android:id="@+id/ripple"
+        android:id="@+id/lessonRipple"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView

@@ -1,8 +1,10 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -22,6 +24,11 @@ public abstract class BaseActivity extends AppCompatActivity{
         setContentView(getContentView());
 
         ButterKnife.bind(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
     }
 
     protected abstract int getContentView();

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="LessonDetaiLayout">
+        <attr name="titltText" format="string"></attr>
+        <attr name="detailIcon" format="reference"></attr>
+        <attr name="editEnable" format="boolean"></attr>
+    </declare-styleable>
+
+</resources>

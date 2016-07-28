@@ -95,7 +95,7 @@ public class CircularAnimUtil {
             final View triggerView, int colorOrImageRes, final long durationMills) {
 
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            thisActivity.startActivity(intent);
+            thisActivity.startActivityForResult(intent,requestCode,bundle);
             return;
         }
 
