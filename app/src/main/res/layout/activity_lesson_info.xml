@@ -50,11 +50,12 @@
             </FrameLayout>-->
 
             <android.support.v7.widget.Toolbar
+                android:fitsSystemWindows="true"
                 android:gravity="center_vertical"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
-                app:layout_collapseMode="none"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
                 <!--<TextView
                     app:layout_collapseMode="pin"

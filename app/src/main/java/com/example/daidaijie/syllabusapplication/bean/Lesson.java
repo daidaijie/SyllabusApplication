@@ -2,13 +2,14 @@ package com.example.daidaijie.syllabusapplication.bean;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by daidaijie on 2016/7/17.
  */
-public class Lesson {
+public class Lesson implements Serializable {
 
     private Days days;
     private String room;
@@ -105,7 +106,7 @@ public class Lesson {
         return name;
     }
 
-    public static class TimeGird {
+    public static class TimeGird implements Serializable{
 
         public static enum WeekEum {
             FULL,
@@ -244,7 +245,7 @@ public class Lesson {
      * w2 : None
      * w5 : 89
      */
-    public static class Days {
+    public static class Days implements Serializable{
         private String w1;
         private String w4;
         private String w6;

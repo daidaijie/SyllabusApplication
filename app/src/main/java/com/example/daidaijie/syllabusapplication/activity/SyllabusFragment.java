@@ -244,6 +244,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                             if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
                                 Intent intent = new Intent(getActivity(), LessonInfoActivity.class);
+                                intent.putExtra("LESSON",finalLesson);
                                 CircularAnimUtil.startActivityForResult(getActivity(), intent, 200,
                                         lessonLinearLayout, finalLesson.getBgColor());
                             }
