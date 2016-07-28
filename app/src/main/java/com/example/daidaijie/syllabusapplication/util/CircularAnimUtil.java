@@ -10,9 +10,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import io.codetail.animation.ViewAnimationUtils;
+import io.codetail.widget.RevealFrameLayout;
+import io.codetail.widget.RevealLinearLayout;
 
 /**
  * 对 ViewAnimationUtils.createCircularReveal() 方法的封装.
@@ -30,12 +33,7 @@ public class CircularAnimUtil {
     /**
      * 向四周伸张，直到完成显示。
      */
-    @SuppressLint("NewApi")
     public static void show(View myView, float startRadius, long durationMills) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            myView.setVisibility(View.VISIBLE);
-            return;
-        }
 
         int cx = (myView.getLeft() + myView.getRight()) / 2;
         int cy = (myView.getTop() + myView.getBottom()) / 2;
@@ -56,12 +54,8 @@ public class CircularAnimUtil {
     /**
      * 由满向中间收缩，直到隐藏。
      */
-    @SuppressLint("NewApi")
     public static void hide(final View myView, float endRadius, long durationMills) {
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            myView.setVisibility(View.INVISIBLE);
-            return;
-        }
+
 
         int cx = (myView.getLeft() + myView.getRight()) / 2;
         int cy = (myView.getTop() + myView.getBottom()) / 2;
@@ -89,27 +83,24 @@ public class CircularAnimUtil {
      * 从指定View开始向四周伸张(伸张颜色或图片为colorOrImageRes), 然后进入另一个Activity,
      * 返回至 @thisActivity 后显示收缩动画。
      */
-    @SuppressLint("NewApi")
     public static void startActivityForResult(
             final Activity thisActivity, final Intent intent, final Integer requestCode, final Bundle bundle,
             final View triggerView, int colorOrImageRes, final long durationMills) {
 
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.LOLLIPOP) {
-            thisActivity.startActivityForResult(intent,requestCode,bundle);
-            return;
-        }
 
         int[] location = new int[2];
         triggerView.getLocationInWindow(location);
         final int cx = location[0] + triggerView.getWidth() / 2;
         final int cy = location[1] + triggerView.getHeight() / 2;
+        final RevealFrameLayout layout = new RevealFrameLayout(thisActivity);
         final ImageView view = new ImageView(thisActivity);
+        layout.addView(view);
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
         view.setImageResource(colorOrImageRes);
         final ViewGroup decorView = (ViewGroup) thisActivity.getWindow().getDecorView();
         int w = decorView.getWidth();
         int h = decorView.getHeight();
-        decorView.addView(view, w, h);
+        decorView.addView(layout, w, h);
 
         // 计算中心点至view边界的最大距离
         int maxW = Math.max(cx, w - cx);
@@ -154,7 +145,7 @@ public class CircularAnimUtil {
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
                                 try {
-                                    decorView.removeView(view);
+                                    decorView.removeView(layout);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

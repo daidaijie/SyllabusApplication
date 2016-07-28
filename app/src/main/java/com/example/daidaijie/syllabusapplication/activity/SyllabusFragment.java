@@ -14,7 +14,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.GridLayout;
@@ -39,6 +38,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.codetail.animation.ViewAnimationUtils;
+import io.codetail.widget.RevealLinearLayout;
 
 public class SyllabusFragment extends Fragment implements ISyllabusFragmentView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -215,7 +216,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                 if (syllabusGrid.getLessons().size() != 0) {
                     lesson = syllabusGrid.getLessons().get(0);
                 }
-                final LinearLayout lessonLinearLayout = (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
+                final RevealLinearLayout lessonLinearLayout = (RevealLinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
                 MaterialRippleLayout lessonRippleLayout = (MaterialRippleLayout) lessonLinearLayout.findViewById(R.id.lessonRipple);
                 TextView lessonTextView = (TextView) lessonLinearLayout.findViewById(R.id.lessonTextView);
                 int span = 1;
@@ -270,18 +271,16 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         mSyllabusGridLayout.post(new Runnable() {
             @Override
             public void run() {
-                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-                    return;
-                }
                 for (int i = 0; i < mSyllabusGridLayout.getChildCount(); i++) {
                     View syllabusGridview = mSyllabusGridLayout.getChildAt(i);
+                    MaterialRippleLayout rippleView = (MaterialRippleLayout) syllabusGridview.findViewById(R.id.lessonRipple);
                     if (!SyllabusFragment.this.isDetached()) {
                         Animator animator = ViewAnimationUtils.createCircularReveal(
-                                syllabusGridview,
-                                syllabusGridview.getWidth() / 2,
-                                syllabusGridview.getHeight() / 2,
+                                rippleView,
+                                rippleView.getWidth() / 2,
+                                rippleView.getHeight() / 2,
                                 0,
-                                Math.max(syllabusGridview.getHeight(), syllabusGridview.getWidth()));
+                                Math.max(rippleView.getHeight(), rippleView.getWidth()));
                         animator.setInterpolator(new AccelerateInterpolator());
                         animator.setDuration(500);
 

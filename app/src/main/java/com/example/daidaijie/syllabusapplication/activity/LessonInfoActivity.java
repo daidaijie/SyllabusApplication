@@ -9,12 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.ViewAnimationUtils;
 import android.view.animation.AccelerateInterpolator;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
-import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
+
+import io.codetail.animation.ViewAnimationUtils;
 
 public class LessonInfoActivity extends BaseActivity {
 
@@ -39,23 +39,21 @@ public class LessonInfoActivity extends BaseActivity {
         this.setResult(201, null);
 
         final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            fab.post(new Runnable() {
-                @Override
-                public void run() {
-                    Animator animator = ViewAnimationUtils.createCircularReveal(
-                            fab,
-                            fab.getWidth() / 2,
-                            fab.getHeight() / 2,
-                            0,
-                            Math.max(fab.getHeight(), fab.getWidth()));
-                    animator.setInterpolator(new AccelerateInterpolator());
-                    animator.setDuration(500);
-                    animator.start();
+        fab.post(new Runnable() {
+            @Override
+            public void run() {
+                Animator animator = ViewAnimationUtils.createCircularReveal(
+                        fab,
+                        fab.getWidth() / 2,
+                        fab.getHeight() / 2,
+                        0,
+                        Math.max(fab.getHeight(), fab.getWidth()));
+                animator.setInterpolator(new AccelerateInterpolator());
+                animator.setDuration(500);
+                animator.start();
 
-                }
-            });
-        }
+            }
+        });
     }
 
     @Override

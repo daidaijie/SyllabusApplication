@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.daidaijie.syllabusapplication.activity.LessonInfoActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -50,11 +50,11 @@
             </FrameLayout>-->
 
             <android.support.v7.widget.Toolbar
-                android:fitsSystemWindows="true"
-                android:gravity="center_vertical"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
+                android:fitsSystemWindows="true"
+                android:gravity="center_vertical"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
                 <!--<TextView
@@ -74,15 +74,21 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_scrolling" />
+    <include layout="@layout/content_scrolling"/>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
+    <io.codetail.widget.RevealFrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_edit_white"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"/>
+        app:layout_anchorGravity="bottom|end">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_edit_white"/>
+
+    </io.codetail.widget.RevealFrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
