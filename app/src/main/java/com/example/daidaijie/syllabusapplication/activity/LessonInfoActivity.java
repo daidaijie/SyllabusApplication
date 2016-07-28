@@ -54,11 +54,19 @@ public class LessonInfoActivity extends BaseActivity {
 
             }
         });
+
+
     }
 
     @Override
     protected int getContentView() {
         return R.layout.activity_lesson_info;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        this.overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
     }
 
     @Override
