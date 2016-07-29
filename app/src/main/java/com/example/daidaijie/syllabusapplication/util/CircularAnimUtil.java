@@ -3,14 +3,18 @@ package com.example.daidaijie.syllabusapplication.util;
 /**
  * Created by daidaijie on 2016/7/22.
  */
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
 import io.codetail.animation.ViewAnimationUtils;
@@ -19,7 +23,7 @@ import io.codetail.widget.RevealLinearLayout;
 
 /**
  * 对 ViewAnimationUtils.createCircularReveal() 方法的封装.
- * <p/>
+ * <p>
  * Created on 16/7/20.
  * GitHub: https://github.com/XunMengWinter
  *
@@ -190,5 +194,25 @@ public class CircularAnimUtil {
     public static void hide(View myView) {
         hide(myView, MINI_RADIUS, PERFECT_MILLS);
     }
+
+    public static void showAni(View myView, long duration) {
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(
+                myView, "scaleX", 0.0f, 1.0f
+        );
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(
+                myView, "scaleY", 0.0f, 1.0f
+        );
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(animatorX).with(animatorY);
+        animatorSet.setDuration(duration);
+        animatorSet.setInterpolator(new AccelerateInterpolator());
+        animatorSet.start();
+    }
+
+    public static void showAni(View mView) {
+        showAni(mView, PERFECT_MILLS);
+    }
+
+
 
 }

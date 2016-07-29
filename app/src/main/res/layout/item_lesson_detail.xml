@@ -1,30 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:orientation="horizontal"
-                tools:background="?attr/colorPrimary">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingLeft="20dp"
+              android:paddingRight="20dp"
+    >
 
-    <ImageView
-        android:id="@+id/detailItemImageView"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_centerVertical="true"
-        tools:src="@drawable/ic_magic_syllabus"/>
-
-    <EditText
-        android:id="@+id/detailItemEditText"
+    <LinearLayout
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:layout_toRightOf="@+id/detailItemImageView"
-        android:background="@android:color/transparent"
-        android:textColor="@color/material_white"
-        android:textSize="16sp"
-        tools:text="程序设计基础"
-        />
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:gravity="top">
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:id="@+id/detailItemImageView"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            tools:src="@drawable/ic_menu_camera"/>
+
+        <TextView
+            android:textStyle=""
+            android:id="@+id/detailDescText"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="名称"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/detailItemEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:background="@android:color/transparent"
+            android:textSize="16sp"
+            tools:text="程序设计基础"
+            />
+    </LinearLayout>
 
     <View
         android:id="@+id/lineView"
@@ -32,4 +51,4 @@
         android:layout_height="1dp"
         android:layout_alignParentBottom="true"
         android:background="@color/material_grey_200"/>
-</RelativeLayout>
+</LinearLayout>

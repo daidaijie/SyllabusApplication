@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 
@@ -16,6 +17,7 @@ import com.example.daidaijie.syllabusapplication.R;
 public class LessonDetaiLayout extends RelativeLayout {
     private ImageView mDetailItemImageView;
     private EditText mDetailItemEditText;
+    private TextView mDetailDescTextView;
 
     private RelativeLayout mLayout;
 
@@ -33,6 +35,7 @@ public class LessonDetaiLayout extends RelativeLayout {
                 , this, true);
         mDetailItemImageView = (ImageView) mLayout.findViewById(R.id.detailItemImageView);
         mDetailItemEditText = (EditText) mLayout.findViewById(R.id.detailItemEditText);
+        mDetailDescTextView = (TextView) mLayout.findViewById(R.id.detailDescText);
         mDetailItemEditText.setFocusable(false);
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
@@ -49,6 +52,9 @@ public class LessonDetaiLayout extends RelativeLayout {
                     break;
                 case R.styleable.LessonDetaiLayout_titltText:
                     setTitleText(typedArray.getString(attr));
+                    break;
+                case R.styleable.LessonDetaiLayout_descText:
+                    setDetailItemEditText(typedArray.getString(attr));
                     break;
             }
         }
@@ -68,9 +74,12 @@ public class LessonDetaiLayout extends RelativeLayout {
         mDetailItemEditText.setEnabled(enable);
     }
 
+    public void setDetailItemEditText(String text) {
+        mDetailDescTextView.setText(text);
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
     }
 }

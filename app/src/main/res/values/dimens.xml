@@ -7,7 +7,7 @@
 
     <dimen name="syllabus_grid_height">44dp</dimen>
 
-    <dimen name="toolbar_height">44dp</dimen>
+    <dimen name="toolbar_height">48dp</dimen>
 
 
     <!-- Default screen margins, per the Android Design guidelines. -->

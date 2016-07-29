@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.bean;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,7 +107,16 @@ public class Lesson implements Serializable {
         return name;
     }
 
-    public static class TimeGird implements Serializable{
+    public String getTimeGridListString(String split) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mTimeGirds.size(); i++) {
+            if (i!=0)sb.append(split);
+            sb.append(mTimeGirds.get(i).getTimeString());
+        }
+        return sb.toString();
+    }
+
+    public static class TimeGird implements Serializable {
 
         public static enum WeekEum {
             FULL,
@@ -170,16 +180,36 @@ public class Lesson implements Serializable {
                     }
                     break;
                 case SINGLE:
-                    for (long i = 0, bit = 1; i < sumOfweek; i += 2, bit *= 2) {
+                    for (long i = 0, bit = 1; i < sumOfweek; i += 2, bit *= 4) {
                         mWeekOfTime += bit;
                     }
                     break;
                 case DOUBLE:
-                    for (long i = 1, bit = 1; i < sumOfweek; i += 2, bit *= 2) {
+                    for (long i = 1, bit = 2; i < sumOfweek; i += 2, bit *= 4) {
                         mWeekOfTime += bit;
                     }
                     break;
             }
+        }
+
+        public String getTimeString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("1 - 16周　");
+
+            String[] weeks = {
+                    "周日", "周一", "周二", "周三", "周四", "周五", "周六",
+            };
+
+
+            sb.append(weeks[mWeekDate]);
+            if (mWeekOfTime == 0b0101_0101_0101_0101) {
+                sb.append("单");
+            }
+            if (mWeekOfTime == 0b1010_1010_1010_1010) {
+                sb.append("双");
+            }
+            sb.append(mTimeList);
+            return sb.toString();
         }
     }
 
@@ -210,7 +240,7 @@ public class Lesson implements Serializable {
 
         timeGrid = convertForWn(this.getDays().getW6(), 6);
         if (timeGrid != null) mTimeGirds.add(timeGrid);
-//        Log.d("convertDays", "convertDays: " + mTimeGirds.size());
+        Log.d("convertDays", "convertDays: " + mTimeGirds.get(0).getWeekOfTime());
     }
 
     /**
@@ -245,7 +275,7 @@ public class Lesson implements Serializable {
      * w2 : None
      * w5 : 89
      */
-    public static class Days implements Serializable{
+    public static class Days implements Serializable {
         private String w1;
         private String w4;
         private String w6;
