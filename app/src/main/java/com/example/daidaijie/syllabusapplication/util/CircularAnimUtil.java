@@ -135,7 +135,7 @@ public class CircularAnimUtil {
                     thisActivity.startActivityForResult(intent, requestCode, bundle);
 
                 // 默认渐隐过渡动画.
-                thisActivity.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                thisActivity.overridePendingTransition(0, android.R.anim.fade_out);
 
                 // 默认显示返回至当前Activity的动画.
                 triggerView.postDelayed(new Runnable() {

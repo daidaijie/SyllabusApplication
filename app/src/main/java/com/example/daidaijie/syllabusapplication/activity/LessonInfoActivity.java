@@ -78,26 +78,33 @@ public class LessonInfoActivity extends BaseActivity {
         mFab.setScaleX(0.0f);
         mFab.setScaleY(0.0f);
         mContentScrollView.setTranslationY(1920.0f);
+        mDetailContentLayout.setAlpha(0.0f);
+
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(
                 mFab, "scaleX", 0.0f, 1.0f
         );
+        animatorX.setDuration(200);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(
                 mFab, "scaleY", 0.0f, 1.0f
         );
-
+        animatorY.setDuration(200);
         ObjectAnimator animatorH = ObjectAnimator.ofFloat(
                 mContentScrollView, "translationY", 1920.0f, 0.0f
         );
+        animatorH.setDuration(300);
+        ObjectAnimator animatorA = ObjectAnimator.ofFloat(
+                mDetailContentLayout,"alpha",0.0f,1.0f
+        );
+        animatorA.setDuration(300);
         final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(animatorX).with(animatorY).after(animatorH);
+        animatorSet.play(animatorX).with(animatorY).after(animatorH).with(animatorA);
         animatorSet.setInterpolator(new AccelerateInterpolator());
-        animatorSet.setDuration(618);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 animatorSet.start();
             }
-        },200);
+        },400);
     }
 
     @Override
@@ -115,5 +122,6 @@ public class LessonInfoActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
 
 }

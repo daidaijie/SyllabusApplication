@@ -254,6 +254,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
 
                 } else {
                     lessonLinearLayout.setVisibility(View.INVISIBLE);
+                    lessonRippleLayout.setEnabled(false);
                 }
                 lessonTextView.setWidth(gridWidth);
                 lessonTextView.setHeight(gridHeight * span);
