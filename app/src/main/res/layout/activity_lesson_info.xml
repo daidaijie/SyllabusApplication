@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="176dp"
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -22,6 +22,23 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:statusBarScrim="@android:color/transparent">
+            <TextView
+                android:maxLines="2"
+                android:layout_gravity="bottom"
+                android:fitsSystemWindows="true"
+                android:textColor="@android:color/white"
+                android:id="@+id/lessonNameTextView"
+                android:layout_marginTop="@dimen/toolbar_height"
+                android:layout_marginRight="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginBottom="40dp"
+                android:textSize="24sp"
+                android:text="移动编程"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
             <!--封面图片
             <ImageView
                 android:id="@+id/imageview"
@@ -50,25 +67,24 @@
             </FrameLayout>-->
 
             <android.support.v7.widget.Toolbar
+                android:focusableInTouchMode="true"
+                android:focusable="true"
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
-                android:fitsSystemWindows="true"
                 android:gravity="center_vertical"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
-                <!--<TextView
-                    app:layout_collapseMode="pin"
+                <com.example.daidaijie.syllabusapplication.widget.CustomMarqueeTextView
                     android:id="@+id/titleTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="left"
                     android:gravity="center"
                     android:paddingTop="8dp"
                     android:singleLine="true"
-                    android:text="程序设计基础"
+                    tools:text="程序设计基础"
                     android:textColor="@android:color/white"
-                    android:textSize="20sp"/>-->
+                    android:textSize="20sp"/>
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>

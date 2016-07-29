@@ -36,7 +36,7 @@ public class LessonDetaiLayout extends RelativeLayout {
         mDetailItemImageView = (ImageView) mLayout.findViewById(R.id.detailItemImageView);
         mDetailItemEditText = (EditText) mLayout.findViewById(R.id.detailItemEditText);
         mDetailDescTextView = (TextView) mLayout.findViewById(R.id.detailDescText);
-        mDetailItemEditText.setFocusable(false);
+        setEditEnable(false);
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.LessonDetaiLayout, defStyleAttr, 0);
@@ -71,7 +71,7 @@ public class LessonDetaiLayout extends RelativeLayout {
     }
 
     public void setEditEnable(boolean enable) {
-        mDetailItemEditText.setEnabled(enable);
+        mDetailItemEditText.setFocusable(enable);
     }
 
     public void setDetailItemEditText(String text) {

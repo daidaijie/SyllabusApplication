@@ -11,6 +11,7 @@
     android:orientation="vertical">
 
     <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:visibility="gone"
         android:id="@+id/lessonNameLayout"
         app:descText="名称"
         app:detailIcon="@drawable/ic_name_lesson"

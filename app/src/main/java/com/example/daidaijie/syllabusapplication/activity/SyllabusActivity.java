@@ -149,15 +149,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         outState.putInt(SAVED_PAGE_POSITION, mSyllabusViewPager.getCurrentItem());
     }
 
-    private int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-
-    }
 
     @Override
     public void setHeadImageView(Uri uri) {
