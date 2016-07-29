@@ -16,6 +16,9 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseActivity extends AppCompatActivity{
 
+    protected int deviceWidth;
+    protected int devideHeight;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +31,10 @@ public abstract class BaseActivity extends AppCompatActivity{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
+
+        deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
+        devideHeight = getWindowManager().getDefaultDisplay().getHeight();
+
 
     }
 

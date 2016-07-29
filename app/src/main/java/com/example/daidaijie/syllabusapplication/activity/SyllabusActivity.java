@@ -4,11 +4,9 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -20,10 +18,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,17 +31,7 @@ import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.util.List;
-
 import butterknife.BindView;
-import cn.finalteam.galleryfinal.FunctionConfig;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class SyllabusActivity extends BaseActivity implements ISyllabusMainView, NavigationView.OnNavigationItemSelectedListener {
 
@@ -71,9 +57,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     private int pageIndex;
 
-    private int deviceWidth;
-    private int devideHeight;
-
     private final static String TAG = "SyllabusActivity";
 
     private final static String SAVED_PAGE_POSITION = "pagePositon";
@@ -97,9 +80,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         navHeadRelativeLayout = (RelativeLayout) mNavView.getHeaderView(0);
         headImageDraweeView = (SimpleDraweeView) navHeadRelativeLayout.findViewById(R.id.headImageDraweeView);
         nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
-
-        deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
-        devideHeight = getWindowManager().getDefaultDisplay().getHeight();
 
         setupToolbar();
         setupViewPager();

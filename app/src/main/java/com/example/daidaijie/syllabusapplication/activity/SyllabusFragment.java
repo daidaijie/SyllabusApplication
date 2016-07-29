@@ -7,7 +7,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.renderscript.Script;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -119,7 +118,9 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         showTime();
 
         mSyllabusFragmentPresenter.showSyllabus();
-        rippleSyllabus();
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
+            rippleSyllabus();
+        }
 
         return view;
     }
@@ -245,7 +246,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                             if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
                                 Intent intent = new Intent(getActivity(), LessonInfoActivity.class);
-                                intent.putExtra("LESSON",finalLesson);
+                                intent.putExtra("LESSON", finalLesson);
                                 CircularAnimUtil.startActivityForResult(getActivity(), intent, 200,
                                         lessonLinearLayout, finalLesson.getBgColor());
                             }
@@ -283,7 +284,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                                 0,
                                 Math.max(rippleView.getHeight(), rippleView.getWidth()));
                         animator.setInterpolator(new AccelerateInterpolator());
-                        animator.setDuration(500);
+                        animator.setDuration(400);
 
                         animator.start();
                     }

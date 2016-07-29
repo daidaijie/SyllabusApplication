@@ -89,7 +89,7 @@ public class LessonInfoActivity extends BaseActivity {
         );
         animatorY.setDuration(200);
         ObjectAnimator animatorH = ObjectAnimator.ofFloat(
-                mContentScrollView, "translationY", 1920.0f, 0.0f
+                mContentScrollView, "translationY", devideHeight, 0.0f
         );
         animatorH.setDuration(300);
         ObjectAnimator animatorA = ObjectAnimator.ofFloat(
@@ -122,6 +122,5 @@ public class LessonInfoActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
-
 
 }
