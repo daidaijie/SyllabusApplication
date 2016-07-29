@@ -7,6 +7,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -285,12 +286,19 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                                 Math.max(rippleView.getHeight(), rippleView.getWidth()));
                         animator.setInterpolator(new AccelerateInterpolator());
                         animator.setDuration(400);
-
                         animator.start();
                     }
                 }
             }
         });
+        //防止切换过快崩溃
+        setViewPagerEnable(false);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setViewPagerEnable(true);
+            }
+        },50);
     }
 
     @Override
