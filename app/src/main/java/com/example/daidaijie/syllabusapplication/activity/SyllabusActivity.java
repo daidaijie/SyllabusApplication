@@ -95,15 +95,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     }
 
     private void setupToolbar() {
-        mToolbar.setTitle("");
         setToolBarTitle("第 " + (pageIndex + 1) + " 周");
-        //透明状态栏并且适应Toolbar的高度
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            ViewGroup.LayoutParams layoutParams = mToolbar.getLayoutParams();
-            layoutParams.height = layoutParams.height + getStatusBarHeight();
-        } else {
-            devideHeight -= getStatusBarHeight();
-        }
+        mToolbar.setTitle("");
+        setupToolbar(mToolbar);
+
         setSupportActionBar(mToolbar);
         //添加toolbar drawer的开关
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -2,6 +2,10 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,18 +15,35 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.bean.LessonDetailInfo;
+import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
+import com.example.daidaijie.syllabusapplication.service.LessonDetailService;
+import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
+import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
+import retrofit2.Retrofit;
+import rx.Observable;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 
 public class LessonInfoActivity extends BaseActivity {
@@ -58,8 +79,12 @@ public class LessonInfoActivity extends BaseActivity {
     TextView mTitleTextView;
     @BindView(R.id.showClassMateButton)
     Button mShowClassMateButton;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressBar;
 
     private Lesson lesson;
+
+    List<StudentInfo> mStudentInfos;
 
     private enum CollapsingToolbarLayoutState {
         EXPANDED,
@@ -150,7 +175,7 @@ public class LessonInfoActivity extends BaseActivity {
         );
         animatorA.setDuration(300);
         ObjectAnimator animatorX2 = ObjectAnimator.ofFloat(
-                mShowClassMateButton,"alpha",0.0f,1.0f
+                mShowClassMateButton, "alpha", 0.0f, 1.0f
         );
         animatorX2.setDuration(300);
         final AnimatorSet animatorSet = new AnimatorSet();
@@ -162,6 +187,24 @@ public class LessonInfoActivity extends BaseActivity {
                 animatorSet.start();
             }
         }, 400);
+
+        mShowClassMateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getStudentList();
+                ObjectAnimator animator = ObjectAnimator.ofFloat(
+                        mShowClassMateButton, "scaleX", 1.0f, 0.0f
+                );
+                ClipDrawable d = new ClipDrawable(new ColorDrawable(Color.YELLOW), Gravity.LEFT, ClipDrawable.HORIZONTAL);
+                mProgressBar.getIndeterminateDrawable().setColorFilter(
+                        getResources().getColor(lesson.getBgColor()),
+                        android.graphics.PorterDuff.Mode.SRC_IN);
+                mProgressBar.setVisibility(View.VISIBLE);
+                animator.setDuration(618);
+                animator.setInterpolator(new AccelerateInterpolator());
+                animator.start();
+            }
+        });
     }
 
     @Override
@@ -188,5 +231,46 @@ public class LessonInfoActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getStudentList() {
+        Retrofit retrofit = RetrofitUtil.getDefault();
+        LessonDetailService lessonDetailService = retrofit.create(LessonDetailService.class);
+        lessonDetailService.getLessonDetail(lesson.getId())
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<LessonDetailInfo, Observable<StudentInfo>>() {
+                    @Override
+                    public Observable<StudentInfo> call(LessonDetailInfo lessonDetailInfo) {
+                        return Observable.from(lessonDetailInfo.getClass_info().getStudent());
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StudentInfo>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        mStudentInfos = new ArrayList<>();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        Intent intent = ClassmateListActivity.getIntent(
+                                LessonInfoActivity.this, mStudentInfos, lesson.getBgColor()
+                        );
+                        CircularAnimUtil.startActivity(
+                                LessonInfoActivity.this, intent, mProgressBar,
+                                lesson.getBgColor()
+                        );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(StudentInfo studentInfo) {
+                        mStudentInfos.add(studentInfo);
+                    }
+                });
     }
 }

@@ -9,4 +9,6 @@
     <color name="defaultShowColor">#999999</color>
 
     <color name="defaultLightBackground">#FAFAFA</color>
+
+    <color name="defaultLineColor">@color/material_grey_300</color>
 </resources>

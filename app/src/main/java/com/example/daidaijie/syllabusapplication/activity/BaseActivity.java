@@ -4,6 +4,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.example.daidaijie.syllabusapplication.R;
@@ -14,7 +16,7 @@ import butterknife.ButterKnife;
 /**
  * Created by daidaijie on 2016/7/25.
  */
-public abstract class BaseActivity extends AppCompatActivity{
+public abstract class BaseActivity extends AppCompatActivity {
 
     protected int deviceWidth;
     protected int devideHeight;
@@ -45,5 +47,15 @@ public abstract class BaseActivity extends AppCompatActivity{
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    protected void setupToolbar(Toolbar toolbar) {
+        //透明状态栏并且适应Toolbar的高度
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            ViewGroup.LayoutParams layoutParams = toolbar.getLayoutParams();
+            layoutParams.height = layoutParams.height + getStatusBarHeight();
+        } else {
+            devideHeight -= getStatusBarHeight();
+        }
     }
 }
