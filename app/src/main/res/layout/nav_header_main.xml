@@ -36,11 +36,11 @@
         tools:text="Android Studio"/>
 
     <com.balysv.materialripple.MaterialRippleLayout
-        android:padding="4dp"
+        android:padding="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/headImageDraweeView"
-        android:layout_marginTop="14dp">
+        android:layout_marginTop="8dp">
 
         <TextView
             android:singleLine="true"
