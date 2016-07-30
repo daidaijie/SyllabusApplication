@@ -2,7 +2,7 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.os.Build;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -13,8 +13,8 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,6 +56,8 @@ public class LessonInfoActivity extends BaseActivity {
     TextView mLessonNameTextView;
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
+    @BindView(R.id.showClassMateButton)
+    Button mShowClassMateButton;
 
     private Lesson lesson;
 
@@ -78,6 +80,10 @@ public class LessonInfoActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         this.setResult(201, null);
+
+        GradientDrawable shape = (GradientDrawable) getResources().getDrawable(R.drawable.bg_show_classmate);
+        shape.setColor(getResources().getColor(lesson.getBgColor()));
+        mShowClassMateButton.setBackgroundDrawable(shape);
 
         mLessonDetailRootLayout.setBackgroundColor(getResources().getColor(
                 lesson.getBgColor()));
@@ -125,6 +131,7 @@ public class LessonInfoActivity extends BaseActivity {
         mFab.setScaleY(0.0f);
         mContentScrollView.setTranslationY(1920.0f);
         mDetailContentLayout.setAlpha(0.0f);
+        mShowClassMateButton.setAlpha(0.0f);
 
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(
                 mFab, "scaleX", 0.0f, 1.0f
@@ -142,8 +149,12 @@ public class LessonInfoActivity extends BaseActivity {
                 mDetailContentLayout, "alpha", 0.0f, 1.0f
         );
         animatorA.setDuration(300);
+        ObjectAnimator animatorX2 = ObjectAnimator.ofFloat(
+                mShowClassMateButton,"alpha",0.0f,1.0f
+        );
+        animatorX2.setDuration(300);
         final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(animatorX).with(animatorY).after(animatorH).with(animatorA);
+        animatorSet.play(animatorX).with(animatorY).with(animatorX2).after(animatorH).with(animatorA);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         new Handler().postDelayed(new Runnable() {
             @Override
