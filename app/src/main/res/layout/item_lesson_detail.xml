@@ -18,11 +18,11 @@
         android:gravity="top">
 
         <ImageView
-            android:scaleType="centerCrop"
+            android:scaleType="centerInside"
             android:id="@+id/detailItemImageView"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            tools:src="@drawable/ic_menu_camera"/>
+            tools:src="@drawable/ic_place_lesson"/>
 
         <TextView
             android:textStyle=""

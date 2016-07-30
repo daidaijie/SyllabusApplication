@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -39,7 +40,6 @@ import java.util.List;
 import butterknife.BindView;
 import retrofit2.Retrofit;
 import rx.Observable;
-import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -81,6 +81,8 @@ public class LessonInfoActivity extends BaseActivity {
     Button mShowClassMateButton;
     @BindView(R.id.progressBar)
     ProgressBar mProgressBar;
+    @BindView(R.id.lessonCreditLayout)
+    LessonDetaiLayout mLessonCreditLayout;
 
     private Lesson lesson;
 
@@ -124,6 +126,7 @@ public class LessonInfoActivity extends BaseActivity {
         mTitleTextView.setText(lesson.getTrueName());
         mLessonNameLayout.setTitleText(lesson.getTrueName());
         mLessonNumberLayout.setTitleText(lesson.getId());
+        mLessonCreditLayout.setTitleText(lesson.getCredit());
         mLessonRoomLayout.setTitleText(lesson.getRoom());
         mLessonTeacherLayout.setTitleText(lesson.getTeacher());
         mLessonTimeLayout.setTitleText(lesson.getTimeGridListString("\n"));
@@ -198,7 +201,7 @@ public class LessonInfoActivity extends BaseActivity {
                 ClipDrawable d = new ClipDrawable(new ColorDrawable(Color.YELLOW), Gravity.LEFT, ClipDrawable.HORIZONTAL);
                 mProgressBar.getIndeterminateDrawable().setColorFilter(
                         getResources().getColor(lesson.getBgColor()),
-                        android.graphics.PorterDuff.Mode.SRC_IN);
+                        PorterDuff.Mode.SRC_IN);
                 mProgressBar.setVisibility(View.VISIBLE);
                 animator.setDuration(618);
                 animator.setInterpolator(new AccelerateInterpolator());

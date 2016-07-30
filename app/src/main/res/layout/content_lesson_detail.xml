@@ -31,6 +31,15 @@
     </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
     <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/lessonCreditLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="学分"
+        app:detailIcon="@drawable/ic_credit_lesson"
+        app:titltText="2.0">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
         android:id="@+id/lessonRoomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
