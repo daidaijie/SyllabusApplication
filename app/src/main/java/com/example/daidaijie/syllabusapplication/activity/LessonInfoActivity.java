@@ -2,12 +2,15 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ClipDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -16,6 +19,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +39,7 @@ import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +54,6 @@ import rx.schedulers.Schedulers;
 
 public class LessonInfoActivity extends BaseActivity {
 
-    public static final String TAG = "LessonInfoActivity";
     @BindView(R.id.lessonNameLayout)
     LessonDetaiLayout mLessonNameLayout;
     @BindView(R.id.lessonNumberLayout)
@@ -84,6 +89,9 @@ public class LessonInfoActivity extends BaseActivity {
     @BindView(R.id.lessonCreditLayout)
     LessonDetaiLayout mLessonCreditLayout;
 
+    public static final String TAG = "LessonInfoActivity";
+    public static final String EXTRA_LESSON_INFO
+            = "example.daidaijie.syllabusapplication.LessonInfoActivity.LessonInfo";
     private Lesson lesson;
 
     List<StudentInfo> mStudentInfos;
@@ -99,8 +107,16 @@ public class LessonInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        /*mLessonDetailRootLayout.setBackgroundColor(getResources().getColor(
+                lesson.getBgColor()));*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Explode().setDuration(300));
+        }
 
-        lesson = (Lesson) getIntent().getSerializableExtra("LESSON");
+//        ActivityTransition.with(getIntent()).to(mAppBar).start(savedInstanceState);
+        lesson = (Lesson) getIntent().getSerializableExtra(EXTRA_LESSON_INFO);
+
+        Log.d(TAG, "onCreate: "+lesson.getName());
 
         mToolbarLayout.setTitle("");
         mToolbar.setTitle("");
@@ -112,8 +128,6 @@ public class LessonInfoActivity extends BaseActivity {
         shape.setColor(getResources().getColor(lesson.getBgColor()));
         mShowClassMateButton.setBackgroundDrawable(shape);
 
-        mLessonDetailRootLayout.setBackgroundColor(getResources().getColor(
-                lesson.getBgColor()));
         mAppBar.setBackgroundColor(getResources().getColor(
                 lesson.getBgColor()));
         mToolbarLayout.setContentScrimColor(getResources().getColor(
@@ -130,6 +144,7 @@ public class LessonInfoActivity extends BaseActivity {
         mLessonRoomLayout.setTitleText(lesson.getRoom());
         mLessonTeacherLayout.setTitleText(lesson.getTeacher());
         mLessonTimeLayout.setTitleText(lesson.getTimeGridListString("\n"));
+
 
         mTitleTextView.setVisibility(View.GONE);
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -155,47 +170,32 @@ public class LessonInfoActivity extends BaseActivity {
             }
         });
 
-        mFab.setScaleX(0.0f);
-        mFab.setScaleY(0.0f);
-        mContentScrollView.setTranslationY(1920.0f);
-        mDetailContentLayout.setAlpha(0.0f);
-        mShowClassMateButton.setAlpha(0.0f);
-
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(
                 mFab, "scaleX", 0.0f, 1.0f
         );
-        animatorX.setDuration(200);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(
                 mFab, "scaleY", 0.0f, 1.0f
         );
-        animatorY.setDuration(200);
-        ObjectAnimator animatorH = ObjectAnimator.ofFloat(
-                mContentScrollView, "translationY", devideHeight, 0.0f
-        );
-        animatorH.setDuration(300);
-        ObjectAnimator animatorA = ObjectAnimator.ofFloat(
-                mDetailContentLayout, "alpha", 0.0f, 1.0f
-        );
-        animatorA.setDuration(300);
-        ObjectAnimator animatorX2 = ObjectAnimator.ofFloat(
-                mShowClassMateButton, "alpha", 0.0f, 1.0f
-        );
-        animatorX2.setDuration(300);
         final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(animatorX).with(animatorY).with(animatorX2).after(animatorH).with(animatorA);
+        animatorSet.play(animatorX).with(animatorY);
+        animatorSet.setDuration(300);
         animatorSet.setInterpolator(new AccelerateInterpolator());
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                mFab.setScaleX(0.0f);
+                mFab.setScaleY(0.0f);
+                mFab.setVisibility(View.VISIBLE);
                 animatorSet.start();
             }
-        }, 400);
+        },400);
+
 
         mShowClassMateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getStudentList();
-                ObjectAnimator animator = ObjectAnimator.ofFloat(
+               /* ObjectAnimator animator = ObjectAnimator.ofFloat(
                         mShowClassMateButton, "scaleX", 1.0f, 0.0f
                 );
                 ClipDrawable d = new ClipDrawable(new ColorDrawable(Color.YELLOW), Gravity.LEFT, ClipDrawable.HORIZONTAL);
@@ -205,7 +205,7 @@ public class LessonInfoActivity extends BaseActivity {
                 mProgressBar.setVisibility(View.VISIBLE);
                 animator.setDuration(618);
                 animator.setInterpolator(new AccelerateInterpolator());
-                animator.start();
+                animator.start();*/
             }
         });
     }
@@ -215,11 +215,6 @@ public class LessonInfoActivity extends BaseActivity {
         return R.layout.activity_lesson_info;
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-    }
 
     @Override
     protected void onDestroy() {
@@ -230,7 +225,8 @@ public class LessonInfoActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             //判断是返回键然后退出当前Activity
-            finish();
+            this.onBackPressed();
+//            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -259,10 +255,14 @@ public class LessonInfoActivity extends BaseActivity {
                         Intent intent = ClassmateListActivity.getIntent(
                                 LessonInfoActivity.this, mStudentInfos, lesson.getBgColor()
                         );
-                        CircularAnimUtil.startActivity(
-                                LessonInfoActivity.this, intent, mProgressBar,
-                                lesson.getBgColor()
-                        );
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LessonInfoActivity.this,
+                                    mToolbarLayout, "tool_bar");
+                            startActivity(intent,options.toBundle());
+                        } else {
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -275,5 +275,18 @@ public class LessonInfoActivity extends BaseActivity {
                         mStudentInfos.add(studentInfo);
                     }
                 });
+    }
+
+    public static Intent getIntent(Context packageContext, Lesson lesson) {
+        Intent intent = new Intent(packageContext, LessonInfoActivity.class);
+        intent.putExtra(EXTRA_LESSON_INFO, lesson);
+        return intent;
+    }
+
+    @Override
+    public void onBackPressed() {
+        mFab.setVisibility(View.GONE);
+        mAppBar.removeAllViews();
+        super.onBackPressed();
     }
 }

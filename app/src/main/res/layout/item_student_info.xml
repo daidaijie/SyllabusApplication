@@ -45,6 +45,7 @@
                 tools:text="呆呆杰"/>
 
             <TextView
+                android:textStyle="bold"
                 android:gravity="right"
                 android:layout_toRightOf="@+id/studentNameTextView"
                 android:layout_alignParentRight="true"

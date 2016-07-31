@@ -49,6 +49,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         return result;
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
     protected void setupToolbar(Toolbar toolbar) {
         //透明状态栏并且适应Toolbar的高度
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

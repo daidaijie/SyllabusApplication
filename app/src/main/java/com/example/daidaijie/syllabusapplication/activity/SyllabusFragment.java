@@ -2,6 +2,8 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 
 import android.animation.Animator;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -246,10 +248,20 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                             SyllabusActivity activity = (SyllabusActivity) getActivity();
                             if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
-                                Intent intent = new Intent(getActivity(), LessonInfoActivity.class);
-                                intent.putExtra("LESSON", finalLesson);
-                                CircularAnimUtil.startActivityForResult(getActivity(), intent, 200,
-                                        lessonLinearLayout, finalLesson.getBgColor());
+//                                Bundle transitionBundle = ActivityTransitionLauncher.with(activity).from(v).createBundle();
+                                Intent intent = LessonInfoActivity.getIntent(
+                                        getActivity(), finalLesson
+                                );
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,
+                                            lessonLinearLayout, "lesson_grid");
+                                    activity.startActivityForResult(intent, 200, options.toBundle());
+                                } else {
+                                    activity.startActivityForResult(intent, 200);
+                                }
+//                                intent.putExtras(transitionBundle);
+                                /*CircularAnimUtil.startActivityForResult(getActivity(), intent, 200,
+                                        lessonLinearLayout, finalLesson.getBgColor());*/
                             }
                         }
                     });
@@ -298,7 +310,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
             public void run() {
                 setViewPagerEnable(true);
             }
-        },50);
+        }, 50);
     }
 
     @Override
