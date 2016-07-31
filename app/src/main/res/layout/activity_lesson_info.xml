@@ -14,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="176dp"
         android:fitsSystemWindows="true"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        tools:targetApi="lollipop">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:transitionName="tool_bar"

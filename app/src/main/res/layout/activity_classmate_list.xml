@@ -17,7 +17,8 @@
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
         android:gravity="center_vertical"
-        android:theme="@style/AppTheme.PopupOverlay">
+        android:theme="@style/AppTheme.PopupOverlay"
+        tools:targetApi="lollipop">
 
         <TextView
             android:id="@+id/titleTextView"

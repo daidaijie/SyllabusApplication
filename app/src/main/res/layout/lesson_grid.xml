@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:transitionName="lesson_grid"
         app:mrl_rippleAlpha="0.7"
-        app:mrl_rippleDuration="500">
+        app:mrl_rippleDuration="500"
+        tools:targetApi="lollipop">
 
         <TextView
             android:id="@+id/lessonTextView"
