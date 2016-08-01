@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool_bar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/classmateRootLayout"
     android:layout_width="match_parent"
@@ -19,6 +20,7 @@
         android:gravity="center_vertical"
         android:theme="@style/AppTheme.PopupOverlay"
         android:transitionName="tool_bar"
+        tool_bar:titleTextColor="@android:color/white"
         tools:targetApi="lollipop">
 
         <TextView
@@ -31,8 +33,7 @@
             android:singleLine="true"
             android:text="班级同学"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:visibility="gone"/>
+            android:textSize="20sp"/>
 
     </android.support.v7.widget.Toolbar>
 

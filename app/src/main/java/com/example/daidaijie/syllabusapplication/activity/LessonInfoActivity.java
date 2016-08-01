@@ -68,8 +68,6 @@ public class LessonInfoActivity extends BaseActivity {
     CoordinatorLayout mLessonDetailRootLayout;
     @BindView(R.id.contentScrollView)
     NestedScrollView mContentScrollView;
-    /*@BindView(R.id.fab)
-    FloatingActionButton mFab;*/
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.toolbar_layout)
@@ -103,16 +101,14 @@ public class LessonInfoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*mLessonDetailRootLayout.setBackgroundColor(getResources().getColor(
-                lesson.getBgColor()));*/
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setEnterTransition(new Explode().setDuration(300));
         }
 
-//        ActivityTransition.with(getIntent()).to(mAppBar).start(savedInstanceState);
         lesson = (Lesson) getIntent().getSerializableExtra(EXTRA_LESSON_INFO);
 
-        Log.d(TAG, "onCreate: "+lesson.getName());
+        Log.d(TAG, "onCreate: " + lesson.getName());
 
         mToolbarLayout.setTitle("");
         mToolbar.setTitle("");
@@ -131,7 +127,6 @@ public class LessonInfoActivity extends BaseActivity {
         mToolbar.setBackgroundColor(getResources().getColor(
                 lesson.getBgColor()));
 
-//        mToolbar.setTitle(lesson.getTrueName());
         mLessonNameTextView.setText(lesson.getName());
         mTitleTextView.setText(lesson.getTrueName());
         mLessonNumberLayout.setTitleText(lesson.getId());
@@ -139,7 +134,6 @@ public class LessonInfoActivity extends BaseActivity {
         mLessonRoomLayout.setTitleText(lesson.getRoom());
         mLessonTeacherLayout.setTitleText(lesson.getTeacher());
         mLessonTimeLayout.setTitleText(lesson.getTimeGridListString("\n"));
-
 
         mTitleTextView.setVisibility(View.GONE);
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -158,49 +152,16 @@ public class LessonInfoActivity extends BaseActivity {
                 } else {
                     if (state != CollapsingToolbarLayoutState.INTERNEDIATE) {
                         mTitleTextView.setVisibility(View.GONE);
-//                        if (state == CollapsingToolbarLayoutState.COLLAPSED) {}
                         state = CollapsingToolbarLayoutState.INTERNEDIATE;//修改状态标记为中间
                     }
                 }
             }
         });
 
-        /*ObjectAnimator animatorX = ObjectAnimator.ofFloat(
-                mFab, "scaleX", 0.0f, 1.0f
-        );
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(
-                mFab, "scaleY", 0.0f, 1.0f
-        );
-        final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(animatorX).with(animatorY);
-        animatorSet.setDuration(300);
-        animatorSet.setInterpolator(new AccelerateInterpolator());
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mFab.setScaleX(0.0f);
-                mFab.setScaleY(0.0f);
-                mFab.setVisibility(View.VISIBLE);
-                animatorSet.start();
-            }
-        },400);*/
-
-
         mShowClassMateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getStudentList();
-               /* ObjectAnimator animator = ObjectAnimator.ofFloat(
-                        mShowClassMateButton, "scaleX", 1.0f, 0.0f
-                );
-                ClipDrawable d = new ClipDrawable(new ColorDrawable(Color.YELLOW), Gravity.LEFT, ClipDrawable.HORIZONTAL);
-                mProgressBar.getIndeterminateDrawable().setColorFilter(
-                        getResources().getColor(lesson.getBgColor()),
-                        PorterDuff.Mode.SRC_IN);
-                mProgressBar.setVisibility(View.VISIBLE);
-                animator.setDuration(618);
-                animator.setInterpolator(new AccelerateInterpolator());
-                animator.start();*/
             }
         });
     }
@@ -221,7 +182,6 @@ public class LessonInfoActivity extends BaseActivity {
         if (item.getItemId() == android.R.id.home) {
             //判断是返回键然后退出当前Activity
             this.onBackPressed();
-//            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -254,7 +214,7 @@ public class LessonInfoActivity extends BaseActivity {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LessonInfoActivity.this,
                                     mToolbarLayout, "tool_bar");
-                            startActivity(intent,options.toBundle());
+                            startActivity(intent, options.toBundle());
                         } else {
                             startActivity(intent);
                         }
@@ -280,7 +240,6 @@ public class LessonInfoActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-//        mFab.setVisibility(View.GONE);
         mAppBar.removeAllViews();
         super.onBackPressed();
     }
@@ -288,6 +247,7 @@ public class LessonInfoActivity extends BaseActivity {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
+        //让它死吧
         this.finish();
     }
 }

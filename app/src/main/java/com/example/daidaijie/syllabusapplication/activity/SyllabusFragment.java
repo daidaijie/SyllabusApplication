@@ -248,7 +248,6 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                             SyllabusActivity activity = (SyllabusActivity) getActivity();
                             if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
-//                                Bundle transitionBundle = ActivityTransitionLauncher.with(activity).from(v).createBundle();
                                 Intent intent = LessonInfoActivity.getIntent(
                                         getActivity(), finalLesson
                                 );
@@ -259,9 +258,6 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                                 } else {
                                     activity.startActivityForResult(intent, 200);
                                 }
-//                                intent.putExtras(transitionBundle);
-                                /*CircularAnimUtil.startActivityForResult(getActivity(), intent, 200,
-                                        lessonLinearLayout, finalLesson.getBgColor());*/
                             }
                         }
                     });

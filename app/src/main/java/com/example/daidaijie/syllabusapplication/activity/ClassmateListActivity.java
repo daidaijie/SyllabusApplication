@@ -32,11 +32,11 @@ import butterknife.BindView;
 
 public class ClassmateListActivity extends BaseActivity {
 
-
     public static final String EXTRA_STUDENT_LIST =
             "com.example.daidaijie.syllabusapplication.student_list";
 
-    public static final String EXTRA_BG_COLOR = "com.example.daidaijie.syllabusapplication.bg_color";
+    public static final String EXTRA_BG_COLOR =
+            "com.example.daidaijie.syllabusapplication.bg_color";
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -46,6 +46,7 @@ public class ClassmateListActivity extends BaseActivity {
     TextView mTitleTextView;
     @BindView(R.id.classmateRootLayout)
     LinearLayout mClassmateRootLayout;
+    SearchView mSearchView;
 
     private List<StudentInfo> mStudentInfos;
 
@@ -55,41 +56,25 @@ public class ClassmateListActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setEnterTransition(new Explode().setDuration(300));
+        }
+
         mStudentInfos = (List<StudentInfo>) getIntent().getSerializableExtra(EXTRA_STUDENT_LIST);
         mStudentInfoAdapter = new StudentInfoAdapter(this, mStudentInfos);
         mClassmateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mClassmateRecyclerView.setAdapter(mStudentInfoAdapter);
 
         mToolbar.setTitle("");
+
         int bgColor = getResources()
                 .getColor(getIntent().getIntExtra(EXTRA_BG_COLOR, R.color.colorPrimary));
         mToolbar.setBackgroundColor(bgColor);
         mClassmateRootLayout.setBackgroundColor(bgColor);
+
         setSupportActionBar(mToolbar);
         setupToolbar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Explode().setDuration(300));
-        }
-
-        /*mClassmateRecyclerView.setTranslationX(deviceWidth / 2);
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(
-                mClassmateRecyclerView, "translationX", deviceWidth / 2, 0.0f
-        );
-        mClassmateRecyclerView.setAlpha(0.0f);
-        ObjectAnimator animatorA = ObjectAnimator.ofFloat(
-                mClassmateRecyclerView, "alpha", 0.0f, 1.0f
-        );
-        final AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.play(animatorX).with(animatorA);
-        animatorSet.setDuration(600);
-        animatorSet.setInterpolator(new AccelerateInterpolator());
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                animatorSet.start();
-            }
-        }, 200);*/
 
     }
 
@@ -109,7 +94,7 @@ public class ClassmateListActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             //判断是返回键然后退出当前Activity
-            finish();
+            this.onBackPressed();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -131,11 +116,11 @@ public class ClassmateListActivity extends BaseActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_classmate_list, menu);
         MenuItem menuItem = menu.findItem(R.id.action_search);//在菜单中找到对应控件的item
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
-        searchView.setQueryHint("搜索姓名\\学号\\专业\\性别");
-        SearchView.SearchAutoComplete textView = ( SearchView.SearchAutoComplete) searchView.findViewById(R.id.search_src_text);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        mSearchView.setQueryHint("搜索姓名\\学号\\专业\\性别");
+        SearchView.SearchAutoComplete textView = (SearchView.SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         textView.setTextSize(14);
-        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
+        /*MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 Toast.makeText(ClassmateListActivity.this, "onExpand", Toast.LENGTH_LONG).show();
@@ -147,7 +132,7 @@ public class ClassmateListActivity extends BaseActivity {
                 Toast.makeText(ClassmateListActivity.this, "Collapse", Toast.LENGTH_LONG).show();
                 return true;
             }
-        });
+        });*/
         return super.onCreateOptionsMenu(menu);
     }
 }
