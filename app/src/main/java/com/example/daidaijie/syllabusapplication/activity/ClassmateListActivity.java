@@ -177,6 +177,7 @@ public class ClassmateListActivity extends BaseActivity {
                                 return true;
                             }
                         }
+                        //判断性别
                         if (quertText.length() == 1) {
                             if (studentInfo.getGender().equals(quertText)) {
                                 return true;

@@ -52,6 +52,8 @@ public class StudentInfoAdapter extends RecyclerView.Adapter<StudentInfoAdapter.
                 studentInfo.getGender().equals("男") ?
                         R.color.material_blue_300 : R.color.material_pink_300));
         holder.mSexView.setBackgroundDrawable(shape);
+        holder.mDevLine.setVisibility(position == (mStudentInfos.size() - 1)
+                ? View.INVISIBLE : View.VISIBLE);
     }
 
     @Override
@@ -72,6 +74,13 @@ public class StudentInfoAdapter extends RecyclerView.Adapter<StudentInfoAdapter.
         this.mOnItemClickLitener = mOnItemClickLitener;
     }
 
+    public List<StudentInfo> getStudentInfos() {
+        return mStudentInfos;
+    }
+
+    public void setStudentInfos(List<StudentInfo> studentInfos) {
+        mStudentInfos = studentInfos;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.studentNameTextView)
@@ -82,19 +91,13 @@ public class StudentInfoAdapter extends RecyclerView.Adapter<StudentInfoAdapter.
         TextView mStudentMajorTextView;
         @BindView(R.id.sexView)
         View mSexView;
+        @BindView(R.id.devLine)
+        View mDevLine;
 
         public ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
-    }
-
-    public List<StudentInfo> getStudentInfos() {
-        return mStudentInfos;
-    }
-
-    public void setStudentInfos(List<StudentInfo> studentInfos) {
-        mStudentInfos = studentInfos;
     }
 }
 
