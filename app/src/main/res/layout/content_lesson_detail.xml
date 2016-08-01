@@ -12,16 +12,6 @@
     android:paddingTop="32dp">
 
     <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
-        android:id="@+id/lessonNameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:descText="名称"
-        app:detailIcon="@drawable/ic_name_lesson"
-        app:titltText="程序设计基础">
-    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
-
-    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
         android:id="@+id/lessonNumberLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

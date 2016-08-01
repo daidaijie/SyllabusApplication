@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/classmateRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/classmateRootLayout"
     tools:context="com.example.daidaijie.syllabusapplication.activity.ClassmateListActivity">
 
     <android.support.v7.widget.Toolbar
-        android:transitionName="tool_bar"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
@@ -18,6 +18,7 @@
         android:fitsSystemWindows="true"
         android:gravity="center_vertical"
         android:theme="@style/AppTheme.PopupOverlay"
+        android:transitionName="tool_bar"
         tools:targetApi="lollipop">
 
         <TextView
@@ -30,7 +31,8 @@
             android:singleLine="true"
             android:text="班级同学"
             android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:visibility="gone"/>
 
     </android.support.v7.widget.Toolbar>
 

@@ -54,8 +54,6 @@ import rx.schedulers.Schedulers;
 
 public class LessonInfoActivity extends BaseActivity {
 
-    @BindView(R.id.lessonNameLayout)
-    LessonDetaiLayout mLessonNameLayout;
     @BindView(R.id.lessonNumberLayout)
     LessonDetaiLayout mLessonNumberLayout;
     @BindView(R.id.lessonRoomLayout)
@@ -136,7 +134,6 @@ public class LessonInfoActivity extends BaseActivity {
 //        mToolbar.setTitle(lesson.getTrueName());
         mLessonNameTextView.setText(lesson.getName());
         mTitleTextView.setText(lesson.getTrueName());
-        mLessonNameLayout.setTitleText(lesson.getTrueName());
         mLessonNumberLayout.setTitleText(lesson.getId());
         mLessonCreditLayout.setTitleText(lesson.getCredit());
         mLessonRoomLayout.setTitleText(lesson.getRoom());

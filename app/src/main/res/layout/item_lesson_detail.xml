@@ -17,18 +17,22 @@
         android:layout_marginTop="12dp"
         android:gravity="top">
 
-        <ImageView
-            android:scaleType="centerInside"
-            android:id="@+id/detailItemImageView"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            tools:src="@drawable/ic_place_lesson"/>
-
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp">
+            <ImageView
+                android:id="@+id/detailItemImageView"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                tools:src="@drawable/ic_place_lesson"/>
+        </LinearLayout>
         <TextView
             android:textStyle=""
             android:id="@+id/detailDescText"
             android:layout_width="64dp"
-            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_height="24dp"
             android:layout_marginLeft="8dp"
             android:text="名称"
             android:textColor="@color/defaultShowColor"
