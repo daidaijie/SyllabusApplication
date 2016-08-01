@@ -16,6 +16,7 @@ import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,11 +25,21 @@ import android.widget.Toast;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.StudentInfoAdapter;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
+import com.example.daidaijie.syllabusapplication.util.StringUtil;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
+import cn.finalteam.toolsfinal.StringUtils;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 public class ClassmateListActivity extends BaseActivity {
 
@@ -70,7 +81,6 @@ public class ClassmateListActivity extends BaseActivity {
         int bgColor = getResources()
                 .getColor(getIntent().getIntExtra(EXTRA_BG_COLOR, R.color.colorPrimary));
         mToolbar.setBackgroundColor(bgColor);
-        mClassmateRootLayout.setBackgroundColor(bgColor);
 
         setSupportActionBar(mToolbar);
         setupToolbar(mToolbar);
@@ -120,19 +130,91 @@ public class ClassmateListActivity extends BaseActivity {
         mSearchView.setQueryHint("搜索姓名\\学号\\专业\\性别");
         SearchView.SearchAutoComplete textView = (SearchView.SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         textView.setTextSize(14);
-        /*MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                queryClassmateList(query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                queryClassmateList(newText);
+                return true;
+            }
+        });
+        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                Toast.makeText(ClassmateListActivity.this, "onExpand", Toast.LENGTH_LONG).show();
+//                Toast.makeText(ClassmateListActivity.this, "onExpand", Toast.LENGTH_LONG).show();
                 return true;
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                Toast.makeText(ClassmateListActivity.this, "Collapse", Toast.LENGTH_LONG).show();
+//                Toast.makeText(ClassmateListActivity.this, "Collapse", Toast.LENGTH_LONG).show();
+                mStudentInfoAdapter.setStudentInfos(mStudentInfos);
+                mStudentInfoAdapter.notifyDataSetChanged();
                 return true;
+
             }
-        });*/
+        });
         return super.onCreateOptionsMenu(menu);
+    }
+
+    private void queryClassmateList(final String quertText) {
+        Observable.from(mStudentInfos)
+                .subscribeOn(Schedulers.computation())
+                .filter(new Func1<StudentInfo, Boolean>() {
+                    @Override
+                    public Boolean call(StudentInfo studentInfo) {
+                        if (quertText.length() == 0) {
+                            return true;
+                        }
+                        //判断为学号
+                        if (StringUtil.isNumberic(quertText)) {
+                            if (studentInfo.getNumber().contains(quertText)) {
+                                return true;
+                            }
+                        }
+                        if (quertText.length() == 1) {
+                            if (studentInfo.getGender().equals(quertText)) {
+                                return true;
+                            }
+                        }
+                        if (studentInfo.getName().contains(quertText) ||
+                                studentInfo.getMajor().contains(quertText)) {
+                            return true;
+                        }
+
+                        return false;
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StudentInfo>() {
+
+                    List<StudentInfo> mQueryInfo;
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        mQueryInfo = new ArrayList<StudentInfo>();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        mStudentInfoAdapter.setStudentInfos(mQueryInfo);
+                        mStudentInfoAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(StudentInfo studentInfo) {
+                        mQueryInfo.add(studentInfo);
+                    }
+                });
     }
 }

@@ -23,7 +23,7 @@ public class StudentInfoAdapter extends RecyclerView.Adapter<StudentInfoAdapter.
 
     AppCompatActivity mActivity;
 
-    List<StudentInfo> mStudentInfos;
+    private List<StudentInfo> mStudentInfos;
 
 
     public StudentInfoAdapter(AppCompatActivity activity, List<StudentInfo> studentInfos) {
@@ -87,6 +87,14 @@ public class StudentInfoAdapter extends RecyclerView.Adapter<StudentInfoAdapter.
             super(view);
             ButterKnife.bind(this, view);
         }
+    }
+
+    public List<StudentInfo> getStudentInfos() {
+        return mStudentInfos;
+    }
+
+    public void setStudentInfos(List<StudentInfo> studentInfos) {
+        mStudentInfos = studentInfos;
     }
 }
 
