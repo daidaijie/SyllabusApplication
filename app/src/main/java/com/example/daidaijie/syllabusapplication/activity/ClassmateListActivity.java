@@ -111,6 +111,12 @@ public class ClassmateListActivity extends BaseActivity {
     }
 
     @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.finish();
+    }
+
+    @Override
     protected void onDestroy() {
         this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         super.onDestroy();

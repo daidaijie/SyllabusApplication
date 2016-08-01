@@ -289,4 +289,10 @@ public class LessonInfoActivity extends BaseActivity {
         mAppBar.removeAllViews();
         super.onBackPressed();
     }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        this.finish();
+    }
 }
