@@ -70,8 +70,8 @@ public class LessonInfoActivity extends BaseActivity {
     CoordinatorLayout mLessonDetailRootLayout;
     @BindView(R.id.contentScrollView)
     NestedScrollView mContentScrollView;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
+    /*@BindView(R.id.fab)
+    FloatingActionButton mFab;*/
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.toolbar_layout)
@@ -84,8 +84,6 @@ public class LessonInfoActivity extends BaseActivity {
     TextView mTitleTextView;
     @BindView(R.id.showClassMateButton)
     Button mShowClassMateButton;
-    @BindView(R.id.progressBar)
-    ProgressBar mProgressBar;
     @BindView(R.id.lessonCreditLayout)
     LessonDetaiLayout mLessonCreditLayout;
 
@@ -170,7 +168,7 @@ public class LessonInfoActivity extends BaseActivity {
             }
         });
 
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(
+        /*ObjectAnimator animatorX = ObjectAnimator.ofFloat(
                 mFab, "scaleX", 0.0f, 1.0f
         );
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(
@@ -188,7 +186,7 @@ public class LessonInfoActivity extends BaseActivity {
                 mFab.setVisibility(View.VISIBLE);
                 animatorSet.start();
             }
-        },400);
+        },400);*/
 
 
         mShowClassMateButton.setOnClickListener(new View.OnClickListener() {
@@ -285,7 +283,7 @@ public class LessonInfoActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        mFab.setVisibility(View.GONE);
+//        mFab.setVisibility(View.GONE);
         mAppBar.removeAllViews();
         super.onBackPressed();
     }
