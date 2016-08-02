@@ -10,13 +10,18 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
@@ -70,6 +75,8 @@ public class LessonInfoActivity extends BaseActivity {
     @BindView(R.id.lessonCreditLayout)
     LessonDetaiLayout mLessonCreditLayout;
 
+    private AlertDialog mLoadingDialog;
+
     public static final String TAG = "LessonInfoActivity";
     public static final String EXTRA_LESSON_INFO
             = "example.daidaijie.syllabusapplication.LessonInfoActivity.LessonInfo";
@@ -84,6 +91,8 @@ public class LessonInfoActivity extends BaseActivity {
     }
 
     private CollapsingToolbarLayoutState state;
+
+    private boolean singleLock = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +131,15 @@ public class LessonInfoActivity extends BaseActivity {
         mLessonTeacherLayout.setTitleText(lesson.getTeacher());
         mLessonTimeLayout.setTitleText(lesson.getTimeGridListString("\n"));
 
+
+        RelativeLayout loadingDialogLayout = (RelativeLayout) getLayoutInflater()
+                .inflate(R.layout.dialog_loading, null, false);
+        mLoadingDialog = new AlertDialog.Builder(this)
+                .setView(loadingDialogLayout)
+                .create();
+        mLoadingDialog.setCancelable(false);
+
+
         mTitleTextView.setVisibility(View.GONE);
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -148,6 +166,13 @@ public class LessonInfoActivity extends BaseActivity {
         mShowClassMateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (singleLock) return;
+                singleLock = true;
+                mLoadingDialog.show();
+                //要在show之后加，不然没效果
+                WindowManager.LayoutParams params = mLoadingDialog.getWindow().getAttributes();
+                params.width = deviceWidth * 7 / 8;
+                mLoadingDialog.getWindow().setAttributes(params);
                 getStudentList();
             }
         });
@@ -194,6 +219,7 @@ public class LessonInfoActivity extends BaseActivity {
 
                     @Override
                     public void onCompleted() {
+                        mLoadingDialog.dismiss();
                         Intent intent = ClassmateListActivity.getIntent(
                                 LessonInfoActivity.this, mStudentInfos, lesson.getBgColor()
                         );
@@ -205,10 +231,13 @@ public class LessonInfoActivity extends BaseActivity {
                         } else {
                             startActivity(intent);
                         }
+                        singleLock = false;
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        mLoadingDialog.dismiss();
+                        singleLock = false;
                     }
 
                     @Override

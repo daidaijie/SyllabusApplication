@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
@@ -20,6 +19,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.StudentInfoAdapter;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
+import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,12 +43,14 @@ public class ClassmateListActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.classmateRecyclerView)
-    RecyclerView mClassmateRecyclerView;
+    RecyclerViewEmptySupport mClassmateRecyclerView;
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
     @BindView(R.id.classmateRootLayout)
     LinearLayout mClassmateRootLayout;
     SearchView mSearchView;
+    @BindView(R.id.tv_empty_view)
+    TextView mTvEmptyView;
 
     private List<StudentInfo> mStudentInfos;
     private StudentInfoAdapter mStudentInfoAdapter;
@@ -64,6 +66,7 @@ public class ClassmateListActivity extends BaseActivity {
         mStudentInfos = (List<StudentInfo>) getIntent().getSerializableExtra(EXTRA_STUDENT_LIST);
         mStudentInfoAdapter = new StudentInfoAdapter(this, mStudentInfos);
         mClassmateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mClassmateRecyclerView.setEmptyView(mTvEmptyView)   ;
         mClassmateRecyclerView.setAdapter(mStudentInfoAdapter);
 
         int bgColor = getResources()

@@ -37,11 +37,25 @@
 
     </android.support.v7.widget.Toolbar>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/classmateRecyclerView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
+            android:id="@+id/classmateRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
+
+        <TextView
+            android:id="@+id/tv_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center_horizontal"
+            android:text="查找不到任何选项"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"/>
+    </FrameLayout>
+
 </LinearLayout>
