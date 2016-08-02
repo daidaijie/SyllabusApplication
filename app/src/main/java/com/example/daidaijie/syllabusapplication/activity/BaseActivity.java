@@ -2,14 +2,10 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-
-import com.example.daidaijie.syllabusapplication.R;
-import com.facebook.drawee.backends.pipeline.Fresco;
 
 import butterknife.ButterKnife;
 

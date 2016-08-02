@@ -8,7 +8,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 
 import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealFrameLayout;
-import io.codetail.widget.RevealLinearLayout;
 
 /**
  * 对 ViewAnimationUtils.createCircularReveal() 方法的封装.

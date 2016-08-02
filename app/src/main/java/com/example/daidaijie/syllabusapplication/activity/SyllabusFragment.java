@@ -2,7 +2,6 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 
 import android.animation.Animator;
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -29,7 +28,6 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPresenter;
-import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;

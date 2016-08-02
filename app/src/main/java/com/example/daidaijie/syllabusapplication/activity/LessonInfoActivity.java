@@ -1,33 +1,22 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.ClipDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
@@ -35,11 +24,9 @@ import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.LessonDetailInfo;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
 import com.example.daidaijie.syllabusapplication.service.LessonDetailService;
-import com.example.daidaijie.syllabusapplication.util.CircularAnimUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -222,7 +209,6 @@ public class LessonInfoActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
                     }
 
                     @Override
