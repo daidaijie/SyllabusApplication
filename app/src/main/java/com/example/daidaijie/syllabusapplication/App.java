@@ -24,7 +24,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        LeakCanary.install(this);
+//        LeakCanary.install(this);
         Fresco.initialize(this);
 
         context = getApplicationContext();

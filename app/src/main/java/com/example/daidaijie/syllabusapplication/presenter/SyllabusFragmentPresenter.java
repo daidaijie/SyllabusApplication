@@ -55,7 +55,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                 "13yjli3",
                 "O3o",
                 "query",
-                "2013-2014"
+                "2015-2016"
                 , "1"
         ).subscribeOn(Schedulers.io())
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {

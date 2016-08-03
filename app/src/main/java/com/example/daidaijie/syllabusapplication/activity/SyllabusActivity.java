@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -16,9 +17,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +30,9 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
+import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -47,6 +53,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+
+    private AlertDialog mLoadingDialog;
 
     private RelativeLayout navHeadRelativeLayout;
     private SimpleDraweeView headImageDraweeView;
@@ -85,12 +93,14 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
         //加载信息
         mSyllabusMainPresenter.setUserInfo();
-        mSyllabusMainPresenter.loadWallpaper();
+        mSyllabusMainPresenter.loadWallpaper(this);
 
         //      设置点击navigationView菜单事件
         if (mNavView != null) {
             mNavView.setNavigationItemSelectedListener(this);
         }
+        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this,
+                getResources().getColor(R.color.colorPrimary));
     }
 
     private void setupToolbar() {
@@ -205,11 +215,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         mSyllabusViewPager.setScrollable(enable);
     }
 
-    @Override
-    public Resources getActivityResources() {
-        return getResources();
-    }
-
     public SyllabusMainPresenter getSyllabusMainPresenter() {
         return mSyllabusMainPresenter;
     }
@@ -223,13 +228,15 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         } else if (id == R.id.nav_gallery) {
             mSyllabusMainPresenter.setWallpaper();
         } else if (id == R.id.nav_slideshow) {
+            Intent intent = new Intent(this, LessonManagerActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-
+            mSyllabusMainPresenter.getExamList(this);
         }
         //点击后关闭drawerLayout
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -244,6 +251,25 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     @Override
     public int getDevideHeight() {
         return devideHeight;
+    }
+
+    @Override
+    public void showSuccessSnackbar(String info) {
+        SnackbarUtil.ShortSnackbar(
+                mMainRootLayout,
+                info,
+                SnackbarUtil.Confirm
+        ).show();
+    }
+
+    @Override
+    public void showFailSnackbar(String info, String again, View.OnClickListener listener) {
+        SnackbarUtil.LongSnackbar(
+                mMainRootLayout,
+                info,
+                SnackbarUtil.Alert
+        ).setAction(again, listener).show();
+
     }
 
     public boolean isSingleLock() {
@@ -265,7 +291,26 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     @Override
     public void onBackPressed() {
-        if (singleLock)return;
+        if (singleLock) return;
         super.onBackPressed();
+    }
+
+    @Override
+    public void showLoadingDialog() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.show();
+            //要在show之后加，不然没效果
+            WindowManager.LayoutParams params = mLoadingDialog.getWindow().getAttributes();
+            params.width = deviceWidth * 7 / 8;
+            mLoadingDialog.getWindow().setAttributes(params);
+        }
+    }
+
+    @Override
+    public void dismissLoadingDialog() {
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+        }
+
     }
 }

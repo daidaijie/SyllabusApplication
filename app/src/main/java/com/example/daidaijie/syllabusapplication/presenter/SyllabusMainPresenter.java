@@ -1,16 +1,22 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.ExamActivity;
+import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.model.User;
+import com.example.daidaijie.syllabusapplication.service.ExamInfoService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
@@ -21,6 +27,7 @@ import java.util.List;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -49,10 +56,10 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
     }
 
     @Override
-    public void loadWallpaper() {
+    public void loadWallpaper(Context context) {
         // TODO: 2016/7/25 这里暂时没获取壁纸，先假装有壁纸
 
-        Bitmap wallPaperBitmap = BitmapFactory.decodeResource(mView.getActivityResources()
+        Bitmap wallPaperBitmap = BitmapFactory.decodeResource(context.getResources()
                 , R.drawable.background);
         mView.setBackground(wallPaperBitmap);
     }
@@ -96,5 +103,41 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
 
             }
         });
+    }
+
+    @Override
+    public void getExamList(final Context context) {
+        mView.showLoadingDialog();
+        Retrofit retrofit = RetrofitUtil.getDefault();
+        ExamInfoService examInfoService = retrofit.create(ExamInfoService.class);
+        examInfoService.getExamInfo(
+                "13yjli3", "O3o", "2015-2016", "0"
+        ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<ExamInfo>() {
+                    Intent mIntent = null;
+
+                    @Override
+                    public void onCompleted() {
+                        mView.dismissLoadingDialog();
+                        context.startActivity(mIntent);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.dismissLoadingDialog();
+                        mView.showFailSnackbar("获取考试列表失败", "再次获取", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getExamList(context);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onNext(ExamInfo examInfo) {
+                        mIntent = ExamActivity.getIntent(context, examInfo.getEXAMS());
+                    }
+                });
     }
 }

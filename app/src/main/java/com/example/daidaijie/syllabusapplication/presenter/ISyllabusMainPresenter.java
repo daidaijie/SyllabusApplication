@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
+import android.content.Context;
+
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 
 /**
@@ -11,8 +13,11 @@ public abstract class ISyllabusMainPresenter extends BasePresenter<ISyllabusMain
     public abstract void setUserInfo();
 
     //加载背景
-    public abstract void loadWallpaper();
+    public abstract void loadWallpaper(Context context);
 
     //更改背景
     public abstract void setWallpaper();
+
+    //获取考试列表
+    public abstract void getExamList(Context context);
 }

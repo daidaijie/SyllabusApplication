@@ -74,8 +74,8 @@ public class ClassmateListActivity extends BaseActivity {
         mToolbar.setBackgroundColor(bgColor);
         mToolbar.setTitle("");
 
-        setSupportActionBar(mToolbar);
         setupToolbar(mToolbar);
+        setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }

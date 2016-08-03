@@ -7,7 +7,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 /**
  * Created by daidaijie on 2016/7/26.
  */
-public interface ISyllabusFragmentView extends MvpView,IUserInfoView{
+public interface ISyllabusFragmentView extends MvpView, IUserInfoView, ISwipeLoadingView {
 
 
     //展示课表
@@ -21,12 +21,6 @@ public interface ISyllabusFragmentView extends MvpView,IUserInfoView{
 
     //设置不成功获取数据显示后的Bannner
     void showFailBannner();
-
-    //显示Swipe加载
-    void showLoading();
-
-    //隐藏Swipe加载
-    void hideLoading();
 
     //设置ViewPager滑动
     void setViewPagerEnable(boolean enable);

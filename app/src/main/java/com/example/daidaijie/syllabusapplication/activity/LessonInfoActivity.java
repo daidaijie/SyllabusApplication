@@ -11,18 +11,14 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
@@ -31,6 +27,7 @@ import com.example.daidaijie.syllabusapplication.bean.LessonDetailInfo;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
 import com.example.daidaijie.syllabusapplication.service.LessonDetailService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
 
 import java.util.ArrayList;
@@ -132,18 +129,8 @@ public class LessonInfoActivity extends BaseActivity {
         mLessonTeacherLayout.setTitleText(lesson.getTeacher());
         mLessonTimeLayout.setTitleText(lesson.getTimeGridListString("\n"));
 
-
-        RelativeLayout loadingDialogLayout = (RelativeLayout) getLayoutInflater()
-                .inflate(R.layout.dialog_loading, null, false);
-        ProgressBar  loadingProgressBar= (ProgressBar) loadingDialogLayout
-                .findViewById(R.id.loadingProgressBar);
-        loadingProgressBar.getIndeterminateDrawable().setColorFilter(
-                getResources().getColor(lesson.getBgColor()),
-                android.graphics.PorterDuff.Mode.SRC_IN);
-        mLoadingDialog = new AlertDialog.Builder(this)
-                .setView(loadingDialogLayout)
-                .create();
-        mLoadingDialog.setCancelable(false);
+        mLoadingDialog = LoadingDialogBuiler
+                .getLoadingDialog(this, getResources().getColor(lesson.getBgColor()));
 
 
         mTitleTextView.setVisibility(View.GONE);
