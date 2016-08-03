@@ -17,7 +17,4 @@ public abstract class ISyllabusMainPresenter extends BasePresenter<ISyllabusMain
 
     //更改背景
     public abstract void setWallpaper();
-
-    //获取考试列表
-    public abstract void getExamList(Context context);
 }

@@ -236,7 +236,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
-            mSyllabusMainPresenter.getExamList(this);
+            Intent intent = new Intent(this,ExamActivity.class);
+            startActivity(intent);
         }
         //点击后关闭drawerLayout
         mDrawerLayout.closeDrawer(GravityCompat.START);

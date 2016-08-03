@@ -105,39 +105,4 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
         });
     }
 
-    @Override
-    public void getExamList(final Context context) {
-        mView.showLoadingDialog();
-        Retrofit retrofit = RetrofitUtil.getDefault();
-        ExamInfoService examInfoService = retrofit.create(ExamInfoService.class);
-        examInfoService.getExamInfo(
-                "13yjli3", "O3o", "2015-2016", "0"
-        ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<ExamInfo>() {
-                    Intent mIntent = null;
-
-                    @Override
-                    public void onCompleted() {
-                        mView.dismissLoadingDialog();
-                        context.startActivity(mIntent);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.dismissLoadingDialog();
-                        mView.showFailSnackbar("获取考试列表失败", "再次获取", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                getExamList(context);
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onNext(ExamInfo examInfo) {
-                        mIntent = ExamActivity.getIntent(context, examInfo.getEXAMS());
-                    }
-                });
-    }
 }
