@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -134,6 +135,11 @@ public class LessonInfoActivity extends BaseActivity {
 
         RelativeLayout loadingDialogLayout = (RelativeLayout) getLayoutInflater()
                 .inflate(R.layout.dialog_loading, null, false);
+        ProgressBar  loadingProgressBar= (ProgressBar) loadingDialogLayout
+                .findViewById(R.id.loadingProgressBar);
+        loadingProgressBar.getIndeterminateDrawable().setColorFilter(
+                getResources().getColor(lesson.getBgColor()),
+                android.graphics.PorterDuff.Mode.SRC_IN);
         mLoadingDialog = new AlertDialog.Builder(this)
                 .setView(loadingDialogLayout)
                 .create();
