@@ -39,6 +39,8 @@
         </activity>
         <activity android:name=".activity.ExamActivity">
         </activity>
+        <activity android:name=".activity.MainActivity">
+        </activity>
     </application>
 
 </manifest>

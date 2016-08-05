@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultLightBackground"
+    tools:context="com.example.daidaijie.syllabusapplication.activity.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@color/transparent"
+                app:cardIcon="@drawable/ic_oa"
+                app:cardTitle="办公自动化">
+            </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
+
+            <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                app:cardIcon="@drawable/ic_oa"
+                app:cardTitle="办公自动化">
+            </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
+
+            <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_weight="1"
+                app:cardIcon="@drawable/ic_oa"
+                app:cardTitle="办公自动化">
+            </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
