@@ -6,7 +6,9 @@
 
     <color name="gridColor">#402b2b2b</color>
 
-        <color name="defaultShowColor">#999999</color>
+    <color name="defaultTextColor">#424242</color>
+
+    <color name="defaultShowColor">#999999</color>
 
     <color name="defaultLightBackground">#FAFAFA</color>
 
