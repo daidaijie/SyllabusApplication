@@ -3,7 +3,14 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -20,10 +27,30 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner mConvenientBanner;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout mToolbarLayout;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBar;
+    @BindView(R.id.query_syllabus_button)
+    LinearLayout mQuerySyllabusButton;
+    @BindView(R.id.coordinatorLayout)
+    CoordinatorLayout mCoordinatorLayout;
+    @BindView(R.id.titleTextView)
+    TextView mTitleTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mToolbarLayout.setTitle("");
+        mToolbar.setTitle("");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
 
         List<Uri> uris = new ArrayList<>();
 
@@ -69,4 +96,15 @@ public class MainActivity extends BaseActivity {
         //开始自动翻页
         mConvenientBanner.startTurning(3000);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            //判断是返回键然后退出当前Activity
+            this.onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
