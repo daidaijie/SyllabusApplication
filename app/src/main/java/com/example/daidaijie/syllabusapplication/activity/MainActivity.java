@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -12,8 +13,10 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,14 +24,24 @@ import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.Banner;
+import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
+import com.example.daidaijie.syllabusapplication.service.BannerService;
+import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import retrofit2.Retrofit;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
-public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner mConvenientBanner;
@@ -49,35 +62,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
+    public static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        CollapsingToolbarLayout.LayoutParams layoutParams
+                = (CollapsingToolbarLayout.LayoutParams) mConvenientBanner.getLayoutParams();
+        layoutParams.height = deviceWidth / 16 * 9;
+        layoutParams.topMargin = getResources().getDimensionPixelOffset(R.dimen.toolbar_height);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            layoutParams.topMargin += getStatusBarHeight();
+        }
         mToolbarLayout.setTitle("");
+
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-//添加toolbar drawer的开关
+        //添加toolbar drawer的开关
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
 
-        List<Uri> uris = new ArrayList<>();
-
-        uris.add(Uri.parse("http://img2.imgtn.bdimg.com/it/u=3093785514,1341050958&fm=21&gp=0.jpg"));
-        uris.add(Uri.parse("http://img2.3lian.com/2014/f2/37/d/39.jpg"));
-        uris.add(Uri.parse("http://img2.3lian.com/2014/f2/37/d/39.jpg"));
-
-        mConvenientBanner.setPages(new CBViewHolderCreator() {
-            @Override
-            public Object createHolder() {
-                return new BannerImageHolderView();
-            }
-        }, uris).setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
-
+        getBanner();
     }
 
     @Override
@@ -112,10 +121,48 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private void getBanner() {
+        Retrofit retrofit = RetrofitUtil.getDefault();
+        BannerService bannerService = retrofit.create(BannerService.class);
+        Log.d(TAG, "getBanner: ");
+        bannerService.getBanner()
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<BannerInfo, Observable<Banner>>() {
+                    @Override
+                    public Observable<Banner> call(BannerInfo bannerInfo) {
+                        Log.d(TAG, "call: " + bannerInfo.getLatest().getTimestamp());
+                        return Observable.from(bannerInfo.getLatest().getBanners());
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Banner>() {
 
+                    List<Uri> uris = new ArrayList<>();
+
+                    @Override
+                    public void onCompleted() {
+                        mConvenientBanner.setPages(new CBViewHolderCreator() {
+                            @Override
+                            public Object createHolder() {
+                                return new BannerImageHolderView();
+                            }
+                        }, uris).setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
+                                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Banner banner) {
+                        uris.add(Uri.parse(banner.getUrl()));
+                        Log.d(TAG, "onNext: " + banner.getUrl());
+                    }
+                });
+    }
 }
