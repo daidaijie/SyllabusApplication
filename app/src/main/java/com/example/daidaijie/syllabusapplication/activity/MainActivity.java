@@ -1,11 +1,16 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner mConvenientBanner;
@@ -39,6 +44,10 @@ public class MainActivity extends BaseActivity {
     CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
+    @BindView(R.id.nav_view)
+    NavigationView mNavView;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout mDrawerLayout;
 
 
     @Override
@@ -48,8 +57,11 @@ public class MainActivity extends BaseActivity {
         mToolbarLayout.setTitle("");
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+//添加toolbar drawer的开关
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        mDrawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
 
 
         List<Uri> uris = new ArrayList<>();
@@ -98,13 +110,12 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //判断是返回键然后退出当前Activity
-            this.onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
+
 
 }
