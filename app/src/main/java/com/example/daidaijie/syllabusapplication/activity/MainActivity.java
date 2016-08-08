@@ -26,6 +26,7 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
+import com.example.daidaijie.syllabusapplication.model.BannerModel;
 import com.example.daidaijie.syllabusapplication.service.BannerService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -64,6 +65,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     public static final String TAG = "MainActivity";
 
+    private BannerModel mBannerModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +88,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        mBannerModel = BannerModel.getInstance();
+
+        setBannerPage(mBannerModel.mBanners);
 
         getBanner();
     }
@@ -94,7 +100,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return R.layout.activity_main;
     }
 
-    private class BannerImageHolderView implements Holder<Uri> {
+    private class BannerImageHolderView implements Holder<Banner> {
         SimpleDraweeView draweeView;
 
         @Override
@@ -104,9 +110,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         @Override
-        public void UpdateUI(Context context, int position, Uri data) {
-            draweeView.setImageURI(data);
+        public void UpdateUI(Context context, int position, Banner banner) {
+            draweeView.setImageURI(Uri.parse(banner.getUrl()));
         }
+
 
     }
 
@@ -125,32 +132,44 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
+    private void setBannerPage(List<Banner> banners) {
+        if (banners.size() == 0) {
+            return;
+        }
+        mConvenientBanner.setPages(new CBViewHolderCreator() {
+            @Override
+            public Object createHolder() {
+                return new BannerImageHolderView();
+            }
+        }, banners)
+                .setPageIndicator(
+                        new int[]{R.drawable.ic_page_indicator,
+                                R.drawable.ic_page_indicator_focused})
+                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+
+    }
+
     private void getBanner() {
         Retrofit retrofit = RetrofitUtil.getDefault();
         BannerService bannerService = retrofit.create(BannerService.class);
         Log.d(TAG, "getBanner: ");
         bannerService.getBanner()
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<BannerInfo, Observable<Banner>>() {
+                .filter(new Func1<BannerInfo, Boolean>() {
                     @Override
-                    public Observable<Banner> call(BannerInfo bannerInfo) {
-                        Log.d(TAG, "call: " + bannerInfo.getLatest().getTimestamp());
-                        return Observable.from(bannerInfo.getLatest().getBanners());
+                    public Boolean call(BannerInfo bannerInfo) {
+                        if (bannerInfo.getLatest().getTimestamp() == mBannerModel.getTimestamp()) {
+                            return false;
+                        } else {
+                            mBannerModel.setTimestamp(bannerInfo.getLatest().getTimestamp());
+                            return true;
+                        }
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Banner>() {
-
-                    List<Uri> uris = new ArrayList<>();
-
+                .subscribe(new Subscriber<BannerInfo>() {
                     @Override
                     public void onCompleted() {
-                        mConvenientBanner.setPages(new CBViewHolderCreator() {
-                            @Override
-                            public Object createHolder() {
-                                return new BannerImageHolderView();
-                            }
-                        }, uris).setPageIndicator(new int[]{R.drawable.ic_page_indicator, R.drawable.ic_page_indicator_focused})
-                                .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
+                        setBannerPage(mBannerModel.mBanners);
                     }
 
                     @Override
@@ -159,9 +178,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
 
                     @Override
-                    public void onNext(Banner banner) {
-                        uris.add(Uri.parse(banner.getUrl()));
-                        Log.d(TAG, "onNext: " + banner.getUrl());
+                    public void onNext(BannerInfo bannerInfo) {
+                        mBannerModel.setBanners(bannerInfo.getLatest().getBanners());
                     }
                 });
     }
