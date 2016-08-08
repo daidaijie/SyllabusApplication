@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -118,7 +120,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         }
 
         @Override
-        public void UpdateUI(Context context, int position, final Banner banner) {
+        public void UpdateUI(final Context context, int position, final Banner banner) {
 //            draweeView.setImageURI(Uri.parse(banner.getUrl()));
             ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(banner.getUrl()))
                     .setProgressiveRenderingEnabled(true)
@@ -128,14 +130,31 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     .setOldController(draweeView.getController())
                     .build();
             draweeView.setController(controller);
+            final AlertDialog dialog = new AlertDialog.Builder(context)
+                    .setTitle(banner.getDescription())
+                    .setNegativeButton(
+                            "查看详情", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Toast.makeText(MainActivity.this,
+                                            banner.getDescription(), Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            }
+                    ).setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).create();
+
             draweeView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, banner.getDescription(), Toast.LENGTH_SHORT).show();
+                    dialog.show();
                 }
             });
         }
-
 
     }
 
