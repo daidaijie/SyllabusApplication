@@ -1,8 +1,10 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="com.example.daidaijie.syllabusapplication.activity.StuCircleFragment">
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultLightBackground"
+    tools:context="com.example.daidaijie.syllabusapplication.activity.StuCircleFragment">
 
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"
