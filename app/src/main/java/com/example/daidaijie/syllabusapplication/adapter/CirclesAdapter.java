@@ -2,6 +2,8 @@ package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,8 +14,11 @@ import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -61,6 +66,20 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         holder.mContentTextView.setText(postBean.getContent());
         holder.mZanTextView.setText("赞[" + postBean.getThumb_ups().size() + "]");
         holder.mCommentTextView.setText("评论[" + postBean.getComments().size() + "]");
+
+        if (postBean.getPhoto_list_json() != null && !postBean.getPhoto_list_json().isEmpty()) {
+            Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + "photoList");
+            PhotoInfo photoInfo = GsonUtil.getDefault().fromJson(postBean.getPhoto_list_json(), PhotoInfo.class);
+            PhotoAdapter photoAdapter = new PhotoAdapter(mActivity, photoInfo);
+            holder.mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(
+                    mActivity, 1, LinearLayoutManager.HORIZONTAL, false
+            ));
+            holder.mPhotoRecyclerView.setAdapter(photoAdapter);
+            holder.mPhotoRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            holder.mPhotoRecyclerView.setVisibility(View.GONE);
+        }
+
     }
 
     @Override

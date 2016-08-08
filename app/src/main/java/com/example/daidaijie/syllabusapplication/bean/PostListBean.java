@@ -17,7 +17,7 @@ public class PostListBean {
     private PostUserBean user;
     private String description;
     private String source;
-    private Object photo_list_json;
+    private String photo_list_json;
     private int post_type;
     private int id;
     private String post_time;
@@ -66,11 +66,11 @@ public class PostListBean {
         this.source = source;
     }
 
-    public Object getPhoto_list_json() {
+    public String getPhoto_list_json() {
         return photo_list_json;
     }
 
-    public void setPhoto_list_json(Object photo_list_json) {
+    public void setPhoto_list_json(String photo_list_json) {
         this.photo_list_json = photo_list_json;
     }
 

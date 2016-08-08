@@ -62,10 +62,9 @@
             android:textSize="14sp"/>
 
         <android.support.v7.widget.RecyclerView
-            android:background="@drawable/background"
             android:id="@+id/photoRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="160dp"
             android:layout_below="@+id/contentTextView"
             android:layout_marginTop="8dp">
         </android.support.v7.widget.RecyclerView>
