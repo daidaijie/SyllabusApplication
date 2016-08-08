@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.daidaijie.syllabusapplication.R;
 
 /**
@@ -22,6 +23,8 @@ public class ItemCardLayout extends FrameLayout {
 
     private TextView mCardDescTextView;
 
+    private MaterialRippleLayout mRippleLayout;
+
     public ItemCardLayout(Context context) {
         this(context, null);
     }
@@ -32,17 +35,18 @@ public class ItemCardLayout extends FrameLayout {
 
     public ItemCardLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mRootView =  LayoutInflater.from(context).inflate(R.layout.item_layout_card
+        mRootView = LayoutInflater.from(context).inflate(R.layout.item_layout_card
                 , this, true);
         mCardIconImageView = (ImageView) mRootView.findViewById(R.id.cardIconImageView);
         mCardDescTextView = (TextView) mRootView.findViewById(R.id.cardDescTextView);
+        mRippleLayout = (MaterialRippleLayout) mRootView.findViewById(R.id.rippleLayout);
 
         TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs,
                 R.styleable.ItemCardLayout, defStyleAttr, 0);
         int n = typedArray.getIndexCount();
         for (int i = 0; i < n; i++) {
             int attr = typedArray.getIndex(i);
-            switch (attr){
+            switch (attr) {
                 case R.styleable.ItemCardLayout_cardTitle:
                     setTitleText(typedArray.getString(attr));
                     break;
@@ -68,4 +72,8 @@ public class ItemCardLayout extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        mRippleLayout.setOnClickListener(l);
+    }
 }

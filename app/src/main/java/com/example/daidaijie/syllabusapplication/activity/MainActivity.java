@@ -19,7 +19,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,14 +37,12 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.squareup.haha.perflib.Main;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import retrofit2.Retrofit;
-import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -107,6 +104,12 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     protected int getContentView() {
         return R.layout.activity_main;
+    }
+
+    @OnClick(R.id.toSTUItemLayout)
+    public void onClick() {
+        Intent intent = new Intent(MainActivity.this,STUCircleActivity.class);
+        startActivity(intent);
     }
 
     private class BannerImageHolderView implements Holder<Banner> {

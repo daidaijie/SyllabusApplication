@@ -86,12 +86,13 @@
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
+                android:id="@+id/toSTUItemLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardTitle="校园动态">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
         </LinearLayout>
