@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tool_bar="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mainRootLayout"
     android:layout_width="match_parent"
@@ -18,7 +18,7 @@
         android:fitsSystemWindows="true"
         android:gravity="center_vertical"
         android:theme="@style/AppTheme.PopupOverlay"
-        tool_bar:titleTextColor="@android:color/white">
+        app:titleTextColor="@android:color/white">
 
         <TextView
             android:id="@+id/titleTextView"
@@ -33,6 +33,7 @@
             android:textSize="20sp"/>
 
     </android.support.v7.widget.Toolbar>
+
     <com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager
         android:id="@+id/syllabusViewPager"
         android:layout_width="match_parent"
