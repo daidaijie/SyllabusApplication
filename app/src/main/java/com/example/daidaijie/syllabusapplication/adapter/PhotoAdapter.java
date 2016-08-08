@@ -33,6 +33,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
+        //之前显示不出来是因为没设置item_photo的大小
         View view = inflater.inflate(R.layout.item_photo, parent, false);
 
         return new ViewHolder(view);
@@ -41,7 +42,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         PhotoInfo.PhotoListBean photoBean = mPhotoInfo.getPhoto_list().get(position);
-        Log.d(StuCircleFragment.TAG, "onBindViewHolder: "+photoBean.getSize_small());
         holder.mPhotoSimpleDraweeView.setImageURI(photoBean.getSize_small());
     }
 

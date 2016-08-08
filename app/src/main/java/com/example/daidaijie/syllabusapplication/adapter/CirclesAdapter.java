@@ -71,9 +71,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + "photoList");
             PhotoInfo photoInfo = GsonUtil.getDefault().fromJson(postBean.getPhoto_list_json(), PhotoInfo.class);
             PhotoAdapter photoAdapter = new PhotoAdapter(mActivity, photoInfo);
-            holder.mPhotoRecyclerView.setLayoutManager(new GridLayoutManager(
-                    mActivity, 1, LinearLayoutManager.HORIZONTAL, false
-            ));
+            holder.mPhotoRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
             holder.mPhotoRecyclerView.setAdapter(photoAdapter);
             holder.mPhotoRecyclerView.setVisibility(View.VISIBLE);
         } else {
