@@ -14,12 +14,12 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:fitsSystemWindows="true"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height"
+            android:fitsSystemWindows="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:theme="@style/AppTheme.PopupOverlay"
             app:titleTextColor="@android:color/white">
 
@@ -40,18 +40,11 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/springView"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/containerViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/circleRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v7.widget.RecyclerView>
-
-    </com.liaoinstan.springview.widget.SpringView>
 
 </android.support.design.widget.CoordinatorLayout>
