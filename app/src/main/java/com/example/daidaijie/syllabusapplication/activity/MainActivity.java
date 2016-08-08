@@ -14,11 +14,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
@@ -29,7 +31,12 @@ import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
 import com.example.daidaijie.syllabusapplication.model.BannerModel;
 import com.example.daidaijie.syllabusapplication.service.BannerService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.squareup.haha.perflib.Main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,13 +112,28 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         @Override
         public View createView(Context context) {
-            draweeView = new SimpleDraweeView(context);
-            return draweeView;
+            View view = LayoutInflater.from(context).inflate(R.layout.item_banner, null, false);
+            draweeView = (SimpleDraweeView) view.findViewById(R.id.imgBanner);
+            return view;
         }
 
         @Override
-        public void UpdateUI(Context context, int position, Banner banner) {
-            draweeView.setImageURI(Uri.parse(banner.getUrl()));
+        public void UpdateUI(Context context, int position, final Banner banner) {
+//            draweeView.setImageURI(Uri.parse(banner.getUrl()));
+            ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(banner.getUrl()))
+                    .setProgressiveRenderingEnabled(true)
+                    .build();
+            DraweeController controller = Fresco.newDraweeControllerBuilder()
+                    .setImageRequest(request)
+                    .setOldController(draweeView.getController())
+                    .build();
+            draweeView.setController(controller);
+            draweeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(MainActivity.this, banner.getDescription(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
 
