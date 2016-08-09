@@ -66,7 +66,7 @@ public class ClassmateListActivity extends BaseActivity {
         mStudentInfos = (List<StudentInfo>) getIntent().getSerializableExtra(EXTRA_STUDENT_LIST);
         mStudentInfoAdapter = new StudentInfoAdapter(this, mStudentInfos);
         mClassmateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mClassmateRecyclerView.setEmptyView(mTvEmptyView)   ;
+        mClassmateRecyclerView.setEmptyView(mTvEmptyView);
         mClassmateRecyclerView.setAdapter(mStudentInfoAdapter);
 
         int bgColor = getResources()
