@@ -55,5 +55,6 @@ dependencies {
     compile 'com.liaoinstan.springview:library:1.2.6'
 
     compile 'com.github.nekocode:Emojix:1.1'
+    compile 'me.relex:photodraweeview:1.0.0'
 
 }
