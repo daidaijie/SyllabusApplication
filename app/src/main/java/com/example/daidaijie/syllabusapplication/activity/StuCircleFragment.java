@@ -119,7 +119,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                             } else {
                                 mCirclesAdapter.setPostListBeen(mPostListBeen);
                             }
-                            lowID = mPostListBeen.get(9).getId();
+                            lowID = mPostListBeen.get(mPostListBeen.size() - 1).getId();
                             mCirclesAdapter.notifyDataSetChanged();
                         }
                         mSpringView.onFinishFreshAndLoad();
