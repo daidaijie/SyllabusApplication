@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,7 +62,15 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         PostListBean postBean = mPostListBeen.get(position);
 
         PostListBean.PostUserBean user = postBean.getUser();
-        holder.mHeadImageDraweeView.setImageURI(user.getImage());
+
+        if (user.getImage() != null) {
+            holder.mHeadImageDraweeView.setImageURI(user.getImage());
+        } else {
+            holder.mHeadImageDraweeView.setImageURI(
+                    Uri.parse("res://" + mActivity.getPackageName()
+                            + "/" + R.drawable.ic_syllabus_icon)
+            );
+        }
         holder.mNicknameTextView.setText(
                 user.getNickname().trim().isEmpty() ? user.getAccount() : user.getNickname()
         );

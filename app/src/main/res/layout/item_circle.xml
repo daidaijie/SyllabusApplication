@@ -28,6 +28,7 @@
             app:roundAsCircle="true"/>
 
         <TextView
+            android:layout_marginTop="4dp"
             android:id="@+id/nicknameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
