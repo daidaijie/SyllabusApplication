@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -44,7 +46,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
         PhotoInfo.PhotoListBean photoBean = mPhotoInfo.getPhoto_list().get(position);
 
@@ -55,6 +57,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
         Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + width);
 
         holder.mPhotoSimpleDraweeView.setImageURI(photoBean.getSize_small());
+
+        holder.mPhotoSimpleDraweeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = PhotoDetailActivity.getIntent(mActivity,
+                        mPhotoInfo, position);
+                mActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override

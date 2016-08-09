@@ -43,6 +43,8 @@
         </activity>
         <activity android:name=".activity.STUCircleActivity">
         </activity>
+        <activity android:name=".activity.PhotoDetailActivity">
+        </activity>
     </application>
 
 </manifest>

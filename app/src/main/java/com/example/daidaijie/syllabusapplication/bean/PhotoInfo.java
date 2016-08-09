@@ -1,11 +1,12 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by daidaijie on 2016/8/9.
  */
-public class PhotoInfo {
+public class PhotoInfo implements Serializable {
 
     /**
      * size_big : http://bmob-cdn-5361.b0.upaiyun.com/2016/08/05/87afbb2890844596a676b66cd42bc73d.jpg
@@ -22,7 +23,7 @@ public class PhotoInfo {
         this.photo_list = photo_list;
     }
 
-    public static class PhotoListBean {
+    public static class PhotoListBean implements Serializable {
         private String size_big;
         private String size_small;
 
