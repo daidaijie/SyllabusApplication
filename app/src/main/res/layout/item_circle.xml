@@ -40,19 +40,36 @@
             android:textSize="14sp"
             tools:text="余强"/>
 
-        <TextView
-            android:id="@+id/postInfoTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <RelativeLayout
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@+id/headImageDraweeView"
             android:layout_above="@+id/contentTextView"
             android:layout_below="@+id/nicknameTextView"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/headImageDraweeView"
-            android:singleLine="true"
-            android:textColor="@color/defaultShowColor"
-            android:textSize="12sp"
-            tools:text="2016-08-06 17:58:27 来自iOS客户端"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_alignParentLeft="true"
+                android:id="@+id/postInfoTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:singleLine="true"
+                android:textColor="@color/defaultShowColor"
+                android:textSize="12sp"
+                tools:text="2016-08-06 17:58:20"/>
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/postDeviceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:singleLine="true"
+                android:textColor="@color/defaultShowColor"
+                android:textSize="12sp"
+                tools:text="来自iOS客户端"/>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/contentTextView"
@@ -60,7 +77,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/headImageDraweeView"
             android:layout_marginTop="8dp"
-            android:text="8月13号12:50潮汕站👉汕大。三缺一。联系麦同学：661821。[流泪][流泪][流泪]"
+            tools:text="8月13号12:50潮汕站👉汕大。三缺一。联系麦同学：661821。[流泪][流泪][流泪]"
             android:textColor="@color/defaultTextColor"
             android:textSize="14sp"/>
 

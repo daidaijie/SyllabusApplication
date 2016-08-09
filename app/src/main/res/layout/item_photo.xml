@@ -7,6 +7,7 @@
               android:orientation="vertical">
 
     <com.facebook.drawee.view.SimpleDraweeView
+        fresco:placeholderImage="@drawable/bg_null_img"
         android:id="@+id/photoSimpleDraweeView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

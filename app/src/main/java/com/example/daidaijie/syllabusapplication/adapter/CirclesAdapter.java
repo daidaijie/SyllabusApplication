@@ -1,11 +1,14 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.hardware.display.DisplayManager;
 import android.net.Uri;
+import android.support.annotation.Dimension;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +23,7 @@ import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
+import com.liaoinstan.springview.utils.DensityUtil;
 
 import java.util.List;
 
@@ -34,6 +38,8 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     Activity mActivity;
 
     private List<PostListBean> mPostListBeen;
+
+    private int mWidth;
 
     public CirclesAdapter(Activity activity, List<PostListBean> postListBeen) {
         mActivity = activity;
@@ -53,6 +59,8 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.item_circle, parent, false);
+
+        mWidth = parent.getWidth() - DensityUtil.dip2px(mActivity, 48 + 7f) + 1;
 
         return new ViewHolder(view);
     }
@@ -74,21 +82,29 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         holder.mNicknameTextView.setText(
                 user.getNickname().trim().isEmpty() ? user.getAccount() : user.getNickname()
         );
-        holder.mPostInfoTextView.setText(postBean.getPost_time()
-                + "　来自" + postBean.getSource() + "客户端");
+        holder.mPostInfoTextView.setText(postBean.getPost_time());
+        if (postBean.getSource() != null) {
+            holder.mPostDeviceTextView.setText("来自" + postBean.getSource() + "客户端");
+        } else {
+            holder.mPostDeviceTextView.setText("来自火星");
+        }
+
         holder.mContentTextView.setText(postBean.getContent());
         holder.mZanTextView.setText("赞[" + postBean.getThumb_ups().size() + "]");
         holder.mCommentTextView.setText("评论[" + postBean.getComments().size() + "]");
 
+        mWidth = mWidth > holder.mContentTextView.getWidth() ? mWidth : holder.mContentTextView.getWidth();
+
         if (postBean.getPhoto_list_json() != null && !postBean.getPhoto_list_json().isEmpty()) {
             Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + "photoList");
-            PhotoInfo photoInfo = GsonUtil.getDefault().fromJson(postBean.getPhoto_list_json(), PhotoInfo.class);
-            PhotoAdapter photoAdapter = new PhotoAdapter(mActivity, photoInfo,
-                    holder.mPhotoRecyclerView.getWidth());
-            holder.mPhotoRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity,
-                    LinearLayoutManager.HORIZONTAL,false));
-            holder.mPhotoRecyclerView.setAdapter(photoAdapter);
             holder.mPhotoRecyclerView.setVisibility(View.VISIBLE);
+            PhotoInfo photoInfo = GsonUtil.getDefault()
+                    .fromJson(postBean.getPhoto_list_json(), PhotoInfo.class);
+            PhotoAdapter photoAdapter = new PhotoAdapter(mActivity, photoInfo,
+                    mWidth);
+            holder.mPhotoRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity,
+                    LinearLayoutManager.HORIZONTAL, false));
+            holder.mPhotoRecyclerView.setAdapter(photoAdapter);
         } else {
             holder.mPhotoRecyclerView.setVisibility(View.GONE);
         }
@@ -115,6 +131,8 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         TextView mZanTextView;
         @BindView(R.id.commentTextView)
         TextView mCommentTextView;
+        @BindView(R.id.postDeviceTextView)
+        TextView mPostDeviceTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);

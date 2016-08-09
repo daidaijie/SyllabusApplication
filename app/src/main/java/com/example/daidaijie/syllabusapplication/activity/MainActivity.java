@@ -81,7 +81,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 = (CollapsingToolbarLayout.LayoutParams) mConvenientBanner.getLayoutParams();
         layoutParams.height = deviceWidth / 16 * 9;
         layoutParams.topMargin = getResources().getDimensionPixelOffset(R.dimen.toolbar_height);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
             layoutParams.topMargin += getStatusBarHeight();
         }
         mToolbarLayout.setTitle("");

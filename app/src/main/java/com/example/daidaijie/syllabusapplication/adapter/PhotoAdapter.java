@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +52,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
         ViewGroup.LayoutParams layoutParams = holder.mPhotoSimpleDraweeView.getLayoutParams();
         layoutParams.width = width;
+        Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + width);
+
         holder.mPhotoSimpleDraweeView.setImageURI(photoBean.getSize_small());
     }
 
