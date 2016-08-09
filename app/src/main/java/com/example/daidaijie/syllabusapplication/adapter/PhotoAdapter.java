@@ -25,9 +25,12 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
     private PhotoInfo mPhotoInfo;
 
-    public PhotoAdapter(Activity activity, PhotoInfo photoInfo) {
+    private int mWidth;
+
+    public PhotoAdapter(Activity activity, PhotoInfo photoInfo, int width) {
         mActivity = activity;
         mPhotoInfo = photoInfo;
+        mWidth = width;
     }
 
     @Override
@@ -41,7 +44,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         PhotoInfo.PhotoListBean photoBean = mPhotoInfo.getPhoto_list().get(position);
+
+        int width = mWidth / getItemCount();
+
+        ViewGroup.LayoutParams layoutParams = holder.mPhotoSimpleDraweeView.getLayoutParams();
+        layoutParams.width = width;
         holder.mPhotoSimpleDraweeView.setImageURI(photoBean.getSize_small());
     }
 
