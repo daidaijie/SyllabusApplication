@@ -7,13 +7,16 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/material_white</item>
         <!--<item name="android:windowBackground">@color/transparent</item>-->
 
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark">
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlNormal">@color/material_white</item>
+        <item name="actionMenuTextColor">@color/material_white</item>
         <item name="android:textColorPrimary">@android:color/white</item>
         <item name="drawerArrowStyle">@style/left_Drawer_Arrow_Style</item>
     </style>

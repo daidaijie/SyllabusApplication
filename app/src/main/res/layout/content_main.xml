@@ -45,6 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/toolbar_height"
                 app:layout_collapseMode="pin"
+                android:theme="@style/AppTheme.PopupOverlay"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
                 <TextView

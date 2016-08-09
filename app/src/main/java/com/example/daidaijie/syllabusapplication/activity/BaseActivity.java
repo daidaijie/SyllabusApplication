@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import butterknife.ButterKnife;
+import cn.nekocode.emojix.Emojix;
 
 /**
  * Created by daidaijie on 2016/7/25.
@@ -59,5 +61,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             devideHeight -= getStatusBarHeight();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(Emojix.wrap(newBase));
     }
 }

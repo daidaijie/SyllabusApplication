@@ -23,8 +23,8 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/headImageDraweeView"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             app:roundAsCircle="true"/>
 
         <TextView
@@ -32,22 +32,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
             android:layout_toRightOf="@+id/headImageDraweeView"
             android:ellipsize="end"
             android:singleLine="true"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="余强"/>
 
         <TextView
             android:id="@+id/postInfoTextView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_above="@+id/contentTextView"
             android:layout_below="@+id/nicknameTextView"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:layout_toRightOf="@+id/headImageDraweeView"
             android:singleLine="true"
             android:textColor="@color/defaultShowColor"
@@ -62,7 +61,7 @@
             android:layout_marginTop="8dp"
             android:text="8月13号12:50潮汕站👉汕大。三缺一。联系麦同学：661821。[流泪][流泪][流泪]"
             android:textColor="@color/defaultTextColor"
-            android:textSize="16sp"/>
+            android:textSize="14sp"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/photoRecyclerView"
