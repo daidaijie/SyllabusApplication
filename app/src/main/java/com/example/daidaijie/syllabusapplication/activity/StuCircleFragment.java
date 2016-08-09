@@ -45,6 +45,8 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
     CirclesAdapter mCirclesAdapter;
 
+    int lowID;
+
     public static final String TAG = "StuCircleFragment";
 
     private int[] pullAnimSrcs = new int[]{R.drawable.mt_pull, R.drawable.mt_pull01, R.drawable.mt_pull02, R.drawable.mt_pull03, R.drawable.mt_pull04, R.drawable.mt_pull05};
@@ -75,24 +77,28 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
         mCircleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mCircleRecyclerView.setAdapter(mCirclesAdapter);
 
+        lowID = Integer.MAX_VALUE;
+        getCircles();
+
         return view;
     }
 
     @Override
     public void onRefresh() {
+        lowID = Integer.MAX_VALUE;
         getCircles();
     }
 
     @Override
     public void onLoadmore() {
-
+        getCircles();
     }
 
     private void getCircles() {
         Log.d(TAG, "getCircles: ");
         Retrofit retrofit = RetrofitUtil.getDefault();
         CirclesService circlesService = retrofit.create(CirclesService.class);
-        circlesService.getCircles(10, 2184)
+        circlesService.getCircles(10, lowID)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<CircleBean, List<PostListBean>>() {
                     @Override
@@ -108,7 +114,12 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                     public void onCompleted() {
                         Log.d(TAG, "onCompleted: " + mPostListBeen.size());
                         if (mPostListBeen != null) {
-                            mCirclesAdapter.setPostListBeen(mPostListBeen);
+                            if (lowID != Integer.MAX_VALUE) {
+                                mCirclesAdapter.getPostListBeen().addAll(mPostListBeen);
+                            } else {
+                                mCirclesAdapter.setPostListBeen(mPostListBeen);
+                            }
+                            lowID = mPostListBeen.get(9).getId();
                             mCirclesAdapter.notifyDataSetChanged();
                         }
                         mSpringView.onFinishFreshAndLoad();

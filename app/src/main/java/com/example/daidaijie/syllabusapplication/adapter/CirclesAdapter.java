@@ -44,6 +44,10 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     }
 
 
+    public List<PostListBean> getPostListBeen() {
+        return mPostListBeen;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
