@@ -451,12 +451,9 @@ public class ThumbUpView extends View {
     public void setLike() {
 
         if (mAnimatedLikeValue == 0 || mAnimatedLikeValue == MaxSize) {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    noLikeAnim(LikeType.like);
-                }
-            });
+            mAnimatedLikeValue = MaxSize;
+            invalidate();
+            setTag(true);
         }
 
     }
@@ -464,12 +461,9 @@ public class ThumbUpView extends View {
     public void setUnLike() {
         if (mAnimatedLikeValue == MaxSize
                 ) {
-            post(new Runnable() {
-                @Override
-                public void run() {
-                    noLikeAnim(mUnLikeType);
-                }
-            });
+            setTag(false);
+            mAnimatedLikeValue = 0.0f;
+            invalidate();
         }
     }
 
@@ -497,12 +491,12 @@ public class ThumbUpView extends View {
     private void noLikeAnim(LikeType like) {
 
         if (like == LikeType.unlike) {
-            startViewAnim(0f, 1f, 1, like);
+            startViewAnim(0f, 1f, 0, like);
             setTag(false);
 
         } else if (like == LikeType.like) {
             setTag(true);
-            startViewAnim(0f, 1f, 1, like);
+            startViewAnim(0f, 1f, 0, like);
 
         } else if (like == LikeType.broken) {
             setTag(false);
