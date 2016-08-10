@@ -136,7 +136,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mActivity, "Position : " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, android.os.Build.MODEL+" Position : " + position, Toast.LENGTH_SHORT).show();
             }
         });
 
