@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.PhotoDetailAdapter;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
+import com.example.daidaijie.syllabusapplication.widget.MultiTouchViewPager;
 
 import butterknife.BindView;
 
@@ -23,7 +24,7 @@ public class PhotoDetailActivity extends BaseActivity {
             = "com.example.daidaijie.syllabusapplication.activity.PhotoInfoPosition";
 
     @BindView(R.id.photoViewpager)
-    ViewPager mPhotoViewpager;
+    MultiTouchViewPager mPhotoViewpager;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.titleTextView)

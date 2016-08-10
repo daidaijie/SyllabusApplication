@@ -5,6 +5,7 @@ import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.support.annotation.Dimension;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +69,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         PostListBean postBean = mPostListBeen.get(position);
 
         PostListBean.PostUserBean user = postBean.getUser();
@@ -122,6 +123,13 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             }
         });
 
+        holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mActivity, "Position : " + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     @Override
@@ -150,6 +158,8 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         ThumbUpView mThumbUpView;
         @BindView(R.id.thumbUpLinearLayout)
         LinearLayout mThumbUpLinearLayout;
+        @BindView(R.id.itemCardView)
+        CardView mItemCardView;
 
         public ViewHolder(View itemView) {
             super(itemView);

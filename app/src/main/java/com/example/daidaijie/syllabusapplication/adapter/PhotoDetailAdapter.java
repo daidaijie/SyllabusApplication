@@ -41,7 +41,6 @@ public class PhotoDetailAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        // TODO: 2016/8/9 缩放的时候会出现bug，看看有没有办法去修改
         final PhotoDraweeView photoDraweeView = new PhotoDraweeView(mActivity);
         PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
         controller.setUri(mPhotoInfo.getPhoto_list().get(position).getSize_big());

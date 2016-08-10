@@ -10,6 +10,7 @@
     android:layout_marginRight="16dp"
     android:layout_marginTop="4dp"
     android:orientation="vertical"
+    android:id="@+id/itemCardView"
     app:cardBackgroundColor="@color/material_white"
     app:cardCornerRadius="4dp"
     app:cardElevation="1dp">
@@ -48,6 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:gravity="bottom"
                 android:layout_alignParentLeft="true"
                 android:id="@+id/postInfoTextView"
                 android:layout_width="wrap_content"
@@ -59,6 +61,7 @@
                 android:textSize="12sp"
                 tools:text="2016-08-06 17:58:20"/>
             <TextView
+                android:gravity="bottom"
                 android:layout_alignParentRight="true"
                 android:id="@+id/postDeviceTextView"
                 android:layout_width="wrap_content"
@@ -72,6 +75,8 @@
         </RelativeLayout>
 
         <TextView
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/headImageDraweeView"
             android:id="@+id/contentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,9 +124,9 @@
                 app:cracksColor="@color/material_red_300"
                 app:edgeColor="@color/defaultShowColor"
                 app:fillColor="@color/material_red_300"
-                app:unlikeType="1"
-                android:layout_width="24dp"
-                android:layout_height="24dp"/>
+                app:unlikeType="0"
+                android:layout_width="16dp"
+                android:layout_height="16dp"/>
             <TextView
                 android:layout_marginLeft="8dp"
                 android:id="@+id/zanTextView"
