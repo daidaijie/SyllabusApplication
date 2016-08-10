@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.liaoinstan.springview.utils.DensityUtil;
@@ -66,7 +68,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         PostListBean postBean = mPostListBeen.get(position);
 
         PostListBean.PostUserBean user = postBean.getUser();
@@ -108,6 +110,17 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         } else {
             holder.mPhotoRecyclerView.setVisibility(View.GONE);
         }
+        if (postBean.getThumb_ups().size() > 0) {
+            holder.mThumbUpView.setLike();
+        } else {
+            holder.mThumbUpView.setUnLike();
+        }
+        holder.mThumbUpLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                holder.mThumbUpView.Like();
+            }
+        });
 
     }
 
@@ -133,6 +146,10 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         TextView mCommentTextView;
         @BindView(R.id.postDeviceTextView)
         TextView mPostDeviceTextView;
+        @BindView(R.id.thumbUpView)
+        ThumbUpView mThumbUpView;
+        @BindView(R.id.thumbUpLinearLayout)
+        LinearLayout mThumbUpLinearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

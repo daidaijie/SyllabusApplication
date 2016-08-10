@@ -107,14 +107,23 @@
             android:background="@color/defaultShowColor"/>
 
         <LinearLayout
+            android:id="@+id/thumbUpLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_below="@+id/horDivLine"
             android:layout_toLeftOf="@+id/verDivLine"
             android:gravity="center"
             android:orientation="horizontal">
-
+            <com.example.daidaijie.syllabusapplication.widget.ThumbUpView
+                android:id="@+id/thumbUpView"
+                app:cracksColor="@color/material_red_300"
+                app:edgeColor="@color/defaultShowColor"
+                app:fillColor="@color/material_red_300"
+                app:unlikeType="1"
+                android:layout_width="24dp"
+                android:layout_height="24dp"/>
             <TextView
+                android:layout_marginLeft="8dp"
                 android:id="@+id/zanTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
