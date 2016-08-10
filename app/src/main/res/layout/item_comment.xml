@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:paddingLeft="8dp"
+              android:paddingRight="8dp">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/defaultLineColor"/>
+
+    <RelativeLayout
+        android:background="@color/material_white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/headImageDraweeView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:roundAsCircle="true"/>
+
+        <TextView
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/nicknameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@+id/headImageDraweeView"/>
+
+        <TextView
+            android:textColor="@color/defaultShowColor"
+            android:singleLine="true"
+            android:textSize="12sp"
+            android:id="@+id/timeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nicknameTextView"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/headImageDraweeView"/>
+
+        <TextView
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"
+            android:id="@+id/contentTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/headImageDraweeView"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/headImageDraweeView"/>
+
+    </RelativeLayout>
+    <View
+        android:id="@+id/devLine"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/defaultLineColor"/>
+
+</LinearLayout>
