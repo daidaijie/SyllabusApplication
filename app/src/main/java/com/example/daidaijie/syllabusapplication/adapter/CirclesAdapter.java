@@ -9,6 +9,10 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -87,14 +91,20 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         );
         holder.mPostInfoTextView.setText(postBean.getPost_time());
         if (postBean.getSource() != null) {
-            holder.mPostDeviceTextView.setText("来自" + postBean.getSource() + "客户端");
+            String str = "来自 "+postBean.getSource();
+            SpannableStringBuilder style=new SpannableStringBuilder(str);
+            style.setSpan(new ForegroundColorSpan(
+                    mActivity.getResources().getColor(R.color.colorPrimary)),
+                        3,str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                    );
+            holder.mPostDeviceTextView.setText(style);
         } else {
-            holder.mPostDeviceTextView.setText("来自火星");
+            holder.mPostDeviceTextView.setText("来自 火星");
         }
 
         holder.mContentTextView.setText(postBean.getContent());
-        holder.mZanTextView.setText("赞[" + postBean.getThumb_ups().size() + "]");
-        holder.mCommentTextView.setText("评论[" + postBean.getComments().size() + "]");
+        holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
+        holder.mCommentTextView.setText("评论 [" + postBean.getComments().size() + "]");
 
         mWidth = mWidth > holder.mContentTextView.getWidth() ? mWidth : holder.mContentTextView.getWidth();
 

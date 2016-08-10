@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
     android:orientation="vertical"
     android:id="@+id/itemCardView"
@@ -18,8 +18,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
         android:paddingTop="8dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -49,7 +49,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:gravity="bottom"
+                android:gravity="top"
                 android:layout_alignParentLeft="true"
                 android:id="@+id/postInfoTextView"
                 android:layout_width="wrap_content"
@@ -61,7 +61,9 @@
                 android:textSize="12sp"
                 tools:text="2016-08-06 17:58:20"/>
             <TextView
-                android:gravity="bottom"
+                android:ellipsize="end"
+                android:layout_toRightOf="@+id/postInfoTextView"
+                android:gravity="top|right"
                 android:layout_alignParentRight="true"
                 android:id="@+id/postDeviceTextView"
                 android:layout_width="wrap_content"
@@ -71,12 +73,10 @@
                 android:singleLine="true"
                 android:textColor="@color/defaultShowColor"
                 android:textSize="12sp"
-                tools:text="来自iOS客户端"/>
+                tools:text="来自iOS"/>
         </RelativeLayout>
 
         <TextView
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/headImageDraweeView"
             android:id="@+id/contentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/photoRecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="168dp"
             android:layout_below="@+id/contentTextView"
             android:layout_marginTop="8dp">
         </android.support.v7.widget.RecyclerView>
