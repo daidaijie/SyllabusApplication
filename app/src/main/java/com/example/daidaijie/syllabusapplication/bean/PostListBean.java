@@ -1,11 +1,12 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by daidaijie on 2016/8/9.
  */
-public class PostListBean {
+public class PostListBean implements Serializable {
     private String content;
     /**
      * account : 15jhzhao3
@@ -114,7 +115,7 @@ public class PostListBean {
         this.thumb_ups = thumb_ups;
     }
 
-    public static class PostUserBean {
+    public static class PostUserBean implements Serializable {
         private String account;
         private String nickname;
         private String image;
@@ -153,7 +154,7 @@ public class PostListBean {
         }
     }
 
-    public static class CommentsBean {
+    public static class CommentsBean implements Serializable{
         private int uid;
         private int id;
 
@@ -174,7 +175,7 @@ public class PostListBean {
         }
     }
 
-    public static class ThumbUpsBean {
+    public static class ThumbUpsBean implements Serializable{
         private int uid;
         private int id;
 

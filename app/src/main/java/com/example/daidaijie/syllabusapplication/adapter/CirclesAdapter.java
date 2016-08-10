@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.support.annotation.Dimension;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
@@ -48,9 +50,20 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
 
     private int mWidth;
 
+    //判断是列表还是详情，列表是false，详情是true
+    private boolean isOnlyOne;
+
     public CirclesAdapter(Activity activity, List<PostListBean> postListBeen) {
         mActivity = activity;
         mPostListBeen = postListBeen;
+        isOnlyOne = false;
+    }
+
+    public CirclesAdapter(Activity activity, List<PostListBean> postListBeen, int width) {
+        mActivity = activity;
+        mPostListBeen = postListBeen;
+        mWidth = width;
+        isOnlyOne = true;
     }
 
     public void setPostListBeen(List<PostListBean> postListBeen) {
@@ -67,14 +80,17 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         LayoutInflater inflater = LayoutInflater.from(mActivity);
         View view = inflater.inflate(R.layout.item_circle, parent, false);
 
-        mWidth = parent.getWidth() - DensityUtil.dip2px(mActivity, 48 + 7f) + 1;
+        //没传入就直接计算
+        if (mWidth == 0) {
+            mWidth = parent.getWidth() - DensityUtil.dip2px(mActivity, 48 + 7f) + 1;
+        }
 
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        PostListBean postBean = mPostListBeen.get(position);
+        final PostListBean postBean = mPostListBeen.get(position);
 
         PostListBean.PostUserBean user = postBean.getUser();
 
@@ -91,12 +107,12 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         );
         holder.mPostInfoTextView.setText(postBean.getPost_time());
         if (postBean.getSource() != null) {
-            String str = "来自 "+postBean.getSource();
-            SpannableStringBuilder style=new SpannableStringBuilder(str);
+            String str = "来自 " + postBean.getSource();
+            SpannableStringBuilder style = new SpannableStringBuilder(str);
             style.setSpan(new ForegroundColorSpan(
-                    mActivity.getResources().getColor(R.color.colorPrimary)),
-                        3,str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
-                    );
+                            mActivity.getResources().getColor(R.color.colorPrimary)),
+                    3, str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+            );
             holder.mPostDeviceTextView.setText(style);
         } else {
             holder.mPostDeviceTextView.setText("来自 火星");
@@ -133,13 +149,15 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             }
         });
 
-        holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mActivity, android.os.Build.MODEL+" Position : " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-
+        if (!isOnlyOne) {
+            holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = CircleDetailActivity.getIntent(mActivity, postBean, mWidth);
+                    mActivity.startActivity(intent);
+                }
+            });
+        }
     }
 
     @Override

@@ -14,6 +14,7 @@ import com.example.daidaijie.syllabusapplication.activity.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.liaoinstan.springview.utils.DensityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +51,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
         PhotoInfo.PhotoListBean photoBean = mPhotoInfo.getPhoto_list().get(position);
 
-        int width = mWidth / getItemCount();
+        int width = mWidth / getItemCount() - DensityUtil.dip2px(mActivity,2);
 
         ViewGroup.LayoutParams layoutParams = holder.mPhotoSimpleDraweeView.getLayoutParams();
         layoutParams.width = width;

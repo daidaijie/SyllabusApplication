@@ -43,7 +43,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     @BindView(R.id.springView)
     SpringView mSpringView;
 
-    CirclesAdapter mCirclesAdapter;
+    private CirclesAdapter mCirclesAdapter;
 
     int lowID;
 
