@@ -33,12 +33,10 @@ public class CircleDetailActivity extends BaseActivity {
     TextView mTitleTextView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.contentRecyclerView)
-    RecyclerView mContentRecyclerView;
-
     @BindView(R.id.commentRecyclerView)
     RecyclerView mCommentRecyclerView;
 
+    RecyclerView mContentRecyclerView;
     private CirclesAdapter mCirclesAdapter;
 
     private CommentAdapter mCommentAdapter;
@@ -70,11 +68,13 @@ public class CircleDetailActivity extends BaseActivity {
         mCirclesAdapter = new CirclesAdapter(this, mPostListBeen,
                 getIntent().getIntExtra(EXTRA_PHOTO_WIDTH, 0));
         //以后一定要记住这句话
+        mContentRecyclerView = new RecyclerView(this);
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mContentRecyclerView.setAdapter(mCirclesAdapter);
 
         mCommentAdapter = new CommentAdapter(this, null);
         mCommentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mCommentAdapter.setHeaderView(mContentRecyclerView);
         mCommentRecyclerView.setAdapter(mCommentAdapter);
 
         getComment();

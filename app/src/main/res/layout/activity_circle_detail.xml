@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:background="@color/defaultLightBackground"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/defaultLightBackground"
     tools:context="com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity">
 
     <android.support.v7.widget.Toolbar
@@ -20,10 +20,10 @@
         app:titleTextColor="@android:color/white">
 
         <TextView
-            android:layout_marginRight="64dp"
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="64dp"
             android:gravity="center"
             android:paddingTop="8dp"
             android:singleLine="true"
@@ -32,19 +32,13 @@
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/contentRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="16dp">
-    </android.support.v7.widget.RecyclerView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/commentRecyclerView"
-        android:layout_marginTop="32dp"
-        android:layout_below="@+id/contentRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="8dp">
     </android.support.v7.widget.RecyclerView>
+
 </RelativeLayout>

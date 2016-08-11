@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
@@ -10,7 +11,6 @@
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
     android:orientation="vertical"
-    android:id="@+id/itemCardView"
     app:cardBackgroundColor="@color/material_white"
     app:cardCornerRadius="4dp"
     app:cardElevation="1dp">
@@ -29,11 +29,11 @@
             app:roundAsCircle="true"/>
 
         <TextView
-            android:layout_marginTop="4dp"
             android:id="@+id/nicknameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
+            android:layout_marginTop="4dp"
             android:layout_toRightOf="@+id/headImageDraweeView"
             android:ellipsize="end"
             android:singleLine="true"
@@ -42,34 +42,36 @@
             tools:text="余强"/>
 
         <RelativeLayout
-            android:layout_marginRight="8dp"
-            android:layout_toRightOf="@+id/headImageDraweeView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_above="@+id/contentTextView"
             android:layout_below="@+id/nicknameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_marginRight="8dp"
+            android:layout_toRightOf="@+id/headImageDraweeView">
+
             <TextView
-                android:gravity="top"
-                android:layout_alignParentLeft="true"
                 android:id="@+id/postInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
+                android:gravity="top"
                 android:singleLine="true"
                 android:textColor="@color/defaultShowColor"
                 android:textSize="12sp"
                 tools:text="2016-08-06 17:58:20"/>
+
             <TextView
-                android:ellipsize="end"
-                android:layout_toRightOf="@+id/postInfoTextView"
-                android:gravity="top|right"
-                android:layout_alignParentRight="true"
                 android:id="@+id/postDeviceTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
+                android:layout_toRightOf="@+id/postInfoTextView"
+                android:ellipsize="end"
+                android:gravity="top|right"
                 android:singleLine="true"
                 android:textColor="@color/defaultShowColor"
                 android:textSize="12sp"
@@ -82,9 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/headImageDraweeView"
             android:layout_marginTop="8dp"
-            tools:text="8月13号12:50潮汕站👉汕大。三缺一。联系麦同学：661821。[流泪][流泪][流泪]"
             android:textColor="@color/defaultTextColor"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            tools:text="8月13号12:50潮汕站👉汕大。三缺一。联系麦同学：661821。[流泪][流泪][流泪]"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/photoRecyclerView"
@@ -112,46 +114,52 @@
             android:background="@color/defaultShowColor"/>
 
         <LinearLayout
-            android:id="@+id/thumbUpLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/horDivLine"
-            android:layout_toLeftOf="@+id/verDivLine"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <com.example.daidaijie.syllabusapplication.widget.ThumbUpView
-                android:id="@+id/thumbUpView"
-                app:cracksColor="@color/material_red_300"
-                app:edgeColor="@color/defaultShowColor"
-                app:fillColor="@color/material_red_300"
-                app:unlikeType="0"
-                android:layout_width="16dp"
-                android:layout_height="16dp"/>
-            <TextView
-                android:layout_marginLeft="8dp"
-                android:id="@+id/zanTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="赞[0]"
-                android:textColor="@color/defaultShowColor"
-                android:textSize="14sp"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/horDivLine">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_below="@+id/horDivLine"
-            android:layout_toRightOf="@+id/verDivLine"
-            android:gravity="center"
-            android:orientation="horizontal">
+            <LinearLayout
+                android:gravity="center"
+                android:id="@+id/thumbUpLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/commentTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="评论[0]"
-                android:textColor="@color/defaultShowColor"
-                android:textSize="14sp"/>
+                <com.example.daidaijie.syllabusapplication.widget.ThumbUpView
+                    android:id="@+id/thumbUpView"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    app:cracksColor="@color/material_red_300"
+                    app:edgeColor="@color/defaultShowColor"
+                    app:fillColor="@color/material_red_300"
+                    app:unlikeType="0"/>
+
+                <TextView
+                    android:id="@+id/zanTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="赞[0]"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/commentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="评论[0]"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
+            </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>
