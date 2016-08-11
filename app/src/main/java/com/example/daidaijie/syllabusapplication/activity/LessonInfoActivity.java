@@ -182,16 +182,6 @@ public class LessonInfoActivity extends BaseActivity {
         super.onDestroy();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //判断是返回键然后退出当前Activity
-            this.onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public void getStudentList() {
         Retrofit retrofit = RetrofitUtil.getDefault();
         LessonDetailService lessonDetailService = retrofit.create(LessonDetailService.class);

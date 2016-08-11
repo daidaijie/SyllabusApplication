@@ -89,16 +89,6 @@ public class CircleDetailActivity extends BaseActivity {
         return R.layout.activity_circle_detail;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //判断是返回键然后退出当前Activity
-            this.onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
     public static Intent getIntent(Context context, PostListBean postBean, int photoWidth) {
         Intent intent = new Intent(context, CircleDetailActivity.class);
         intent.putExtra(EXTRA_POST_BEAN, postBean);

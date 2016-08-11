@@ -44,13 +44,5 @@ public class STUCircleActivity extends BaseActivity {
         return R.layout.activity_stucircle;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //判断是返回键然后退出当前Activity
-            this.onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 }

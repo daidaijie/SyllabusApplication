@@ -82,13 +82,4 @@ public class PhotoDetailActivity extends BaseActivity {
         intent.putExtra(EXTRA_PHOTO_POSITION, position);
         return intent;
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            this.onBackPressed();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

@@ -31,6 +31,7 @@ public class ExamActivity extends BaseActivity {
         mToolbar.setTitle("");
         setupToolbar(mToolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
     }
