@@ -23,6 +23,7 @@
         fresco:roundAsCircle="true"/>
 
     <TextView
+        android:textColor="@color/material_white"
         android:id="@+id/nicknameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +32,6 @@
         android:layout_toRightOf="@id/headImageDraweeView"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="16sp"
         tools:text="Android Studio"/>
 

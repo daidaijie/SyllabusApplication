@@ -121,7 +121,7 @@ public class SnackbarUtil {
                 setSnackbarColor(snackbar, blue);
                 break;
             case Confirm:
-                setSnackbarColor(snackbar, green);
+                setSnackbarColor(snackbar, Color.WHITE,green);
                 break;
             case Warning:
                 setSnackbarColor(snackbar, orange);

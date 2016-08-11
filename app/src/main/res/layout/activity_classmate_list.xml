@@ -19,6 +19,7 @@
         android:fitsSystemWindows="true"
         android:gravity="center_vertical"
         android:theme="@style/AppTheme.PopupOverlay"
+        android:popupTheme="@style/AppTheme.PopupOverlay"
         android:transitionName="tool_bar"
         tool_bar:titleTextColor="@android:color/white"
         tools:targetApi="lollipop">
