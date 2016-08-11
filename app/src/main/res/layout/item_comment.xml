@@ -3,11 +3,24 @@
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:paddingLeft="8dp"
               android:paddingRight="8dp">
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:id="@+id/commentTitle"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:text="评论"
+        android:textSize="16sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"/>
+    
     <View
-        android:id="@+id/topDevLine"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/defaultLineColor"/>
@@ -20,18 +33,18 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/headImageDraweeView"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             app:roundAsCircle="true"/>
 
         <TextView
+            android:textSize="12sp"
             android:singleLine="true"
             android:textColor="@color/colorPrimary"
             android:id="@+id/nicknameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="4dp"
             android:layout_toRightOf="@+id/headImageDraweeView"/>
 
         <TextView

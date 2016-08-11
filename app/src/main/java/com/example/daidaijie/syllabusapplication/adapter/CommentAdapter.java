@@ -97,9 +97,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             if (mHeaderView != null) position -= 1;
 
             if (position == 0) {
-                LinearLayout.LayoutParams layoutParams
-                        = (LinearLayout.LayoutParams) holder.mTopDevLine.getLayoutParams();
-                layoutParams.topMargin += DensityUtil.dip2px(mActivity, 16);
+                holder.mCommentTitle.setVisibility(View.VISIBLE);
             }
 
             CommentInfo.CommentsBean comment = mCommentInfo.getComments().get(position);
@@ -151,8 +149,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         TextView mContentTextView;
         @BindView(R.id.devLine)
         View mDevLine;
-        @BindView(R.id.topDevLine)
-        View mTopDevLine;
+        @BindView(R.id.commentTitle)
+        TextView mCommentTitle;
 
         public ViewHolder(View itemView) {
             super(itemView);
