@@ -36,16 +36,24 @@
         android:id="@+id/refreshExamLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
-            android:id="@+id/examListRecycleList"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
-        <TextView
-            android:id="@+id/emptyTextView"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+
+            <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
+                android:id="@+id/examListRecycleList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
+            <TextView
+                android:textSize="20sp"
+                android:textColor="@color/defaultTextColor"
+                android:text="无考试信息"
+                android:id="@+id/emptyTextView"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>
