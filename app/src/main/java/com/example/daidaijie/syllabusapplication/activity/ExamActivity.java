@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.adapter.ExamAdapter;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
 import com.example.daidaijie.syllabusapplication.service.ExamInfoService;
@@ -37,6 +38,8 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     public static final String TAG = "ExamActivity";
 
+    private ExamAdapter mExamAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,11 +49,25 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRefreshExamLayout.setOnRefreshListener(this);
-        mRefreshExamLayout.setRefreshing(true);
 
         mExamListRecycleList.setEmptyView(mEmptyTextView);
         mExamListRecycleList.setLayoutManager(new LinearLayoutManager(this));
+        mExamAdapter = new ExamAdapter(this, null);
+        mExamListRecycleList.setAdapter(mExamAdapter);
+
+        mRefreshExamLayout.setOnRefreshListener(this);
+        mRefreshExamLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
+        mRefreshExamLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshExamLayout.setRefreshing(true);
+            }
+        },100);
         getExamList();
 
     }
@@ -83,9 +100,8 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
                     @Override
                     public void onNext(ExamInfo examInfo) {
-                        for (Exam exam : examInfo.getEXAMS()) {
-                            Log.d(TAG, "onNext: " + exam.getExam_class());
-                        }
+                        mExamAdapter.setExams(examInfo.getEXAMS());
+                        mExamAdapter.notifyDataSetChanged();
                     }
                 });
     }

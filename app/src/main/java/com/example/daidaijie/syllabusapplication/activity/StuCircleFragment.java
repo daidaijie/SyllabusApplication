@@ -78,7 +78,14 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
         mCircleRecyclerView.setAdapter(mCirclesAdapter);
 
         lowID = Integer.MAX_VALUE;
-        getCircles();
+
+        mSpringView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSpringView.callFresh();
+//                getCircles();
+            }
+        },100);
 
         return view;
     }
