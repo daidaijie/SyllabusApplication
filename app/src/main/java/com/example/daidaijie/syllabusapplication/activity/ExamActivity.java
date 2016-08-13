@@ -17,6 +17,9 @@ import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
+import java.io.Serializable;
+import java.util.List;
+
 import butterknife.BindView;
 import retrofit2.Retrofit;
 import rx.Subscriber;
@@ -40,6 +43,10 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     private ExamAdapter mExamAdapter;
 
+    private static final String SAVED_EXAMS = "savedExams";
+
+    private List<Exam> mExams;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,12 +56,6 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        mExamListRecycleList.setEmptyView(mEmptyTextView);
-        mExamListRecycleList.setLayoutManager(new LinearLayoutManager(this));
-        mExamAdapter = new ExamAdapter(this, null);
-        mExamListRecycleList.setAdapter(mExamAdapter);
-
         mRefreshExamLayout.setOnRefreshListener(this);
         mRefreshExamLayout.setColorSchemeResources(
                 android.R.color.holo_blue_light,
@@ -62,13 +63,25 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light
         );
-        mRefreshExamLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshExamLayout.setRefreshing(true);
-            }
-        },100);
-        getExamList();
+
+        mExamListRecycleList.setEmptyView(mEmptyTextView);
+        mExamListRecycleList.setLayoutManager(new LinearLayoutManager(this));
+        mExamAdapter = new ExamAdapter(this, null);
+        mExamListRecycleList.setAdapter(mExamAdapter);
+
+        if (savedInstanceState == null) {
+            mRefreshExamLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mRefreshExamLayout.setRefreshing(true);
+                    getExamList();
+                }
+            }, 50);
+        } else {
+            mExams = (List<Exam>) savedInstanceState.getSerializable(SAVED_EXAMS);
+        }
+        mExamAdapter.setExams(mExams);
+        mExamAdapter.notifyDataSetChanged();
 
     }
 
@@ -81,13 +94,15 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         Retrofit retrofit = RetrofitUtil.getDefault();
         ExamInfoService examInfoService = retrofit.create(ExamInfoService.class);
         examInfoService.getExamInfo(
-                "13yjli3", "O3o", "2015-2016", "1"
+                "13yjli3", "O3o", "2013-2014", "1"
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ExamInfo>() {
                     @Override
                     public void onCompleted() {
                         mRefreshExamLayout.setRefreshing(false);
+                        mExamAdapter.setExams(mExams);
+                        mExamAdapter.notifyDataSetChanged();
                         showSuccessBanner();
                     }
 
@@ -100,8 +115,7 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
                     @Override
                     public void onNext(ExamInfo examInfo) {
-                        mExamAdapter.setExams(examInfo.getEXAMS());
-                        mExamAdapter.notifyDataSetChanged();
+                        mExams = examInfo.getEXAMS();
                     }
                 });
     }
@@ -131,5 +145,11 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 getExamList();
             }
         }).show();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_EXAMS, (Serializable) mExams);
     }
 }

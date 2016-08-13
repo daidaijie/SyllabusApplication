@@ -10,6 +10,8 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 
+import java.sql.Time;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,12 +47,16 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         Exam exam = mExams.get(position);
         holder.mExamNameTextView.setText(exam.getTrueName());
         holder.mExamPositionTextView.setText("座位号 : " + exam.getExam_stu_position());
         holder.mExamRoomTextView.setText("试室　 : " + exam.getExam_location());
         holder.mExamTimeTextView.setText("时间　 : " + exam.getTrueTime());
+
+        holder.mExamStateTextView.setTextColor(
+                mActivity.getResources().getColor(R.color.defaultShowColor));
+        holder.mExamStateTextView.setText("已结束");
 
     }
 
