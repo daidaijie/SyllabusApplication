@@ -2,7 +2,7 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +26,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +53,11 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
     int lowID;
 
+    private List<PostListBean> mPostListBeen;
+
     public static final String TAG = "StuCircleFragment";
+
+    private static final String SAVED_POST_LIST_BEEN = "SavedPostListBeen";
 
     private int[] pullAnimSrcs = new int[]{R.drawable.mt_pull, R.drawable.mt_pull01, R.drawable.mt_pull02, R.drawable.mt_pull03, R.drawable.mt_pull04, R.drawable.mt_pull05};
     private int[] refreshAnimSrcs = new int[]{R.drawable.mt_refreshing01, R.drawable.mt_refreshing02, R.drawable.mt_refreshing03, R.drawable.mt_refreshing04, R.drawable.mt_refreshing05, R.drawable.mt_refreshing06};
@@ -63,6 +68,14 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
         return fragment;
     }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState!=null){
+            mPostListBeen = (List<PostListBean>) savedInstanceState
+                    .getSerializable(SAVED_POST_LIST_BEEN);
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -77,21 +90,26 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
         mSpringView.setHeader(new MeituanHeader(getActivity(), pullAnimSrcs, refreshAnimSrcs));
         mSpringView.setFooter(new MeituanFooter(getActivity(), loadingAnimSrcs));
 
+        if (mPostListBeen == null) {
+            mPostListBeen = new ArrayList<>();
+        }
 
-        mCirclesAdapter = new CirclesAdapter(getActivity(), new ArrayList<PostListBean>());
+        mCirclesAdapter = new CirclesAdapter(getActivity(), mPostListBeen);
         //以后一定要记住这句话
         mCircleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mCircleRecyclerView.setAdapter(mCirclesAdapter);
 
         lowID = Integer.MAX_VALUE;
 
-        mSpringView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mSpringView.callFresh();
+        if (savedInstanceState==null){
+            mSpringView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSpringView.callFresh();
 //                getCircles();
-            }
-        }, 100);
+                }
+            }, 100);
+        }
 
         return view;
     }
@@ -121,18 +139,20 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                 }).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<PostListBean>>() {
 
-                    List<PostListBean> mPostListBeen;
+                    List<PostListBean> tmpPostListBeen;
 
                     @Override
                     public void onCompleted() {
-                        Log.d(TAG, "onCompleted: " + mPostListBeen.size());
-                        if (mPostListBeen != null) {
+                        Log.d(TAG, "onCompleted: " + tmpPostListBeen.size());
+                        if (tmpPostListBeen != null) {
                             if (lowID != Integer.MAX_VALUE) {
-                                mCirclesAdapter.getPostListBeen().addAll(mPostListBeen);
+                                mPostListBeen.addAll(tmpPostListBeen);
+                                mCirclesAdapter.setPostListBeen(mPostListBeen);
                             } else {
+                                mPostListBeen = tmpPostListBeen;
                                 mCirclesAdapter.setPostListBeen(mPostListBeen);
                             }
-                            lowID = mPostListBeen.get(mPostListBeen.size() - 1).getId();
+                            lowID = tmpPostListBeen.get(tmpPostListBeen.size() - 1).getId();
                             mCirclesAdapter.notifyDataSetChanged();
                         }
                         mSpringView.onFinishFreshAndLoad();
@@ -146,7 +166,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
                     @Override
                     public void onNext(List<PostListBean> postListBeen) {
-                        mPostListBeen = postListBeen;
+                        tmpPostListBeen = postListBeen;
                     }
                 });
 
@@ -161,5 +181,11 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void toTop(ToTopEvent toTopEvent) {
         mCircleRecyclerView.smoothScrollToPosition(0);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_POST_LIST_BEEN, (Serializable) mPostListBeen);
     }
 }
