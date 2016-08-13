@@ -15,11 +15,16 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.bean.CircleBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.service.CirclesService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.liaoinstan.springview.container.MeituanFooter;
 import com.liaoinstan.springview.container.MeituanHeader;
 import com.liaoinstan.springview.widget.SpringView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +70,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_stu_circle, container, false);
         ButterKnife.bind(this, view);
+        EventBus.getDefault().register(this);
 
         mSpringView.setType(SpringView.Type.FOLLOW);
         mSpringView.setListener(this);
@@ -85,7 +91,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                 mSpringView.callFresh();
 //                getCircles();
             }
-        },100);
+        }, 100);
 
         return view;
     }
@@ -144,5 +150,16 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                     }
                 });
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void toTop(ToTopEvent toTopEvent) {
+        mCircleRecyclerView.smoothScrollToPosition(0);
     }
 }

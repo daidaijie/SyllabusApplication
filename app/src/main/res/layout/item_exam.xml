@@ -7,14 +7,28 @@
     android:orientation="vertical"
     app:cardBackgroundColor="@color/material_white"
     app:cardCornerRadius="4dp"
+    android:layout_marginTop="8dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     app:cardElevation="1dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="240dp"
         android:padding="8dp">
+        <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+            android:id="@+id/examNameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+        <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+            app:descText="时间"
+            app:detailIcon="@drawable/ic_time_lesson"
+            android:layout_below="@+id/examNameLayout"
+            android:id="@+id/examTimeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
     </RelativeLayout>
 
