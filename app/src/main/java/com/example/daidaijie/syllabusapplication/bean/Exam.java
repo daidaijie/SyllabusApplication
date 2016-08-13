@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by daidaijie on 2016/8/3.
  */
-public class Exam implements Serializable{
+public class Exam implements Serializable {
 
     /**
      * exam_stu_position : 48
@@ -99,6 +99,31 @@ public class Exam implements Serializable{
 
     public void setExam_comment(String exam_comment) {
         this.exam_comment = exam_comment;
+    }
+
+    public String getTrueName() {
+        int startIndex = 0;
+        int endIndex = exam_class.length();
+
+        int index = exam_class.indexOf("]");
+        if (index != -1) {
+            startIndex = index + 1;
+        }
+
+        index = exam_class.lastIndexOf("[");
+        if (index != -1 && index > startIndex) {
+            endIndex = index;
+        }
+        return exam_class.substring(startIndex, endIndex);
+    }
+
+    public String getTrueTime() {
+        int index = exam_time.indexOf("(");
+        if (index != -1) {
+            return exam_time.substring(index + 1, exam_time.length() - 1);
+        } else {
+            return exam_time;
+        }
     }
 
 }

@@ -1,35 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    app:cardBackgroundColor="@color/material_white"
-    app:cardCornerRadius="4dp"
-    android:layout_marginTop="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    app:cardElevation="1dp">
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
+    android:background="@color/defaultLightBackground">
 
-    <RelativeLayout
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/examStateTextView"
+        android:orientation="vertical"
         android:padding="8dp">
-        <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
-            android:id="@+id/examNameLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
-        <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
-            app:descText="时间"
-            app:detailIcon="@drawable/ic_time_lesson"
-            android:layout_below="@+id/examNameLayout"
-            android:id="@+id/examTimeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/examNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="程序设计基础"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"/>
 
-</android.support.v7.widget.CardView>
+        <TextView
+            android:layout_marginTop="2dp"
+            android:id="@+id/examTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="时间　 : 2016.01.12  19:00-21:00"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/examRoomTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="试室　 : E303"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"/>
+        <TextView
+            android:id="@+id/examPositionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="座位号 : 60"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:id="@+id/examStateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="倒计时\n1天\n12:23:25"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="@color/material_red_500"
+        android:textSize="14sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/defaultShowColor"/>
+</RelativeLayout>
