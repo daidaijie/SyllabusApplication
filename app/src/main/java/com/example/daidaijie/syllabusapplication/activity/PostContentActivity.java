@@ -14,9 +14,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.liaoinstan.springview.utils.DensityUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +54,7 @@ public class PostContentActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
 
         mToolbar.setTitle("");
         setupToolbar(mToolbar);
@@ -62,6 +68,12 @@ public class PostContentActivity extends BaseActivity {
     @Override
     protected int getContentView() {
         return R.layout.activity_post_content;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     private void setUpFlow() {
@@ -140,5 +152,11 @@ public class PostContentActivity extends BaseActivity {
     public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, PostContentActivity.class);
         return intent;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void deletePhoto(DeletePhotoEvent event) {
+        mPhotoImgs.remove(event.position);
+        setUpFlow();
     }
 }

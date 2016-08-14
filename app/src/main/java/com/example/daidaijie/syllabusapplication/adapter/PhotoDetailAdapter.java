@@ -40,6 +40,13 @@ public class PhotoDetailAdapter extends PagerAdapter {
         return mPhotoInfo.size();
     }
 
+    public List<String> getPhotoInfo() {
+        return mPhotoInfo;
+    }
+
+    public void setPhotoInfo(List<String> photoInfo) {
+        mPhotoInfo = photoInfo;
+    }
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
