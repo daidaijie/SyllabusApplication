@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,5 +43,13 @@ public class PhotoInfo implements Serializable {
         public void setSize_small(String size_small) {
             this.size_small = size_small;
         }
+    }
+
+    public List<String> getBigUrls() {
+        List<String> bigUrlsString = new ArrayList<>();
+        for (PhotoListBean photoListBean : photo_list) {
+            bigUrlsString.add(photoListBean.getSize_big());
+        }
+        return bigUrlsString;
     }
 }

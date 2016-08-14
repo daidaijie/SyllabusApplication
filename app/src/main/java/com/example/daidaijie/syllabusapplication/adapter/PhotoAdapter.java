@@ -63,7 +63,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = PhotoDetailActivity.getIntent(mActivity,
-                        mPhotoInfo, position);
+                        mPhotoInfo.getBigUrls(), position);
                 mActivity.startActivity(intent);
             }
         });

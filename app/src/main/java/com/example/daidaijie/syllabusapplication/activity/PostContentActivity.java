@@ -74,10 +74,19 @@ public class PostContentActivity extends BaseActivity {
         lp.topMargin = 0;
         lp.bottomMargin = 0;
         for (int i = 0; i < mPhotoImgs.size(); i++) {
-            String uri = "file://" + mPhotoImgs.get(i);
             View view = getLayoutInflater().inflate(R.layout.item_edit_img, null, false);
             SimpleDraweeView imgDraweeView = (SimpleDraweeView) view.findViewById(R.id.imgDraweeView);
-            imgDraweeView.setImageURI(Uri.parse(uri));
+            imgDraweeView.setImageURI(Uri.parse(mPhotoImgs.get(i)));
+            final int finalI = i;
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = PhotoDetailActivity.getIntent(PostContentActivity.this,
+                            mPhotoImgs, finalI, 1);
+                    startActivity(intent);
+                }
+            });
+
             mPostImgFlowLayout.addView(view, lp);
 
         }
@@ -115,8 +124,7 @@ public class PostContentActivity extends BaseActivity {
             @Override
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                 for (PhotoInfo photoInfo : resultList) {
-                    mPhotoImgs.add(photoInfo.getPhotoPath());
-                    Log.d(TAG, "onHanlderSuccess: " + photoInfo.getPhotoPath());
+                    mPhotoImgs.add("file://" + photoInfo.getPhotoPath());
                     setUpFlow();
                 }
             }

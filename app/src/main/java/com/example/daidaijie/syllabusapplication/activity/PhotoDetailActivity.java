@@ -5,13 +5,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.PhotoDetailAdapter;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.widget.MultiTouchViewPager;
+
+import java.io.Serializable;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -22,6 +24,10 @@ public class PhotoDetailActivity extends BaseActivity {
 
     public static final String EXTRA_PHOTO_POSITION
             = "com.example.daidaijie.syllabusapplication.activity.PhotoInfoPosition";
+
+    public static final String EXTRA_PHOTO_Mode
+            = "com.example.daidaijie.syllabusapplication.activity.PhotoInfoMode";
+
 
     @BindView(R.id.photoViewpager)
     MultiTouchViewPager mPhotoViewpager;
@@ -34,9 +40,15 @@ public class PhotoDetailActivity extends BaseActivity {
 
     private int mPosition;
 
-    private PhotoInfo mPhotoInfo;
+    private List<String> mPhotoUrls;
 
     private int mPhotoCount;
+
+    /**
+     * 0 普通
+     * 1 删除模式
+     */
+    private int mMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +60,13 @@ public class PhotoDetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
+        mMode = intent.getIntExtra(EXTRA_PHOTO_Mode, 0);
 
-        mPhotoInfo = (PhotoInfo) intent.getSerializableExtra(EXTRA_PHOTO_INFO);
+        mPhotoUrls = (List<String>) intent.getSerializableExtra(EXTRA_PHOTO_INFO);
         mPosition = intent.getIntExtra(EXTRA_PHOTO_POSITION, 0);
-        mPhotoCount = mPhotoInfo.getPhoto_list().size();
+        mPhotoCount = mPhotoUrls.size();
 
-        mPhotoDetailAdapter = new PhotoDetailAdapter(this, mPhotoInfo);
+        mPhotoDetailAdapter = new PhotoDetailAdapter(this, mPhotoUrls);
         mPhotoViewpager.setAdapter(mPhotoDetailAdapter);
         mPhotoViewpager.setCurrentItem(mPosition);
         pointTitle(mPosition);
@@ -76,10 +89,15 @@ public class PhotoDetailActivity extends BaseActivity {
         return R.layout.activity_photo_detail;
     }
 
-    public static Intent getIntent(Context context, PhotoInfo photoInfo, int position) {
+    public static Intent getIntent(Context context, List<String> urls, int position) {
+        return getIntent(context, urls, position, 0);
+    }
+
+    public static Intent getIntent(Context context, List<String> urls, int position, int mode) {
         Intent intent = new Intent(context, PhotoDetailActivity.class);
-        intent.putExtra(EXTRA_PHOTO_INFO, photoInfo);
+        intent.putExtra(EXTRA_PHOTO_INFO, (Serializable) urls);
         intent.putExtra(EXTRA_PHOTO_POSITION, position);
+        intent.putExtra(EXTRA_PHOTO_Mode, mode);
         return intent;
     }
 }

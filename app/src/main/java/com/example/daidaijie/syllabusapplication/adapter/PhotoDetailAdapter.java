@@ -16,6 +16,8 @@ import com.facebook.drawee.controller.BaseControllerListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
 
+import java.util.List;
+
 import me.relex.photodraweeview.PhotoDraweeView;
 
 /**
@@ -26,16 +28,16 @@ public class PhotoDetailAdapter extends PagerAdapter {
 
     private Activity mActivity;
 
-    private PhotoInfo mPhotoInfo;
+    private List<String> mPhotoInfo;
 
-    public PhotoDetailAdapter(Activity activity, PhotoInfo photoInfo) {
+    public PhotoDetailAdapter(Activity activity, List<String> photoInfo) {
         mActivity = activity;
         mPhotoInfo = photoInfo;
     }
 
     @Override
     public int getCount() {
-        return mPhotoInfo.getPhoto_list().size();
+        return mPhotoInfo.size();
     }
 
 
@@ -43,7 +45,7 @@ public class PhotoDetailAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int position) {
         final PhotoDraweeView photoDraweeView = new PhotoDraweeView(mActivity);
         PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
-        controller.setUri(mPhotoInfo.getPhoto_list().get(position).getSize_big());
+        controller.setUri(mPhotoInfo.get(position));
         controller.setOldController(photoDraweeView.getController());
         controller.setControllerListener(new BaseControllerListener<ImageInfo>() {
             @Override
