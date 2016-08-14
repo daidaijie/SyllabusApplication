@@ -15,4 +15,12 @@
         <attr name="cardIcon" format="reference"></attr>
     </declare-styleable>
 
+
+    <!--tag-->
+    <declare-styleable name="FlowLabelLayout">
+
+        <attr name="LayoutType" format="integer" />
+
+    </declare-styleable>
+
 </resources>

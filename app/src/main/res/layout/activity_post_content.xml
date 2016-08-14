@@ -50,4 +50,6 @@
         android:textColor="@color/defaultTextColor"
         android:textColorHint="@color/defaultShowColor"
         android:textSize="16sp"/>
+
+
 </LinearLayout>
