@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="8dp"
+    android:id="@+id/examLayout"
     android:paddingRight="8dp"
     android:background="@color/defaultLightBackground">
 
@@ -53,7 +54,6 @@
 
 
     <TextView
-        android:background="@color/material_white"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:id="@+id/examStateTextView"

@@ -47,6 +47,8 @@
         </activity>
         <activity android:name=".activity.CircleDetailActivity">
         </activity>
+        <activity android:name=".activity.ExamDetailActivity">
+        </activity>
     </application>
 
 </manifest>

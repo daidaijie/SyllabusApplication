@@ -126,4 +126,15 @@ public class Exam implements Serializable {
         }
     }
 
+    public String getPrettyTime() {
+        int index = exam_time.indexOf("(");
+        if (index != -1) {
+            return exam_time.substring(0, index) + "\n"
+                    + exam_time.substring(index + 1, exam_time.length() - 1);
+        } else {
+            return exam_time;
+        }
+
+    }
+
 }

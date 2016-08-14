@@ -1,20 +1,22 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.ExamDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 
-import java.sql.Time;
-import java.util.Date;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -48,15 +50,35 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Exam exam = mExams.get(position);
+        final Exam exam = mExams.get(position);
         holder.mExamNameTextView.setText(exam.getTrueName());
         holder.mExamPositionTextView.setText("座位号 : " + exam.getExam_stu_position());
         holder.mExamRoomTextView.setText("试室　 : " + exam.getExam_location());
         holder.mExamTimeTextView.setText("时间　 : " + exam.getTrueTime());
 
-        holder.mExamStateTextView.setTextColor(
+        /*holder.mExamStateTextView.setTextColor(
                 mActivity.getResources().getColor(R.color.defaultShowColor));
-        holder.mExamStateTextView.setText("已结束");
+        holder.mExamStateTextView.setText("已结束");*/
+
+        String str = "倒计时\n" + "1天\n12:09:10";
+        SpannableStringBuilder style = new SpannableStringBuilder(str);
+        style.setSpan(new ForegroundColorSpan(
+                        mActivity.getResources().getColor(R.color.defaultShowColor)),
+                0, 4, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+        );
+        style.setSpan(new ForegroundColorSpan(
+                        mActivity.getResources().getColor(R.color.colorPrimaryDark)),
+                4, str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+        );
+        holder.mExamStateTextView.setText(style);
+
+        holder.mExamLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ExamDetailActivity.getIntent(mActivity, exam);
+                mActivity.startActivity(intent);
+            }
+        });
 
     }
 
@@ -68,6 +90,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.examLayout)
+        RelativeLayout mExamLayout;
         @BindView(R.id.examNameTextView)
         TextView mExamNameTextView;
         @BindView(R.id.examTimeTextView)

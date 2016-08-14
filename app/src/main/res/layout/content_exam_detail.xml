@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detailContentLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultLightBackground"
+    android:orientation="vertical"
+    android:paddingBottom="32dp"
+    android:paddingTop="32dp">
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/lessonNumberLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="班号"
+        app:detailIcon="@drawable/ic_id_lesson"
+        app:titltText="67564">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/lessonTimeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="时间"
+        app:detailIcon="@drawable/ic_time_lesson"
+        app:titltText="1-16周 , AB">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/lessonTeacherLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="监考"
+        app:detailIcon="@drawable/ic_teacher_lesson"
+        app:titltText="方若宇">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/examRoomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="考室"
+        app:detailIcon="@drawable/ic_place_lesson"
+        app:titltText="D505">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/positionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="座位"
+        app:detailIcon="@drawable/ic_time_lesson"
+        app:titltText="68">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/studentSumLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="人数"
+        app:detailIcon="@drawable/ic_time_lesson"
+        app:titltText="128">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+
+</LinearLayout>
