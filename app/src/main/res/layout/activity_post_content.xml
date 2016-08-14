@@ -51,5 +51,24 @@
         android:textColorHint="@color/defaultShowColor"
         android:textSize="16sp"/>
 
+    <TextView
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="添加你要分享的图片"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:id="@+id/postImgFlowLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:LayoutType="1">
+    </com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout>
+
 
 </LinearLayout>
