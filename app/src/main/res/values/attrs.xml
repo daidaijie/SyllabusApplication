@@ -3,6 +3,7 @@
 
     <declare-styleable name="LessonDetaiLayout">
         <attr name="titltText" format="string"></attr>
+        <attr name="titltTextColor" format="color"></attr>
         <attr name="detailIcon" format="reference"></attr>
         <attr name="editEnable" format="boolean"></attr>
         <attr name="descText" format="string"></attr>

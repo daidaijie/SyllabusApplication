@@ -3,6 +3,7 @@
     <color name="colorPrimary">@color/material_blue_500</color>
     <color name="colorPrimaryDark">@color/material_blue_700</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorAccentDark">@color/material_pink_600</color>
 
     <color name="gridColor">#402b2b2b</color>
 

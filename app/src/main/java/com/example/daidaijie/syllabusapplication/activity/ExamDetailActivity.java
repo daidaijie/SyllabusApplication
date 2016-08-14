@@ -55,6 +55,10 @@ public class ExamDetailActivity extends BaseActivity {
     NestedScrollView mContentScrollView;
     @BindView(R.id.examDetailRootLayout)
     CoordinatorLayout mExamDetailRootLayout;
+    @BindView(R.id.examTipLayout)
+    LessonDetaiLayout mExamTipLayout;
+    @BindView(R.id.examStateLayout)
+    LessonDetaiLayout mExamStateLayout;
 
 
     private enum CollapsingToolbarLayoutState {
@@ -97,7 +101,16 @@ public class ExamDetailActivity extends BaseActivity {
         mPositionLayout.setTitleText(mExam.getExam_stu_position());
         mStudentSumLayout.setTitleText(mExam.getExam_stu_numbers());
 
+        if (mExam.getExam_comment().trim().isEmpty()){
+            mExamTipLayout.setTitleText("无");
+            mExamTipLayout.setTitleTextColor(getResources().getColor(R.color.defaultShowColor));
+        }else{
+            mExamTipLayout.setTitleText(mExam.getExam_comment());
+            mExamTipLayout.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+        }
 
+        mExamStateLayout.setTitleTextColor(getResources().getColor(R.color.defaultShowColor));
+        mExamStateLayout.setTitleText("已结束");
 
         mTitleTextView.setVisibility(View.GONE);
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {

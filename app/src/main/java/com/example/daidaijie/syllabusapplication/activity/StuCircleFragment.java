@@ -1,8 +1,9 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
@@ -32,6 +34,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.Retrofit;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -48,6 +51,8 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     RecyclerView mCircleRecyclerView;
     @BindView(R.id.springView)
     SpringView mSpringView;
+    @BindView(R.id.postContentButton)
+    FloatingActionButton mPostContentButton;
 
     private CirclesAdapter mCirclesAdapter;
 
@@ -71,7 +76,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             mPostListBeen = (List<PostListBean>) savedInstanceState
                     .getSerializable(SAVED_POST_LIST_BEEN);
         }
@@ -101,7 +106,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
         lowID = Integer.MAX_VALUE;
 
-        if (savedInstanceState==null){
+        if (savedInstanceState == null) {
             mSpringView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -187,5 +192,11 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(SAVED_POST_LIST_BEEN, (Serializable) mPostListBeen);
+    }
+
+    @OnClick(R.id.postContentButton)
+    public void onClick() {
+        Intent intent = PostContentActivity.getIntent(getActivity());
+        getActivity().startActivity(intent);
     }
 }

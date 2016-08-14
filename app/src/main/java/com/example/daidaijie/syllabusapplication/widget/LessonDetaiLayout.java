@@ -56,6 +56,10 @@ public class LessonDetaiLayout extends RelativeLayout {
                 case R.styleable.LessonDetaiLayout_descText:
                     setDetailItemEditText(typedArray.getString(attr));
                     break;
+                case R.styleable.LessonDetaiLayout_titltTextColor:
+                    setTitleTextColor(typedArray.getColor(attr,
+                            getResources().getColor(R.color.defaultTextColor)));
+                    break;
             }
         }
 
@@ -64,7 +68,9 @@ public class LessonDetaiLayout extends RelativeLayout {
     public void setTitleText(String text) {
         mDetailItemEditText.setText(text);
     }
-
+    public void setTitleTextColor(int color) {
+        mDetailItemEditText.setTextColor(color);
+    }
     public void setDetailIcon(int resId) {
         if (resId == 0) return;
         mDetailItemImageView.setImageResource(resId);
@@ -82,4 +88,6 @@ public class LessonDetaiLayout extends RelativeLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
+
+
 }

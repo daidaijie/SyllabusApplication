@@ -65,5 +65,22 @@
         app:titltText="128">
     </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/examTipLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="备注"
+        app:detailIcon="@drawable/ic_time_lesson"
+        app:titltText="无">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+        android:id="@+id/examStateLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="状态"
+        app:detailIcon="@drawable/ic_time_lesson"
+        app:titltText="已结束">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
 </LinearLayout>
