@@ -46,11 +46,13 @@
                 android:layout_height="match_parent">
             </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
             <TextView
+                android:paddingTop="32dp"
+                android:gravity="center_horizontal"
                 android:textSize="20sp"
                 android:textColor="@color/defaultTextColor"
-                android:text="无考试信息"
+                android:text="暂无考试信息"
                 android:id="@+id/emptyTextView"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
         </FrameLayout>

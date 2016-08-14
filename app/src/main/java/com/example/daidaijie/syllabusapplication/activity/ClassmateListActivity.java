@@ -106,7 +106,7 @@ public class ClassmateListActivity extends BaseActivity {
         mSearchView = (SearchView) MenuItemCompat.getActionView(menuItem);
         mSearchView.setQueryHint("搜索姓名\\学号\\专业\\性别");
         SearchView.SearchAutoComplete textView = (SearchView.SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
-        textView.setHintTextColor(Color.WHITE);
+        textView.setHintTextColor(getResources().getColor(R.color.material_grey_400));
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(16);
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
