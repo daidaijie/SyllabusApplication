@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/defaultLightBackground"
+    android:orientation="vertical"
     tools:context="com.example.daidaijie.syllabusapplication.activity.PostContentActivity">
 
     <android.support.v7.widget.Toolbar
@@ -16,8 +17,8 @@
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
         android:gravity="center_vertical"
-        android:theme="@style/AppTheme.PopupOverlay"
         android:popupTheme="@style/AppTheme.PopupOverlay"
+        android:theme="@style/AppTheme.PopupOverlay"
         android:transitionName="tool_bar"
         app:titleTextColor="@android:color/white"
         tools:targetApi="lollipop">
@@ -36,4 +37,17 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_edit_post"
+        android:gravity="top|left"
+        android:hint="输入你要分享的内容吧..."
+        android:padding="8dp"
+        android:textColor="@color/defaultTextColor"
+        android:textColorHint="@color/defaultShowColor"
+        android:textSize="16sp"/>
 </LinearLayout>
