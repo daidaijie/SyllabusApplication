@@ -22,6 +22,7 @@
     </com.liaoinstan.springview.widget.SpringView>
 
     <android.support.design.widget.FloatingActionButton
+        android:src="@drawable/ic_edit_white"
         android:id="@+id/postContentButton"
         app:backgroundTint="@color/colorAccent"
         app:pressedTranslationZ="4dp"
