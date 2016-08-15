@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -15,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.service.UploadImageService;
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.ImageUploader;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
+import com.google.gson.reflect.TypeToken;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -191,48 +195,55 @@ public class PostContentActivity extends BaseActivity {
                     .flatMap(new Func1<File, Observable<BmobPhoto>>() {
                         @Override
                         public Observable<BmobPhoto> call(File file) {
-                            return ImageUploader.getObservableAsBombPhoto(mediaType, file.toString(),
-                                    file);
+                            return ImageUploader.getObservableAsBombPhoto(mediaType,
+                                    file.toString(), file);
                         }
                     })
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Subscriber<BmobPhoto>() {
+
+                        com.example.daidaijie.syllabusapplication.bean.PhotoInfo photoInfo =
+                                new com.example.daidaijie.syllabusapplication.bean.PhotoInfo();
+
+                        @Override
+                        public void onStart() {
+                            super.onStart();
+                            photoInfo.setPhoto_list(new ArrayList<com.example.daidaijie
+                                    .syllabusapplication.bean.PhotoInfo.PhotoListBean>());
+                        }
+
                         @Override
                         public void onCompleted() {
-
+                            String photoListJsonString = GsonUtil.getDefault()
+                                    .toJson(photoInfo, com.example.daidaijie
+                                            .syllabusapplication.bean.PhotoInfo.class);
+                            Log.d(TAG, "onCompleted: " + photoListJsonString);
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             Log.d(TAG, "onError: " + e.getMessage());
+                            Toast.makeText(PostContentActivity.this,
+                                    "图片上传失败", Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onNext(BmobPhoto bmobPhoto) {
                             Log.d(TAG, "onNext: " + bmobPhoto.getUrl());
+                            com.example.daidaijie.syllabusapplication.bean.PhotoInfo.PhotoListBean
+                                    photoListBean = new com.example.daidaijie
+                                    .syllabusapplication.bean.PhotoInfo.PhotoListBean();
+                            photoListBean.setSize_big(bmobPhoto.getUrl());
+                            photoListBean.setSize_small(bmobPhoto.getUrl());
+                            photoInfo.getPhoto_list().add(photoListBean);
                         }
                     });
-                    /*.observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<File>() {
-                        @Override
-                        public void onCompleted() {
 
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-//                            Log.d(TAG, "onError: " + e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(File file) {
-//                            Log.d(TAG, "onNext: " + file.getAbsolutePath());
-//                            Log.d(TAG, "onNext: " + file.length());
-                        }
-                    });*/
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    private void pushContent(@Nullable String photoListJson) {
 
     }
 
