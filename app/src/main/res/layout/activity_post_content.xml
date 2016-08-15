@@ -38,15 +38,16 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/material_white"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:paddingBottom="16dp"
-        android:layout_height="wrap_content">
+        android:paddingBottom="16dp">
+
         <EditText
-            android:background="@color/material_white"
             android:layout_width="match_parent"
             android:layout_height="160dp"
+            android:background="@color/material_white"
             android:gravity="top|left"
             android:hint="输入你想分享的内容吧..."
             android:padding="8dp"
@@ -55,29 +56,76 @@
             android:textSize="16sp"/>
 
         <TextView
-            android:textColor="@color/defaultShowColor"
-            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:text="添加照片"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"/>
+
         <com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:id="@+id/postImgFlowLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
             app:LayoutType="1">
         </com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout>
 
-
     </LinearLayout>
+
     <View
-        android:background="@color/defaultShowColor"
         android:layout_width="match_parent"
-        android:layout_height="1px"/>
+        android:layout_height="1px"
+        android:background="@color/defaultShowColor"/>
 
+    <TextView
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:text="发布平台"
+        android:textColor="@color/defaultShowColor"
+        android:textSize="16sp"/>
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:id="@+id/postAsAndroidButton"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Android"
+            app:buttonTint="@color/colorPrimary"
+            android:textColor="@color/colorPrimary"/>
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:textSize="20sp"
+            app:buttonTint="@color/colorPrimary"
+            android:id="@+id/postAsPhoneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Android"
+            android:textColor="@color/colorPrimary"/>
+
+        <android.support.v7.widget.AppCompatRadioButton
+            android:scaleX="0.8"
+            android:scaleY="0.8"
+            android:textSize="20sp"
+            app:buttonTint="@color/colorPrimary"
+            android:id="@+id/postAsOtherButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="火星"
+            android:textColor="@color/colorPrimary"/>
+    </RadioGroup>
 
 </LinearLayout>

@@ -17,15 +17,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
+import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
+import com.example.daidaijie.syllabusapplication.service.UploadImageService;
+import com.example.daidaijie.syllabusapplication.util.ImageUploader;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.liaoinstan.springview.utils.DensityUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,9 +37,11 @@ import butterknife.BindView;
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import id.zelory.compressor.Compressor;
+import okhttp3.MediaType;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -140,6 +146,7 @@ public class PostContentActivity extends BaseActivity {
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                 for (PhotoInfo photoInfo : resultList) {
                     mPhotoImgs.add("file://" + photoInfo.getPhotoPath());
+                    Log.d(TAG, "onHanlderSuccess: " + photoInfo.getPhotoPath());
                     setUpFlow();
                 }
             }
@@ -163,10 +170,70 @@ public class PostContentActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_finish) {
+            final MediaType mediaType = MediaType.parse("image/*");
+            Observable.from(mPhotoImgs)
+                    .subscribeOn(Schedulers.io())
+                    .map(new Func1<String, File>() {
+                        @Override
+                        public File call(String s) {
+                            return new File(s.substring("file://".length(), s.length()));
+                        }
+                    })
+                    .flatMap(new Func1<File, Observable<File>>() {
+                        @Override
+                        public Observable<File> call(File file) {
+//                            Log.d(TAG, "call: " + file.exists());
+//                            Log.d(TAG, "压缩前: " + file.length());
+                            return Compressor.getDefault(PostContentActivity.this)
+                                    .compressToFileAsObservable(file);
+                        }
+                    })
+                    .flatMap(new Func1<File, Observable<BmobPhoto>>() {
+                        @Override
+                        public Observable<BmobPhoto> call(File file) {
+                            return ImageUploader.getObservableAsBombPhoto(mediaType, file.toString(),
+                                    file);
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<BmobPhoto>() {
+                        @Override
+                        public void onCompleted() {
 
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.d(TAG, "onError: " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(BmobPhoto bmobPhoto) {
+                            Log.d(TAG, "onNext: " + bmobPhoto.getUrl());
+                        }
+                    });
+                    /*.observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<File>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+//                            Log.d(TAG, "onError: " + e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(File file) {
+//                            Log.d(TAG, "onNext: " + file.getAbsolutePath());
+//                            Log.d(TAG, "onNext: " + file.length());
+                        }
+                    });*/
         }
 
         return super.onOptionsItemSelected(item);
+
     }
 
     public static Intent getIntent(Context context) {
