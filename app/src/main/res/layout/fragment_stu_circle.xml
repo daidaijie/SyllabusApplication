@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/defaultLightBackground"
     tools:context="com.example.daidaijie.syllabusapplication.activity.StuCircleFragment">
 
@@ -22,12 +23,10 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/postContentButton"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         app:backgroundTint="@color/colorAccent"
         app:pressedTranslationZ="4dp"
         app:rippleColor="@color/colorAccentDark"
         app:elevation="8dp"
-        android:src="@drawable/ic_edit_white"
         android:layout_marginBottom="24dp"
         android:layout_marginRight="24dp"
         android:layout_gravity="bottom|right"

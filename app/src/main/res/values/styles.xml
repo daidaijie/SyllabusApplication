@@ -8,6 +8,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/material_white</item>
+        <item name="actionMenuTextColor">@color/material_white</item>
         <!--<item name="android:windowBackground">@color/transparent</item>-->
 
     </style>

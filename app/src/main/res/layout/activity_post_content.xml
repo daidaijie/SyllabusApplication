@@ -37,38 +37,47 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <EditText
+    <LinearLayout
+        android:background="@color/material_white"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/bg_edit_post"
-        android:gravity="top|left"
-        android:hint="输入你要分享的内容吧..."
-        android:padding="8dp"
-        android:textColor="@color/defaultTextColor"
-        android:textColorHint="@color/defaultShowColor"
-        android:textSize="16sp"/>
+        android:paddingBottom="16dp"
+        android:layout_height="wrap_content">
+        <EditText
+            android:background="@color/material_white"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:gravity="top|left"
+            android:hint="输入你想分享的内容吧..."
+            android:padding="8dp"
+            android:textColor="@color/defaultTextColor"
+            android:textColorHint="@color/defaultShowColor"
+            android:textSize="16sp"/>
 
-    <TextView
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:text="添加你要分享的图片"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"
+            android:layout_marginLeft="8dp"
+            android:text="添加照片"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/postImgFlowLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:LayoutType="1">
+        </com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout>
 
-    <com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="8dp"
-        android:id="@+id/postImgFlowLayout"
+
+    </LinearLayout>
+    <View
+        android:background="@color/defaultShowColor"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:LayoutType="1">
-    </com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout>
+        android:layout_height="1px"/>
+
 
 
 </LinearLayout>
