@@ -1,12 +1,14 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,12 +25,12 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
-import com.example.daidaijie.syllabusapplication.service.UploadImageService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.ImageUploader;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.reflect.TypeToken;
+import com.liaoinstan.springview.utils.DensityUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -59,6 +62,14 @@ public class PostContentActivity extends BaseActivity {
     private final int MAX_IMG_NUM = 3;
     @BindView(R.id.postImgFlowLayout)
     FlowLabelLayout mPostImgFlowLayout;
+    @BindView(R.id.contentEditText)
+    EditText mContentEditText;
+    @BindView(R.id.postAsAndroidButton)
+    AppCompatRadioButton mPostAsAndroidButton;
+    @BindView(R.id.postAsPhoneButton)
+    AppCompatRadioButton mPostAsPhoneButton;
+    @BindView(R.id.postAsOtherButton)
+    AppCompatRadioButton mPostAsOtherButton;
 
     private List<String> mPhotoImgs;
 
@@ -73,6 +84,8 @@ public class PostContentActivity extends BaseActivity {
         setupToolbar(mToolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mPostAsPhoneButton.setText(Build.MODEL);
 
         mPhotoImgs = new ArrayList<>();
         setUpFlow();
@@ -174,77 +187,116 @@ public class PostContentActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_finish) {
-            final MediaType mediaType = MediaType.parse("image/*");
-            Observable.from(mPhotoImgs)
-                    .subscribeOn(Schedulers.io())
-                    .map(new Func1<String, File>() {
-                        @Override
-                        public File call(String s) {
-                            return new File(s.substring("file://".length(), s.length()));
-                        }
-                    })
-                    .flatMap(new Func1<File, Observable<File>>() {
-                        @Override
-                        public Observable<File> call(File file) {
+
+            if (mContentEditText.getText().toString().trim().isEmpty() && mPhotoImgs.size() == 0) {
+                SnackbarUtil.ShortSnackbar(
+                        mContentEditText, "请输入文字或添加图片", SnackbarUtil.Warning
+                ).show();
+            }
+
+            if (mPhotoImgs.size() != 0) {
+                final MediaType mediaType = MediaType.parse("image/*");
+                Observable.from(mPhotoImgs)
+                        .subscribeOn(Schedulers.io())
+                        .map(new Func1<String, File>() {
+                            @Override
+                            public File call(String s) {
+                                return new File(s.substring("file://".length(), s.length()));
+                            }
+                        })
+                        .flatMap(new Func1<File, Observable<File>>() {
+                            @Override
+                            public Observable<File> call(File file) {
 //                            Log.d(TAG, "call: " + file.exists());
 //                            Log.d(TAG, "压缩前: " + file.length());
-                            return Compressor.getDefault(PostContentActivity.this)
-                                    .compressToFileAsObservable(file);
-                        }
-                    })
-                    .flatMap(new Func1<File, Observable<BmobPhoto>>() {
-                        @Override
-                        public Observable<BmobPhoto> call(File file) {
-                            return ImageUploader.getObservableAsBombPhoto(mediaType,
-                                    file.toString(), file);
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Subscriber<BmobPhoto>() {
+                                return Compressor.getDefault(PostContentActivity.this)
+                                        .compressToFileAsObservable(file);
+                            }
+                        })
+                        .flatMap(new Func1<File, Observable<BmobPhoto>>() {
+                            @Override
+                            public Observable<BmobPhoto> call(File file) {
+                                return ImageUploader.getObservableAsBombPhoto(mediaType,
+                                        file.toString(), file);
+                            }
+                        })
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Subscriber<BmobPhoto>() {
+                            com.example.daidaijie.syllabusapplication.bean.PhotoInfo photoInfo =
+                                    new com.example.daidaijie.syllabusapplication.bean.PhotoInfo();
 
-                        com.example.daidaijie.syllabusapplication.bean.PhotoInfo photoInfo =
-                                new com.example.daidaijie.syllabusapplication.bean.PhotoInfo();
+                            @Override
+                            public void onStart() {
+                                super.onStart();
+                                photoInfo.setPhoto_list(new ArrayList<com.example.daidaijie
+                                        .syllabusapplication.bean.PhotoInfo.PhotoListBean>());
+                            }
 
-                        @Override
-                        public void onStart() {
-                            super.onStart();
-                            photoInfo.setPhoto_list(new ArrayList<com.example.daidaijie
-                                    .syllabusapplication.bean.PhotoInfo.PhotoListBean>());
-                        }
+                            @Override
+                            public void onCompleted() {
+                                String photoListJsonString = GsonUtil.getDefault()
+                                        .toJson(photoInfo, com.example.daidaijie
+                                                .syllabusapplication.bean.PhotoInfo.class);
+                                Log.d(TAG, "onCompleted: " + photoListJsonString);
+                            }
 
-                        @Override
-                        public void onCompleted() {
-                            String photoListJsonString = GsonUtil.getDefault()
-                                    .toJson(photoInfo, com.example.daidaijie
-                                            .syllabusapplication.bean.PhotoInfo.class);
-                            Log.d(TAG, "onCompleted: " + photoListJsonString);
-                        }
+                            @Override
+                            public void onError(Throwable e) {
+                                Log.d(TAG, "onError: " + e.getMessage());
+                                Toast.makeText(PostContentActivity.this,
+                                        "图片上传失败", Toast.LENGTH_SHORT).show();
+                            }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            Log.d(TAG, "onError: " + e.getMessage());
-                            Toast.makeText(PostContentActivity.this,
-                                    "图片上传失败", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onNext(BmobPhoto bmobPhoto) {
-                            Log.d(TAG, "onNext: " + bmobPhoto.getUrl());
-                            com.example.daidaijie.syllabusapplication.bean.PhotoInfo.PhotoListBean
-                                    photoListBean = new com.example.daidaijie
-                                    .syllabusapplication.bean.PhotoInfo.PhotoListBean();
-                            photoListBean.setSize_big(bmobPhoto.getUrl());
-                            photoListBean.setSize_small(bmobPhoto.getUrl());
-                            photoInfo.getPhoto_list().add(photoListBean);
-                        }
-                    });
+                            @Override
+                            public void onNext(BmobPhoto bmobPhoto) {
+                                Log.d(TAG, "onNext: " + bmobPhoto.getUrl());
+                                com.example.daidaijie.syllabusapplication.bean.PhotoInfo
+                                        .PhotoListBean photoListBean = new com.example.daidaijie
+                                        .syllabusapplication.bean.PhotoInfo.PhotoListBean();
+                                photoListBean.setSize_big(bmobPhoto.getUrl());
+                                photoListBean.setSize_small(bmobPhoto.getUrl());
+                                photoInfo.getPhoto_list().add(photoListBean);
+                            }
+                        });
+            }
 
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void pushContent(@Nullable String photoListJson) {
+        PostContent postContent = new PostContent();
+        postContent.content = mContentEditText.getText().toString();
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (mPhotoImgs.size() != 0 || !mContentEditText.getText().toString().trim().isEmpty()) {
+            TextView textView = new TextView(this);
+            textView.setTextSize(16);
+            textView.setTextColor(getResources().getColor(R.color.defaultTextColor));
+            int padding = DensityUtil.dip2px(this, 16);
+            textView.setPadding(padding + padding / 2, padding, padding, padding);
+            textView.setText("你正在编辑中,是否要退出?");
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setView(textView)
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            PostContentActivity.this.finish();
+                        }
+                    }).create();
+            dialog.show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public static Intent getIntent(Context context) {

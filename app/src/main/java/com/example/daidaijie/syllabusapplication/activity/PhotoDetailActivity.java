@@ -126,6 +126,7 @@ public class PhotoDetailActivity extends BaseActivity {
         int id = item.getItemId();
         if (id == R.id.action_crash) {
             TextView textView = new TextView(this);
+            textView.setTextColor(getResources().getColor(R.color.defaultTextColor));
             textView.setTextSize(16);
             int padding = DensityUtil.dip2px(this, 16);
             textView.setPadding(padding + padding / 2, padding, padding, padding);

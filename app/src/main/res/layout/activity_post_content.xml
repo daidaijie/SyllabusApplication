@@ -45,6 +45,7 @@
         android:paddingBottom="16dp">
 
         <EditText
+            android:id="@+id/contentEditText"
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:background="@color/material_white"
@@ -95,10 +96,10 @@
         android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatRadioButton
-            android:scaleX="0.8"
-            android:scaleY="0.8"
+            android:checked="true"
+            android:layout_marginLeft="8dp"
             android:id="@+id/postAsAndroidButton"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Android"
@@ -106,9 +107,8 @@
             android:textColor="@color/colorPrimary"/>
 
         <android.support.v7.widget.AppCompatRadioButton
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:textSize="20sp"
+            android:layout_marginLeft="8dp"
+            android:textSize="14sp"
             app:buttonTint="@color/colorPrimary"
             android:id="@+id/postAsPhoneButton"
             android:layout_width="wrap_content"
@@ -117,9 +117,8 @@
             android:textColor="@color/colorPrimary"/>
 
         <android.support.v7.widget.AppCompatRadioButton
-            android:scaleX="0.8"
-            android:scaleY="0.8"
-            android:textSize="20sp"
+            android:layout_marginLeft="8dp"
+            android:textSize="14sp"
             app:buttonTint="@color/colorPrimary"
             android:id="@+id/postAsOtherButton"
             android:layout_width="wrap_content"

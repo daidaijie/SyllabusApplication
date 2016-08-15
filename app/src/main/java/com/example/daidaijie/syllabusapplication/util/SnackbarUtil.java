@@ -121,14 +121,14 @@ public class SnackbarUtil {
                 setSnackbarColor(snackbar, blue);
                 break;
             case Confirm:
-                setSnackbarColor(snackbar, Color.WHITE,green);
+                setSnackbarColor(snackbar, Color.WHITE, green);
                 break;
             case Warning:
-                setSnackbarColor(snackbar, orange);
+                setSnackbarColor(snackbar, Color.WHITE, orange);
                 break;
             case Alert:
                 setSnackbarColor(snackbar, Color.YELLOW, red);
-                setSnackbarActionColor(snackbar,Color.WHITE);
+                setSnackbarActionColor(snackbar, Color.WHITE);
                 break;
         }
     }
@@ -163,10 +163,11 @@ public class SnackbarUtil {
 
     /**
      * 设置SnackbarAction按钮的颜色
+     *
      * @param snackbar
      * @param actionColor
      */
-    public static void setSnackbarActionColor(Snackbar snackbar,int actionColor) {
+    public static void setSnackbarActionColor(Snackbar snackbar, int actionColor) {
         View view = snackbar.getView();
         if (view != null) {
             ((Button) view.findViewById(R.id.snackbar_action)).setTextColor(actionColor);
