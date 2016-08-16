@@ -46,7 +46,7 @@ public class STUCircleActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if (SystemClock.currentThreadTimeMillis() - touchSecond < 200) {
-                    EventBus.getDefault().post(new ToTopEvent());
+                    EventBus.getDefault().post(new ToTopEvent(false,false));
                 } else {
                     Toast.makeText(STUCircleActivity.this, "再次点击回到顶部", Toast.LENGTH_SHORT).show();
                 }

@@ -5,6 +5,7 @@ import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import rx.Observable;
 
 /**
  * Created by smallfly on 16-3-27.
@@ -22,6 +23,6 @@ public interface PushPostService {
     public static final int POST_TYPE_ACTIVITY = 1;
 
     @POST("interaction/api/v2/post")
-    Call<Void> post(@Body PostContent postContent);
+    Observable<Void> post(@Body PostContent postContent);
 
 }

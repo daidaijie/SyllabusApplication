@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,8 +26,12 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
+import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
+import com.example.daidaijie.syllabusapplication.model.User;
+import com.example.daidaijie.syllabusapplication.service.PushPostService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.ImageUploader;
+import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -46,6 +51,7 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import id.zelory.compressor.Compressor;
 import okhttp3.MediaType;
+import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -208,7 +214,7 @@ public class PostContentActivity extends BaseActivity {
                             @Override
                             public Observable<File> call(File file) {
 //                            Log.d(TAG, "call: " + file.exists());
-//                            Log.d(TAG, "压缩前: " + file.length());
+                                Log.d(TAG, "压缩前: " + Formatter.formatFileSize(PostContentActivity.this, file.length()));
                                 return Compressor.getDefault(PostContentActivity.this)
                                         .compressToFileAsObservable(file);
                             }
@@ -216,6 +222,7 @@ public class PostContentActivity extends BaseActivity {
                         .flatMap(new Func1<File, Observable<BmobPhoto>>() {
                             @Override
                             public Observable<BmobPhoto> call(File file) {
+                                Log.d(TAG, "压缩后: " + Formatter.formatFileSize(PostContentActivity.this, file.length()));
                                 return ImageUploader.getObservableAsBombPhoto(mediaType,
                                         file.toString(), file);
                             }
@@ -238,6 +245,7 @@ public class PostContentActivity extends BaseActivity {
                                         .toJson(photoInfo, com.example.daidaijie
                                                 .syllabusapplication.bean.PhotoInfo.class);
                                 Log.d(TAG, "onCompleted: " + photoListJsonString);
+                                pushContent(photoListJsonString);
                             }
 
                             @Override
@@ -258,6 +266,8 @@ public class PostContentActivity extends BaseActivity {
                                 photoInfo.getPhoto_list().add(photoListBean);
                             }
                         });
+            } else {
+                pushContent(null);
             }
 
         }
@@ -267,6 +277,38 @@ public class PostContentActivity extends BaseActivity {
     private void pushContent(@Nullable String photoListJson) {
         PostContent postContent = new PostContent();
         postContent.content = mContentEditText.getText().toString();
+        postContent.token = User.getInstance().getUserInfo().getToken();
+        postContent.description = "None";
+        postContent.post_type = PushPostService.POST_TYPE_TOPIC;
+        postContent.photo_list_json = photoListJson;
+        postContent.source = "iPhone 7s plus";
+        postContent.uid = User.getInstance().getUserBaseBean().getId();
+
+        Retrofit retrofit = RetrofitUtil.getDefault();
+        PushPostService pushPostService = retrofit.create(PushPostService.class);
+        pushPostService.post(postContent)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+                        EventBus.getDefault().post(new ToTopEvent(true,true));
+                        PostContentActivity.this.finish();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: Push" + e.getMessage());
+                        SnackbarUtil.LongSnackbar(mContentEditText,"发送失败",SnackbarUtil.Alert)
+                                .show();
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+
+                    }
+                });
+
     }
 
     @Override

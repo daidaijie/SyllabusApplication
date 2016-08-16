@@ -1,12 +1,8 @@
 package com.example.daidaijie.syllabusapplication.model;
 
-import android.content.Context;
-
-import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
+import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
-
-import java.util.Map;
 
 /**
  * Created by daidaijie on 2016/7/24.
@@ -16,9 +12,14 @@ public class User {
     //example 13yjli3
     private String mAccount;
 
+    //example *********
+    private String mPassword;
+
     private static User sUser = new User();
 
     private UserInfo mUserInfo;
+
+    private UserBaseBean mUserBaseBean;
 
 //    public Map<String, Syllabus> mSyllabusMap;
 
@@ -43,5 +44,11 @@ public class User {
     public static void saveUser() {
     }
 
+    public UserBaseBean getUserBaseBean() {
+        return mUserBaseBean;
+    }
 
+    public void setUserBaseBean(UserBaseBean userBaseBean) {
+        mUserBaseBean = userBaseBean;
+    }
 }

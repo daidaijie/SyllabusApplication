@@ -20,6 +20,7 @@ import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.service.CirclesService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.liaoinstan.springview.container.MeituanFooter;
 import com.liaoinstan.springview.container.MeituanHeader;
 import com.liaoinstan.springview.widget.SpringView;
@@ -113,7 +114,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                     mSpringView.callFresh();
 //                getCircles();
                 }
-            }, 100);
+            }, 50);
         }
 
         return view;
@@ -186,6 +187,18 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void toTop(ToTopEvent toTopEvent) {
         mCircleRecyclerView.smoothScrollToPosition(0);
+        if (toTopEvent.isRefresh) {
+            mSpringView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSpringView.callFresh();
+                }
+            }, 50);
+        }
+        if (toTopEvent.isShowSuccuess) {
+            SnackbarUtil.ShortSnackbar(mCircleRecyclerView, "发送成功", SnackbarUtil.Confirm).show();
+        }
+
     }
 
     @Override
