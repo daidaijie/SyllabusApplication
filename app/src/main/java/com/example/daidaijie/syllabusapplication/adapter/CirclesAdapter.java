@@ -53,6 +53,20 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     //判断是列表还是详情，列表是false，详情是true
     private boolean isOnlyOne;
 
+    public interface OnCommentListener {
+        void onComment();
+    }
+
+    public OnCommentListener getCommentListener() {
+        return mCommentListener;
+    }
+
+    public void setCommentListener(OnCommentListener commentListener) {
+        mCommentListener = commentListener;
+    }
+
+    OnCommentListener mCommentListener;
+
     public CirclesAdapter(Activity activity, List<PostListBean> postListBeen) {
         mActivity = activity;
         mPostListBeen = postListBeen;
@@ -157,6 +171,13 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                     mActivity.startActivity(intent);
                 }
             });
+        } else {
+            holder.mCommentLinearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCommentListener.onComment();
+                }
+            });
         }
     }
 
@@ -188,6 +209,8 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         LinearLayout mThumbUpLinearLayout;
         @BindView(R.id.itemCardView)
         CardView mItemCardView;
+        @BindView(R.id.commentLinearLayout)
+        LinearLayout mCommentLinearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

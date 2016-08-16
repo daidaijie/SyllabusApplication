@@ -42,6 +42,7 @@
     </android.support.v7.widget.RecyclerView>
 
     <EditText
+        android:visibility="gone"
         android:layout_alignParentBottom="true"
         android:id="@+id/commentEditext"
         android:layout_width="match_parent"

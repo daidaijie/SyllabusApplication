@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -90,6 +91,15 @@ public class CircleDetailActivity extends BaseActivity {
 
         mCirclesAdapter = new CirclesAdapter(this, mPostListBeen,
                 getIntent().getIntExtra(EXTRA_PHOTO_WIDTH, 0));
+        mCirclesAdapter.setCommentListener(new CirclesAdapter.OnCommentListener() {
+            @Override
+            public void onComment() {
+                mCommentEditext.setVisibility(View.VISIBLE);
+                mCommentEditext.setFocusable(true);
+                mCommentEditext.setFocusableInTouchMode(true);
+                mCommentEditext.requestFocus();
+            }
+        });
         //以后一定要记住这句话
         mContentRecyclerView = new RecyclerView(this);
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -152,6 +162,14 @@ public class CircleDetailActivity extends BaseActivity {
         return intent;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (!mIsKeyboardShow && mCommentEditext.getVisibility() == View.VISIBLE) {
+            mCommentEditext.setVisibility(View.GONE);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     private void getComment() {
         Retrofit retrofit = RetrofitUtil.getDefault();
