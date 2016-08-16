@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/rootView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,13 +10,11 @@
     tools:context="com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity">
 
     <android.support.v7.widget.Toolbar
+        android:fitsSystemWindows="true"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/colorPrimary"
-        android:fitsSystemWindows="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:theme="@style/AppTheme.PopupOverlay"
         app:titleTextColor="@android:color/white">
 
@@ -34,11 +33,18 @@
 
 
     <android.support.v7.widget.RecyclerView
+        android:layout_above="@+id/commentEditext"
         android:id="@+id/commentRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="8dp">
     </android.support.v7.widget.RecyclerView>
+
+    <EditText
+        android:layout_alignParentBottom="true"
+        android:id="@+id/commentEditext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </RelativeLayout>
