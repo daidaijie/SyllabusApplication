@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
@@ -36,6 +37,20 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     public View getHeaderView() {
         return mHeaderView;
+    }
+
+    public interface onCommentListener {
+        void onComment(int position);
+    }
+
+    private onCommentListener mCommentListener;
+
+    public onCommentListener getCommentListener() {
+        return mCommentListener;
+    }
+
+    public void setCommentListener(onCommentListener commentListener) {
+        mCommentListener = commentListener;
     }
 
     public void setHeaderView(View headerView) {
@@ -115,6 +130,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
             holder.mDevLine.setVisibility(position == (mCommentInfo.getComments().size() - 1) ?
                     View.VISIBLE : View.INVISIBLE);
+            final int finalPosition = position;
+
+            holder.mCommentContextLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mCommentListener.onComment(finalPosition);
+                }
+            });
+
+
         } else if (getItemViewType(position) == TYPE_HEADER) {
             return;
         } else {
@@ -151,6 +176,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         View mDevLine;
         @BindView(R.id.commentTitle)
         TextView mCommentTitle;
+        @BindView(R.id.commentContextLayout)
+        RelativeLayout mCommentContextLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);

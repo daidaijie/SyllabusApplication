@@ -1,34 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:paddingLeft="8dp"
               android:paddingRight="8dp">
+
     <TextView
-        android:layout_marginLeft="8dp"
         android:id="@+id/commentTitle"
-        android:visibility="gone"
-        tools:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="评论"
-        android:textSize="16sp"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_width="match_parent"
-        android:layout_height="32dp"/>
-    
+        android:textSize="16sp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/defaultLineColor"/>
 
     <RelativeLayout
-        android:background="@color/material_white"
+        android:id="@+id/commentContextLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/material_white"
         android:padding="8dp">
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -38,38 +40,39 @@
             app:roundAsCircle="true"/>
 
         <TextView
-            android:textSize="12sp"
-            android:singleLine="true"
-            android:textColor="@color/colorPrimary"
             android:id="@+id/nicknameTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/headImageDraweeView"/>
+            android:layout_toRightOf="@+id/headImageDraweeView"
+            android:singleLine="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="12sp"/>
 
         <TextView
-            android:textColor="@color/defaultShowColor"
-            android:singleLine="true"
-            android:textSize="12sp"
             android:id="@+id/timeTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/nicknameTextView"
             android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/headImageDraweeView"/>
+            android:layout_toRightOf="@+id/headImageDraweeView"
+            android:singleLine="true"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="12sp"/>
 
         <TextView
-            android:textColor="@color/defaultTextColor"
-            android:textSize="14sp"
             android:id="@+id/contentTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/headImageDraweeView"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/headImageDraweeView"/>
+            android:layout_toRightOf="@+id/headImageDraweeView"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"/>
 
     </RelativeLayout>
+
     <View
         android:id="@+id/devLine"
         android:layout_width="match_parent"

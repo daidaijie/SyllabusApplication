@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
@@ -60,6 +61,8 @@ public class CircleDetailActivity extends BaseActivity {
 
     private List<PostListBean> mPostListBeen;
 
+    private CommentInfo mCommentInfo;
+
     private PostListBean mPostListBean;
 
     private static final String EXTRA_POST_BEAN =
@@ -71,6 +74,8 @@ public class CircleDetailActivity extends BaseActivity {
     int mVisibleHeight;
     boolean mIsKeyboardShow;
 
+    //上一条评论
+    private int lastPostion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,24 +95,23 @@ public class CircleDetailActivity extends BaseActivity {
             }
         });
 
-
         mPostListBean = (PostListBean) getIntent().getSerializableExtra(EXTRA_POST_BEAN);
 
         mPostListBeen = new ArrayList<>();
         mPostListBeen.add(mPostListBean);
 
+        lastPostion = 0;
         mCirclesAdapter = new CirclesAdapter(this, mPostListBeen,
                 getIntent().getIntExtra(EXTRA_PHOTO_WIDTH, 0));
         mCirclesAdapter.setCommentListener(new CirclesAdapter.OnCommentListener() {
             @Override
             public void onComment() {
-                mCommentInputLayout.setVisibility(View.VISIBLE);
-                mCommentEditext.setFocusable(true);
-                mCommentEditext.setFocusableInTouchMode(true);
-                mCommentEditext.requestFocus();
-                InputMethodManager imm = (InputMethodManager)
-                        getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.showSoftInput(mCommentEditext, InputMethodManager.SHOW_FORCED);
+                showInput();
+                mCommentEditext.setHint("评论该动态");
+                if (lastPostion != 0) {
+                    mCommentEditext.setText("");
+                }
+                lastPostion = 0;
             }
         });
         //以后一定要记住这句话
@@ -115,9 +119,24 @@ public class CircleDetailActivity extends BaseActivity {
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mContentRecyclerView.setAdapter(mCirclesAdapter);
 
-        mCommentAdapter = new CommentAdapter(this, null);
+        mCommentInfo = null;
+        mCommentAdapter = new CommentAdapter(this, mCommentInfo);
         mCommentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mCommentAdapter.setHeaderView(mContentRecyclerView);
+        mCommentAdapter.setCommentListener(new CommentAdapter.onCommentListener() {
+            @Override
+            public void onComment(int position) {
+                showInput();
+                CommentInfo.CommentsBean.UserBean user = mCommentInfo.getComments().get(position).getUser();
+                String userName = user.getNickname().trim().isEmpty() ? user.getAccount() : user.getNickname();
+                mCommentEditext.setHint("回复" + userName + ":");
+                if (lastPostion != position + 1) {
+                    mCommentEditext.setText("");
+                }
+                lastPostion = position + 1;
+            }
+        });
+
         mCommentRecyclerView.setAdapter(mCommentAdapter);
 
         getComment();
@@ -181,6 +200,16 @@ public class CircleDetailActivity extends BaseActivity {
         }
     }
 
+    private void showInput() {
+        mCommentInputLayout.setVisibility(View.VISIBLE);
+        mCommentEditext.setFocusable(true);
+        mCommentEditext.setFocusableInTouchMode(true);
+        mCommentEditext.requestFocus();
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mCommentEditext, InputMethodManager.SHOW_FORCED);
+    }
+
     private void hideInput() {
         mCommentInputLayout.setVisibility(View.GONE);
         InputMethodManager imm = (InputMethodManager)
@@ -197,7 +226,8 @@ public class CircleDetailActivity extends BaseActivity {
                 .subscribe(new Subscriber<CommentInfo>() {
                     @Override
                     public void onCompleted() {
-
+                        mCommentAdapter.setCommentInfo(mCommentInfo);
+                        mCommentAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -206,8 +236,7 @@ public class CircleDetailActivity extends BaseActivity {
 
                     @Override
                     public void onNext(CommentInfo commentInfo) {
-                        mCommentAdapter.setCommentInfo(commentInfo);
-                        mCommentAdapter.notifyDataSetChanged();
+                        mCommentInfo = commentInfo;
                     }
                 });
     }
