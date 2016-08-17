@@ -71,8 +71,14 @@ public class CircleDetailActivity extends BaseActivity {
     private static final String EXTRA_PHOTO_WIDTH =
             "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.PhotoWidth";
 
-    int mVisibleHeight;
-    boolean mIsKeyboardShow;
+    private static final String EXTRA_IS_COMMENT =
+            "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.isComment";
+
+
+    private int mVisibleHeight;
+    private boolean mIsKeyboardShow;
+
+    private boolean mIsComment;
 
     //上一条评论
     private int lastPostion;
@@ -141,6 +147,15 @@ public class CircleDetailActivity extends BaseActivity {
 
         getComment();
 
+        mIsComment = getIntent().getBooleanExtra(EXTRA_IS_COMMENT, false);
+        if (mIsComment) {
+            showInput();
+            mCommentEditext.setHint("评论该动态");
+            if (lastPostion != 0) {
+                mCommentEditext.setText("");
+            }
+            lastPostion = 0;
+        }
 
     }
 
@@ -177,6 +192,9 @@ public class CircleDetailActivity extends BaseActivity {
                 (RelativeLayout.LayoutParams) mCommentInputLayout.getLayoutParams();
         layoutParams.bottomMargin = mRootHeight - mVisibleHeight;
         mRootView.requestLayout();
+        if (mIsKeyboardShow == false) {
+            hideInput();
+        }
     }
 
     @Override
@@ -185,19 +203,21 @@ public class CircleDetailActivity extends BaseActivity {
     }
 
     public static Intent getIntent(Context context, PostListBean postBean, int photoWidth) {
+        return getIntent(context, postBean, photoWidth, false);
+    }
+
+    public static Intent getIntent(Context context, PostListBean postBean, int photoWidth, boolean isComment) {
         Intent intent = new Intent(context, CircleDetailActivity.class);
         intent.putExtra(EXTRA_POST_BEAN, postBean);
         intent.putExtra(EXTRA_PHOTO_WIDTH, photoWidth);
+        intent.putExtra(EXTRA_IS_COMMENT, isComment);
         return intent;
     }
 
     @Override
     public void onBackPressed() {
-        if (mCommentInputLayout.getVisibility() == View.VISIBLE) {
-            hideInput();
-        } else {
-            super.onBackPressed();
-        }
+
+        super.onBackPressed();
     }
 
     private void showInput() {
@@ -211,10 +231,10 @@ public class CircleDetailActivity extends BaseActivity {
     }
 
     private void hideInput() {
-        mCommentInputLayout.setVisibility(View.GONE);
         InputMethodManager imm = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mCommentEditext.getWindowToken(), 0);
+        mCommentInputLayout.setVisibility(View.GONE);
     }
 
     private void getComment() {

@@ -171,6 +171,14 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                     mActivity.startActivity(intent);
                 }
             });
+            holder.mCommentLinearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = CircleDetailActivity.getIntent(mActivity, postBean, mWidth,true);
+                    mActivity.startActivity(intent);
+                }
+            });
+
         } else {
             holder.mCommentLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
