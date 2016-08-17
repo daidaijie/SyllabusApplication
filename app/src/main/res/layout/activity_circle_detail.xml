@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
-    android:id="@+id/rootView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/defaultLightBackground"
     tools:context="com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity">
 
     <android.support.v7.widget.Toolbar
-        android:fitsSystemWindows="true"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.PopupOverlay"
         app:titleTextColor="@android:color/white">
 
@@ -33,19 +33,72 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:layout_above="@+id/commentEditext"
         android:id="@+id/commentRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/commentEditext"
         android:layout_below="@+id/toolbar"
         android:layout_marginTop="8dp">
     </android.support.v7.widget.RecyclerView>
 
-    <EditText
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/commentEditext"
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/commentInputLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/defaultDarkBackground"
+        android:visibility="gone"
+        tools:visibility="visible">
+        <View
+            android:id="@+id/div_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/defaultShowColor">
+        </View>
+
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/commentEditext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/div_line"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_toLeftOf="@+id/sendLayout"
+                android:maxHeight="160dp"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="16sp"/>
+
+            <FrameLayout
+                android:layout_marginBottom="8dp"
+                android:id="@+id/sendLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
+
+                <Button
+                    android:id="@+id/sendCommentButton"
+                    android:layout_width="56dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="bottom"
+                    android:background="@drawable/bg_send_comment"
+                    android:text="发送"
+                    android:textColor="@color/material_white"
+                    android:textSize="14sp"/>
+
+            </FrameLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

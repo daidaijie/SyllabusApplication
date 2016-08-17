@@ -11,10 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import retrofit2.Retrofit;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -47,6 +50,10 @@ public class CircleDetailActivity extends BaseActivity {
     EditText mCommentEditext;
     @BindView(R.id.rootView)
     RelativeLayout mRootView;
+    @BindView(R.id.sendCommentButton)
+    Button mSendCommentButton;
+    @BindView(R.id.commentInputLayout)
+    LinearLayout mCommentInputLayout;
     private CirclesAdapter mCirclesAdapter;
 
     private CommentAdapter mCommentAdapter;
@@ -94,10 +101,13 @@ public class CircleDetailActivity extends BaseActivity {
         mCirclesAdapter.setCommentListener(new CirclesAdapter.OnCommentListener() {
             @Override
             public void onComment() {
-                mCommentEditext.setVisibility(View.VISIBLE);
+                mCommentInputLayout.setVisibility(View.VISIBLE);
                 mCommentEditext.setFocusable(true);
                 mCommentEditext.setFocusableInTouchMode(true);
                 mCommentEditext.requestFocus();
+                InputMethodManager imm = (InputMethodManager)
+                        getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mCommentEditext, InputMethodManager.SHOW_FORCED);
             }
         });
         //以后一定要记住这句话
@@ -145,7 +155,7 @@ public class CircleDetailActivity extends BaseActivity {
             mIsKeyboardShow = false;
         }
         RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) mCommentEditext.getLayoutParams();
+                (RelativeLayout.LayoutParams) mCommentInputLayout.getLayoutParams();
         layoutParams.bottomMargin = mRootHeight - mVisibleHeight;
         mRootView.requestLayout();
     }
@@ -164,11 +174,18 @@ public class CircleDetailActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (!mIsKeyboardShow && mCommentEditext.getVisibility() == View.VISIBLE) {
-            mCommentEditext.setVisibility(View.GONE);
+        if (mCommentInputLayout.getVisibility() == View.VISIBLE) {
+            hideInput();
         } else {
             super.onBackPressed();
         }
+    }
+
+    private void hideInput() {
+        mCommentInputLayout.setVisibility(View.GONE);
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mCommentEditext.getWindowToken(), 0);
     }
 
     private void getComment() {
@@ -195,4 +212,8 @@ public class CircleDetailActivity extends BaseActivity {
                 });
     }
 
+    @OnClick(R.id.sendCommentButton)
+    public void onClick() {
+        hideInput();
+    }
 }
