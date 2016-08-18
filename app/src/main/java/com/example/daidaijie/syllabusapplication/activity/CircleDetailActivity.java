@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,9 +24,13 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.CommentAdapter;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
+import com.example.daidaijie.syllabusapplication.bean.PostCommentBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.CircleCommentsService;
+import com.example.daidaijie.syllabusapplication.service.SendCommentService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +40,7 @@ import butterknife.OnClick;
 import retrofit2.Retrofit;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
 public class CircleDetailActivity extends BaseActivity {
@@ -261,8 +267,54 @@ public class CircleDetailActivity extends BaseActivity {
                 });
     }
 
+    private void sendComment() {
+        if (mCommentEditext.getText().toString().trim().isEmpty()) {
+            SnackbarUtil.ShortSnackbar(
+                    mCommentEditext, "消息不能为空", SnackbarUtil.Warning
+            ).show();
+            return;
+        }
+        String postContent = mCommentEditext.getText().toString();
+        if (lastPostion != 0) {
+            postContent = "@" + mCommentInfo.getComments().get(lastPostion - 1).getUser().getName()
+                    + ": " + postContent;
+        }
+        // TODO: 2016/8/18 记得要判断token是否为空
+        PostCommentBean postCommentBean = new PostCommentBean(
+                mPostListBeen.get(0).getId(),
+                User.getInstance().getUserBaseBean().getId(),
+                postContent,
+                User.getInstance().getUserInfo().getToken()
+        );
+        SendCommentService sendCommentService
+                = RetrofitUtil.getDefault().create(SendCommentService.class);
+        sendCommentService.sendComment(postCommentBean)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<Void>() {
+                    @Override
+                    public void onCompleted() {
+                        // TODO: 2016/8/18 这里要动态更改评论的数量
+                        mCommentEditext.setText("");
+                        getComment();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        SnackbarUtil.ShortSnackbar(
+                                mCommentEditext, "发送失败", SnackbarUtil.Alert
+                        ).show();
+                    }
+
+                    @Override
+                    public void onNext(Void aVoid) {
+                    }
+                });
+    }
+
     @OnClick(R.id.sendCommentButton)
     public void onClick() {
+        sendComment();
         hideInput();
     }
 }

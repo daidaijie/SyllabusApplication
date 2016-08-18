@@ -106,6 +106,10 @@ public class CommentInfo {
             public void setNickname(String nickname) {
                 this.nickname = nickname;
             }
+
+            public String getName() {
+                return getNickname().trim().isEmpty() ? getAccount() : getNickname();
+            }
         }
     }
 }
