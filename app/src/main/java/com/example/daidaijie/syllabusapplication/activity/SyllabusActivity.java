@@ -232,7 +232,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
-
+            Intent intent = new Intent(this,LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
             Intent intent = new Intent(this,MainActivity.class);
             startActivity(intent);
