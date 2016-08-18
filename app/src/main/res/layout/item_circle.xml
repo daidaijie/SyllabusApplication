@@ -12,6 +12,7 @@
     android:layout_marginTop="4dp"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/material_white"
+    android:foreground="@drawable/fg_circle_card"
     app:cardCornerRadius="4dp"
     app:cardElevation="1dp">
 
@@ -79,8 +80,9 @@
         </RelativeLayout>
 
         <TextView
+            android:background="@drawable/bg_circle_cotent"
             android:id="@+id/contentTextView"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/headImageDraweeView"
             android:layout_marginTop="8dp"

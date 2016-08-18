@@ -16,4 +16,6 @@
     <color name="defaultLineColor">@color/material_grey_300</color>
 
     <color name="defaultDarkBackground">#EBEBEB</color>
+
+    <color name="defaultSelectForeground">#20000000</color>
 </resources>

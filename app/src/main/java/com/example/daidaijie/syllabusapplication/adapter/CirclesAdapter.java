@@ -1,10 +1,14 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
 import android.net.Uri;
 import android.support.annotation.Dimension;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
@@ -174,12 +178,18 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             holder.mCommentLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CircleDetailActivity.getIntent(mActivity, postBean, mWidth,true);
+                    Intent intent = CircleDetailActivity.getIntent(mActivity, postBean, mWidth, true);
                     mActivity.startActivity(intent);
                 }
             });
 
         } else {
+            //不知道为什么不加这句就不会显示selector
+            holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                }
+            });
             holder.mCommentLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -187,6 +197,32 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                 }
             });
         }
+
+        holder.mContentTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                String[] items = {"复制到粘贴板"};
+                AlertDialog dialog = new AlertDialog.Builder(mActivity)
+                        .setItems(items, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (which == 0) {
+                                    ClipboardManager myClipboard;
+                                    myClipboard = (ClipboardManager)
+                                            mActivity.getSystemService(mActivity.CLIPBOARD_SERVICE);
+                                    ClipData clipData;
+                                    clipData = ClipData.newPlainText("text"
+                                            , holder.mContentTextView.getText().toString());
+                                    myClipboard.setPrimaryClip(clipData);
+                                }
+                            }
+                        })
+                        .create();
+                dialog.show();
+                return true;
+            }
+        });
+
     }
 
     @Override

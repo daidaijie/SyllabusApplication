@@ -45,11 +45,15 @@
         </activity>
         <activity android:name=".activity.PhotoDetailActivity">
         </activity>
-        <activity android:name=".activity.CircleDetailActivity" android:windowSoftInputMode="adjustResize">
+        <activity
+            android:name=".activity.CircleDetailActivity"
+            android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".activity.ExamDetailActivity">
         </activity>
         <activity android:name=".activity.PostContentActivity">
+        </activity>
+        <activity android:name=".activity.LoginActivity">
         </activity>
     </application>
 
