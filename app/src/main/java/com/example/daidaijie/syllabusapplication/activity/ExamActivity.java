@@ -89,14 +89,12 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if (mExams != null && mExams.size() != 0) {
-                    mExamListRecycleList.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            mExamAdapter.notifyDataSetChanged();
-                        }
-                    });
-                }
+                mExamListRecycleList.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mExamAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         }, 0, 1000);
     }

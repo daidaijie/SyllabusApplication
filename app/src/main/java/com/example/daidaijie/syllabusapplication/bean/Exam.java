@@ -1,6 +1,12 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+
 import java.io.Serializable;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 /**
  * Created by daidaijie on 2016/8/3.
@@ -141,6 +147,19 @@ public class Exam implements Serializable {
             return exam_time;
         }
 
+    }
+
+    public DateTime getExamTime() {
+        int timeZoneOffset = 8;
+        String[] timeIDs = java.util.TimeZone.getAvailableIDs(timeZoneOffset * 60 * 60 * 1000);
+        TimeZone examTimeZone = new SimpleTimeZone(
+                timeZoneOffset * 60 * 60 * 1000, timeIDs[0]
+        );
+        DateTime examTime = DateTime.parse(getStartTime(), DateTimeFormat.forPattern(
+                "yyyy.MM.dd  HH:mm"
+        ));
+        examTime = new DateTime(examTime, DateTimeZone.forTimeZone(examTimeZone));
+        return examTime;
     }
 
 }

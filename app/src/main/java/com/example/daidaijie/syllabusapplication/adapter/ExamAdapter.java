@@ -71,15 +71,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         holder.mExamRoomTextView.setText("试室　 : " + exam.getExam_location());
         holder.mExamTimeTextView.setText("时间　 : " + exam.getTrueTime());
 
-        int timeZoneOffset = 8;
-        String[] timeIDs = java.util.TimeZone.getAvailableIDs(timeZoneOffset * 60 * 60 * 1000);
-        TimeZone examTimeZone = new SimpleTimeZone(
-                timeZoneOffset * 60 * 60 * 1000, timeIDs[0]
-        );
-        DateTime examTime = DateTime.parse(exam.getStartTime(), DateTimeFormat.forPattern(
-                "yyyy.MM.dd  HH:mm"
-        ));
-        examTime = new DateTime(examTime, DateTimeZone.forTimeZone(examTimeZone));
+        DateTime examTime = exam.getExamTime();
         DateTime now = DateTime.now();
 
         if (DateTimeComparator.getInstance().compare(examTime, now) > 0) {
@@ -102,6 +94,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
             }
             sb.append(String.format("%02d:%02d:%02d",
                     period.getHours(), period.getMinutes(), period.getSeconds()));
+
             SpannableStringBuilder style = new SpannableStringBuilder(sb);
             style.setSpan(new ForegroundColorSpan(
                             mActivity.getResources().getColor(R.color.defaultShowColor)),
