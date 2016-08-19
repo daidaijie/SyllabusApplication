@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,21 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.ExamDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+import org.joda.time.DateTimeUtils;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalTime;
+import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
+import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,21 +71,52 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         holder.mExamRoomTextView.setText("试室　 : " + exam.getExam_location());
         holder.mExamTimeTextView.setText("时间　 : " + exam.getTrueTime());
 
-        /*holder.mExamStateTextView.setTextColor(
-                mActivity.getResources().getColor(R.color.defaultShowColor));
-        holder.mExamStateTextView.setText("已结束");*/
+        int timeZoneOffset = 8;
+        String[] timeIDs = java.util.TimeZone.getAvailableIDs(timeZoneOffset * 60 * 60 * 1000);
+        TimeZone examTimeZone = new SimpleTimeZone(
+                timeZoneOffset * 60 * 60 * 1000, timeIDs[0]
+        );
+        DateTime examTime = DateTime.parse(exam.getStartTime(), DateTimeFormat.forPattern(
+                "yyyy.MM.dd  HH:mm"
+        ));
+        examTime = new DateTime(examTime, DateTimeZone.forTimeZone(examTimeZone));
+        DateTime now = DateTime.now();
 
-        String str = "倒计时\n" + "1天\n12:09:10";
-        SpannableStringBuilder style = new SpannableStringBuilder(str);
-        style.setSpan(new ForegroundColorSpan(
-                        mActivity.getResources().getColor(R.color.defaultShowColor)),
-                0, 4, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
-        );
-        style.setSpan(new ForegroundColorSpan(
-                        mActivity.getResources().getColor(R.color.colorPrimaryDark)),
-                4, str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
-        );
-        holder.mExamStateTextView.setText(style);
+        if (DateTimeComparator.getInstance().compare(examTime, now) > 0) {
+            Period period = new Period(now, examTime);
+            StringBuilder sb = new StringBuilder("倒计时\n");
+            int days = period.getWeeks() * 7 + period.getDays();
+            if (period.getYears() != 0) {
+                sb.append(period.getYears() + "年");
+                sb.append(period.getMonths() + "月");
+                sb.append(days + "天\n");
+            } else {
+                if (period.getMonths() != 0) {
+                    sb.append(period.getMonths() + "月");
+                    sb.append(days + "天\n");
+                } else {
+                    if (days != 0) {
+                        sb.append(days + "天\n");
+                    }
+                }
+            }
+            sb.append(String.format("%02d:%02d:%02d",
+                    period.getHours(), period.getMinutes(), period.getSeconds()));
+            SpannableStringBuilder style = new SpannableStringBuilder(sb);
+            style.setSpan(new ForegroundColorSpan(
+                            mActivity.getResources().getColor(R.color.defaultShowColor)),
+                    0, 4, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+            );
+            style.setSpan(new ForegroundColorSpan(
+                            mActivity.getResources().getColor(R.color.colorPrimaryDark)),
+                    4, sb.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+            );
+            holder.mExamStateTextView.setText(style);
+        }else{
+            holder.mExamStateTextView.setTextColor(
+                    mActivity.getResources().getColor(R.color.defaultShowColor));
+            holder.mExamStateTextView.setText("已结束");
+        }
 
         holder.mExamLayout.setOnClickListener(new View.OnClickListener() {
             @Override

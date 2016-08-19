@@ -57,7 +57,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="#50ffffff"/>
+            android:background="#66ffffff"/>
 
         <EditText
             android:textColorHint="@color/material_grey_300"

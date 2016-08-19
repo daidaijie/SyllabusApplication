@@ -19,6 +19,8 @@ import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import retrofit2.Retrofit;
@@ -83,6 +85,20 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         mExamAdapter.setExams(mExams);
         mExamAdapter.notifyDataSetChanged();
 
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (mExams != null && mExams.size() != 0) {
+                    mExamListRecycleList.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            mExamAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        }, 0, 1000);
     }
 
     @Override
