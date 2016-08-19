@@ -224,21 +224,20 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         int id = item.getItemId();
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
         } else if (id == R.id.nav_gallery) {
             mSyllabusMainPresenter.setWallpaper();
         } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, LessonManagerActivity.class);
+            Intent intent = new Intent(this, GradeActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(this,LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(this,MainActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_send) {
-            Intent intent = new Intent(this,ExamActivity.class);
+            Intent intent = new Intent(this, ExamActivity.class);
             startActivity(intent);
         }
         //点击后关闭drawerLayout
