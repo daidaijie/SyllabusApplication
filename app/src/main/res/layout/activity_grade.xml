@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/defaultLightBackground"
     tools:context="com.example.daidaijie.syllabusapplication.activity.GradeActivity">
 
@@ -27,7 +28,7 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:singleLine="true"
-            android:text="成绩单"
+            android:text="查看成绩"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>

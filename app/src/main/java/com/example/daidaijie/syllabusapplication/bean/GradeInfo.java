@@ -1,5 +1,9 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import android.util.Log;
+
+import com.example.daidaijie.syllabusapplication.activity.GradeActivity;
+
 import java.util.List;
 
 /**
@@ -35,6 +39,17 @@ public class GradeInfo {
 
     public List<List<GradeBean>> getGRADES() {
         return GRADES;
+    }
+
+    public void trimList() {
+        if (GRADES == null) return;
+        for (int i = 0; i < GRADES.size(); i++) {
+            List<GradeBean> gradeBeen = GRADES.get(i);
+            if (gradeBeen.size() == 0) {
+                GRADES.remove(gradeBeen);
+                --i;
+            }
+        }
     }
 
     public void setGRADES(List<List<GradeBean>> GRADES) {

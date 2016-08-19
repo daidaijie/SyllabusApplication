@@ -2,12 +2,14 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.adapter.GradeListAdapter;
 import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
 import com.example.daidaijie.syllabusapplication.service.GradeService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
@@ -38,6 +40,8 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     private GradeInfo mGradeInfo;
 
+    private GradeListAdapter mGradeListAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +51,21 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mGradeListRecycleList.setEmptyView(mEmptyTextView);
+
+        mGradeInfo = null;
+        mGradeListAdapter = new GradeListAdapter(this, mGradeInfo);
+        mGradeListRecycleList.setLayoutManager(new LinearLayoutManager(this));
+        mGradeListRecycleList.setAdapter(mGradeListAdapter);
+
         mRefreshGradeLayout.setOnRefreshListener(this);
+        mRefreshGradeLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
+
         mRefreshGradeLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -66,18 +84,16 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
                     @Override
                     public void onCompleted() {
                         showSuccessBanner();
-                        Log.d(TAG, "onCompleted: " + mGradeInfo.getGPA());
-                        for (List<GradeInfo.GradeBean> gradeBeanList : mGradeInfo.getGRADES()) {
-                            for (GradeInfo.GradeBean gradeBean : gradeBeanList) {
-                                Log.d(TAG, "onCompleted: " + gradeBean.getClass_name());
-                            }
-                            Log.d(TAG, "onCompleted: ");
-                        }
+                        mRefreshGradeLayout.setRefreshing(false);
+                        mGradeInfo.trimList();
+                        mGradeListAdapter.setGradeInfo(mGradeInfo);
+                        mGradeListAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         showFailBannner();
+                        mRefreshGradeLayout.setRefreshing(false);
                     }
 
                     @Override
