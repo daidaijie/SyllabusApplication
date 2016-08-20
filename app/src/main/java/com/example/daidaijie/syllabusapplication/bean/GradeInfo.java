@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.activity.GradeActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +42,8 @@ public class GradeInfo {
         return GRADES;
     }
 
+    public List<Boolean> isExpands;
+
     public void trimList() {
         if (GRADES == null) return;
         for (int i = 0; i < GRADES.size(); i++) {
@@ -49,6 +52,10 @@ public class GradeInfo {
                 GRADES.remove(gradeBeen);
                 --i;
             }
+        }
+        isExpands = new ArrayList<>();
+        for (int i = 0; i < GRADES.size(); i++) {
+            isExpands.add(true);
         }
     }
 

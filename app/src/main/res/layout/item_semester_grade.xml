@@ -18,28 +18,51 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/semesterTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="2015-2016春季学期"
-                android:textColor="@color/defaultTextColor"
-                android:textSize="20sp"/>
-        </LinearLayout>
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"/>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/extendFab"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="4dp"
+                android:src="@drawable/ic_extend"
+                app:backgroundTint="@color/colorPrimaryDark"
+                app:elevation="4dp"
+                app:fabSize="mini"/>
+        </RelativeLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:id="@+id/gradeLinearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="共5科考试,共24学分\n平均绩点为4.65654"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"/>
+
     </LinearLayout>
 
 

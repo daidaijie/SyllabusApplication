@@ -1,6 +1,8 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,8 +50,10 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        List<GradeInfo.GradeBean> gradeBeen = mGradeInfo.getGRADES().get(getItemCount() - position - 1);
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        position = getItemCount() - position - 1;
+        List<GradeInfo.GradeBean> gradeBeen = mGradeInfo.getGRADES().get(position);
+        final boolean[] isExtend = {mGradeInfo.isExpands.get(position)};
         if (gradeBeen.size() != 0) {
             GradeInfo.GradeBean firstGradeBean = gradeBeen.get(0);
             holder.mSemesterTextView.setText(
@@ -72,6 +76,30 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
 
                 holder.mGradeLinearLayout.addView(view);
             }
+
+            if (isExtend[0]) {
+                holder.mExtendFab.setRotation(0.0f);
+                holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
+            } else {
+                holder.mExtendFab.setRotation(45.0f);
+                holder.mGradeLinearLayout.setVisibility(View.GONE);
+            }
+
+            final int finalPosition = position;
+            holder.mExtendFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isExtend[0]) {
+                        holder.mExtendFab.setRotation(45.0f);
+                        holder.mGradeLinearLayout.setVisibility(View.GONE);
+                    } else {
+                        holder.mExtendFab.setRotation(0.0f);
+                        holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
+                    }
+                    isExtend[0] = !isExtend[0];
+                    mGradeInfo.isExpands.set(finalPosition, isExtend[0]);
+                }
+            });
         }
 
     }
@@ -89,6 +117,8 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
         TextView mSemesterTextView;
         @BindView(R.id.gradeLinearLayout)
         LinearLayout mGradeLinearLayout;
+        @BindView(R.id.extendFab)
+        FloatingActionButton mExtendFab;
 
         public ViewHolder(View itemView) {
             super(itemView);
