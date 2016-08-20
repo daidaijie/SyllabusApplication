@@ -120,5 +120,21 @@ public class GradeInfo {
         public void setClass_number(String class_number) {
             this.class_number = class_number;
         }
+
+        public String getTrueName() {
+            int startIndex = 0;
+            int endIndex = class_name.length();
+
+            int index = class_name.indexOf("]");
+            if (index != -1) {
+                startIndex = index + 1;
+            }
+
+            index = class_name.lastIndexOf("[");
+            if (index != -1 && index > startIndex) {
+                endIndex = index;
+            }
+            return class_name.substring(startIndex, endIndex);
+        }
     }
 }

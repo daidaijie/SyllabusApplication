@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.widget;
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ScrollView;
 
 /**
@@ -26,7 +27,7 @@ public class SyllabusScrollView extends ScrollView {
         super.onScrollChanged(l, t, oldl, oldt);
         if (t != 0) {
             swipeRefreshLayout.setEnabled(false);
-        } else if (t == 0) {
+        } else {
             swipeRefreshLayout.setEnabled(true);
         }
     }

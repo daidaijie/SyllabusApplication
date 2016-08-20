@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -73,6 +74,7 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
                 getGrade();
             }
         }, 50);
+
     }
 
     private void getGrade() {
