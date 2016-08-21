@@ -60,24 +60,33 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                     firstGradeBean.getYears() + " " + firstGradeBean.getSemester());
 
             holder.mGradeLinearLayout.removeAllViews();
-            for (int i = 0; i < gradeBeen.size(); i++) {
+
+            for (int i = 0; i <= gradeBeen.size(); i++) {
                 LayoutInflater inflater = LayoutInflater.from(mActivity);
                 View view = inflater.inflate(R.layout.item_grade, null, false);
                 TextView mGradeNameTextView = (TextView) view.findViewById(R.id.gradeNameTextView);
                 TextView mGradeTextView = (TextView) view.findViewById(R.id.gradeTextView);
                 TextView mCreditTextView = (TextView) view.findViewById(R.id.creditTextView);
                 View mDivLine = view.findViewById(R.id.div_line);
-                mDivLine.setVisibility((i == gradeBeen.size() - 1) ? View.INVISIBLE : View.VISIBLE);
+                mDivLine.setVisibility((i == gradeBeen.size()) ? View.INVISIBLE : View.VISIBLE);
 
-                GradeInfo.GradeBean gradeBean = gradeBeen.get(i);
-                mGradeNameTextView.setText(gradeBean.getTrueName());
-                mGradeTextView.setText(gradeBean.getClass_grade());
-                mCreditTextView.setText(gradeBean.getClass_credit());
+                if (i == 0) {
+                    mGradeNameTextView.setText("课程名");
+                    mGradeTextView.setText("成绩");
+                    mGradeTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultTextColor));
+                    mCreditTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultTextColor));
+                    mCreditTextView.setText("学分");
+                } else {
+                    GradeInfo.GradeBean gradeBean = gradeBeen.get(i - 1);
+                    mGradeNameTextView.setText(gradeBean.getTrueName());
+                    mGradeTextView.setText(gradeBean.getClass_grade());
+                    mCreditTextView.setText(gradeBean.getClass_credit());
+                }
 
                 holder.mGradeLinearLayout.addView(view);
             }
 
-            if (isExtend[0]) {
+            /*if (isExtend[0]) {
                 holder.mExtendFab.setRotation(0.0f);
                 holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
             } else {
@@ -99,7 +108,7 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                     isExtend[0] = !isExtend[0];
                     mGradeInfo.isExpands.set(finalPosition, isExtend[0]);
                 }
-            });
+            });*/
         }
 
     }
@@ -117,8 +126,6 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
         TextView mSemesterTextView;
         @BindView(R.id.gradeLinearLayout)
         LinearLayout mGradeLinearLayout;
-        @BindView(R.id.extendFab)
-        FloatingActionButton mExtendFab;
 
         public ViewHolder(View itemView) {
             super(itemView);

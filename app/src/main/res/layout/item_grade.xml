@@ -2,57 +2,66 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/examView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/examView"
     android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp"
     android:paddingTop="8dp">
 
-    <RelativeLayout
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp">
 
         <TextView
+            android:layout_weight="2"
             android:id="@+id/gradeNameTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/div_line"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/gradeInfoLayout"
             android:textColor="@color/defaultTextColor"
             android:textSize="16sp"
             tools:text="程序设计基础"/>
 
-        <LinearLayout
-            android:id="@+id/gradeInfoLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/div_line"
-            android:layout_alignParentRight="true"
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp"
+            android:layout_toLeftOf="@+id/gradeTextView"
+            android:background="@color/defaultShowColor"/>
+
+        <TextView
+            android:id="@+id/gradeTextView"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/creditTextView"
             android:gravity="center"
-            android:orientation="vertical">
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16sp"
+            tools:text="93"/>
 
-            <TextView
-                android:id="@+id/gradeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/colorPrimary"
-                android:textSize="20sp"
-                tools:text="93"/>
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/creditTextView"
+            android:background="@color/defaultShowColor"/>
 
-            <TextView
-                android:id="@+id/creditTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/defaultShowColor"
-                android:textSize="14sp"
-                tools:text="4.0"/>
-        </LinearLayout>
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/creditTextView"
+            android:layout_width="72dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16sp"
+            tools:text="4.0"/>
+
+    </LinearLayout>
 
     <View
         android:id="@+id/div_line"
