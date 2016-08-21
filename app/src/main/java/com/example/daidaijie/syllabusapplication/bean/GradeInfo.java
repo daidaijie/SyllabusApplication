@@ -59,6 +59,37 @@ public class GradeInfo {
         }
     }
 
+    public double getSumCredit(int position) {
+        if (GRADES == null) return 0.0;
+        List<GradeBean> gradeBeen = GRADES.get(position);
+
+        double sumCredit = 0.0;
+
+        for (GradeBean gradeBean : gradeBeen) {
+            sumCredit += gradeBean.getCredit();
+        }
+
+        return sumCredit;
+    }
+
+    public double getSumGpa(int position) {
+        if (GRADES == null) return 0.0;
+        double sumCredit = getSumCredit(position);
+        if (sumCredit == 0) return 0.0;
+
+        List<GradeBean> gradeBeen = GRADES.get(position);
+
+        double sumGpa = 0.0;
+        for (GradeBean gradeBean : gradeBeen) {
+            if (gradeBean.getGrade() >= 60.0) {
+                sumGpa += (gradeBean.getGrade() - 50) / 10.0 * gradeBean.getCredit();
+            }
+        }
+
+        return sumGpa / sumCredit;
+
+    }
+
     public void setGRADES(List<List<GradeBean>> GRADES) {
         this.GRADES = GRADES;
     }
@@ -126,6 +157,15 @@ public class GradeInfo {
 
         public void setClass_number(String class_number) {
             this.class_number = class_number;
+        }
+
+
+        public double getCredit() {
+            return Double.parseDouble(class_credit);
+        }
+
+        public double getGrade() {
+            return Double.parseDouble(class_grade);
         }
 
         public String getTrueName() {

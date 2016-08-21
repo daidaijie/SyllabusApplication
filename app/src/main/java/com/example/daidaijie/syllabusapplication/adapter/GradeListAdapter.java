@@ -1,15 +1,11 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
-import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,6 +56,11 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
             GradeInfo.GradeBean firstGradeBean = gradeBeen.get(0);
             holder.mSemesterTextView.setText(
                     firstGradeBean.getYears() + " " + firstGradeBean.getSemester());
+
+            holder.mSumNumTextView.setText(gradeBeen.size() + "");
+            holder.mSumCreditTextView.setText(String.format("%.1f", mGradeInfo.getSumCredit(position)));
+            holder.mSumGpaTextView.setText(String.format("%.2f", mGradeInfo.getSumGpa(position)));
+
 
             holder.mGradeLinearLayout.removeAllViews();
 
@@ -122,6 +123,12 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.sumNumTextView)
+        TextView mSumNumTextView;
+        @BindView(R.id.sumCreditTextView)
+        TextView mSumCreditTextView;
+        @BindView(R.id.sumGpaTextView)
+        TextView mSumGpaTextView;
         @BindView(R.id.semesterTextView)
         TextView mSemesterTextView;
         @BindView(R.id.gradeLinearLayout)

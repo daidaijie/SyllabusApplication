@@ -58,6 +58,7 @@
                     android:textColor="@color/defaultTextColor"/>
 
                 <TextView
+                    android:id="@+id/sumNumTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -85,6 +86,7 @@
                     android:textColor="@color/defaultTextColor"/>
 
                 <TextView
+                    android:id="@+id/sumCreditTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -111,6 +113,7 @@
                     android:textColor="@color/defaultTextColor"/>
 
                 <TextView
+                    android:id="@+id/sumGpaTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
