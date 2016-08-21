@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.adapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -86,22 +87,22 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
             }
 
             if (isExtend[0]) {
-                holder.mExtendImageView.setRotation(180.0f);
+                holder.mExtendCardView.setRotation(0.0f);
                 holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
             } else {
-                holder.mExtendImageView.setRotation(0.0f);
+                holder.mExtendCardView.setRotation(180.0f);
                 holder.mGradeLinearLayout.setVisibility(View.GONE);
             }
 
             final int finalPosition = position;
-            holder.mExtendImageView.setOnClickListener(new View.OnClickListener() {
+            holder.mExtendCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isExtend[0]) {
-                        holder.mExtendImageView.setRotation(0.0f);
+                        holder.mExtendCardView.setRotation(180.0f);
                         holder.mGradeLinearLayout.setVisibility(View.GONE);
                     } else {
-                        holder.mExtendImageView.setRotation(180.0f);
+                        holder.mExtendCardView.setRotation(0.0f);
                         holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
                     }
                     isExtend[0] = !isExtend[0];
@@ -114,7 +115,7 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
 
     @Override
     public int getItemCount() {
-        if (mGradeInfo == null||mGradeInfo.getGRADES()==null) {
+        if (mGradeInfo == null || mGradeInfo.getGRADES() == null) {
             return 0;
         }
         return mGradeInfo.getGRADES().size();
@@ -125,8 +126,8 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
         TextView mSemesterTextView;
         @BindView(R.id.gradeLinearLayout)
         LinearLayout mGradeLinearLayout;
-        @BindView(R.id.extendImageView)
-        ImageView mExtendImageView;
+        @BindView(R.id.extendCardView)
+        CardView mExtendCardView;
 
         public ViewHolder(View itemView) {
             super(itemView);
