@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -73,8 +74,6 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                 if (i == 0) {
                     mGradeNameTextView.setText("课程名");
                     mGradeTextView.setText("成绩");
-                    mGradeTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultTextColor));
-                    mCreditTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultTextColor));
                     mCreditTextView.setText("学分");
                 } else {
                     GradeInfo.GradeBean gradeBean = gradeBeen.get(i - 1);
@@ -86,36 +85,36 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                 holder.mGradeLinearLayout.addView(view);
             }
 
-            /*if (isExtend[0]) {
-                holder.mExtendFab.setRotation(0.0f);
+            if (isExtend[0]) {
+                holder.mExtendImageView.setRotation(180.0f);
                 holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
             } else {
-                holder.mExtendFab.setRotation(45.0f);
+                holder.mExtendImageView.setRotation(0.0f);
                 holder.mGradeLinearLayout.setVisibility(View.GONE);
             }
 
             final int finalPosition = position;
-            holder.mExtendFab.setOnClickListener(new View.OnClickListener() {
+            holder.mExtendImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isExtend[0]) {
-                        holder.mExtendFab.setRotation(45.0f);
+                        holder.mExtendImageView.setRotation(0.0f);
                         holder.mGradeLinearLayout.setVisibility(View.GONE);
                     } else {
-                        holder.mExtendFab.setRotation(0.0f);
+                        holder.mExtendImageView.setRotation(180.0f);
                         holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
                     }
                     isExtend[0] = !isExtend[0];
                     mGradeInfo.isExpands.set(finalPosition, isExtend[0]);
                 }
-            });*/
+            });
         }
 
     }
 
     @Override
     public int getItemCount() {
-        if (mGradeInfo == null) {
+        if (mGradeInfo == null||mGradeInfo.getGRADES()==null) {
             return 0;
         }
         return mGradeInfo.getGRADES().size();
@@ -126,6 +125,8 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
         TextView mSemesterTextView;
         @BindView(R.id.gradeLinearLayout)
         LinearLayout mGradeLinearLayout;
+        @BindView(R.id.extendImageView)
+        ImageView mExtendImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
