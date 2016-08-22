@@ -54,5 +54,6 @@ dependencies {
     compile 'com.github.nekocode:Emojix:1.1'
     compile 'me.relex:photodraweeview:1.0.0'
     compile 'id.zelory:compressor:1.0.2'
+    compile 'com.bartoszlipinski:recyclerviewheader2:2.0.1'
     compile files('libs/joda-time-2.1.jar')
 }

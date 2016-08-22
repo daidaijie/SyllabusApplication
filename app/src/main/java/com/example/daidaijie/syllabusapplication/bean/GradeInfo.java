@@ -87,7 +87,43 @@ public class GradeInfo {
         }
 
         return sumGpa / sumCredit;
+    }
 
+    public int getAllSize() {
+        if (GRADES == null) return 0;
+        int allSize = 0;
+        for (List<GradeBean> gradeBeen : GRADES) {
+            if (gradeBeen != null) {
+                allSize += gradeBeen.size();
+            }
+        }
+        return allSize;
+    }
+
+    public double getAllCredit() {
+        if (GRADES == null) return 0.0;
+        double allCredit = 0.0;
+        for (int i = 0; i < GRADES.size(); i++) {
+            allCredit += getSumCredit(i);
+        }
+        return allCredit;
+    }
+
+    public double getAllGpa() {
+        if (GRADES == null) return 0.0;
+        double allCredit = getAllCredit();
+        if (allCredit == 0) return 0.0;
+
+        double allGpa = 0.0;
+        for (List<GradeBean> gradeBeen : GRADES) {
+            for (GradeBean gradeBean : gradeBeen) {
+                if (gradeBean.getGrade() >= 60.0) {
+                    allGpa += (gradeBean.getGrade() - 50) / 10.0 * gradeBean.getCredit();
+                }
+            }
+
+        }
+        return allGpa / allCredit;
     }
 
     public void setGRADES(List<List<GradeBean>> GRADES) {

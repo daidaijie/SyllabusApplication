@@ -6,7 +6,7 @@
     android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/defaultLightBackground"
+    android:background="@color/defaultDarkBackground"
     tools:context="com.example.daidaijie.syllabusapplication.activity.MainActivity">
 
     <android.support.design.widget.AppBarLayout

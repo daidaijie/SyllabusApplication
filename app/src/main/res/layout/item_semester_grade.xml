@@ -52,12 +52,14 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="总学科"
                     android:textColor="@color/defaultTextColor"/>
 
                 <TextView
+                    android:textSize="14sp"
                     android:id="@+id/sumNumTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -80,12 +82,14 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="总学分"
                     android:textColor="@color/defaultTextColor"/>
 
                 <TextView
+                    android:textSize="14sp"
                     android:id="@+id/sumCreditTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -107,12 +111,14 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="GPA"
                     android:textColor="@color/defaultTextColor"/>
 
                 <TextView
+                    android:textSize="14sp"
                     android:id="@+id/sumGpaTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

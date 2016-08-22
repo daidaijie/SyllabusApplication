@@ -3,12 +3,11 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.GradeListAdapter;
 import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
@@ -16,8 +15,6 @@ import com.example.daidaijie.syllabusapplication.service.GradeService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
-
-import java.util.List;
 
 import butterknife.BindView;
 import rx.Subscriber;
@@ -38,6 +35,14 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
     TextView mEmptyTextView;
     @BindView(R.id.refreshGradeLayout)
     SwipeRefreshLayout mRefreshGradeLayout;
+    @BindView(R.id.header)
+    RecyclerViewHeader mHeader;
+    @BindView(R.id.sumNumTextView)
+    TextView mSumNumTextView;
+    @BindView(R.id.sumCreditTextView)
+    TextView mSumCreditTextView;
+    @BindView(R.id.sumGpaTextView)
+    TextView mSumGpaTextView;
 
     private GradeInfo mGradeInfo;
 
@@ -58,6 +63,9 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
         mGradeListAdapter = new GradeListAdapter(this, mGradeInfo);
         mGradeListRecycleList.setLayoutManager(new LinearLayoutManager(this));
         mGradeListRecycleList.setAdapter(mGradeListAdapter);
+
+        mHeader.attachTo(mGradeListRecycleList);
+        setHeader();
 
         mRefreshGradeLayout.setOnRefreshListener(this);
         mRefreshGradeLayout.setColorSchemeResources(
@@ -90,6 +98,7 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
                         mGradeInfo.trimList();
                         mGradeListAdapter.setGradeInfo(mGradeInfo);
                         mGradeListAdapter.notifyDataSetChanged();
+                        setHeader();
                     }
 
                     @Override
@@ -103,6 +112,15 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
                         mGradeInfo = gradeInfo;
                     }
                 });
+    }
+
+    private void setHeader() {
+        if (mGradeInfo != null) {
+            mSumCreditTextView.setText(String.format("%.1f", mGradeInfo.getAllCredit()));
+            mSumNumTextView.setText(mGradeInfo.getAllSize() + "");
+            mSumGpaTextView.setText(String.format("%.2f", mGradeInfo.getAllGpa()));
+
+        }
     }
 
 
