@@ -56,4 +56,5 @@ dependencies {
     compile 'me.relex:photodraweeview:1.0.0'
     compile 'id.zelory:compressor:1.0.2'
     compile 'com.bartoszlipinski:recyclerviewheader2:2.0.1'
+    compile 'org.jsoup:jsoup:1.9.2'
 }

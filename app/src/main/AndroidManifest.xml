@@ -59,6 +59,8 @@
         </activity>
         <activity android:name=".activity.OfficeAutomationActivity">
         </activity>
+        <activity android:name=".activity.OADetailActivity">
+        </activity>
     </application>
 
 </manifest>
