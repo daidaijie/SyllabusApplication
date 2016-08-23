@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:textColor="@color/defaultTextColor"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="程序设计基础"/>
 
         <View
@@ -41,7 +41,7 @@
             android:layout_toLeftOf="@+id/creditTextView"
             android:gravity="center"
             android:textColor="@color/defaultTextColor"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="93"/>
 
         <View
@@ -58,7 +58,7 @@
             android:layout_alignParentRight="true"
             android:gravity="center"
             android:textColor="@color/defaultTextColor"
-            android:textSize="16sp"
+            android:textSize="14sp"
             tools:text="4.0"/>
 
     </LinearLayout>

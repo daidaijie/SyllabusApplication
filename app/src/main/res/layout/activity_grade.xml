@@ -107,6 +107,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:textStyle="bold"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="总学科"
@@ -137,6 +138,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:textStyle="bold"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="总学分"
@@ -166,6 +168,7 @@
                                 android:orientation="vertical">
 
                                 <TextView
+                                    android:textStyle="bold"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:text="GPA"

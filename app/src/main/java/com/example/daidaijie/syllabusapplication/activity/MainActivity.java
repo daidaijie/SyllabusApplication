@@ -32,6 +32,7 @@ import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
 import com.example.daidaijie.syllabusapplication.model.BannerModel;
 import com.example.daidaijie.syllabusapplication.service.BannerService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -41,7 +42,6 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import retrofit2.Retrofit;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -70,6 +70,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     DrawerLayout mDrawerLayout;
 
     public static final String TAG = "MainActivity";
+    @BindView(R.id.toOAItemLayout)
+    ItemCardLayout mToOAItemLayout;
+    @BindView(R.id.toSTUItemLayout)
+    ItemCardLayout mToSTUItemLayout;
 
     private BannerModel mBannerModel;
 
@@ -99,6 +103,21 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setBannerPage(mBannerModel.mBanners);
 
         getBanner();
+
+        mToOAItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, OfficeAutomationActivity.class);
+                startActivity(intent);
+            }
+        });
+        mToSTUItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, STUCircleActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -106,11 +125,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return R.layout.activity_main;
     }
 
-    @OnClick(R.id.toSTUItemLayout)
-    public void onClick() {
-        Intent intent = new Intent(MainActivity.this,STUCircleActivity.class);
-        startActivity(intent);
-    }
 
     private class BannerImageHolderView implements Holder<Banner> {
         SimpleDraweeView draweeView;

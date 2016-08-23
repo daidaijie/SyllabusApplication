@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.adapter;
 import android.app.Activity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,9 +75,9 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                 mDivLine.setVisibility((i == gradeBeen.size()) ? View.INVISIBLE : View.VISIBLE);
 
                 if (i == 0) {
-                    mGradeNameTextView.setText("课程名");
-                    mGradeTextView.setText("成绩");
-                    mCreditTextView.setText("学分");
+                    mGradeNameTextView.setText(Html.fromHtml("<b>课程名</b>"));
+                    mGradeTextView.setText(Html.fromHtml("<b>成绩</b>"));
+                    mCreditTextView.setText(Html.fromHtml("<b>学分</b>"));
                 } else {
                     GradeInfo.GradeBean gradeBean = gradeBeen.get(i - 1);
                     mGradeNameTextView.setText(gradeBean.getTrueName());
