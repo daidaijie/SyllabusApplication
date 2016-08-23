@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.util.AssetUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -50,13 +51,15 @@ public class OADetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mOAWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mOAWebView.getSettings().setLoadWithOverviewMode(true);
+        mOAWebView.getSettings().setJavaScriptEnabled(true);
 
         mOABean = (OABean) getIntent().getSerializableExtra(EXTRA_OABEAN);
         oaContent = mOABean.getDOCCONTENT();
         int index = oaContent.indexOf(label) + label.length();
         oaContent = oaContent.substring(index);
 
-        Document doc = Jsoup.parse(getHtml());
+        Document doc = Jsoup.parse(AssetUtil.getStringFromPath("index.html"));
         Element div = doc.select("div#div_doc").first();
         div.append(oaContent);
         div = doc.select("div#div_accessory").first();
@@ -64,7 +67,6 @@ public class OADetailActivity extends BaseActivity {
         if (mOABean.getACCESSORYCOUNT() == 0) {
             div.remove();
         } else {
-
         }
 
         mOAWebView.loadData(doc.toString(), "text/html; charset=UTF-8", null);
@@ -79,23 +81,5 @@ public class OADetailActivity extends BaseActivity {
         Intent intent = new Intent(context, OADetailActivity.class);
         intent.putExtra(EXTRA_OABEAN, oaBean);
         return intent;
-    }
-
-    private String getHtml() {
-        StringBuffer htmlData = new StringBuffer();
-        try {
-            InputStreamReader isr = new InputStreamReader(
-                    getResources().getAssets().open("index.html"), "UTF-8");
-            BufferedReader br = new BufferedReader(isr);
-            char[] tempChar = new char[1024];
-            int charRead = 0;
-
-            while ((charRead = br.read(tempChar)) != -1) {
-                htmlData.append(tempChar);
-            }
-            return htmlData.toString();
-        } catch (IOException e) {
-        }
-        return "";
     }
 }

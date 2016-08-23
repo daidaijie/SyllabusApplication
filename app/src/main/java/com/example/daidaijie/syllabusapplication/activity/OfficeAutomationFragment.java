@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
-import com.example.daidaijie.syllabusapplication.model.OAmodel;
+import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.service.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
@@ -106,7 +106,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
     }
 
     private void getOAinfo() {
-        OAService oaService = OAmodel.getInstance().mRetrofit.create(OAService.class);
+        OAService oaService = OAModel.getInstance().mRetrofit.create(OAService.class);
         oaService.getOAInfo(
                 "undefined", 0, "", position * 10, (position + 1) * 10
         ).subscribeOn(Schedulers.io())
