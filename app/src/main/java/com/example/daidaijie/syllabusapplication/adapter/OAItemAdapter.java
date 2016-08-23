@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,10 +52,16 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
         OABean oaBean = mOABeen.get(position);
 
         holder.mOASubTextView.setText("" + oaBean.getSUBCOMPANYNAME());
-        holder.mOATimeTextView.setText("" + oaBean.getDOCVALIDDATE() + " " + oaBean.getDOCVALIDTIME());
+        holder.mOATimeTextView.setText("" + oaBean.getDOCVALIDDATE() + " "
+                + oaBean.getDOCVALIDTIME().substring(0, oaBean.getDOCVALIDTIME().length() - 3));
         holder.mOATitleTextView.setText("" + oaBean.getDOCSUBJECT());
 
+        holder.mOaCardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
     }
 
     @Override
@@ -72,6 +79,8 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
         TextView mOATimeTextView;
         @BindView(R.id.oATitleTextView)
         TextView mOATitleTextView;
+        @BindView(R.id.oaCardItem)
+        CardView mOaCardItem;
 
         public ViewHolder(View itemView) {
             super(itemView);

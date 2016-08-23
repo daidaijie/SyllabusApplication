@@ -19,12 +19,15 @@ import com.example.daidaijie.syllabusapplication.service.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -78,9 +81,21 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
         mOARecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOARecyclerView.setAdapter(mOAItemAdapter);
 
+        mRefreshOALayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
         mRefreshOALayout.setOnRefreshListener(this);
-        mRefreshOALayout.setRefreshing(true);
-        getOAinfo();
+        mRefreshOALayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshOALayout.setRefreshing(true);
+                getOAinfo();
+            }
+        },50);
+
 
         return view;
     }
@@ -96,13 +111,33 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                 "undefined", 0, "", position * 10, (position + 1) * 10
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<OABean>>() {
+                .flatMap(new Func1<List<OABean>, Observable<OABean>>() {
+                    @Override
+                    public Observable<OABean> call(List<OABean> oaBeen) {
+                        return Observable.from(oaBeen);
+                    }
+                })
+                .filter(new Func1<OABean, Boolean>() {
+                    @Override
+                    public Boolean call(OABean oaBean) {
+                        return (oaBean.getDOCVALIDDATE() != null
+                                && oaBean.getDOCVALIDTIME() != null);
+                    }
+                })
+                .subscribe(new Subscriber<OABean>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        if (mOABeen == null) {
+                            mOABeen = new ArrayList<>();
+                        } else {
+                            mOABeen.clear();
+                        }
+                    }
+
                     @Override
                     public void onCompleted() {
                         mRefreshOALayout.setRefreshing(false);
-                        SnackbarUtil.ShortSnackbar(
-                                mOARecyclerView, "获取成功", SnackbarUtil.Confirm
-                        );
                         mOAItemAdapter.setOABeen(mOABeen);
                         mOAItemAdapter.notifyDataSetChanged();
                     }
@@ -112,15 +147,17 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                         mRefreshOALayout.setRefreshing(false);
                         Log.d(TAG, "onError: " + e.getMessage());
                         SnackbarUtil.LongSnackbar(
-                                mOARecyclerView, "获取失败", SnackbarUtil.Alert
-                        );
+                                mRefreshOALayout, "获取失败", SnackbarUtil.Alert
+                        ).show();
+
                     }
 
                     @Override
-                    public void onNext(List<OABean> oaBeen) {
-                        mOABeen = oaBeen;
+                    public void onNext(OABean oaBean) {
+                        mOABeen.add(oaBean);
                     }
                 });
+
 
     }
 }

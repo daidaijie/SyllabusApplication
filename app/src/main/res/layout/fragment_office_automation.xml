@@ -1,32 +1,38 @@
-<android.support.v4.widget.SwipeRefreshLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/refreshOALayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.daidaijie.syllabusapplication.activity.OfficeAutomationFragment">
 
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshOALayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
-            android:id="@+id/oARecyclerView"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
+            <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
+                android:id="@+id/oARecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/emptyTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:paddingTop="32dp"
-            android:text="暂无办公自动化信息"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="20sp"
-            android:visibility="visible"/>
-    </FrameLayout>
+            </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
 
-</android.support.v4.widget.SwipeRefreshLayout>
+            <TextView
+                android:id="@+id/emptyTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingTop="32dp"
+                android:text="暂无办公自动化信息"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="20sp"
+                android:visibility="visible"/>
+        </FrameLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>

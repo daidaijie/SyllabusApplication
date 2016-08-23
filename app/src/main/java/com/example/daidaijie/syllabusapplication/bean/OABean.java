@@ -1,22 +1,24 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by daidaijie on 2016/8/22.
  */
-public class OABean {
+public class OABean implements Serializable {
 
     /**
      * DOCCONTENT : 汕头大学“创新强校工程”2017年拟安排专项资金考核自评材料公示!@#$%^&*<p style="text-align: center;">
-     <span style="font-size:16px;"><span style="font-size:22px;">汕头大学&ldquo;创新强校工程&rdquo;2017年拟安排专项资金考核自评材料公示</span></span></p>
-     <p>
-     &nbsp;</p>
-     <p>
-     <span style="font-size:18px;"><span style="font-family: 宋体;"><span style="width: 100%; vertical-align: top;">各单位：</span></span></span></p>
-     <p>
-     <span style="font-size:18px;"><span style="font-family: 宋体;"><span id="spanContent" style="width: 100%; vertical-align: top;">&nbsp; 兹定于<span lang="EN-US">2016</span>年7月<span lang="EN-US">15</span>日至19日，在发展规划办（新行政中心3楼学报隔壁）公示汕头大学&ldquo;创新强校工程&rdquo;<span lang="EN-US">2017</span>年拟安排专项资金考核自评材料，欢迎教职员工前往阅览（暑假期间，请提前预约）。如对材料有异议，请以书面形式向发展规划办反映。</span></span></span></p>
-     <p>
-     <span style="font-size:18px;"><span style="font-family: 宋体;"><span id="spanContent" style="width: 100%; vertical-align: top;"><span lang="EN-US">&nbsp; </span>联系电话：<span lang="EN-US">0754-86503298 &nbsp;&nbsp; </span>电子邮箱：<span lang="EN-US">o_ghb@stu.edu.cn </span></span></span></span></p>
-
+     * <span style="font-size:16px;"><span style="font-size:22px;">汕头大学&ldquo;创新强校工程&rdquo;2017年拟安排专项资金考核自评材料公示</span></span></p>
+     * <p>
+     * &nbsp;</p>
+     * <p>
+     * <span style="font-size:18px;"><span style="font-family: 宋体;"><span style="width: 100%; vertical-align: top;">各单位：</span></span></span></p>
+     * <p>
+     * <span style="font-size:18px;"><span style="font-family: 宋体;"><span id="spanContent" style="width: 100%; vertical-align: top;">&nbsp; 兹定于<span lang="EN-US">2016</span>年7月<span lang="EN-US">15</span>日至19日，在发展规划办（新行政中心3楼学报隔壁）公示汕头大学&ldquo;创新强校工程&rdquo;<span lang="EN-US">2017</span>年拟安排专项资金考核自评材料，欢迎教职员工前往阅览（暑假期间，请提前预约）。如对材料有异议，请以书面形式向发展规划办反映。</span></span></span></p>
+     * <p>
+     * <span style="font-size:18px;"><span style="font-family: 宋体;"><span id="spanContent" style="width: 100%; vertical-align: top;"><span lang="EN-US">&nbsp; </span>联系电话：<span lang="EN-US">0754-86503298 &nbsp;&nbsp; </span>电子邮箱：<span lang="EN-US">o_ghb@stu.edu.cn </span></span></span></span></p>
+     * <p/>
      * ID : 7640
      * DOCSUBJECT : 汕头大学“创新强校工程”2017年拟安排专项资金考核自评材料公示
      * ACCESSORYCOUNT : 0
