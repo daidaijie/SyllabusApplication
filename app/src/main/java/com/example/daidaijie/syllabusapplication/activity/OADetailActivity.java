@@ -120,24 +120,33 @@ public class OADetailActivity extends BaseActivity {
 
     private void screenShot() {
         Bitmap webViewScreen = captureScreen();
-        try {
-            saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA");
-            Toast.makeText(this, "已保存到图库", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "保存失败", Toast.LENGTH_SHORT).show();
+        if (webViewScreen != null) {
+            try {
+                saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA");
+                Toast.makeText(this, "已保存到图库", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "保存失败", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(OADetailActivity.this, "图片太大，无法截取", Toast.LENGTH_SHORT).show();
         }
     }
 
 
     private Bitmap captureScreen() {
         Picture picture = mOAWebView.capturePicture();
-        Bitmap b = Bitmap.createBitmap(picture.getWidth(),
-                picture.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
 
-        picture.draw(c);
-        return b;
+        try {
+            Bitmap b = Bitmap.createBitmap(picture.getWidth(),
+                    picture.getHeight(), Bitmap.Config.ARGB_4444);
+            Canvas c = new Canvas(b);
+
+            picture.draw(c);
+            return b;
+        } catch (OutOfMemoryError error) {
+            return null;
+        }
     }
 
     public static void saveFile(Bitmap bm, String fileName, String path) throws IOException {
