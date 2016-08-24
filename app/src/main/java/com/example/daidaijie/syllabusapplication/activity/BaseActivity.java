@@ -78,4 +78,14 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (!isCanBack()) return;
+        super.onBackPressed();
+    }
+
+    protected boolean isCanBack() {
+        return true;
+    }
 }

@@ -10,10 +10,10 @@ import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 public class User {
 
     //example 13yjli3
-    private String mAccount;
+    public String mAccount;
 
     //example *********
-    private String mPassword;
+    public String mPassword;
 
     private static User sUser = new User();
 

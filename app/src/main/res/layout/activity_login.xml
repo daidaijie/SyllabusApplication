@@ -39,19 +39,20 @@
         android:orientation="vertical">
 
         <EditText
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:id="@+id/usernameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:background="@color/transparent"
             android:gravity="center"
             android:hint="帐号"
             android:padding="8dp"
             android:singleLine="true"
-            android:textColorHint="@color/material_grey_300"
             android:textColor="@color/material_white"
+            android:textColorHint="@color/material_grey_300"
             android:textSize="16sp"/>
 
         <View
@@ -60,12 +61,12 @@
             android:background="#66ffffff"/>
 
         <EditText
-            android:textColorHint="@color/material_grey_300"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:background="@color/transparent"
             android:gravity="center"
@@ -74,6 +75,7 @@
             android:padding="8dp"
             android:singleLine="true"
             android:textColor="@color/material_white"
+            android:textColorHint="@color/material_grey_300"
             android:textSize="16sp"/>
     </LinearLayout>
 
