@@ -17,5 +17,7 @@
 
     <color name="defaultDarkBackground">#EBEBEB</color>
 
+    <color name="defaultDarkBackgroundSelect">#CCCCCC</color>
+
     <color name="defaultSelectForeground">#20000000</color>
 </resources>

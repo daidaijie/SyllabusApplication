@@ -5,9 +5,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
@@ -59,6 +63,7 @@ public class OADetailActivity extends BaseActivity {
         int index = oaContent.indexOf(label) + label.length();
         oaContent = oaContent.substring(index);
 
+
         Document doc = Jsoup.parse(AssetUtil.getStringFromPath("index.html"));
         Element div = doc.select("div#div_doc").first();
         div.append(oaContent);
@@ -82,4 +87,5 @@ public class OADetailActivity extends BaseActivity {
         intent.putExtra(EXTRA_OABEAN, oaBean);
         return intent;
     }
+
 }

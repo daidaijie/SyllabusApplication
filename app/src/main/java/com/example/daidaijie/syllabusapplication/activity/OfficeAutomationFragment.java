@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -14,10 +15,15 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.event.RefreshOAEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.service.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +50,18 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
 
     private int position;
 
-    private static final String POS = "com.example.daidaijie.syllabusapplication.activity" +
+    private int subId;
+
+    private String keyword;
+
+    private static final String EXTRA_POS = "com.example.daidaijie.syllabusapplication.activity" +
             ".OfficeAutomationFragment.Position";
+
+    private static final String EXTRA_SUB_ID = "com.example.daidaijie.syllabusapplication.activity" +
+            ".OfficeAutomationFragment.subId";
+
+    private static final String EXTRA_KEYWORD = "com.example.daidaijie.syllabusapplication.activity" +
+            ".OfficeAutomationFragment.keyword";
 
     public static final String TAG = "OfficeAutomationFragment";
 
@@ -56,7 +72,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
     public static OfficeAutomationFragment newInstance(int position) {
         OfficeAutomationFragment fragment = new OfficeAutomationFragment();
         Bundle args = new Bundle();
-        args.putInt(POS, position);
+        args.putInt(EXTRA_POS, position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,7 +81,14 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
-        position = args.getInt(POS, 0);
+        position = args.getInt(EXTRA_POS, 0);
+
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        EventBus.getDefault().register(this);
 
     }
 
@@ -94,7 +117,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                 mRefreshOALayout.setRefreshing(true);
                 getOAinfo();
             }
-        },50);
+        }, 50);
 
 
         return view;
@@ -108,7 +131,8 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
     private void getOAinfo() {
         OAService oaService = OAModel.getInstance().mRetrofit.create(OAService.class);
         oaService.getOAInfo(
-                "undefined", 0, "", position * 10, (position + 1) * 10
+                "undefined", OAModel.getInstance().subID, OAModel.getInstance().keyword,
+                position * 10, (position + 1) * 10
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<List<OABean>, Observable<OABean>>() {
@@ -157,7 +181,18 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                         mOABeen.add(oaBean);
                     }
                 });
-
-
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshOA(RefreshOAEvent refreshOAEvent) {
+        mRefreshOALayout.setRefreshing(true);
+        getOAinfo();
+    }
+
 }

@@ -10,6 +10,7 @@ import com.example.daidaijie.syllabusapplication.util.AssetUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Retrofit;
@@ -24,6 +25,10 @@ public class OAModel {
     public Retrofit mRetrofit;
 
     public List<SubCompany> mSubCompanies;
+
+    public String keyword = "";
+
+    public int subID = 0;
 
     private static OAModel ourInstance = new OAModel();
 
@@ -45,5 +50,11 @@ public class OAModel {
         );
     }
 
-
+    public String[] getSubCompanysString() {
+        List<String> subCompanysString = new ArrayList<>();
+        for (SubCompany subCompany : mSubCompanies) {
+            subCompanysString.add(subCompany.getSUBCOMPANYNAME());
+        }
+        return subCompanysString.toArray(new String[subCompanysString.size()]);
+    }
 }
