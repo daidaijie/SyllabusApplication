@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -59,7 +60,8 @@
         </activity>
         <activity android:name=".activity.OfficeAutomationActivity">
         </activity>
-        <activity android:name=".activity.OADetailActivity">
+        <activity android:name=".activity.OADetailActivity"
+                  android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

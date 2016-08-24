@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,14 +12,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAPagerAdapter;
-import com.example.daidaijie.syllabusapplication.event.RefreshOAEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
-
-import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +56,7 @@ public class OfficeAutomationActivity extends BaseActivity {
 
         OAModel.getInstance().subID = 0;
         selectID = 0;
-        OAModel.getInstance().subID = 0;
+        OAModel.getInstance().keyword = "";
         inputKeyword = "";
 
         mSubDialog = new AlertDialog.Builder(this)
@@ -101,11 +96,14 @@ public class OfficeAutomationActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         OAModel.getInstance().subID = selectID;
                         OAModel.getInstance().keyword = keywordEditText.getText().toString().trim();
-                        EventBus.getDefault().post(new RefreshOAEvent());
+                        mOAPagerAdapter = new OAPagerAdapter(getSupportFragmentManager());
+                        mContentViewPager.setAdapter(mOAPagerAdapter);
+                        mContentViewPager.setCurrentItem(0);
                     }
                 }).create();
-
     }
+
+
 
     @Override
     protected int getContentView() {

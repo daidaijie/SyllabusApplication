@@ -21,7 +21,6 @@
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="64dp"
             android:gravity="center"
             android:paddingTop="8dp"
             android:singleLine="true"

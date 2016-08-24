@@ -1,7 +1,6 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,15 +14,10 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
-import com.example.daidaijie.syllabusapplication.event.RefreshOAEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.service.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,13 +76,6 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         position = args.getInt(EXTRA_POS, 0);
-
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        EventBus.getDefault().register(this);
 
     }
 
@@ -182,17 +169,4 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                     }
                 });
     }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        EventBus.getDefault().unregister(this);
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshOA(RefreshOAEvent refreshOAEvent) {
-        mRefreshOALayout.setRefreshing(true);
-        getOAinfo();
-    }
-
 }
