@@ -119,7 +119,7 @@ public class OADetailActivity extends BaseActivity {
     }
 
     private void screenShot() {
-        Bitmap webViewScreen = captureScreen(this);
+        Bitmap webViewScreen = captureScreen();
         try {
             saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA");
             Toast.makeText(this, "已保存到图库", Toast.LENGTH_SHORT).show();
@@ -130,13 +130,7 @@ public class OADetailActivity extends BaseActivity {
     }
 
 
-    /**
-     * 截屏
-     *
-     * @param context
-     * @return
-     */
-    private Bitmap captureScreen(Activity context) {
+    private Bitmap captureScreen() {
         Picture picture = mOAWebView.capturePicture();
         Bitmap b = Bitmap.createBitmap(picture.getWidth(),
                 picture.getHeight(), Bitmap.Config.ARGB_8888);

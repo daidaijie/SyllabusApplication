@@ -36,32 +36,56 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.LessonManagerActivity">
+        <activity
+            android:name=".activity.LessonManagerActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.ExamActivity">
+        <activity
+            android:name=".activity.ExamActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.MainActivity">
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.STUCircleActivity">
+        <activity
+            android:name=".activity.STUCircleActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.PhotoDetailActivity">
+        <activity
+            android:name=".activity.PhotoDetailActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".activity.CircleDetailActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
         </activity>
-        <activity android:name=".activity.ExamDetailActivity">
+        <activity
+            android:name=".activity.ExamDetailActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.PostContentActivity">
+        <activity
+            android:name=".activity.PostContentActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.LoginActivity">
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.GradeActivity">
+        <activity
+            android:name=".activity.GradeActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".activity.OfficeAutomationActivity">
+        <activity
+            android:name=".activity.OfficeAutomationActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.OADetailActivity"
-                  android:windowSoftInputMode="adjustPan">
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".activity.OADetailActivity"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

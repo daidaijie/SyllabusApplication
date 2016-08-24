@@ -44,18 +44,8 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
 
     private int position;
 
-    private int subId;
-
-    private String keyword;
-
     private static final String EXTRA_POS = "com.example.daidaijie.syllabusapplication.activity" +
             ".OfficeAutomationFragment.Position";
-
-    private static final String EXTRA_SUB_ID = "com.example.daidaijie.syllabusapplication.activity" +
-            ".OfficeAutomationFragment.subId";
-
-    private static final String EXTRA_KEYWORD = "com.example.daidaijie.syllabusapplication.activity" +
-            ".OfficeAutomationFragment.keyword";
 
     public static final String TAG = "OfficeAutomationFragment";
 
