@@ -88,7 +88,7 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     private void getGrade() {
         GradeService gradeService = RetrofitUtil.getDefault().create(GradeService.class);
-        gradeService.getGrade(User.getInstance().mAccount, User.getInstance().mPassword)
+        gradeService.getGrade(User.getInstance().getAccount(), User.getInstance().getPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<GradeInfo>() {

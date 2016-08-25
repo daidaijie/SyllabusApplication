@@ -47,8 +47,8 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
         mTipTextView.setText(Html.fromHtml("<u>注意事项</u>"));
 
-        mUsernameEditText.setText(User.getInstance().mAccount);
-        mPasswordEditText.setText(User.getInstance().mPassword);
+        mUsernameEditText.setText(User.getInstance().getAccount());
+        mPasswordEditText.setText(User.getInstance().getPassword());
 
         mAlertDialog = LoadingDialogBuiler.getLoadingDialog(this,
                 getResources().getColor(R.color.colorPrimary));

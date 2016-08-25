@@ -27,6 +27,12 @@ public class LoginPresenter extends ILoginPresenter {
 
     @Override
     public void login(final String username, final String password) {
+
+        if (username.trim().isEmpty() || password.trim().isEmpty()) {
+            mView.showLoginFail();
+            return;
+        }
+
         mView.showLoadingDialog();
 
         final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
@@ -85,8 +91,8 @@ public class LoginPresenter extends ILoginPresenter {
                     @Override
                     public void onCompleted() {
 
-                        User.getInstance().mAccount = username;
-                        User.getInstance().mPassword = password;
+                        User.getInstance().setAccount(username);
+                        User.getInstance().setPassword(password);
 
                         mView.dismissLoadingDialog();
                         mView.showLoginSuccess();

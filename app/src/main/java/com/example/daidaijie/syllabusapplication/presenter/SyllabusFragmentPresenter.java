@@ -56,15 +56,15 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
         GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
-        userBaseService.get_user(User.getInstance().mAccount)
+        userBaseService.get_user(User.getInstance().getAccount())
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<UserBaseBean, Observable<UserInfo>>() {
                     @Override
                     public Observable<UserInfo> call(UserBaseBean userBaseBean) {
                         User.getInstance().setUserBaseBean(userBaseBean);
                         return service.getUserInfo(
-                                User.getInstance().mAccount,
-                                User.getInstance().mPassword,
+                                User.getInstance().getAccount(),
+                                User.getInstance().getPassword(),
                                 "query",
                                 "2014-2015"
                                 , "1"

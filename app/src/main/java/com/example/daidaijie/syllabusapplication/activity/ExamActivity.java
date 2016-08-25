@@ -109,7 +109,7 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         Retrofit retrofit = RetrofitUtil.getDefault();
         ExamInfoService examInfoService = retrofit.create(ExamInfoService.class);
         examInfoService.getExamInfo(
-                User.getInstance().mAccount, User.getInstance().mPassword, "2014-2015", "1"
+                User.getInstance().getAccount(), User.getInstance().getPassword(), "2014-2015", "1"
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ExamInfo>() {
