@@ -11,6 +11,7 @@ import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.GradeListAdapter;
 import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GradeService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -87,7 +88,7 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     private void getGrade() {
         GradeService gradeService = RetrofitUtil.getDefault().create(GradeService.class);
-        gradeService.getGrade("13yjli3", "O3o")
+        gradeService.getGrade(User.getInstance().mAccount, User.getInstance().mPassword)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<GradeInfo>() {

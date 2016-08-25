@@ -24,6 +24,7 @@
             card_view:cardElevation="1dp">
 
             <com.balysv.materialripple.MaterialRippleLayout
+                android:id="@+id/toSyllabusItemLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:mrl_rippleAlpha="0.1"

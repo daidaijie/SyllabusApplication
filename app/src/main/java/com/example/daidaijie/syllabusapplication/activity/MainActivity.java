@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
@@ -74,6 +75,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     ItemCardLayout mToOAItemLayout;
     @BindView(R.id.toSTUItemLayout)
     ItemCardLayout mToSTUItemLayout;
+    @BindView(R.id.toSyllabusItemLayout)
+    MaterialRippleLayout mToSyllabusItemLayout;
 
     private BannerModel mBannerModel;
 
@@ -115,6 +118,13 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, STUCircleActivity.class);
+                startActivity(intent);
+            }
+        });
+        mToSyllabusItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SyllabusActivity.class);
                 startActivity(intent);
             }
         });

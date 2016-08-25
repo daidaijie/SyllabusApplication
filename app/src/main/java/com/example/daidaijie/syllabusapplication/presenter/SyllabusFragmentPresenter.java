@@ -55,9 +55,12 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         mView.setViewPagerEnable(false);
         UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
         // TODO: 2016/7/25 目前没写登录界面所以只能这么坑的获取
+        Log.d(TAG, "updateSyllabus: " + User.getInstance().mAccount);
+        Log.d(TAG, "updateSyllabus: " + User.getInstance().mPassword);
+
         service.getUserInfo(
-                "13yjli3",
-                "O3o",
+                User.getInstance().mAccount,
+                User.getInstance().mPassword,
                 "query",
                 "2014-2015"
                 , "1"
@@ -97,6 +100,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        Log.d(TAG, "onError: " + e.getMessage());
                         mView.hideLoading();
                         mView.showFailBannner();
                         mView.setViewPagerEnable(true);

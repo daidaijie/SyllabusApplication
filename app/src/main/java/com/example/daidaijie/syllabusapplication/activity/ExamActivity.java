@@ -12,6 +12,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.ExamAdapter;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.ExamInfoService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -108,7 +109,7 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         Retrofit retrofit = RetrofitUtil.getDefault();
         ExamInfoService examInfoService = retrofit.create(ExamInfoService.class);
         examInfoService.getExamInfo(
-                "13yjli3", "O3o", "2013-2014", "1"
+                User.getInstance().mAccount, User.getInstance().mPassword, "2014-2015", "1"
         ).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<ExamInfo>() {

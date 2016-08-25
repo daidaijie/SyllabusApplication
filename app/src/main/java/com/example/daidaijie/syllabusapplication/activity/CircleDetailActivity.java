@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
@@ -304,6 +305,7 @@ public class CircleDetailActivity extends BaseActivity {
                         SnackbarUtil.ShortSnackbar(
                                 mCommentEditext, "发送失败", SnackbarUtil.Alert
                         ).show();
+                        Log.d("发送失败", "onError: "+e.getMessage());
                     }
 
                     @Override

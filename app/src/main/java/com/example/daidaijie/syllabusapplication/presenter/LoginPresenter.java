@@ -1,19 +1,15 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
-import android.util.Log;
-
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
+import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
-import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.User;
+import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
-import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
-import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 
-import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -33,7 +29,8 @@ public class LoginPresenter extends ILoginPresenter {
     public void login(final String username, final String password) {
         mView.showLoadingDialog();
 
-        UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
+        final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
+        GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
         String queryYear = "";
         String querySem = "";
@@ -48,14 +45,24 @@ public class LoginPresenter extends ILoginPresenter {
             querySem = "2";
         }
 
+        final String finalQueryYear = queryYear;
+        final String finalQuerySem = querySem;
 
-        service.getUserInfo(
-                username,
-                password,
-                "query",
-                queryYear
-                , querySem
-        ).subscribeOn(Schedulers.io())
+        userBaseService.get_user(username)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<UserBaseBean, Observable<UserInfo>>() {
+                    @Override
+                    public Observable<UserInfo> call(UserBaseBean userBaseBean) {
+                        User.getInstance().setUserBaseBean(userBaseBean);
+                        return service.getUserInfo(
+                                userBaseBean.getAccount(),
+                                password,
+                                "query",
+                                finalQueryYear
+                                , finalQuerySem
+                        );
+                    }
+                })
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
                     @Override
                     public Observable<Lesson> call(UserInfo userInfo) {
@@ -77,15 +84,13 @@ public class LoginPresenter extends ILoginPresenter {
 
                     @Override
                     public void onCompleted() {
-                        Log.d("", "onCompleted: ");
-                        /*SharedPreferencesUtil.putString(SharedPreferencesUtil.SYLLABUS_GSON
-                                , GsonUtil.getDefault().toJson(mSyllabus));
-                        User.getInstance().mSyllabus = mSyllabus;*/
+
                         User.getInstance().mAccount = username;
-                        User.getInstance().mAccount = password;
+                        User.getInstance().mPassword = password;
 
                         mView.dismissLoadingDialog();
                         mView.showLoginSuccess();
+
                     }
 
                     @Override

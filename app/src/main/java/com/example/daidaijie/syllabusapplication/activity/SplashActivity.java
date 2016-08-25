@@ -24,6 +24,7 @@ public class SplashActivity extends BaseActivity {
             public void run() {
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
+                SplashActivity.this.finish();
             }
         }, SHOW_TIME_MIN - mStartTime);
     }
