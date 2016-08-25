@@ -97,7 +97,7 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     }
                 });
             }
-        }, 0, 1000);
+        }, 0, 1000 * 30);
     }
 
     @Override

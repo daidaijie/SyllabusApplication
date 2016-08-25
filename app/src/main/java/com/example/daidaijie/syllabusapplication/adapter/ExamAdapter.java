@@ -92,8 +92,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
                     }
                 }
             }
-            sb.append(String.format("%02d:%02d:%02d",
-                    period.getHours(), period.getMinutes(), period.getSeconds()));
+            sb.append(String.format("%02d:%02d",
+                    period.getHours(), period.getMinutes()));
 
             SpannableStringBuilder style = new SpannableStringBuilder(sb);
             style.setSpan(new ForegroundColorSpan(

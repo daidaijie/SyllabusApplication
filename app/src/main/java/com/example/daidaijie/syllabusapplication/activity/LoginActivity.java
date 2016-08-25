@@ -96,6 +96,7 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     public void showLoginSuccess() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        this.finish();
     }
 
     @Override
