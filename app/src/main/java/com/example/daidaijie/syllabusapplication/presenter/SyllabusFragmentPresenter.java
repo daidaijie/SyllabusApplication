@@ -53,18 +53,24 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
     @Override
     public void updateSyllabus() {
         mView.setViewPagerEnable(false);
-        UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
-        // TODO: 2016/7/25 目前没写登录界面所以只能这么坑的获取
-        Log.d(TAG, "updateSyllabus: " + User.getInstance().mAccount);
-        Log.d(TAG, "updateSyllabus: " + User.getInstance().mPassword);
+        final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
+        GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
-        service.getUserInfo(
-                User.getInstance().mAccount,
-                User.getInstance().mPassword,
-                "query",
-                "2014-2015"
-                , "1"
-        ).subscribeOn(Schedulers.io())
+        userBaseService.get_user(User.getInstance().mAccount)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<UserBaseBean, Observable<UserInfo>>() {
+                    @Override
+                    public Observable<UserInfo> call(UserBaseBean userBaseBean) {
+                        User.getInstance().setUserBaseBean(userBaseBean);
+                        return service.getUserInfo(
+                                User.getInstance().mAccount,
+                                User.getInstance().mPassword,
+                                "query",
+                                "2014-2015"
+                                , "1"
+                        );
+                    }
+                })
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
                     @Override
                     public Observable<Lesson> call(UserInfo userInfo) {
@@ -136,16 +142,6 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                     }
                 });
 
-        GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
-        userBaseService.get_user("13yjli3")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<UserBaseBean>() {
-                    @Override
-                    public void call(UserBaseBean userBaseBean) {
-                        User.getInstance().setUserBaseBean(userBaseBean);
-                    }
-                });
     }
 
     @Override
