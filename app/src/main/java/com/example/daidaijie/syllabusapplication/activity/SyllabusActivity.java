@@ -225,7 +225,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
         if (id == R.id.nav_camera) {
         } else if (id == R.id.nav_gallery) {
-            mSyllabusMainPresenter.setWallpaper();
+            mSyllabusMainPresenter.setWallpaper(this);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(this, GradeActivity.class);
             startActivity(intent);

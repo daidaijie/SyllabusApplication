@@ -16,5 +16,5 @@ public abstract class ISyllabusMainPresenter extends BasePresenter<ISyllabusMain
     public abstract void loadWallpaper(Context context);
 
     //更改背景
-    public abstract void setWallpaper();
+    public abstract void setWallpaper(Context context);
 }

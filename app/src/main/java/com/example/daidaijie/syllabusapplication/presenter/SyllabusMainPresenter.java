@@ -22,11 +22,13 @@ import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 
+import java.io.File;
 import java.util.List;
 
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
+import id.zelory.compressor.Compressor;
 import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
@@ -65,7 +67,7 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
     }
 
     @Override
-    public void setWallpaper() {
+    public void setWallpaper(final Context context) {
         //配置功能
         FunctionConfig functionConfig = new FunctionConfig.Builder()
                 .setEnableCamera(false)
@@ -84,7 +86,24 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                 Observable.just(resultList.get(0).getPhotoPath())
                         .subscribeOn(Schedulers.io())
-                        .map(new Func1<String, Bitmap>() {
+                        .flatMap(new Func1<String, Observable<File>>() {
+                            @Override
+                            public Observable<File> call(String s) {
+                                Compressor compressor = new Compressor.Builder(context)
+                                        .setQuality(80)
+                                        .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                                        .build();
+                                return compressor.compressToFileAsObservable(new File(s));
+                            }
+                        }).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<File>() {
+                            @Override
+                            public void call(File file) {
+                                Log.d(TAG, "call: "+file.toString());
+                                mView.setBackground(BitmapFactory.decodeFile(file.toString()));
+                            }
+                        });
+                        /*.map(new Func1<String, Bitmap>() {
                             @Override
                             public Bitmap call(String photoPath) {
                                 return BitmapFactory.decodeFile(photoPath);
@@ -95,7 +114,7 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
                             public void call(Bitmap bitmap) {
                                 mView.setBackground(bitmap);
                             }
-                        });
+                        });*/
             }
 
             @Override
