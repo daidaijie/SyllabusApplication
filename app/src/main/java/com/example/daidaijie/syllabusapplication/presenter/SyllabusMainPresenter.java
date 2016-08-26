@@ -99,7 +99,6 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
                         .subscribe(new Action1<File>() {
                             @Override
                             public void call(File file) {
-                                Log.d(TAG, "call: "+file.toString());
                                 mView.setBackground(BitmapFactory.decodeFile(file.toString()));
                             }
                         });

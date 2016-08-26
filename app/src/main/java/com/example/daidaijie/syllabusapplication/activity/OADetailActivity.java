@@ -30,6 +30,7 @@ import com.example.daidaijie.syllabusapplication.util.FileUtil;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
@@ -69,6 +70,7 @@ public class OADetailActivity extends BaseActivity {
 
         mOAWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mOAWebView.getSettings().setLoadWithOverviewMode(true);
+        mOAWebView.getSettings().setUseWideViewPort(true);
         mOAWebView.getSettings().setJavaScriptEnabled(true);
 
         mOABean = (OABean) getIntent().getSerializableExtra(EXTRA_OABEAN);
@@ -76,10 +78,32 @@ public class OADetailActivity extends BaseActivity {
         int index = oaContent.indexOf(label) + label.length();
         oaContent = oaContent.substring(index);
 
+        Document contentDoc = Jsoup.parse(oaContent);
+        Elements tables = contentDoc.getElementsByTag("table");
+        for (Element table : tables) {
+            table.attr("width", "100%");
+            table.attr("style", "width: 100%;");
+            Elements trs = table.select("tr");
+            for (Element tr : trs) {
+                Elements tds = tr.select("td");
+                double witdh = 100.0 / tds.size();
+                for (Element td : tds) {
+                    String colspan = td.attr("colspan");
+                    if (colspan.trim().isEmpty()) {
+                        td.attr("style", "width:" + witdh + "%");
+                    } else {
+                        td.attr("style", "width:" + witdh * Integer.parseInt(colspan) + "%");
+                    }
+                    td.removeAttr("nowrap");
+//                    Toast.makeText(OADetailActivity.this, td.attr("style"), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
 
         Document doc = Jsoup.parse(AssetUtil.getStringFromPath("index.html"));
         Element div = doc.select("div#div_doc").first();
-        div.append(oaContent);
+        div.append(contentDoc.toString());
         div = doc.select("div#div_accessory").first();
 
         if (mOABean.getACCESSORYCOUNT() == 0) {

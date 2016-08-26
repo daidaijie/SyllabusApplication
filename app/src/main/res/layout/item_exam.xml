@@ -62,7 +62,6 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="倒计时\n1天\n12:23:25"
-        android:textStyle="bold"
         android:gravity="center"
         android:textColor="@color/material_red_500"
         android:textSize="14sp"/>
