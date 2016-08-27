@@ -214,7 +214,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                         new int[]{R.drawable.ic_page_indicator,
                                 R.drawable.ic_page_indicator_focused})
                 .setPageIndicatorAlign(ConvenientBanner.PageIndicatorAlign.CENTER_HORIZONTAL);
-
+        mConvenientBanner.setcurrentitem(
+                (int) (Math.random() * banners.size())
+        );
     }
 
     private void getBanner() {

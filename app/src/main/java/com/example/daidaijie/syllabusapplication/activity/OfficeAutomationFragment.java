@@ -126,19 +126,14 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                     }
                 })
                 .subscribe(new Subscriber<OABean>() {
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                        if (mOABeen == null) {
-                            mOABeen = new ArrayList<>();
-                        } else {
-                            mOABeen.clear();
-                        }
-                    }
+
+                    List<OABean> tmpOABeen = new ArrayList<>();
+
 
                     @Override
                     public void onCompleted() {
                         mRefreshOALayout.setRefreshing(false);
+                        mOABeen = tmpOABeen;
                         mOAItemAdapter.setOABeen(mOABeen);
                         mOAItemAdapter.notifyDataSetChanged();
                     }
@@ -155,7 +150,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
 
                     @Override
                     public void onNext(OABean oaBean) {
-                        mOABeen.add(oaBean);
+                        tmpOABeen.add(oaBean);
                     }
                 });
     }
