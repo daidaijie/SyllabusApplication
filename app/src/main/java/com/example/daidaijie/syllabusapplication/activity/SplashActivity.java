@@ -31,8 +31,6 @@ public class SplashActivity extends BaseActivity implements ILoginView {
                 User.getInstance().getAccount(),
                 User.getInstance().getPassword()
         );
-
-
     }
 
     @Override
