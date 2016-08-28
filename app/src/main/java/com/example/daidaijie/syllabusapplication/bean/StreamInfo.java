@@ -7,7 +7,13 @@ import java.io.Serializable;
 /**
  * Created by daidaijie on 2016/8/28.
  */
-public class StreamInfo implements Serializable{
+public class StreamInfo implements Serializable {
+
+    private int type;
+
+    public static final int TYPE_UN_CONNECT = 0;
+    public static final int TYPE_SUCCESS = 1;
+    public static final int TYPE_LOGOUT = 2;
 
     private String name;
 
@@ -57,6 +63,14 @@ public class StreamInfo implements Serializable{
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     @Override

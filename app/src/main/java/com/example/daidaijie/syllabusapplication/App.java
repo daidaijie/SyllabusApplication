@@ -75,6 +75,11 @@ public class App extends Application {
                             @Override
                             public void onError(Throwable e) {
                                 Log.e("ServiceTest", "onNext: " + e.getMessage());
+                                StreamInfo streamInfo = new StreamInfo();
+                                streamInfo.setType(StreamInfo.TYPE_UN_CONNECT);
+                                Intent intent = StreamService.getIntent(getApplicationContext()
+                                        , streamInfo);
+                                startService(intent);
                             }
 
                             @Override
@@ -85,11 +90,20 @@ public class App extends Application {
                                 Element tables = doc.getElementsByTag("table").first();
                                 Elements trs = tables.select("tr");
 
+                                if (trs.size() < 2) {
+                                    streamInfo.setType(StreamInfo.TYPE_LOGOUT);
+                                    Intent intent = StreamService.getIntent(getApplicationContext()
+                                            , streamInfo);
+                                    startService(intent);
+                                    return;
+                                }
+
                                 streamInfo.setName(trs.get(0).select("td").get(1).text());
                                 streamInfo.setAllStream(trs.get(1).select("td").get(1).text());
                                 streamInfo.setNowStream(trs.get(2).select("td").get(1).text());
                                 streamInfo.setOutTime(trs.get(3).select("td").get(1).text());
                                 streamInfo.setState(trs.get(4).select("td").get(1).text());
+                                streamInfo.setType(StreamInfo.TYPE_SUCCESS);
 
                                 Log.e("ServiceTest", "onNext: " + streamInfo.toString());
 
