@@ -57,4 +57,5 @@ dependencies {
     compile 'id.zelory:compressor:1.0.2'
     compile 'com.bartoszlipinski:recyclerviewheader2:2.0.1'
     compile 'org.jsoup:jsoup:1.9.2'
+    compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
 }
