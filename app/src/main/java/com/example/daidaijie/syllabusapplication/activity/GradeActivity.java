@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -49,6 +52,10 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     private GradeListAdapter mGradeListAdapter;
 
+    private MenuItem mExpandMenuItem;
+
+    private boolean isAllExpand;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +66,8 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mGradeListRecycleList.setEmptyView(mEmptyTextView);
+
+        isAllExpand = false;
 
         mGradeInfo = null;
         mGradeListAdapter = new GradeListAdapter(this, mGradeInfo);
@@ -97,6 +106,8 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
                         showSuccessBanner();
                         mRefreshGradeLayout.setRefreshing(false);
                         mGradeInfo.trimList();
+                        setExpandMenu(isAllExpand);
+                        mGradeInfo.setIsExpands(isAllExpand);
                         mGradeListAdapter.setGradeInfo(mGradeInfo);
                         mGradeListAdapter.notifyDataSetChanged();
                         setHeader();
@@ -124,6 +135,31 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_grade, menu);
+        mExpandMenuItem = menu.findItem(R.id.action_expand);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (mGradeInfo == null) {
+            return true;
+        }
+
+        isAllExpand = !isAllExpand;
+        setExpandMenu(isAllExpand);
+        mGradeInfo.setIsExpands(isAllExpand);
+        mGradeListAdapter.notifyDataSetChanged();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setExpandMenu(boolean flag) {
+        mExpandMenuItem.setTitle(!flag ? "展开" : "收起");
+    }
 
     @Override
     protected int getContentView() {

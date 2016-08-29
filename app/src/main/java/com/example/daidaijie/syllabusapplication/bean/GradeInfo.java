@@ -53,9 +53,17 @@ public class GradeInfo {
                 --i;
             }
         }
+
         isExpands = new ArrayList<>();
         for (int i = 0; i < GRADES.size(); i++) {
-            isExpands.add(true);
+            isExpands.add(false);
+        }
+
+    }
+
+    public void setIsExpands(boolean isExpand) {
+        for (int i = 0; i < GRADES.size(); i++) {
+            isExpands.set(i, isExpand);
         }
     }
 

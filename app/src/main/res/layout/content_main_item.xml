@@ -128,7 +128,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                app:cardIcon="@drawable/ic_takeout"
+                app:cardIcon="@drawable/ic_wifi"
                 app:cardTitle="东门外卖">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
