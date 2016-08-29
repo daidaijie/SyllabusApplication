@@ -3,7 +3,7 @@ apply plugin: 'android-apt'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.1"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.example.daidaijie.syllabusapplication"

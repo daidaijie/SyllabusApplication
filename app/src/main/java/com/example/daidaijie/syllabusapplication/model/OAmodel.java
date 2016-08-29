@@ -1,10 +1,5 @@
 package com.example.daidaijie.syllabusapplication.model;
 
-import android.util.Log;
-import android.widget.Toast;
-
-import com.example.daidaijie.syllabusapplication.App;
-import com.example.daidaijie.syllabusapplication.activity.OADetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.SubCompany;
 import com.example.daidaijie.syllabusapplication.util.AssetUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
