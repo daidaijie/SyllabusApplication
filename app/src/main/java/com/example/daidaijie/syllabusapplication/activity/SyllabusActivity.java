@@ -20,12 +20,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
@@ -34,7 +36,10 @@ import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
+import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 
@@ -101,6 +106,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         }
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this,
                 getResources().getColor(R.color.colorPrimary));
+
+        showSelectSemeber();
     }
 
     private void setupToolbar() {
@@ -315,4 +322,35 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         }
     }
 
+    private void showSelectSemeber() {
+        int now = 2016;
+
+        ArrayList<String> semeberItemList = new ArrayList<>();
+        semeberItemList.add("夏季学期");
+        semeberItemList.add("秋季学期");
+        semeberItemList.add("春季学期");
+
+        ArrayList<String> yearList = new ArrayList<>();
+        ArrayList<ArrayList<String>> semeberList = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            int year = now - 4 + i;
+            yearList.add(year + "-" + (year + 1));
+            semeberList.add(semeberItemList);
+        }
+
+        LinkagePicker picker = new LinkagePicker(this, yearList, semeberList);
+        picker.setTitleText(Html.fromHtml("<b>选择学期</b>"));
+        picker.setSelectedItem("2016-2017", "秋季学期");
+        picker.setTextSize(16);
+        picker.setTextColor(getResources().getColor(R.color.colorPrimary));
+        picker.setLineColor(getResources().getColor(R.color.colorPrimaryDark));
+        picker.show();
+
+        picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
+            @Override
+            public void onPicked(String first, String second, String third) {
+                Toast.makeText(SyllabusActivity.this, first + second, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
