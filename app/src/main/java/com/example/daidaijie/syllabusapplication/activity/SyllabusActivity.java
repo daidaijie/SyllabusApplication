@@ -313,6 +313,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }
-
     }
+
 }
