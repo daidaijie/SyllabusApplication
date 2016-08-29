@@ -79,6 +79,12 @@ public class StreamService extends Service {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopForeground(true);
+    }
+
+    @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");

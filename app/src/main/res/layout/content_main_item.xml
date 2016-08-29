@@ -74,8 +74,8 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardIcon="@drawable/ic_wifi"
+                app:cardTitle="流量验证">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
@@ -93,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                app:cardIcon="@drawable/ic_oa"
+                app:cardIcon="@drawable/ic_school"
                 app:cardTitle="校园动态">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
@@ -111,16 +111,16 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardIcon="@drawable/ic_grade"
+                app:cardTitle="成绩">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardIcon="@drawable/ic_wifi"
+                app:cardTitle="考试">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
@@ -128,8 +128,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardIcon="@drawable/ic_takeout"
+                app:cardTitle="东门外卖">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
         </LinearLayout>

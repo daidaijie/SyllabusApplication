@@ -39,10 +39,11 @@
                 android:padding="8dp">
 
                 <ImageView
+                    android:layout_margin="4dp"
                     android:id="@+id/cardIconImageView"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    tools:src="@drawable/ic_menu_camera"/>
+                    android:layout_width="32dp"
+                    android:layout_height="24dp"
+                    tools:src="@drawable/ic_oa"/>
 
                 <TextView
                     android:id="@+id/cardDescTextView"

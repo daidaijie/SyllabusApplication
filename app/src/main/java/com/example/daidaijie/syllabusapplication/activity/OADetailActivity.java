@@ -79,6 +79,12 @@ public class OADetailActivity extends BaseActivity {
         oaContent = oaContent.substring(index);
 
         Document contentDoc = Jsoup.parse(oaContent);
+
+        Elements imgs = contentDoc.select("img");
+        for (Element img : imgs) {
+            imgs.attr("style", "width: 100%;");
+        }
+
         Elements tables = contentDoc.getElementsByTag("table");
         for (Element table : tables) {
             table.attr("width", "100%");
