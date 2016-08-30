@@ -9,6 +9,9 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.transition.Explode;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -18,6 +21,13 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.widget.CustomMarqueeTextView;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+import org.joda.time.Period;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 
@@ -69,6 +79,8 @@ public class ExamDetailActivity extends BaseActivity {
 
     private CollapsingToolbarLayoutState state;
 
+    private DateTime mExamTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,10 +113,10 @@ public class ExamDetailActivity extends BaseActivity {
         mPositionLayout.setTitleText(mExam.getExam_stu_position());
         mStudentSumLayout.setTitleText(mExam.getExam_stu_numbers());
 
-        if (mExam.getExam_comment().trim().isEmpty()){
+        if (mExam.getExam_comment().trim().isEmpty()) {
             mExamTipLayout.setTitleText("无");
             mExamTipLayout.setTitleTextColor(getResources().getColor(R.color.defaultShowColor));
-        }else{
+        } else {
             mExamTipLayout.setTitleText(mExam.getExam_comment());
             mExamTipLayout.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
         }
@@ -135,6 +147,21 @@ public class ExamDetailActivity extends BaseActivity {
             }
         });
 
+        mExamTime = mExam.getExamTime();
+        setupState();
+
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mExamStateLayout.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setupState();
+                    }
+                });
+            }
+        }, 0, 60 * 1000);
+
     }
 
     @Override
@@ -146,5 +173,46 @@ public class ExamDetailActivity extends BaseActivity {
         Intent intent = new Intent(context, ExamDetailActivity.class);
         intent.putExtra(EXTRA_EXAM, exam);
         return intent;
+    }
+
+    private void setupState() {
+        DateTime now = DateTime.now();
+
+        if (DateTimeComparator.getInstance().compare(mExamTime, now) > 0) {
+            Period period = new Period(now, mExamTime);
+            StringBuilder sb = new StringBuilder("离开考还有\n");
+            int days = period.getWeeks() * 7 + period.getDays();
+            if (period.getYears() != 0) {
+                sb.append(period.getYears() + "年");
+                sb.append(period.getMonths() + "月");
+                sb.append(days + "天");
+            } else {
+                if (period.getMonths() != 0) {
+                    sb.append(period.getMonths() + "月");
+                    sb.append(days + "天");
+                } else {
+                    if (days != 0) {
+                        sb.append(days + "天");
+                    }
+                }
+            }
+            sb.append(String.format("%d小时%d分钟",
+                    period.getHours(), period.getMinutes()));
+
+            SpannableStringBuilder style = new SpannableStringBuilder(sb);
+            style.setSpan(new ForegroundColorSpan(
+                            getResources().getColor(R.color.defaultTextColor)),
+                    0, 6, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+            );
+            style.setSpan(new ForegroundColorSpan(
+                            getResources().getColor(R.color.colorPrimaryDark)),
+                    6, sb.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+            );
+            mExamStateLayout.setTitleText(style);
+        } else {
+            mExamStateLayout.setTitleTextColor(
+                    getResources().getColor(R.color.defaultShowColor));
+            mExamStateLayout.setTitleText("已结束");
+        }
     }
 }

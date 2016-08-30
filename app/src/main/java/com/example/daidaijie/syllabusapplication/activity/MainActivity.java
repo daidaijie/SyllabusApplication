@@ -39,6 +39,8 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.liaoinstan.springview.utils.DensityUtil;
+import com.squareup.haha.perflib.Main;
 
 import java.util.List;
 
@@ -148,7 +150,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
         @Override
         public void UpdateUI(final Context context, int position, final Banner banner) {
-//            draweeView.setImageURI(Uri.parse(banner.getUrl()));
             ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(banner.getUrl()))
                     .setProgressiveRenderingEnabled(true)
                     .build();
@@ -157,8 +158,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     .setOldController(draweeView.getController())
                     .build();
             draweeView.setController(controller);
+
+            TextView detailTextView = new TextView(MainActivity.this);
+            int padding = DensityUtil.dip2px(MainActivity.this, 16);
+            detailTextView.setText(banner.getDescription());
+            detailTextView.setPadding(padding, padding, padding, padding);
+            detailTextView.setTextColor(getResources().getColor(R.color.defaultTextColor));
+            detailTextView.setTextSize(16);
             final AlertDialog dialog = new AlertDialog.Builder(context)
-                    .setTitle(banner.getDescription())
+                    .setView(detailTextView)
                     .setNegativeButton(
                             "查看详情", new DialogInterface.OnClickListener() {
                                 @Override

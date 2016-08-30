@@ -52,7 +52,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="座位"
-        app:detailIcon="@drawable/ic_time_lesson"
+        app:detailIcon="@drawable/ic_exam_pos"
         app:titltText="68">
     </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="人数"
-        app:detailIcon="@drawable/ic_time_lesson"
+        app:detailIcon="@drawable/ic_people_num"
         app:titltText="128">
     </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="备注"
-        app:detailIcon="@drawable/ic_time_lesson"
+        app:detailIcon="@drawable/ic_mark"
         app:titltText="无">
     </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 
@@ -79,7 +79,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="状态"
-        app:detailIcon="@drawable/ic_time_lesson"
+        app:detailIcon="@drawable/ic_exam_state"
         app:titltText="已结束">
     </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
 

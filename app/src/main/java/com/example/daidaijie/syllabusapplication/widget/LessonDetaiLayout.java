@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.Spannable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.EditText;
@@ -68,6 +69,11 @@ public class LessonDetaiLayout extends RelativeLayout {
     public void setTitleText(String text) {
         mDetailItemEditText.setText(text);
     }
+
+    public void setTitleText(Spannable text) {
+        mDetailItemEditText.setText(text);
+    }
+
     public void setTitleTextColor(int color) {
         mDetailItemEditText.setTextColor(color);
     }
@@ -82,6 +88,10 @@ public class LessonDetaiLayout extends RelativeLayout {
 
     public void setDetailItemEditText(String text) {
         mDetailDescTextView.setText(text);
+    }
+
+    public void setDetailItemEditTextColor(int color) {
+        mDetailDescTextView.setTextColor(color);
     }
 
     @Override
