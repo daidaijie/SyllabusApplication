@@ -30,8 +30,6 @@ public class LoginPresenter extends ILoginPresenter {
     @Override
     public void login(final String username, final String password) {
 
-        Log.e("LoginPresenter", "login: " + (User.getInstance().getUserInfo() == null));
-
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             mView.showLoginFail();
             return;
@@ -85,7 +83,7 @@ public class LoginPresenter extends ILoginPresenter {
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
                     @Override
                     public Observable<Lesson> call(UserInfo userInfo) {
-                        //这里就算登陆失败userInfo还是或得到，且id=0
+                        //这里就算登陆失败userInfo还是获取到，且id=0
                         User.getInstance().setUserInfo(userInfo);
                         return Observable.from(userInfo.getClasses());
                     }

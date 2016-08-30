@@ -1,9 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.MenuItem;
@@ -58,6 +57,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
+    @BindView(R.id.selectWeeksRecyclerView)
+    RecyclerView mSelectWeeksRecyclerView;
+    @BindView(R.id.selectWeeksLinearLayout)
+    LinearLayout mSelectWeeksLinearLayout;
 
     private AlertDialog mLoadingDialog;
 
@@ -122,9 +125,22 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+        mToolbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mSyllabusViewPager.isScrollable()) {
+                    return;
+                }
+                if (mSelectWeeksLinearLayout.getVisibility() == View.GONE) {
+                    mSelectWeeksLinearLayout.setVisibility(View.VISIBLE);
+                } else {
+                    mSelectWeeksLinearLayout.setVisibility(View.GONE);
+                }
+            }
+        });
+
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private void setupViewPager() {
         pageIndex = 0;
         FragmentManager manager = getSupportFragmentManager();
@@ -220,6 +236,9 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     public void setViewPagerEnable(boolean enable) {
         mSyllabusViewPager.setScrollable(enable);
+        if (!enable){
+            mSelectWeeksLinearLayout.setVisibility(View.GONE);
+        }
     }
 
     public SyllabusMainPresenter getSyllabusMainPresenter() {

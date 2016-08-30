@@ -39,4 +39,6 @@ public class SyllabusViewPager extends ViewPager {
     public void setScrollable(boolean scrollable) {
         this.scrollable = scrollable;
     }
+
+
 }
