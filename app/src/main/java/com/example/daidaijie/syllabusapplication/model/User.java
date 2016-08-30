@@ -24,6 +24,8 @@ public class User {
     private static final String EXTRA_USER_INFO
             = "com.example.daidaijie.syllabusapplication.model.User.mUserInfo";
 
+    private static final String EXTRA_USER_BASE_BEAN
+            = "com.example.daidaijie.syllabusapplication.model.User.mUserBaseBean";
 
     SharedPreferences mSharedPreferences;
 
@@ -60,6 +62,13 @@ public class User {
             mUserInfo = GsonUtil.getDefault().fromJson(userInfoJsonString, UserInfo.class);
         }
 
+        String userBaseBeanJsonString = mSharedPreferences.getString(EXTRA_USER_BASE_BEAN, "");
+        if (userBaseBeanJsonString.isEmpty()) {
+            mUserBaseBean = null;
+        } else {
+            mUserBaseBean = GsonUtil.getDefault().fromJson(userBaseBeanJsonString, UserBaseBean.class);
+        }
+
     }
 
     public static User getInstance() {
@@ -86,6 +95,8 @@ public class User {
     }
 
     public void setUserBaseBean(UserBaseBean userBaseBean) {
+        mEditor.putString(EXTRA_USER_BASE_BEAN, GsonUtil.getDefault().toJson(userBaseBean));
+        mEditor.commit();
         mUserBaseBean = userBaseBean;
     }
 

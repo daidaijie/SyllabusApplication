@@ -35,8 +35,7 @@ public class LoginPresenter extends ILoginPresenter {
             return;
         }
 
-
-        if (User.getInstance().getUserInfo() != null) {
+        if (User.getInstance().getUserBaseBean() != null && User.getInstance().getUserInfo() != null) {
             if (User.getInstance().getUserInfo().getToken() != null
                     && !User.getInstance().getUserInfo().getToken().isEmpty()) {
                 mView.showLoginSuccess();
