@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="56dp"
     android:id="@+id/weekLayout"
-    android:layout_height="match_parent">
+    android:layout_width="56dp"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_select_week_layout">
 
     <TextView
         android:id="@+id/weekTextView"

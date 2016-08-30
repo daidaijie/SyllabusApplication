@@ -6,8 +6,8 @@
     android:id="@+id/mainRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:animateLayoutChanges="true"
+    android:orientation="vertical"
     tools:context=".activity.SyllabusActivity">
 
     <android.support.v7.widget.Toolbar
@@ -36,31 +36,32 @@
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/selectWeeksLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:background="@color/material_white"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
         <LinearLayout
-            android:gravity="center"
             android:layout_width="64dp"
             android:layout_height="match_parent"
+            android:background="@color/defaultLightBackground"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
-                android:src="@drawable/ic_wifi"
                 android:layout_width="24dp"
-                android:layout_height="24dp"/>
+                android:layout_height="24dp"
+                android:src="@drawable/ic_wifi"/>
 
             <TextView
-                android:layout_marginTop="4dp"
-                android:gravity="center"
-                android:textColor="@color/defaultShowColor"
-                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="设定为\n当前周"/>
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:text="设定为\n当前周"
+                android:textColor="@color/defaultShowColor"
+                android:textSize="12sp"/>
         </LinearLayout>
         <View
             android:layout_width="1px"
