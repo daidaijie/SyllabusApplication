@@ -119,10 +119,6 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         showTime();
 
         mSyllabusFragmentPresenter.showSyllabus();
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT) {
-            rippleSyllabus();
-        }
-
         return view;
     }
 
@@ -274,37 +270,6 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
             }
 
         }
-    }
-
-    public void rippleSyllabus() {
-        mSyllabusGridLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < mSyllabusGridLayout.getChildCount(); i++) {
-                    View syllabusGridview = mSyllabusGridLayout.getChildAt(i);
-                    MaterialRippleLayout rippleView = (MaterialRippleLayout) syllabusGridview.findViewById(R.id.lessonRipple);
-                    if (!SyllabusFragment.this.isDetached()) {
-                        Animator animator = ViewAnimationUtils.createCircularReveal(
-                                rippleView,
-                                rippleView.getWidth() / 2,
-                                rippleView.getHeight() / 2,
-                                0,
-                                Math.max(rippleView.getHeight(), rippleView.getWidth()));
-                        animator.setInterpolator(new AccelerateInterpolator());
-                        animator.setDuration(400);
-                        animator.start();
-                    }
-                }
-            }
-        });
-        //防止切换过快崩溃
-        setViewPagerEnable(false);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                setViewPagerEnable(true);
-            }
-        }, 50);
     }
 
     @Override

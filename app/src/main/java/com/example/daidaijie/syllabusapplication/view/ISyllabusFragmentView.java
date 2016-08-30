@@ -13,8 +13,6 @@ public interface ISyllabusFragmentView extends MvpView, IUserInfoView, ISwipeLoa
     //展示课表
     void showSyllabus(Syllabus syllabus);
 
-    //让课表展开
-    void rippleSyllabus();
 
     //设置成功获取数据显示后的Bannner
     void showSuccessBanner();

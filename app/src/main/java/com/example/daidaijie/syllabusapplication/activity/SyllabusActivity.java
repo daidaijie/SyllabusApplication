@@ -17,6 +17,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
+import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
@@ -69,6 +71,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     private TextView nicknameTextView;
 
     private SyllabusPagerAdapter syllabusPagerAdapter;
+    private WeekAdapter mWeekAdapter;
 
     private int pageIndex;
 
@@ -109,6 +112,17 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         }
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this,
                 getResources().getColor(R.color.colorPrimary));
+
+
+        mWeekAdapter = new WeekAdapter(this);
+        mSelectWeeksRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        mSelectWeeksRecyclerView.setAdapter(mWeekAdapter);
+        mWeekAdapter.setOnItemClickListener(new WeekAdapter.onItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                mSyllabusViewPager.setCurrentItem(position);
+            }
+        });
 
         showSelectSemeber();
     }
@@ -155,6 +169,9 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             @Override
             public void onPageSelected(int position) {
                 setToolBarTitle("第 " + (position + 1) + " 周");
+                mWeekAdapter.setSelectItem(position);
+                mWeekAdapter.notifyDataSetChanged();
+                mSelectWeeksRecyclerView.scrollToPosition(position);
             }
 
             @Override
@@ -236,7 +253,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     public void setViewPagerEnable(boolean enable) {
         mSyllabusViewPager.setScrollable(enable);
-        if (!enable){
+        if (!enable) {
             mSelectWeeksLinearLayout.setVisibility(View.GONE);
         }
     }

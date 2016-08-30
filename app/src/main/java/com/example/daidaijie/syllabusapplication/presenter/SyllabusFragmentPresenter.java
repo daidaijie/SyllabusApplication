@@ -17,17 +17,14 @@ import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
-import com.google.gson.Gson;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
-import retrofit2.Retrofit;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -103,7 +100,6 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         updateUserInfo();
                         mView.showSuccessBanner();
                         mView.hideLoading();
-                        mView.rippleSyllabus();
                         mView.setViewPagerEnable(true);
                         EventBus.getDefault().post(new SyllabusEvent(mWeek));
                     }
