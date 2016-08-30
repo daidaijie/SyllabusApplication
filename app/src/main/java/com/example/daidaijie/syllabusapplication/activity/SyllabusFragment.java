@@ -242,6 +242,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                             SyllabusActivity activity = (SyllabusActivity) getActivity();
                             if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
+                                activity.showSelectWeekLayout(false);
                                 Intent intent = LessonInfoActivity.getIntent(
                                         getActivity(), finalLesson
                                 );

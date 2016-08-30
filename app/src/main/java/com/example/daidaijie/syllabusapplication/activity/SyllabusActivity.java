@@ -146,9 +146,9 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                     return;
                 }
                 if (mSelectWeeksLinearLayout.getVisibility() == View.GONE) {
-                    mSelectWeeksLinearLayout.setVisibility(View.VISIBLE);
+                    showSelectWeekLayout(true);
                 } else {
-                    mSelectWeeksLinearLayout.setVisibility(View.GONE);
+                    showSelectWeekLayout(false);
                 }
             }
         });
@@ -254,7 +254,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     public void setViewPagerEnable(boolean enable) {
         mSyllabusViewPager.setScrollable(enable);
         if (!enable) {
-            mSelectWeeksLinearLayout.setVisibility(View.GONE);
+            showSelectWeekLayout(false);
         }
     }
 
@@ -315,6 +315,11 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                 SnackbarUtil.Alert
         ).setAction(again, listener).show();
 
+    }
+
+    @Override
+    public void showSelectWeekLayout(boolean isShow) {
+        mSelectWeeksLinearLayout.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
     public boolean isSingleLock() {

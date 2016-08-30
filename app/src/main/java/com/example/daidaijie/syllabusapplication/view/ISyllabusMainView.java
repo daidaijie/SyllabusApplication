@@ -31,4 +31,7 @@ public interface ISyllabusMainView extends MvpView, IUserInfoView ,ILoadingView{
 
     //展示获取失败后的Snackbar
     void showFailSnackbar(String info, String again, View.OnClickListener listener);
+
+    //展开或者关闭周数选择
+    void showSelectWeekLayout(boolean isShow);
 }
