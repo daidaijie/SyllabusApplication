@@ -3,6 +3,8 @@ package com.example.daidaijie.syllabusapplication.presenter;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
@@ -74,7 +76,9 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
                     @Override
                     public Observable<Lesson> call(UserInfo userInfo) {
-                        User.getInstance().setUserInfo(userInfo);
+                        if (userInfo.getToken() != null && !userInfo.getToken().isEmpty()) {
+                            User.getInstance().setUserInfo(userInfo);
+                        }
                         return Observable.from(userInfo.getClasses());
                     }
                 })
@@ -148,8 +152,17 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
     public void updateUserInfo() {
         UserInfo mUserInfo = User.getInstance().getUserInfo();
         if (mUserInfo != null) {
-            mView.setHeadImageView(Uri.parse(mUserInfo.getAvatar()));
-            mView.setNickName(mUserInfo.getNickname());
+            if (mUserInfo.getAvatar() != null) {
+                mView.setHeadImageView(Uri.parse(mUserInfo.getAvatar()));
+            } else {
+                mView.setHeadImageView(Uri.parse("res://" + App.getContext().getPackageName()
+                        + "/" + R.drawable.ic_syllabus_icon));
+            }
+            if (mUserInfo.getNickname() != null) {
+                mView.setNickName(mUserInfo.getNickname());
+            } else {
+                mView.setNickName("未登陆用户");
+            }
         }
     }
 

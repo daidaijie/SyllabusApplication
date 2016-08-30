@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.ExamActivity;
 import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
@@ -52,8 +53,17 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
 
         // TODO: 2016/7/25 一般到这里都有mUserInfo的了，但是现在还没写好。。。。所以只能加一步判断
         if (mUserInfo != null) {
-            mView.setHeadImageView(Uri.parse(mUserInfo.getAvatar()));
-            mView.setNickName(mUserInfo.getNickname());
+            if (mUserInfo.getAvatar() != null) {
+                mView.setHeadImageView(Uri.parse(mUserInfo.getAvatar()));
+            } else {
+                mView.setHeadImageView(Uri.parse("res://" + App.getContext().getPackageName()
+                        + "/" + R.drawable.ic_syllabus_icon));
+            }
+            if (mUserInfo.getNickname() != null) {
+                mView.setNickName(mUserInfo.getNickname());
+            } else {
+                mView.setNickName("未登陆用户");
+            }
         }
     }
 

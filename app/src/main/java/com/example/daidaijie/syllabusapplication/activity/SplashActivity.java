@@ -22,7 +22,6 @@ public class SplashActivity extends BaseActivity implements ILoginView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         mStartTime = System.currentTimeMillis();
         mLoginPresenter = new LoginPresenter();
         mLoginPresenter.attach(this);

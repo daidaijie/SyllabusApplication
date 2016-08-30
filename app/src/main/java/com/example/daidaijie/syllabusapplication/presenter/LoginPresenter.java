@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
+import android.util.Log;
+
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
@@ -28,9 +30,20 @@ public class LoginPresenter extends ILoginPresenter {
     @Override
     public void login(final String username, final String password) {
 
+        Log.e("LoginPresenter", "login: " + (User.getInstance().getUserInfo() == null));
+
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             mView.showLoginFail();
             return;
+        }
+
+
+        if (User.getInstance().getUserInfo() != null) {
+            if (User.getInstance().getUserInfo().getToken() != null
+                    && !User.getInstance().getUserInfo().getToken().isEmpty()) {
+                mView.showLoginSuccess();
+                return;
+            }
         }
 
         mView.showLoadingDialog();
@@ -72,6 +85,7 @@ public class LoginPresenter extends ILoginPresenter {
                 .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
                     @Override
                     public Observable<Lesson> call(UserInfo userInfo) {
+                        //这里就算登陆失败userInfo还是或得到，且id=0
                         User.getInstance().setUserInfo(userInfo);
                         return Observable.from(userInfo.getClasses());
                     }

@@ -2,11 +2,13 @@ package com.example.daidaijie.syllabusapplication.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 
 /**
  * Created by daidaijie on 2016/7/24.
@@ -18,6 +20,9 @@ public class User {
             = "com.example.daidaijie.syllabusapplication.model.User.username";
     private static final String EXTRA_PASSWORD
             = "com.example.daidaijie.syllabusapplication.model.User.password";
+
+    private static final String EXTRA_USER_INFO
+            = "com.example.daidaijie.syllabusapplication.model.User.mUserInfo";
 
 
     SharedPreferences mSharedPreferences;
@@ -48,6 +53,13 @@ public class User {
         mAccount = mSharedPreferences.getString(EXTRA_USERNAME, "");
         mPassword = mSharedPreferences.getString(EXTRA_PASSWORD, "");
 
+        String userInfoJsonString = mSharedPreferences.getString(EXTRA_USER_INFO, "");
+        if (userInfoJsonString.isEmpty()) {
+            mUserInfo = null;
+        } else {
+            mUserInfo = GsonUtil.getDefault().fromJson(userInfoJsonString, UserInfo.class);
+        }
+
     }
 
     public static User getInstance() {
@@ -59,6 +71,10 @@ public class User {
     }
 
     public void setUserInfo(UserInfo userInfo) {
+        Log.e("LoginPresenter", "setUserInfo: " + userInfo.getUser_id());
+        Log.e("LoginPresenter", "setUserInfo: " + (userInfo.getToken() == null));
+        mEditor.putString(EXTRA_USER_INFO, GsonUtil.getDefault().toJson(userInfo));
+        mEditor.commit();
         mUserInfo = userInfo;
     }
 
