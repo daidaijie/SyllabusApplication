@@ -264,7 +264,7 @@ public class OADetailActivity extends BaseActivity {
                 @Override
                 public void onClick(View v) {
                     String url = "http://notes.stu.edu.cn/weaver/weaver.file.FileDownload?fileid="
-                            + oaFileBean.getIMAGEFILENAME() + "&download=1&requestid=0";
+                            + oaFileBean.getIMAGEFILEID() + "&download=1&requestid=0";
                     Intent intent = new Intent(Intent.ACTION_VIEW);
 
                     intent.setData(Uri.parse(url));

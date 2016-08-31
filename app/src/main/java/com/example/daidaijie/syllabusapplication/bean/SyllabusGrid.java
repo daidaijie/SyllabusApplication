@@ -10,17 +10,17 @@ import java.util.List;
 public class SyllabusGrid {
 
     //储存当前格子上的课程列表
-    private List<Lesson> mLessons;
+    private List<Integer> mLessons;
 
     public SyllabusGrid(){
         mLessons = new ArrayList<>();
     }
 
-    public List<Lesson> getLessons() {
+    public List<Integer> getLessons() {
         return mLessons;
     }
 
-    public void setLessons(List<Lesson> lessons) {
+    public void setLessons(List<Integer> lessons) {
         mLessons = lessons;
     }
 }

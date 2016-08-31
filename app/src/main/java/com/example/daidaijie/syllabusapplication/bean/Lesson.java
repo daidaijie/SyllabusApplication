@@ -100,6 +100,10 @@ public class Lesson implements Serializable {
         this.bgColor = bgColor;
     }
 
+    public int getIntID() {
+        return Integer.parseInt(id);
+    }
+
     public String getTrueName() {
         if (name.indexOf(']') != name.length()) {
             return name.substring(name.indexOf(']') + 1);
@@ -110,7 +114,7 @@ public class Lesson implements Serializable {
     public String getTimeGridListString(String split) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < mTimeGirds.size(); i++) {
-            if (i!=0)sb.append(split);
+            if (i != 0) sb.append(split);
             sb.append(mTimeGirds.get(i).getTimeString());
         }
         return sb.toString();

@@ -7,6 +7,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
@@ -104,7 +105,7 @@ public class LoginPresenter extends ILoginPresenter {
 
                         User.getInstance().setAccount(username);
                         User.getInstance().setPassword(password);
-
+                        LessonModel.getInstance().save();
                         mView.dismissLoadingDialog();
                         mView.showLoginSuccess();
 
@@ -127,6 +128,8 @@ public class LoginPresenter extends ILoginPresenter {
                         /*if (timeGirds.size() != 0) {
                             Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
                         }*/
+                        //把该课程添加到课程管理去
+                        LessonModel.getInstance().addLesson(lesson);
                         for (int i = 0; i < timeGirds.size(); i++) {
                             Lesson.TimeGird timeGrid = timeGirds.get(i);
                             for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
@@ -137,8 +140,10 @@ public class LoginPresenter extends ILoginPresenter {
                                         .get(timeGrid.getWeekDate())
                                         .get(time);
 
+
+
                                 //将该课程添加到时间节点上去
-                                syllabusGrid.getLessons().add(lesson);
+                                syllabusGrid.getLessons().add(lesson.getIntID());
                             }
                         }
                     }

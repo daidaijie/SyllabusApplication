@@ -1,14 +1,12 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 
-import android.animation.Animator;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +24,7 @@ import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
+import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPresenter;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
@@ -38,7 +36,6 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.codetail.animation.ViewAnimationUtils;
 import io.codetail.widget.RevealLinearLayout;
 
 public class SyllabusFragment extends Fragment implements ISyllabusFragmentView, SwipeRefreshLayout.OnRefreshListener {
@@ -212,7 +209,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                 SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
                 Lesson lesson = null;
                 if (syllabusGrid.getLessons().size() != 0) {
-                    lesson = syllabusGrid.getLessons().get(0);
+                    lesson = LessonModel.getInstance().getLesson(syllabusGrid.getLessons().get(0));
                 }
                 final RevealLinearLayout lessonLinearLayout = (RevealLinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
                 MaterialRippleLayout lessonRippleLayout = (MaterialRippleLayout) lessonLinearLayout.findViewById(R.id.lessonRipple);
@@ -230,7 +227,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                     for (int k = j + 1; k < 13; k++) {
                         SyllabusGrid nextSyllabusGrid = syllabus.getSyllabusGrids().get(i).get(k);
                         if (nextSyllabusGrid.getLessons().size() == 0) break;
-                        Lesson nextlesson = nextSyllabusGrid.getLessons().get(0);
+                        Lesson nextlesson = LessonModel.getInstance().getLesson(nextSyllabusGrid.getLessons().get(0));
                         if (nextlesson.getId().equals(lesson.getId())) {
                             span++;
                         }

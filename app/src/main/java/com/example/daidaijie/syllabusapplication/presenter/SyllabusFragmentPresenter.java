@@ -11,6 +11,7 @@ import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
+import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
@@ -96,6 +97,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         SharedPreferencesUtil.putString(SharedPreferencesUtil.SYLLABUS_GSON
                                 , GsonUtil.getDefault().toJson(mSyllabus));
                         User.getInstance().mSyllabus = mSyllabus;
+                        LessonModel.getInstance().save();
                         showSyllabus();
                         updateUserInfo();
                         mView.showSuccessBanner();
@@ -125,6 +127,9 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         /*if (timeGirds.size() != 0) {
                             Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
                         }*/
+                        //把该课程添加到课程管理去
+                        LessonModel.getInstance().addLesson(lesson);
+
                         for (int i = 0; i < timeGirds.size(); i++) {
                             Lesson.TimeGird timeGrid = timeGirds.get(i);
                             for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
@@ -134,9 +139,10 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids()
                                         .get(timeGrid.getWeekDate())
                                         .get(time);
+                                Log.e(TAG, "onNext: " + lesson.getName());
 
                                 //将该课程添加到时间节点上去
-                                syllabusGrid.getLessons().add(lesson);
+                                syllabusGrid.getLessons().add(lesson.getIntID());
                             }
                         }
                     }
