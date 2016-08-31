@@ -193,20 +193,22 @@ public class Lesson implements Serializable {
          */
         public void setWeekOfTime(int startWeek, int endWeek, WeekEum weekEum) {
             mWeekOfTime = 0;
+            Log.e(TAG, "setWeekOfTime startWeek: " + startWeek);
+            Log.e(TAG, "setWeekOfTime endWeek: " + endWeek);
             switch (weekEum) {
                 case FULL:
-                    for (long i = startWeek - 1, bit = 1; i < endWeek; i++, bit *= 2) {
-                        mWeekOfTime += bit;
+                    for (long i = startWeek - 1; i < endWeek; i++) {
+                        mWeekOfTime += (1 << i);
                     }
                     break;
                 case SINGLE:
-                    for (long i = startWeek - 1 + ((startWeek - 1) & 1), bit = 1; i < endWeek; i += 2, bit *= 4) {
-                        mWeekOfTime += bit;
+                    for (long i = startWeek - 1 + ((startWeek - 1) & 1); i < endWeek; i += 2) {
+                        mWeekOfTime += (1 << i);
                     }
                     break;
                 case DOUBLE:
-                    for (long i = startWeek - ((startWeek - 1) & 1), bit = 2; i < endWeek; i += 2, bit *= 4) {
-                        mWeekOfTime += bit;
+                    for (long i = startWeek - ((startWeek - 1) & 1); i < endWeek; i += 2) {
+                        mWeekOfTime += (1 << i);
                     }
                     break;
             }
@@ -224,7 +226,13 @@ public class Lesson implements Serializable {
 
             boolean flag = true;
             for (int i = startWeek - 1 + ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                if ((mWeekOfTime >> i) != 1) {
+                if (((mWeekOfTime >> i) & 1) != 1) {
+                    flag = false;
+                    break;
+                }
+            }
+            for (int i = startWeek - ((startWeek - 1) & 1); i < endWeek; i += 2) {
+                if (((mWeekOfTime >> i) & 1) == 1) {
                     flag = false;
                     break;
                 }
@@ -235,8 +243,14 @@ public class Lesson implements Serializable {
             }
 
             flag = true;
+            for (int i = startWeek - 1 + ((startWeek - 1) & 1); i < endWeek; i += 2) {
+                if (((mWeekOfTime >> i) & 1) == 1) {
+                    flag = false;
+                    break;
+                }
+            }
             for (int i = startWeek - ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                if ((mWeekOfTime >> i) != 1) {
+                if (((mWeekOfTime >> i) & 1) != 1) {
                     flag = false;
                     break;
                 }
@@ -283,7 +297,7 @@ public class Lesson implements Serializable {
         timeGrid = convertForWn(this.getDays().getW6(), 6, startWeek, endWeek);
         if (timeGrid != null) mTimeGirds.add(timeGrid);
         if (mTimeGirds.size() != 0) {
-            Log.e(TAG, "convertDays: " + mTimeGirds.get(0).getWeekOfTime());
+            Log.e(TAG, "convertDays: " + Long.toBinaryString(mTimeGirds.get(0).getWeekOfTime()));
         }
     }
 
