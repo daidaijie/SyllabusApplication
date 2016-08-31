@@ -66,7 +66,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 User.getInstance().getAccount(),
                                 User.getInstance().getPassword(),
                                 "query",
-                                "2014-2015"
+                                "2015-2016"
                                 , "1"
                         );
                     }
@@ -109,6 +109,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: " + e.getMessage());
+                        e.printStackTrace();
                         mView.hideLoading();
                         mView.showFailBannner();
                         mView.setViewPagerEnable(true);
@@ -139,7 +140,6 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids()
                                         .get(timeGrid.getWeekDate())
                                         .get(time);
-                                Log.e(TAG, "onNext: " + lesson.getName());
 
                                 //将该课程添加到时间节点上去
                                 syllabusGrid.getLessons().add(lesson.getIntID());

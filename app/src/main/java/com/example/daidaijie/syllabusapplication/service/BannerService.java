@@ -8,7 +8,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/8/7.
  */
-public interface BannerService {
+public interface    BannerService {
 
     @GET("/interaction/api/v2/banner")
     Observable<BannerInfo> getBanner();

@@ -41,7 +41,6 @@ public class LessonModel {
         mEditor = mSharedPreferences.edit();
 
         String lessonsJsonString = mSharedPreferences.getString(EXTRA_LESSONS, "");
-        Log.e(TAG, "LessonModel: " + lessonsJsonString);
         if (lessonsJsonString.isEmpty()) {
             mLessonHashMap = new HashMap<>();
             save();

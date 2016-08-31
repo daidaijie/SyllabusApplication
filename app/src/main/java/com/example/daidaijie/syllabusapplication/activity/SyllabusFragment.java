@@ -208,8 +208,22 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
             for (int j = 0; j < 13; j++) {
                 SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
                 Lesson lesson = null;
-                if (syllabusGrid.getLessons().size() != 0) {
-                    lesson = LessonModel.getInstance().getLesson(syllabusGrid.getLessons().get(0));
+                for (Integer lessonID : syllabusGrid.getLessons()) {
+                    Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
+                    boolean flag = false;
+                    for (Lesson.TimeGird timeGird : tmpLesson.getTimeGirds()) {
+                        if (timeGird.getWeekDate() == i) {
+                            long weekOfTime = timeGird.getWeekOfTime();
+                            if (((weekOfTime >> mWeek) & 1) == 1) {
+                                flag = true;
+                            }
+                        }
+                    }
+                    if (flag) {
+                        lesson = tmpLesson;
+                        break;
+                    }
+
                 }
                 final RevealLinearLayout lessonLinearLayout = (RevealLinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
                 MaterialRippleLayout lessonRippleLayout = (MaterialRippleLayout) lessonLinearLayout.findViewById(R.id.lessonRipple);
@@ -241,7 +255,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                                 activity.setSingleLock(true);
                                 activity.showSelectWeekLayout(false);
                                 Intent intent = LessonInfoActivity.getIntent(
-                                        getActivity(), finalLesson
+                                        getActivity(), finalLesson.getIntID()
                                 );
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                     ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,

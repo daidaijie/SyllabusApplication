@@ -25,6 +25,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.LessonDetailInfo;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
+import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.service.LessonDetailService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
@@ -76,8 +77,8 @@ public class LessonInfoActivity extends BaseActivity {
     private AlertDialog mLoadingDialog;
 
     public static final String TAG = "LessonInfoActivity";
-    public static final String EXTRA_LESSON_INFO
-            = "example.daidaijie.syllabusapplication.LessonInfoActivity.LessonInfo";
+    public static final String EXTRA_LESSON_ID
+            = "example.daidaijie.syllabusapplication.LessonInfoActivity.LessonID";
     private Lesson lesson;
 
     List<StudentInfo> mStudentInfos;
@@ -100,7 +101,7 @@ public class LessonInfoActivity extends BaseActivity {
             getWindow().setEnterTransition(new Explode().setDuration(300));
         }
 
-        lesson = (Lesson) getIntent().getSerializableExtra(EXTRA_LESSON_INFO);
+        lesson = LessonModel.getInstance().getLesson(getIntent().getIntExtra(EXTRA_LESSON_ID,00));
 
         Log.d(TAG, "onCreate: " + lesson.getName());
 
@@ -230,9 +231,9 @@ public class LessonInfoActivity extends BaseActivity {
                 });
     }
 
-    public static Intent getIntent(Context packageContext, Lesson lesson) {
+    public static Intent getIntent(Context packageContext, int id) {
         Intent intent = new Intent(packageContext, LessonInfoActivity.class);
-        intent.putExtra(EXTRA_LESSON_INFO, lesson);
+        intent.putExtra(EXTRA_LESSON_ID, id);
         return intent;
     }
 
