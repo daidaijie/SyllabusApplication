@@ -33,11 +33,25 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <WebView
-            android:id="@+id/oAWebView"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </WebView>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <WebView
+                android:id="@+id/oAWebView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </WebView>
+
+            <LinearLayout
+                android:background="@color/defaultLightBackground"
+                android:orientation="vertical"
+                android:id="@+id/oaFileLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </LinearLayout>
+        </LinearLayout>
 
     </ScrollView>
 

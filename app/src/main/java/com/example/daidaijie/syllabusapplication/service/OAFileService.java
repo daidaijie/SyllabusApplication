@@ -2,6 +2,8 @@ package com.example.daidaijie.syllabusapplication.service;
 
 import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
 
+import java.util.List;
+
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
@@ -14,6 +16,6 @@ public interface OAFileService {
 
     @FormUrlEncoded
     @POST("GetDOCAccessory")
-    Observable<OAFileBean> getOAFileList(@Field("token") String token,
-                                         @Field("docid") int docid);
+    Observable<List<OAFileBean>> getOAFileList(@Field("token") String token,
+                                   @Field("docid") int docid);
 }

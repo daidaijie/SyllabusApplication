@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/div_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/defaultShowColor"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/fileNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:paddingLeft="8dp"
+            android:layout_toLeftOf="@+id/downFileButton"
+            android:text="申请登记表.xlsx"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16sp"/>
+
+        <Button
+            android:layout_margin="8dp"
+            android:id="@+id/downFileButton"
+            android:layout_width="64dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_button_download_oa_file"
+            android:text="下载"
+            android:textColor="@color/material_white"
+            android:textSize="14sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

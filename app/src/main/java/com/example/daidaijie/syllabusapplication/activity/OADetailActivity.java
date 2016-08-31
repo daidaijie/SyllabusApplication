@@ -9,19 +9,28 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
+import com.example.daidaijie.syllabusapplication.model.OAModel;
+import com.example.daidaijie.syllabusapplication.service.OAFileService;
 import com.example.daidaijie.syllabusapplication.util.AssetUtil;
 import com.example.daidaijie.syllabusapplication.util.FileUtil;
+import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,8 +41,13 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class OADetailActivity extends BaseActivity {
 
@@ -43,8 +57,12 @@ public class OADetailActivity extends BaseActivity {
     Toolbar mToolbar;
     @BindView(R.id.oAWebView)
     WebView mOAWebView;
+    @BindView(R.id.oaFileLinearLayout)
+    LinearLayout mOaFileLinearLayout;
 
     OABean mOABean;
+
+    List<OAFileBean> mOAFileBeen;
 
     String oaContent = "";
 
@@ -52,6 +70,7 @@ public class OADetailActivity extends BaseActivity {
 
     public static final String EXTRA_OABEAN = "com.example.daidaijie.syllabusapplication.activity" +
             ".OADetailActivity.OABean";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +132,10 @@ public class OADetailActivity extends BaseActivity {
 
         mOAWebView.setDrawingCacheEnabled(true);
         mOAWebView.loadData(doc.toString(), "text/html; charset=UTF-8", null);
+
+        if (mOABean.getACCESSORYCOUNT() != 0) {
+            getOAFile();
+        }
     }
 
     @Override
@@ -192,5 +215,64 @@ public class OADetailActivity extends BaseActivity {
         Uri uri = Uri.fromFile(myCaptureFile);
         intent.setData(uri);
         App.getContext().sendBroadcast(intent);
+    }
+
+    private void getOAFile() {
+        OAFileService oaFileService = OAModel.getInstance().mRetrofit.create(OAFileService.class);
+        oaFileService.getOAFileList("undefined", mOABean.getID())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<OAFileBean>>() {
+                    @Override
+                    public void onCompleted() {
+                        showOAFile();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(List<OAFileBean> oaFileBeen) {
+                        mOAFileBeen = oaFileBeen;
+                    }
+                });
+    }
+
+    private void showOAFile() {
+        mOaFileLinearLayout.removeAllViews();
+
+        View tipView = getLayoutInflater().inflate(R.layout.item_oa_file, null, false);
+        TextView mTipTextView = (TextView) tipView.findViewById(R.id.fileNameTextView);
+        Button mTipButton = (Button) tipView.findViewById(R.id.downFileButton);
+        mTipButton.setVisibility(View.GONE);
+        mTipTextView.setText(Html.fromHtml("<b>附件</b> (PS: 附件只能在内网上下载)"));
+        mTipTextView.setTextSize(16);
+        mTipTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+        mOaFileLinearLayout.addView(tipView);
+
+        for (int i = 0; i < mOAFileBeen.size(); i++) {
+            final OAFileBean oaFileBean = mOAFileBeen.get(i);
+            View view = getLayoutInflater().inflate(R.layout.item_oa_file, null, false);
+            TextView mFileNameTextView = (TextView) view.findViewById(R.id.fileNameTextView);
+            Button mDownFileButton = (Button) view.findViewById(R.id.downFileButton);
+
+            mFileNameTextView.setText(oaFileBean.getIMAGEFILENAME());
+
+            mDownFileButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = "http://notes.stu.edu.cn/weaver/weaver.file.FileDownload?fileid="
+                            + oaFileBean.getIMAGEFILENAME() + "&download=1&requestid=0";
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+
+                    intent.setData(Uri.parse(url));
+
+                    startActivity(intent);
+                }
+            });
+            mOaFileLinearLayout.addView(view);
+        }
     }
 }
