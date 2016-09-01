@@ -207,6 +207,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 13; j++) {
                 SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
+                Log.e(TAG, "showSyllabus: " + i + " , " + j + " " + syllabusGrid.getLessons().size());
                 Lesson lesson = null;
                 for (Integer lessonID : syllabusGrid.getLessons()) {
                     Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
@@ -223,8 +224,9 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                         lesson = tmpLesson;
                         break;
                     }
-
                 }
+                if (lesson != null)
+                    Log.e(TAG, "showSyllabus: " + i + ", " + j + ", " + lesson.getName());
                 final RevealLinearLayout lessonLinearLayout = (RevealLinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.lesson_grid, null, false);
                 MaterialRippleLayout lessonRippleLayout = (MaterialRippleLayout) lessonLinearLayout.findViewById(R.id.lessonRipple);
                 TextView lessonTextView = (TextView) lessonLinearLayout.findViewById(R.id.lessonTextView);
@@ -241,7 +243,27 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                     for (int k = j + 1; k < 13; k++) {
                         SyllabusGrid nextSyllabusGrid = syllabus.getSyllabusGrids().get(i).get(k);
                         if (nextSyllabusGrid.getLessons().size() == 0) break;
-                        Lesson nextlesson = LessonModel.getInstance().getLesson(nextSyllabusGrid.getLessons().get(0));
+
+                        Lesson nextlesson = null;
+                        for (Integer lessonID : nextSyllabusGrid.getLessons()) {
+                            Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
+                            boolean flag = false;
+                            for (Lesson.TimeGird timeGird : tmpLesson.getTimeGirds()) {
+                                if (timeGird.getWeekDate() == i) {
+                                    long weekOfTime = timeGird.getWeekOfTime();
+                                    if (((weekOfTime >> mWeek) & 1) == 1) {
+                                        flag = true;
+                                    }
+                                }
+                            }
+                            if (flag) {
+                                nextlesson = tmpLesson;
+                                break;
+                            }
+                        }
+
+                        if (nextlesson == null) break;
+
                         if (nextlesson.getId().equals(lesson.getId())) {
                             span++;
                         }

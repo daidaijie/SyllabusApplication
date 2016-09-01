@@ -67,7 +67,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 User.getInstance().getPassword(),
                                 "query",
                                 "2015-2016"
-                                , "1"
+                                , "2"
                         );
                     }
                 })
@@ -117,7 +117,6 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
                     @Override
                     public void onNext(Lesson lesson) {
-                        Log.d(TAG, "onNext: " + lesson.getName());
 
                         //将lesson的时间格式化
                         lesson.convertDays();
@@ -131,6 +130,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         //把该课程添加到课程管理去
                         LessonModel.getInstance().addLesson(lesson);
 
+                        Log.d(TAG, "onNext: " + lesson.getName());
                         for (int i = 0; i < timeGirds.size(); i++) {
                             Lesson.TimeGird timeGrid = timeGirds.get(i);
                             for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
@@ -145,6 +145,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 syllabusGrid.getLessons().add(lesson.getIntID());
                             }
                         }
+
                     }
                 });
 
