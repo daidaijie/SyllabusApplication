@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
@@ -383,8 +384,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         picker.setTitleText(Html.fromHtml("<b>选择学期</b>"));
         picker.setSelectedItem("2016-2017", "秋季学期");
         picker.setTextSize(16);
-        picker.setTextColor(getResources().getColor(R.color.colorPrimary));
-        picker.setLineColor(getResources().getColor(R.color.colorPrimaryDark));
+        picker.setTextColor(ThemeModel.getInstance().colorPrimary);
+        picker.setLineColor(ThemeModel.getInstance().colorPrimaryDark);
         picker.show();
 
         picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {

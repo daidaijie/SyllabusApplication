@@ -38,7 +38,7 @@
             android:layout_toRightOf="@+id/headImageDraweeView"
             android:ellipsize="end"
             android:singleLine="true"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="?attr/colorPrimary"
             android:textSize="14sp"
             tools:text="余强"/>
 

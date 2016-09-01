@@ -16,7 +16,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="评论"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="?attr/colorPrimary"
         android:textSize="16sp"
         android:visibility="gone"
         tools:visibility="visible"/>

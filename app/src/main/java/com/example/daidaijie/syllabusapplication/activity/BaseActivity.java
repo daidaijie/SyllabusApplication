@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.v4.view.WindowCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+
+import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
 import butterknife.ButterKnife;
 import cn.nekocode.emojix.Emojix;
@@ -26,7 +30,17 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_MODE_OVERLAY);
+
+        setTheme(ThemeModel.getInstance().style);
+
+        TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        ThemeModel.getInstance().colorPrimary = typedValue.data;
+
+        getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
+        ThemeModel.getInstance().colorPrimaryDark = typedValue.data;
         setContentView(getContentView());
+
 
         ButterKnife.bind(this);
 

@@ -40,7 +40,6 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.liaoinstan.springview.utils.DensityUtil;
-import com.squareup.haha.perflib.Main;
 
 import java.util.List;
 
@@ -79,6 +78,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     ItemCardLayout mToSTUItemLayout;
     @BindView(R.id.toSyllabusItemLayout)
     MaterialRippleLayout mToSyllabusItemLayout;
+    @BindView(R.id.toExamCardItem)
+    ItemCardLayout mToExamCardItem;
 
     private BannerModel mBannerModel;
 
@@ -98,7 +99,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         //添加toolbar drawer的开关
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -128,6 +129,15 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SyllabusActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mToExamCardItem.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                MainActivity.this.recreate();
             }
         });
     }
