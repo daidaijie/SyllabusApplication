@@ -39,6 +39,7 @@
                 android:padding="8dp">
 
                 <ImageView
+                    android:tint="@color/colorPrimary"
                     android:layout_margin="4dp"
                     android:id="@+id/cardIconImageView"
                     android:layout_width="32dp"

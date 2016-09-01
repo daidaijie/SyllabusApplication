@@ -149,6 +149,7 @@
             app:cardElevation="1dp">
 
             <ImageView
+                android:tint="@color/colorPrimary"
                 android:id="@+id/extendImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"

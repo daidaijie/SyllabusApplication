@@ -90,7 +90,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/bg_login"
         android:text="登录"
-        android:textColor="@color/material_blue_600"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"/>
 
     <TextView

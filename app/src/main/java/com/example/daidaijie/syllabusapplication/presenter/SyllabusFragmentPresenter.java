@@ -67,7 +67,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 User.getInstance().getPassword(),
                                 "query",
                                 "2015-2016"
-                                , "2"
+                                , "1"
                         );
                     }
                 })

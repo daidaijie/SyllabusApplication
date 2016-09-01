@@ -125,6 +125,11 @@ public class App extends Application {
 
     private void initGalleryFinal() {
         ThemeConfig theme = new ThemeConfig.Builder()
+                .setTitleBarBgColor(getResources().getColor(R.color.colorPrimary))
+                .setFabNornalColor(getResources().getColor(R.color.colorPrimary))
+                .setFabPressedColor(getResources().getColor(R.color.colorPrimaryDark))
+                .setCheckSelectedColor(getResources().getColor(R.color.colorPrimary))
+                .setCropControlColor(getResources().getColor(R.color.colorPrimary))
                 .build();
 
         ImageLoader imageloader = new FrescoImageLoader(this);
