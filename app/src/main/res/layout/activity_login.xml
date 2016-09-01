@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
+    android:background="?attr/colorPrimary"
     tools:context="com.example.daidaijie.syllabusapplication.activity.LoginActivity">
 
     <LinearLayout
@@ -90,7 +90,7 @@
         android:layout_marginTop="40dp"
         android:background="@drawable/bg_login"
         android:text="登录"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?attr/colorPrimary"
         android:textSize="20sp"/>
 
     <TextView

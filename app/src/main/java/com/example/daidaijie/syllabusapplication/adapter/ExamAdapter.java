@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.ExamDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
@@ -101,7 +102,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
                     0, 4, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             style.setSpan(new ForegroundColorSpan(
-                            mActivity.getResources().getColor(R.color.colorPrimaryDark)),
+                            mActivity.getResources().getColor(ThemeModel.getInstance().colorPrimary)),
                     4, sb.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             holder.mExamStateTextView.setText(style);

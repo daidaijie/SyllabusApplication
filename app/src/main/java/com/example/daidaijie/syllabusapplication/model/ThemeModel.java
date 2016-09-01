@@ -25,4 +25,12 @@ public class ThemeModel {
             style = R.style.AppThemeGreen;
         }
     }
+
+    public void changeTheme() {
+        if (style == R.style.AppTheme) {
+            style = R.style.AppThemeGreen;
+        } else {
+            style = R.style.AppTheme;
+        }
+    }
 }

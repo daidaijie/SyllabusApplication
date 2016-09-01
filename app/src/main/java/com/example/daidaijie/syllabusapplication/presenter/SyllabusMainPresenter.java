@@ -28,6 +28,7 @@ import java.util.List;
 
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
+import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import id.zelory.compressor.Compressor;
 import retrofit2.Retrofit;

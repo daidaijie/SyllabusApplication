@@ -31,6 +31,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
 import com.example.daidaijie.syllabusapplication.model.BannerModel;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.BannerService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;
@@ -136,7 +137,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             @Override
             public void onClick(View v) {
-
+                ThemeModel.getInstance().changeTheme();
                 MainActivity.this.recreate();
             }
         });

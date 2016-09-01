@@ -5,37 +5,30 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.display.DisplayManager;
 import android.net.Uri;
-import android.support.annotation.Dimension;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.google.gson.Gson;
 import com.liaoinstan.springview.utils.DensityUtil;
 
 import java.util.List;
@@ -127,8 +120,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         if (postBean.getSource() != null) {
             String str = "来自 " + postBean.getSource();
             SpannableStringBuilder style = new SpannableStringBuilder(str);
-            style.setSpan(new ForegroundColorSpan(
-                            mActivity.getResources().getColor(R.color.colorPrimary)),
+            style.setSpan(new ForegroundColorSpan(ThemeModel.getInstance().colorPrimary),
                     3, str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             holder.mPostDeviceTextView.setText(style);

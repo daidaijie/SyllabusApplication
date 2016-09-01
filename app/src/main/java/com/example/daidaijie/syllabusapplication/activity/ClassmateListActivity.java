@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.StudentInfoAdapter;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
@@ -71,7 +72,7 @@ public class ClassmateListActivity extends BaseActivity {
         mClassmateRecyclerView.setAdapter(mStudentInfoAdapter);
 
         int bgColor = getResources()
-                .getColor(getIntent().getIntExtra(EXTRA_BG_COLOR, R.color.colorPrimary));
+                .getColor(getIntent().getIntExtra(EXTRA_BG_COLOR, ThemeModel.getInstance().colorPrimary));
         mToolbar.setBackgroundColor(bgColor);
         mToolbar.setTitle("");
 

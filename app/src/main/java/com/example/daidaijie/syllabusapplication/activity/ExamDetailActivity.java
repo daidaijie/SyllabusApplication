@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.widget.CustomMarqueeTextView;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
 
@@ -97,12 +98,12 @@ public class ExamDetailActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        mAppBar.setBackgroundColor(getResources().getColor(
+       /* mAppBar.setBackgroundColor(getResources().getColor(
                 R.color.colorPrimary));
         mToolbarLayout.setContentScrimColor(getResources().getColor(
                 R.color.colorPrimary));
         mToolbar.setBackgroundColor(getResources().getColor(
-                R.color.colorPrimary));
+                R.color.colorPrimary));*/
 
         mExamNameTextView.setText(mExam.getTrueName());
         mTitleTextView.setText(mExam.getTrueName());
@@ -118,7 +119,7 @@ public class ExamDetailActivity extends BaseActivity {
             mExamTipLayout.setTitleTextColor(getResources().getColor(R.color.defaultShowColor));
         } else {
             mExamTipLayout.setTitleText(mExam.getExam_comment());
-            mExamTipLayout.setTitleTextColor(getResources().getColor(R.color.colorPrimary));
+            mExamTipLayout.setTitleTextColor(ThemeModel.getInstance().colorPrimary);
         }
 
         mExamStateLayout.setTitleTextColor(getResources().getColor(R.color.defaultShowColor));
@@ -205,7 +206,7 @@ public class ExamDetailActivity extends BaseActivity {
                     0, 6, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             style.setSpan(new ForegroundColorSpan(
-                            getResources().getColor(R.color.colorPrimaryDark)),
+                            ThemeModel.getInstance().colorPrimary),
                     6, sb.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             mExamStateLayout.setTitleText(style);

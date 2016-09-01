@@ -82,7 +82,7 @@
                             android:layout_centerInParent="true"
                             android:gravity="center"
                             android:text="成绩总评"
-                            android:textColor="@color/colorPrimary"
+                            android:textColor="?attr/colorPrimary"
                             android:textSize="16sp"/>
 
                         <View

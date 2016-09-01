@@ -103,28 +103,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Android"
-            app:buttonTint="@color/colorPrimary"
-            android:textColor="@color/colorPrimary"/>
+            app:buttonTint="?attr/colorPrimary"
+            android:textColor="?attr/colorPrimary"/>
 
         <android.support.v7.widget.AppCompatRadioButton
             android:layout_marginLeft="8dp"
             android:textSize="14sp"
-            app:buttonTint="@color/colorPrimary"
+            app:buttonTint="?attr/colorPrimary"
             android:id="@+id/postAsPhoneButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Android"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="?attr/colorPrimary"/>
 
         <android.support.v7.widget.AppCompatRadioButton
             android:layout_marginLeft="8dp"
             android:textSize="14sp"
-            app:buttonTint="@color/colorPrimary"
+            app:buttonTint="?attr/colorPrimary"
             android:id="@+id/postAsOtherButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="火星"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="?attr/colorPrimary"/>
     </RadioGroup>
 
 </LinearLayout>

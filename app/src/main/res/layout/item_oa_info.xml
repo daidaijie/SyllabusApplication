@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="4dp"
             android:text="理学院\u201c科学沙龙\u201d系列学术讲座\u2014\u2014 海洋生物学研究新技术"
-            android:textColor="@color/colorPrimary"
+            android:textColor="?attr/colorPrimary"
             android:textSize="16sp"/>
 
         <LinearLayout
