@@ -7,13 +7,14 @@ import java.io.Serializable;
  */
 public class LoginInfo implements Serializable{
 
+
     /**
-     * success : false
-     * msg : 用户已在线，不需要再次认证
-     * action : location
+     * success : true
+     * msg : logon success
+     * action : logout
      * pop : 0
      * userName : 13yjli3
-     * location :
+     * location : http://1.1.1.2/ac_portal/proxy.html?type=logout
      */
 
     private boolean success;

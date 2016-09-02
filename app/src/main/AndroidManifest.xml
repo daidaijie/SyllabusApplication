@@ -97,6 +97,9 @@
             android:enabled="true"
             android:exported="true">
         </service>
+
+        <activity android:name=".activity.LoginInternetActivity">
+        </activity>
     </application>
 
 </manifest>

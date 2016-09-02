@@ -87,6 +87,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     public static final String TAG = "MainActivity";
     @BindView(R.id.nav_view)
     NavigationView mNavView;
+    @BindView(R.id.toWifiItemLayout)
+    ItemCardLayout mToWifiItemLayout;
     private BannerModel mBannerModel;
 
     @Override
@@ -123,6 +125,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         setBannerPage(mBannerModel.mBanners);
 
         getBanner();
+
+        mToWifiItemLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginInternetActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mToOAItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override

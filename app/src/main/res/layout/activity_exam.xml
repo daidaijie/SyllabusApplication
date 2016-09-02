@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.ExamActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical"
+    tools:context="com.example.daidaijie.syllabusapplication.activity.ExamActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -36,26 +36,13 @@
         android:id="@+id/refreshExamLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <FrameLayout
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/examListRecycleList"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
 
-            <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
-                android:id="@+id/examListRecycleList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-            </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
-            <TextView
-                android:paddingTop="32dp"
-                android:gravity="center_horizontal"
-                android:textSize="20sp"
-                android:textColor="@color/defaultTextColor"
-                android:text="暂无考试信息"
-                android:id="@+id/emptyTextView"
-                android:visibility="visible"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

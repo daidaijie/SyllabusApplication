@@ -16,6 +16,10 @@ import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 public class User {
 
     private static final String FILE_NAME = "User";
+
+    public static final String EXTRA_CURRENT_ACCOUNT
+            = "com.example.daidaijie.syllabusapplication.model.User.currentAccount";
+
     private static final String EXTRA_USERNAME
             = "com.example.daidaijie.syllabusapplication.model.User.username";
     private static final String EXTRA_PASSWORD
@@ -30,6 +34,8 @@ public class User {
     SharedPreferences mSharedPreferences;
 
     SharedPreferences.Editor mEditor;
+
+    private String mCurrentAccount;
 
     //example 13yjli3
     private String mAccount;
@@ -51,6 +57,8 @@ public class User {
     private User() {
         mSharedPreferences = App.getContext().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
+
+        mCurrentAccount = mSharedPreferences.getString(EXTRA_CURRENT_ACCOUNT,"");
 
         mAccount = mSharedPreferences.getString(EXTRA_USERNAME, "");
         mPassword = mSharedPreferences.getString(EXTRA_PASSWORD, "");
@@ -118,5 +126,13 @@ public class User {
         mEditor.putString(EXTRA_PASSWORD, password);
         mPassword = password;
         mEditor.commit();
+    }
+
+    public String getCurrentAccount() {
+        return mCurrentAccount;
+    }
+
+    public void setCurrentAccount(String currentAccount) {
+        mCurrentAccount = currentAccount;
     }
 }

@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -36,9 +37,8 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.examListRecycleList)
-    RecyclerViewEmptySupport mExamListRecycleList;
-    @BindView(R.id.emptyTextView)
-    TextView mEmptyTextView;
+    RecyclerView mExamListRecycleList;
+
     @BindView(R.id.refreshExamLayout)
     SwipeRefreshLayout mRefreshExamLayout;
 
@@ -67,7 +67,6 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 android.R.color.holo_red_light
         );
 
-        mExamListRecycleList.setEmptyView(mEmptyTextView);
         mExamListRecycleList.setLayoutManager(new LinearLayoutManager(this));
         mExamAdapter = new ExamAdapter(this, null);
         mExamListRecycleList.setAdapter(mExamAdapter);
@@ -116,6 +115,10 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                     @Override
                     public void onCompleted() {
                         mRefreshExamLayout.setRefreshing(false);
+                        if (mExams == null) {
+                            showFailBannner();
+                            return;
+                        }
                         mExamAdapter.setExams(mExams);
                         mExamAdapter.notifyDataSetChanged();
                         showSuccessBanner();
@@ -137,6 +140,7 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
     @Override
     public void onRefresh() {
+        Log.d(TAG, "onRefresh: ");
         getExamList();
     }
 
