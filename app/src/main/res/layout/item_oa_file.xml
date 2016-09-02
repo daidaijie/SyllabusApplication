@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent" xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <View
@@ -27,14 +27,18 @@
             android:textColor="@color/defaultTextColor"
             android:textSize="16sp"/>
 
-        <Button
+        <info.hoang8f.widget.FButton
+            fbutton:shadowEnabled="true"
+            fbutton:buttonColor="?attr/colorPrimary"
+            fbutton:shadowColor="@color/defaultShowColor"
+            fbutton:cornerRadius="4dp"
+            fbutton:shadowHeight="1dp"
             android:layout_margin="8dp"
             android:id="@+id/downFileButton"
             android:layout_width="64dp"
             android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/bg_button_download_oa_file"
             android:text="下载"
             android:textColor="@color/material_white"
             android:textSize="14sp"/>

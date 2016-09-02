@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -43,12 +44,12 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:id="@+id/commentInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/defaultDarkBackground"
+        android:orientation="vertical"
         android:visibility="gone"
         tools:visibility="visible">
         <View
@@ -59,13 +60,12 @@
         </View>
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginTop="8dp"
             android:gravity="bottom"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:orientation="horizontal">
             <EditText
-                android:layout_weight="1"
                 android:id="@+id/commentEditext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,27 +73,32 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_toLeftOf="@+id/sendLayout"
+                android:layout_weight="1"
                 android:maxHeight="160dp"
                 android:textColor="@color/defaultTextColor"
                 android:textSize="16sp"/>
 
             <FrameLayout
-                android:layout_marginBottom="8dp"
                 android:id="@+id/sendLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp">
 
-                <Button
+                <info.hoang8f.widget.FButton
                     android:id="@+id/sendCommentButton"
                     android:layout_width="56dp"
                     android:layout_height="32dp"
                     android:layout_gravity="bottom"
-                    android:background="@drawable/bg_send_comment"
                     android:text="发送"
                     android:textColor="@color/material_white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    fbutton:buttonColor="?attr/colorPrimary"
+                    fbutton:cornerRadius="4dp"
+                    fbutton:shadowColor="@color/defaultShowColor"
+                    fbutton:shadowEnabled="true"
+                    fbutton:shadowHeight="1dp"/>
 
             </FrameLayout>
         </LinearLayout>

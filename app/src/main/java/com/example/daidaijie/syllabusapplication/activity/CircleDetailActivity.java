@@ -277,7 +277,11 @@ public class CircleDetailActivity extends BaseActivity {
             postContent = "@" + mCommentInfo.getComments().get(lastPostion - 1).getUser().getName()
                     + ": " + postContent;
         }
-        // TODO: 2016/8/18 记得要判断token是否为空
+
+        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserBaseBean().getId());
+        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserInfo().getToken());
+
+        // TODO: 2016/9/2 别的设备登录这里怎么破.....
         PostCommentBean postCommentBean = new PostCommentBean(
                 mPostListBeen.get(0).getId(),
                 User.getInstance().getUserBaseBean().getId(),
@@ -302,7 +306,7 @@ public class CircleDetailActivity extends BaseActivity {
                         SnackbarUtil.ShortSnackbar(
                                 mCommentEditext, "发送失败", SnackbarUtil.Alert
                         ).show();
-                        Log.d("发送失败", "onError: "+e.getMessage());
+                        Log.d("发送失败", "onError: " + e.getMessage());
                     }
 
                     @Override

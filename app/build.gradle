@@ -58,4 +58,5 @@ dependencies {
     compile 'com.bartoszlipinski:recyclerviewheader2:2.0.1'
     compile 'org.jsoup:jsoup:1.9.2'
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
+    compile 'info.hoang8f:fbutton:1.0.5'
 }
