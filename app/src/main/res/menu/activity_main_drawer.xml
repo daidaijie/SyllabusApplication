@@ -3,33 +3,37 @@
 
     <group android:title="功能">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_personal_info"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import"/>
+            android:title="个人信息"/>
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_change_semember"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="选择壁纸"/>
+            android:title="切换学期"/>
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_change_theme"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow"/>
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools"/>
+            android:title="更换主题"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="系统功能">
         <menu>
             <item
-                android:id="@+id/nav_share"
+                android:id="@+id/nav_show_update"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Share"/>
+                android:title="查看更新"/>
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_share_app"
                 android:icon="@drawable/ic_menu_send"
-                android:title="考试"/>
+                android:title="分享应用"/>
+            <item
+                android:id="@+id/nav_about_us"
+                android:icon="@drawable/ic_menu_send"
+                android:title="关于我们"/>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_send"
+                android:title="注销帐号"/>
         </menu>
     </item>
 

@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,12 +68,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     CoordinatorLayout mCoordinatorLayout;
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
-    @BindView(R.id.nav_view)
-    NavigationView mNavView;
     @BindView(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
-
-    public static final String TAG = "MainActivity";
     @BindView(R.id.toOAItemLayout)
     ItemCardLayout mToOAItemLayout;
     @BindView(R.id.toSTUItemLayout)
@@ -82,6 +79,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @BindView(R.id.toExamCardItem)
     ItemCardLayout mToExamCardItem;
 
+    RelativeLayout navHeadRelativeLayout;
+    SimpleDraweeView headImageDraweeView;
+    TextView nicknameTextView;
+
+
+    public static final String TAG = "MainActivity";
+    @BindView(R.id.nav_view)
+    NavigationView mNavView;
     private BannerModel mBannerModel;
 
     @Override
@@ -104,6 +109,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 this, mDrawerLayout, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
+        if (mNavView != null) {
+            mNavView.setNavigationItemSelectedListener(this);
+        }
+        //获取NavavNavigationView中的控件
+        navHeadRelativeLayout = (RelativeLayout) mNavView.getHeaderView(0);
+        headImageDraweeView = (SimpleDraweeView) navHeadRelativeLayout.findViewById(R.id.headImageDraweeView);
+        nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
+
 
         mBannerModel = BannerModel.getInstance();
 
@@ -215,6 +228,23 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (id == R.id.nav_change_theme) {
+            final ThemePickerFragment themePickerFragment = new ThemePickerFragment();
+
+            themePickerFragment.setOnItemClickListener(new ThemePickerFragment.OnItemClickListener() {
+                @Override
+                public void onClick(int position) {
+                    ThemeModel.getInstance().style = ThemeModel.getInstance()
+                            .mThemeBeen.get(position).styleRec;
+                    recreate();
+                    themePickerFragment.dismiss();
+                }
+            });
+
+            themePickerFragment.show(getSupportFragmentManager(),
+                    ThemePickerFragment.DIALOG_THEME_PICKER);
+        }
+
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }

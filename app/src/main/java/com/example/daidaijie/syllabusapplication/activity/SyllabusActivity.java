@@ -112,7 +112,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             mNavView.setNavigationItemSelectedListener(this);
         }
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this,
-                getResources().getColor(R.color.colorPrimary));
+                ThemeModel.getInstance().colorPrimary);
 
 
         mWeekAdapter = new WeekAdapter(this);
@@ -241,11 +241,11 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                         }
                     } else {
                         mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(
-                                getResources().getColor(R.color.colorPrimary)
+                                ThemeModel.getInstance().colorPrimary
                                 , 192));
-                        navHeadRelativeLayout.setBackgroundColor(getResources().getColor(
-                                R.color.colorPrimary
-                        ));
+                        navHeadRelativeLayout.setBackgroundColor(
+                                ThemeModel.getInstance().colorPrimary
+                        );
                     }
                 }
             }

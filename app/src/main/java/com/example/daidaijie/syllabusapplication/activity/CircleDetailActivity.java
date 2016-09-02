@@ -278,8 +278,8 @@ public class CircleDetailActivity extends BaseActivity {
                     + ": " + postContent;
         }
 
-        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserBaseBean().getId());
-        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserInfo().getToken());
+//        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserBaseBean().getId());
+//        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserInfo().getToken());
 
         // TODO: 2016/9/2 别的设备登录这里怎么破.....
         PostCommentBean postCommentBean = new PostCommentBean(
