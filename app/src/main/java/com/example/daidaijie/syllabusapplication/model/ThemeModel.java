@@ -31,7 +31,25 @@ public class ThemeModel {
         }
         mThemeBeen = new ArrayList<>();
         mThemeBeen.add(new ThemeBean(R.color.material_blue_500, R.style.AppTheme));
+        mThemeBeen.add(new ThemeBean(R.color.material_lightBlue_500, R.style.AppThemeLightBlue));
+        mThemeBeen.add(new ThemeBean(R.color.material_indigo_500, R.style.AppThemeIndigo));
+        mThemeBeen.add(new ThemeBean(R.color.material_cyan_500, R.style.AppThemeCyan));
+        mThemeBeen.add(new ThemeBean(R.color.material_teal_500, R.style.AppThemeTeal));
+        mThemeBeen.add(new ThemeBean(R.color.material_red_500, R.style.AppThemeRed));
+        mThemeBeen.add(new ThemeBean(R.color.material_pink_500, R.style.AppThemePink));
+        mThemeBeen.add(new ThemeBean(R.color.material_purple_500, R.style.AppThemePurple));
+        mThemeBeen.add(new ThemeBean(R.color.material_deepPurple_500, R.style.AppThemeDeepPurple));
         mThemeBeen.add(new ThemeBean(R.color.material_green_500, R.style.AppThemeGreen));
+        mThemeBeen.add(new ThemeBean(R.color.material_lightGreen_500, R.style.AppThemeLightGreen));
+        mThemeBeen.add(new ThemeBean(R.color.material_Lime_500, R.style.AppThemeLime));
+        mThemeBeen.add(new ThemeBean(R.color.material_yellow_500, R.style.AppThemeYellow));
+        mThemeBeen.add(new ThemeBean(R.color.material_amber_500, R.style.AppThemeAmber));
+        mThemeBeen.add(new ThemeBean(R.color.material_orange_500, R.style.AppThemeOrange));
+        mThemeBeen.add(new ThemeBean(R.color.material_deepOrange_500, R.style.AppThemeDeepOrange));
+        mThemeBeen.add(new ThemeBean(R.color.material_brown_500, R.style.AppThemeBrown));
+        mThemeBeen.add(new ThemeBean(R.color.material_grey_500, R.style.AppThemeGrey));
+        mThemeBeen.add(new ThemeBean(R.color.material_blueGrey_500, R.style.AppThemeBlueGrey));
+        mThemeBeen.add(new ThemeBean(R.color.colorBlack, R.style.AppThemeBlack));
     }
 
     public void changeTheme() {

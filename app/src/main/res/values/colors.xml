@@ -20,4 +20,10 @@
     <color name="defaultDarkBackgroundSelect">#CCCCCC</color>
 
     <color name="defaultSelectForeground">#20000000</color>
+
+
+    <color name="colorBlack">#393A3F</color>
+    <color name="colorBlackDark">#303135</color>
+
+
 </resources>
