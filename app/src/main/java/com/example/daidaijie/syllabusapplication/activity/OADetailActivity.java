@@ -27,6 +27,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.OAFileService;
 import com.example.daidaijie.syllabusapplication.util.AssetUtil;
 import com.example.daidaijie.syllabusapplication.util.FileUtil;
@@ -249,7 +250,7 @@ public class OADetailActivity extends BaseActivity {
         mTipButton.setVisibility(View.GONE);
         mTipTextView.setText(Html.fromHtml("<b>附件</b> (PS: 附件只能在内网上下载)"));
         mTipTextView.setTextSize(16);
-        mTipTextView.setTextColor(getResources().getColor(R.color.colorPrimary));
+        mTipTextView.setTextColor(ThemeModel.getInstance().colorPrimary);
         mOaFileLinearLayout.addView(tipView);
 
         for (int i = 0; i < mOAFileBeen.size(); i++) {

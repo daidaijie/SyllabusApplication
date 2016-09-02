@@ -62,6 +62,7 @@ public class GradeInfo {
     }
 
     public void setIsExpands(boolean isExpand) {
+        if (GRADES == null) return;
         for (int i = 0; i < GRADES.size(); i++) {
             isExpands.set(i, isExpand);
         }

@@ -145,15 +145,6 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                 startActivity(intent);
             }
         });
-
-        mToExamCardItem.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                ThemeModel.getInstance().changeTheme();
-                MainActivity.this.recreate();
-            }
-        });
     }
 
     @Override
@@ -234,8 +225,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             themePickerFragment.setOnItemClickListener(new ThemePickerFragment.OnItemClickListener() {
                 @Override
                 public void onClick(int position) {
-                    ThemeModel.getInstance().style = ThemeModel.getInstance()
-                            .mThemeBeen.get(position).styleRec;
+                    ThemeModel.getInstance().setStyle(position);
                     recreate();
                     themePickerFragment.dismiss();
                 }

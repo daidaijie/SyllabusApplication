@@ -8,13 +8,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.ColorUtils;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
@@ -120,6 +120,9 @@ public class ThemePickerFragment extends DialogFragment {
                     mOnItemClickListener.onClick(position);
                 }
             });
+            holder.mShowCurrent.setVisibility(position == ThemeModel.getInstance().mPosition ?
+                    View.VISIBLE : View.GONE);
+
         }
 
         @Override
@@ -130,6 +133,8 @@ public class ThemePickerFragment extends DialogFragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
             @BindView(R.id.themePickerView)
             View mThemePickerView;
+            @BindView(R.id.showCurrent)
+            ImageView mShowCurrent;
 
             public ViewHolder(View itemView) {
                 super(itemView);

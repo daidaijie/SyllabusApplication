@@ -1,5 +1,9 @@
 package com.example.daidaijie.syllabusapplication.model;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 
 import java.util.ArrayList;
@@ -10,12 +14,23 @@ import java.util.List;
  */
 public class ThemeModel {
 
-    public int style;
+    SharedPreferences mSharedPreferences;
+
+    SharedPreferences.Editor mEditor;
+
+    public static final String TAG = "LessonModel";
+
+    private static final String EXTRA_Theme = "com.example.daidaijie.syllabusapplication.bean.Lesson" +
+            ".LessonModel.themePostion";
+
+    private int style;
 
     public int colorPrimary;
     public int colorPrimaryDark;
 
     public List<ThemeBean> mThemeBeen;
+
+    public int mPosition;
 
     private static ThemeModel ourInstance = new ThemeModel();
 
@@ -24,11 +39,6 @@ public class ThemeModel {
     }
 
     private ThemeModel() {
-        if (Math.random() < 0.5) {
-            style = R.style.AppTheme;
-        } else {
-            style = R.style.AppThemeGreen;
-        }
         mThemeBeen = new ArrayList<>();
         mThemeBeen.add(new ThemeBean(R.color.material_blue_500, R.style.AppTheme));
         mThemeBeen.add(new ThemeBean(R.color.material_lightBlue_500, R.style.AppThemeLightBlue));
@@ -50,14 +60,25 @@ public class ThemeModel {
         mThemeBeen.add(new ThemeBean(R.color.material_grey_500, R.style.AppThemeGrey));
         mThemeBeen.add(new ThemeBean(R.color.material_blueGrey_500, R.style.AppThemeBlueGrey));
         mThemeBeen.add(new ThemeBean(R.color.colorBlack, R.style.AppThemeBlack));
+
+        mSharedPreferences = App.getContext().getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+
+        mPosition = mSharedPreferences.getInt(EXTRA_Theme, 0);
+        style = mThemeBeen.get(mPosition).styleRec;
+
     }
 
-    public void changeTheme() {
-        if (style == R.style.AppTheme) {
-            style = R.style.AppThemeGreen;
-        } else {
-            style = R.style.AppTheme;
-        }
+
+    public int getStyle() {
+        return style;
+    }
+
+    public void setStyle(int position) {
+        mPosition = position;
+        this.style = mThemeBeen.get(mPosition).styleRec;
+        mEditor.putInt(EXTRA_Theme, mPosition);
+        mEditor.commit();
     }
 
     public class ThemeBean {
