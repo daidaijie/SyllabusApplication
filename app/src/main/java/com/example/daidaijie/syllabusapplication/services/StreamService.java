@@ -16,9 +16,8 @@ public class StreamService extends Service {
     public static final String EXTRA_STREAM_INFO = "com.example.daidaijie.syllabusapplication" +
             ".services.StreamService.StreamInfo";
 
-    public static Intent getIntent(Context context, StreamInfo streamInfo) {
+    public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, StreamService.class);
-        intent.putExtra(EXTRA_STREAM_INFO, streamInfo);
         return intent;
     }
 
@@ -29,7 +28,7 @@ public class StreamService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        StreamInfo mStreamInfo = (StreamInfo) intent.getSerializableExtra(EXTRA_STREAM_INFO);
+        StreamInfo mStreamInfo = StreamInfo.getInstance();
         int type = mStreamInfo.getType();
 
         if (type == StreamInfo.TYPE_SUCCESS && mStreamInfo != null) {

@@ -4,13 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.service.InterenetService;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,13 +19,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cn.finalteam.galleryfinal.CoreConfig;
-import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.ThemeConfig;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -75,16 +71,15 @@ public class App extends Application {
                             @Override
                             public void onError(Throwable e) {
                                 Log.e("ServiceTest", "onNext: " + e.getMessage());
-                                StreamInfo streamInfo = new StreamInfo();
+                                StreamInfo streamInfo = StreamInfo.getInstance();
                                 streamInfo.setType(StreamInfo.TYPE_UN_CONNECT);
-                                Intent intent = StreamService.getIntent(getApplicationContext()
-                                        , streamInfo);
+                                Intent intent = StreamService.getIntent(getApplicationContext());
                                 startService(intent);
                             }
 
                             @Override
                             public void onNext(String s) {
-                                StreamInfo streamInfo = new StreamInfo();
+                                StreamInfo streamInfo = StreamInfo.getInstance();
 
                                 Document doc = Jsoup.parse(s);
                                 Element tables = doc.getElementsByTag("table").first();
@@ -92,8 +87,7 @@ public class App extends Application {
 
                                 if (trs.size() < 2) {
                                     streamInfo.setType(StreamInfo.TYPE_LOGOUT);
-                                    Intent intent = StreamService.getIntent(getApplicationContext()
-                                            , streamInfo);
+                                    Intent intent = StreamService.getIntent(getApplicationContext());
                                     startService(intent);
                                     return;
                                 }
@@ -107,8 +101,7 @@ public class App extends Application {
 
                                 Log.e("ServiceTest", "onNext: " + streamInfo.toString());
 
-                                Intent intent = StreamService.getIntent(getApplicationContext()
-                                        , streamInfo);
+                                Intent intent = StreamService.getIntent(getApplicationContext());
                                 startService(intent);
 
                             }

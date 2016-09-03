@@ -15,6 +15,15 @@ public class StreamInfo implements Serializable {
     public static final int TYPE_SUCCESS = 1;
     public static final int TYPE_LOGOUT = 2;
 
+    private static StreamInfo ourInstance = new StreamInfo();
+
+    public static StreamInfo getInstance() {
+        return ourInstance;
+    }
+
+    private StreamInfo() {
+    }
+
     private String name;
 
     private String allStream;
@@ -96,6 +105,8 @@ public class StreamInfo implements Serializable {
 
     private double convertStream(String stream) {
         String tmpStream = stream;
+        // TODO: 2016/9/3 不明觉厉的问题
+        if (tmpStream==null)return 0.0;
         if (tmpStream.contains("G")) {
             return Double.parseDouble(tmpStream.replace("G", "")) * 1024 * 1024;
         }

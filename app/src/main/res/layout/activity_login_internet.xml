@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/defaultLightBackground"
     android:orientation="vertical"
     tools:context="com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity">
 
@@ -46,30 +47,67 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-        <EditText
-            android:id="@+id/usernameEditText"
-            android:gravity="center"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:hint="校园网账号"
-            android:padding="8dp"
-            android:textSize="16sp"/>
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/usernameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:gravity="center"
+                android:hint="校园网账号"
+                android:padding="8dp"
+                android:paddingLeft="32dp"
+                android:textSize="16sp"/>
+
+            <ImageButton
+                android:id="@+id/switchAccountButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="?attr/colorPrimary"
+                android:padding="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_switch_account"
+                android:tint="@color/material_white"/>
+        </RelativeLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/defaultShowColor"></View>
+            android:background="@color/defaultShowColor"/>
 
         <EditText
             android:id="@+id/passwordEditText"
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:gravity="center"
             android:hint="校园网密码"
             android:inputType="textPassword"
             android:padding="8dp"
+            android:paddingLeft="32dp"
             android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <com.example.daidaijie.syllabusapplication.widget.MaterialCheckBox
+            android:id="@+id/isRememberCheckBox"
+            android:layout_width="24dp"
+            android:layout_height="24dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="记住登录状态"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="14sp"/>
 
     </LinearLayout>
 
@@ -78,7 +116,9 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_gravity="bottom"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
         android:text="登录"
         android:textColor="@color/material_white"
         android:textSize="16sp"
@@ -88,4 +128,26 @@
         fbutton:shadowEnabled="true"
         fbutton:shadowHeight="1dp"/>
 
+    <info.hoang8f.widget.FButton
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:text="注销"
+        android:textColor="@color/material_white"
+        android:textSize="16sp"
+        fbutton:buttonColor="?attr/colorPrimary"
+        fbutton:cornerRadius="4dp"
+        fbutton:shadowColor="@color/defaultShowColor"
+        fbutton:shadowEnabled="true"
+        fbutton:shadowHeight="1dp"/>
+
+    <TextView
+        android:id="@+id/loginInfoTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16sp"/>
 </LinearLayout>

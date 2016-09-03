@@ -7,8 +7,10 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlNormal">@color/material_white</item>
         <item name="actionMenuTextColor">@color/material_white</item>
+        <item name="android:textColorSecondary">@color/defaultShowColor</item>
         <!--<item name="android:windowBackground">@color/transparent</item>-->
     </style>
+
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 

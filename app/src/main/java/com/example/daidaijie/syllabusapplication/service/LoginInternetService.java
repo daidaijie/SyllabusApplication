@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.service;
 
+import android.support.annotation.Nullable;
+
 import com.example.daidaijie.syllabusapplication.bean.LoginInfo;
 
 import retrofit2.http.Field;
@@ -17,5 +19,5 @@ public interface LoginInternetService {
     Observable<String> loginInternet(@Field("opr") String opr,
                                         @Field("userName") String username,
                                         @Field("pwd") String password,
-                                        @Field("rememberPwd") int isRemember);
+                                        @Field("rememberPwd") String isRemember);
 }
