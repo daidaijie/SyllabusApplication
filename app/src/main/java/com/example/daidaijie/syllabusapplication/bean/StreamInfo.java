@@ -95,6 +95,16 @@ public class StreamInfo implements Serializable {
                 '}';
     }
 
+    public String getPrettyString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format("%-8s : %s\n", "用户名", name));
+        sb.append(String.format("%-8s : %s\n", "日流量额", allStream));
+        sb.append(String.format("%-8s : %s\n", "当天流量", nowStream));
+        sb.append(String.format("%-8s : %s\n", "过期时间", outTime));
+        sb.append(String.format("%-8s : %s", "账号状态", state));
+        return sb.toString();
+    }
+
     public double getAllByte() {
         return convertStream(allStream);
     }
@@ -106,7 +116,7 @@ public class StreamInfo implements Serializable {
     private double convertStream(String stream) {
         String tmpStream = stream;
         // TODO: 2016/9/3 不明觉厉的问题
-        if (tmpStream==null)return 0.0;
+        if (tmpStream == null) return 0.0;
         if (tmpStream.contains("G")) {
             return Double.parseDouble(tmpStream.replace("G", "")) * 1024 * 1024;
         }

@@ -55,6 +55,9 @@ public class ItemCardLayout extends FrameLayout {
                     break;
             }
         }
+        if (typedArray != null) {
+            typedArray.recycle();
+        }
     }
 
     public void setTitleText(String text) {

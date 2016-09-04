@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,6 +21,7 @@ import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.MaterialCheckBox;
+import com.example.daidaijie.syllabusapplication.widget.StreamItemLayout;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -63,6 +63,16 @@ public class LoginInternetActivity extends BaseActivity {
     ImageButton mSwitchAccountButton;
 
     AlertDialog mSwitchAccountDialog;
+    @BindView(R.id.usernameItem)
+    StreamItemLayout mUsernameItem;
+    @BindView(R.id.nowStreamItem)
+    StreamItemLayout mNowStreamItem;
+    @BindView(R.id.allStreamItem)
+    StreamItemLayout mAllStreamItem;
+    @BindView(R.id.outTimeItem)
+    StreamItemLayout mOutTimeItem;
+    @BindView(R.id.stateItem)
+    StreamItemLayout mStateItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,14 +107,7 @@ public class LoginInternetActivity extends BaseActivity {
                 mLoginInfoTextView.post(new Runnable() {
                     @Override
                     public void run() {
-                        StreamInfo streamInfo = StreamInfo.getInstance();
-                        if (streamInfo.getType() == StreamInfo.TYPE_UN_CONNECT) {
-                            mLoginInfoTextView.setText("没连接校园网");
-                        } else if (streamInfo.getType() == StreamInfo.TYPE_LOGOUT) {
-                            mLoginInfoTextView.setText("用户已登出");
-                        } else if (streamInfo.getType() == StreamInfo.TYPE_SUCCESS) {
-                            mLoginInfoTextView.setText(streamInfo.toString());
-                        }
+                        updateState();
                     }
                 });
             }
@@ -207,13 +210,14 @@ public class LoginInternetActivity extends BaseActivity {
                     @Override
                     public void onCompleted() {
                         mLoadingDialog.dismiss();
-                        mLoginInfoTextView.setText(StreamInfo.getInstance().toString());
+                        updateState();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         SnackbarUtil.ShortSnackbar(mLoginButton, "登录失败", SnackbarUtil.Alert).show();
                         Toast.makeText(LoginInternetActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        updateState();
                         mLoadingDialog.dismiss();
                     }
 
@@ -297,5 +301,28 @@ public class LoginInternetActivity extends BaseActivity {
                     }
                 });
 
+    }
+
+    private void updateState() {
+        StreamInfo streamInfo = StreamInfo.getInstance();
+        if (streamInfo.getType() == StreamInfo.TYPE_SUCCESS) {
+            mLoginInfoTextView.setText("用户已登录");
+            mUsernameItem.setStreamInfo(streamInfo.getName());
+            mNowStreamItem.setStreamInfo(streamInfo.getNowStream());
+            mAllStreamItem.setStreamInfo(streamInfo.getAllStream());
+            mOutTimeItem.setStreamInfo(streamInfo.getOutTime());
+            mStateItem.setStreamInfo(streamInfo.getState());
+        } else {
+            mUsernameItem.setStreamInfo("");
+            mNowStreamItem.setStreamInfo("");
+            mAllStreamItem.setStreamInfo("");
+            mOutTimeItem.setStreamInfo("");
+            mStateItem.setStreamInfo("");
+            if (streamInfo.getType() == StreamInfo.TYPE_LOGOUT) {
+                mLoginInfoTextView.setText("当前没登陆流量验证");
+            } else if (streamInfo.getType() == StreamInfo.TYPE_UN_CONNECT) {
+                mLoginInfoTextView.setText("没接入校园网");
+            }
+        }
     }
 }

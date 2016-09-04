@@ -9,6 +9,13 @@
         <attr name="descText" format="string"></attr>
     </declare-styleable>
 
+    <declare-styleable name="StreamItemLayout">
+        <attr name="streamName" format="string"></attr>
+        <attr name="streamInfo" format="string"></attr>
+        <attr name="showLine" format="boolean"></attr>
+    </declare-styleable>
+
+
 
     <declare-styleable name="ItemCardLayout">
         <attr name="cardTitle" format="string"></attr>

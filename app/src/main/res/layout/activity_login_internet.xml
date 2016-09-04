@@ -59,6 +59,7 @@
                 android:hint="校园网账号"
                 android:padding="8dp"
                 android:paddingLeft="32dp"
+                android:singleLine="true"
                 android:textSize="16sp"/>
 
             <ImageButton
@@ -89,6 +90,7 @@
             android:inputType="textPassword"
             android:padding="8dp"
             android:paddingLeft="32dp"
+            android:singleLine="true"
             android:textSize="16sp"/>
 
     </LinearLayout>
@@ -111,43 +113,103 @@
 
     </LinearLayout>
 
-    <info.hoang8f.widget.FButton
-        android:id="@+id/loginButton"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:text="登录"
-        android:textColor="@color/material_white"
-        android:textSize="16sp"
-        fbutton:buttonColor="?attr/colorPrimary"
-        fbutton:cornerRadius="4dp"
-        fbutton:shadowColor="@color/defaultShowColor"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="1dp"/>
+        android:layout_height="72dp"
+        android:orientation="horizontal"
+        android:padding="8dp">
+        <info.hoang8f.widget.FButton
+            android:id="@+id/loginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="登录"
+            android:textColor="@color/material_white"
+            android:textSize="16sp"
+            fbutton:buttonColor="?attr/colorPrimary"
+            fbutton:cornerRadius="4dp"
+            fbutton:shadowColor="@color/defaultShowColor"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="1dp"/>
+        <info.hoang8f.widget.FButton
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:text="注销"
+            android:textColor="@color/material_white"
+            android:textSize="16sp"
+            fbutton:buttonColor="?attr/colorPrimary"
+            fbutton:cornerRadius="4dp"
+            fbutton:shadowColor="@color/defaultShowColor"
+            fbutton:shadowEnabled="true"
+            fbutton:shadowHeight="1dp"/>
 
-    <info.hoang8f.widget.FButton
-        android:id="@+id/logoutButton"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_gravity="bottom"
-        android:layout_margin="16dp"
-        android:text="注销"
-        android:textColor="@color/material_white"
-        android:textSize="16sp"
-        fbutton:buttonColor="?attr/colorPrimary"
-        fbutton:cornerRadius="4dp"
-        fbutton:shadowColor="@color/defaultShowColor"
-        fbutton:shadowEnabled="true"
-        fbutton:shadowHeight="1dp"/>
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/loginInfoTextView"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16sp"/>
+        android:layout_margin="8dp"
+        app:cardBackgroundColor="@color/material_white"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="1dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:singleLine="true"
+                android:id="@+id/loginInfoTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="14sp"/>
+
+            <com.example.daidaijie.syllabusapplication.widget.StreamItemLayout
+                android:id="@+id/usernameItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:streamName="用户名称">
+            </com.example.daidaijie.syllabusapplication.widget.StreamItemLayout>
+
+            <com.example.daidaijie.syllabusapplication.widget.StreamItemLayout
+                android:id="@+id/nowStreamItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:streamName="日流量额">
+            </com.example.daidaijie.syllabusapplication.widget.StreamItemLayout>
+            <com.example.daidaijie.syllabusapplication.widget.StreamItemLayout
+                android:id="@+id/allStreamItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:streamName="当天流量">
+            </com.example.daidaijie.syllabusapplication.widget.StreamItemLayout>
+            <com.example.daidaijie.syllabusapplication.widget.StreamItemLayout
+                android:id="@+id/outTimeItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:streamName="过期时间">
+            </com.example.daidaijie.syllabusapplication.widget.StreamItemLayout>
+            <com.example.daidaijie.syllabusapplication.widget.StreamItemLayout
+                android:id="@+id/stateItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:showLine="false"
+                app:streamName="账号状态">
+            </com.example.daidaijie.syllabusapplication.widget.StreamItemLayout>
+
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
 </LinearLayout>

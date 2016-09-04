@@ -63,6 +63,9 @@ public class LessonDetaiLayout extends RelativeLayout {
                     break;
             }
         }
+        if (typedArray!=null) {
+            typedArray.recycle();
+        }
 
     }
 
