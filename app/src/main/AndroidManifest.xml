@@ -100,6 +100,8 @@
 
         <activity android:name=".activity.LoginInternetActivity">
         </activity>
+        <activity android:name=".activity.LibraryActivity">
+        </activity>
     </application>
 
 </manifest>

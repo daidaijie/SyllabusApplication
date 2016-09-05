@@ -89,6 +89,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     NavigationView mNavView;
     @BindView(R.id.toWifiItemLayout)
     ItemCardLayout mToWifiItemLayout;
+    @BindView(R.id.toLibraryCardItem)
+    ItemCardLayout mToLibraryCardItem;
     private BannerModel mBannerModel;
 
     @Override
@@ -152,6 +154,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SyllabusActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        mToLibraryCardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
                 startActivity(intent);
             }
         });

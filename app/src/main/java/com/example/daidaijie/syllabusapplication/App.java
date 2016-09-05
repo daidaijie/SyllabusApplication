@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ProviderInfo;
 import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
@@ -47,7 +48,31 @@ public class App extends Application {
 
         initGalleryFinal();
 
+        updateStreamInfo();
 
+
+    }
+
+    public static Context getContext() {
+        return context;
+    }
+
+    private void initGalleryFinal() {
+        ThemeConfig theme = new ThemeConfig.Builder()
+                .setTitleBarBgColor(getResources().getColor(R.color.colorPrimary))
+                .setFabNornalColor(getResources().getColor(R.color.colorPrimary))
+                .setFabPressedColor(getResources().getColor(R.color.colorPrimaryDark))
+                .setCheckSelectedColor(getResources().getColor(R.color.colorPrimary))
+                .setCropControlColor(getResources().getColor(R.color.colorPrimary))
+                .build();
+
+        ImageLoader imageloader = new FrescoImageLoader(this);
+        CoreConfig coreConfig = new CoreConfig.Builder(context, imageloader, theme)
+                .build();
+        GalleryFinal.init(coreConfig);
+    }
+
+    private void updateStreamInfo(){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.1.1.2/ac_portal/")
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -108,28 +133,6 @@ public class App extends Application {
                         });
             }
         }, 0, 1000);
-
-
     }
-
-    public static Context getContext() {
-        return context;
-    }
-
-    private void initGalleryFinal() {
-        ThemeConfig theme = new ThemeConfig.Builder()
-                .setTitleBarBgColor(getResources().getColor(R.color.colorPrimary))
-                .setFabNornalColor(getResources().getColor(R.color.colorPrimary))
-                .setFabPressedColor(getResources().getColor(R.color.colorPrimaryDark))
-                .setCheckSelectedColor(getResources().getColor(R.color.colorPrimary))
-                .setCropControlColor(getResources().getColor(R.color.colorPrimary))
-                .build();
-
-        ImageLoader imageloader = new FrescoImageLoader(this);
-        CoreConfig coreConfig = new CoreConfig.Builder(context, imageloader, theme)
-                .build();
-        GalleryFinal.init(coreConfig);
-    }
-
 
 }
