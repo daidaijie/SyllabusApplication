@@ -16,15 +16,21 @@ public class LibraryPagerAdapter extends FragmentStatePagerAdapter {
 
     private String mKeyword;
 
-    public LibraryPagerAdapter(FragmentManager fm, String tag, String keyword) {
+    private String mSF;
+
+    private String mOB;
+
+    public LibraryPagerAdapter(FragmentManager fm, String tag, String keyword, String SF, String OB) {
         super(fm);
         mTag = tag;
         mKeyword = keyword;
+        mSF = SF;
+        mOB = OB;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return LibraryFragment.newInstance(mTag, mKeyword, position);
+        return LibraryFragment.newInstance(mTag, mKeyword, mSF, mOB, position);
     }
 
     @Override

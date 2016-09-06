@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:animateLayoutChanges="true"
     tools:context="com.example.daidaijie.syllabusapplication.activity.LibraryActivity">
 
     <android.support.v7.widget.Toolbar
@@ -32,17 +33,93 @@
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
-    <EditText
-        android:layout_marginTop="32dp"
-        android:id="@+id/searchEditText"
+    <LinearLayout
+        android:id="@+id/queryLayout"
+        android:background="@color/material_white"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/searchButton"
-        android:text="搜索"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <EditText
+            android:id="@+id/searchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/bg_edit_post"
+            android:hint="关键字"
+            android:padding="8dp"
+            android:singleLine="true"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16sp"/>
+
+        <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="检索范围"/>
+
+
+        <Button
+            android:id="@+id/searchRangeButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_button_sub"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"
+            tools:text=""/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="排序方式"/>
+
+
+        <Button
+            android:id="@+id/searchSFButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_button_sub"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"
+            tools:text=""/>
+
+        <Button
+            android:id="@+id/searchOBButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_button_sub"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"
+            tools:text=""/>
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="搜索"/>
+
+    </LinearLayout>
 
 
     <android.support.v4.view.ViewPager

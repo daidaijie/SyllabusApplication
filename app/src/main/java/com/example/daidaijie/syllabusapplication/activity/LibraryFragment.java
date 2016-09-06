@@ -44,6 +44,11 @@ public class LibraryFragment extends Fragment {
 
     private String mTag;
 
+    private String mOB;
+
+    private String mSF;
+
+
     private static final String EXTRA_POS = "com.example.daidaijie.syllabusapplication.activity" +
             ".LibraryFragment.mPosition";
 
@@ -53,13 +58,21 @@ public class LibraryFragment extends Fragment {
     private static final String EXTRA_KEYWORD = "com.example.daidaijie.syllabusapplication.activity" +
             ".LibraryFragment.mkeyword";
 
+    private static final String EXTRA_OB = "com.example.daidaijie.syllabusapplication.activity" +
+            ".LibraryFragment.mOB";
 
-    public static LibraryFragment newInstance(String tag, String keyword, int position) {
+    private static final String EXTRA_SF = "com.example.daidaijie.syllabusapplication.activity" +
+            ".LibraryFragment.mSF";
+
+
+    public static LibraryFragment newInstance(String tag, String keyword, String sf, String ob, int position) {
         LibraryFragment fragment = new LibraryFragment();
         Bundle args = new Bundle();
         args.putInt(EXTRA_POS, position);
         args.putString(EXTRA_TAG, tag);
         args.putString(EXTRA_KEYWORD, keyword);
+        args.putString(EXTRA_SF, sf);
+        args.putString(EXTRA_OB, ob);
         fragment.setArguments(args);
         return fragment;
 
@@ -72,6 +85,8 @@ public class LibraryFragment extends Fragment {
         mPosition = args.getInt(EXTRA_POS, 0);
         mkeyword = args.getString(EXTRA_KEYWORD);
         mTag = args.getString(EXTRA_TAG);
+        mSF = args.getString(EXTRA_SF);
+        mOB = args.getString(EXTRA_OB);
     }
 
 
@@ -84,7 +99,7 @@ public class LibraryFragment extends Fragment {
         try {
             final LibraryService libraryService = LibraryModel.getInstance().mRetrofit.create(LibraryService.class);
 
-            LibraryModel.getInstance().getLibraryBy(mTag, mkeyword, mPosition)
+            LibraryModel.getInstance().getLibraryBy(mTag, mkeyword, mSF, mOB, mPosition + 1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())
                     .map(new Func1<String, List<LibraryBean>>() {

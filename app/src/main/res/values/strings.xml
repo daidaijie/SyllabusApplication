@@ -24,4 +24,35 @@
         <item>索取号</item>
     </string-array>
 
+    <string-array name="query_lib_ob_string">
+        <item>降序排列</item>
+        <item>升序排列</item>
+    </string-array>
+
+    <string-array name="query_lib_ob">
+        <item>DESC</item>
+        <item>ASC</item>
+    </string-array>
+
+    <string-array name="query_lib_sf_string">
+        <item>题名</item>
+        <item>出版社</item>
+        <item>出版年</item>
+        <item>著者</item>
+        <item>主题词</item>
+        <item>分类号</item>
+        <item>进馆日期</item>
+    </string-array>
+
+    <string-array name="query_lib_sf">
+        <item>M_TITLE</item>
+        <item>M_PUBLISHER</item>
+        <item>M_PUB_YEAR</item>
+        <item>M_AUTHOR</item>
+        <item>M_SUBJECT</item>
+        <item>M_CLC</item>
+        <item>M_CATALOGDATE</item>
+    </string-array>
+
+
 </resources>
