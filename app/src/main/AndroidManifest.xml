@@ -98,9 +98,15 @@
             android:exported="true">
         </service>
 
-        <activity android:name=".activity.LoginInternetActivity">
+        <activity
+            android:name=".activity.LoginInternetActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.LibraryActivity">
+        <activity
+            android:name=".activity.LibraryActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 

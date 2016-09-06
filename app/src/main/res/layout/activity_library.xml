@@ -42,14 +42,14 @@
         android:text="搜索"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-    <ScrollView
+
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/libraryViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/ansTextView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
 
-    </ScrollView>
+    </android.support.v4.view.ViewPager>
 
 </LinearLayout>
