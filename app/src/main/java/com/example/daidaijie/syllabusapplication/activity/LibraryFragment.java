@@ -3,22 +3,27 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.adapter.LibItemAdpater;
+import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.model.LibraryModel;
 import com.example.daidaijie.syllabusapplication.service.LibraryService;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +37,14 @@ import rx.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LibraryFragment extends Fragment {
+public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
-    List<LibraryBean> mLibraryBeen;
-    @BindView(R.id.text)
-    TextView mText;
+    @BindView(R.id.libRecyclerView)
+    RecyclerViewEmptySupport mLibRecyclerView;
+    @BindView(R.id.emptyTextView)
+    TextView mEmptyTextView;
+    @BindView(R.id.refreshLibLayout)
+    SwipeRefreshLayout mRefreshLibLayout;
 
     private int mPosition;
 
@@ -48,6 +56,9 @@ public class LibraryFragment extends Fragment {
 
     private String mSF;
 
+    private List<LibraryBean> mLibraryBeen;
+
+    private LibItemAdpater mLibItemAdpater;
 
     private static final String EXTRA_POS = "com.example.daidaijie.syllabusapplication.activity" +
             ".LibraryFragment.mPosition";
@@ -96,9 +107,33 @@ public class LibraryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_library, container, false);
         ButterKnife.bind(this, view);
 
-        try {
-            final LibraryService libraryService = LibraryModel.getInstance().mRetrofit.create(LibraryService.class);
+        mLibRecyclerView.setEmptyView(mEmptyTextView);
+        mLibItemAdpater = new LibItemAdpater(getActivity(), mLibraryBeen);
+        mLibRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLibRecyclerView.setAdapter(mLibItemAdpater);
 
+        mRefreshLibLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
+        mRefreshLibLayout.setOnRefreshListener(this);
+        mRefreshLibLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLibLayout.setRefreshing(true);
+                getLibInfo();
+            }
+        }, 50);
+
+
+        return view;
+    }
+
+
+    public void getLibInfo() {
+        try {
             LibraryModel.getInstance().getLibraryBy(mTag, mkeyword, mSF, mOB, mPosition + 1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())
@@ -133,16 +168,17 @@ public class LibraryFragment extends Fragment {
                     .subscribe(new Subscriber<List<LibraryBean>>() {
                         @Override
                         public void onCompleted() {
-                            StringBuilder sb = new StringBuilder();
-                            for (LibraryBean libraryBean : mLibraryBeen) {
-                                sb.append(libraryBean.getName() + "\n");
-                            }
-                            mText.setText(sb.toString());
+                            mRefreshLibLayout.setRefreshing(false);
+                            mLibItemAdpater.setLibraryBeen(mLibraryBeen);
+                            mLibItemAdpater.notifyDataSetChanged();
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            mText.setText(e.getMessage());
+                            mRefreshLibLayout.setRefreshing(false);
+                            SnackbarUtil.LongSnackbar(
+                                    mRefreshLibLayout, "获取失败", SnackbarUtil.Alert
+                            ).show();
                         }
 
                         @Override
@@ -154,8 +190,10 @@ public class LibraryFragment extends Fragment {
             e.printStackTrace();
         }
 
-
-        return view;
     }
 
+    @Override
+    public void onRefresh() {
+        getLibInfo();
+    }
 }

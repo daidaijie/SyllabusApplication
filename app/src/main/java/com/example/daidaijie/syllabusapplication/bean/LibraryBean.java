@@ -5,6 +5,16 @@ package com.example.daidaijie.syllabusapplication.bean;
  */
 public class LibraryBean {
 
+    /**
+     * <td><span class="title"><a href="http://opac.lib.stu.edu.cn:83/opac/bookinfo.aspx?ctrlno=1935287" target="_blank">机械产品可靠性设计与试验 [专著]</a></span></td>
+     * <td>许卫宝, 钟涛编著</td>
+     * <td>国防工业出版社</td>
+     * <td>2015.7</td>
+     * <td class="tbr">TH122/201507J</td>
+     * <td class="tbr">1</td>
+     * <td class="tbr">1</td>
+     * <td style="display:none">
+     */
     private String name;
 
     private String author;

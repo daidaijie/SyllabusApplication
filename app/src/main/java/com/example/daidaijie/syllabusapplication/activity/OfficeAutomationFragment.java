@@ -141,7 +141,6 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                     @Override
                     public void onError(Throwable e) {
                         mRefreshOALayout.setRefreshing(false);
-                        Log.d(TAG, "onError: " + e.getMessage());
                         SnackbarUtil.LongSnackbar(
                                 mRefreshOALayout, "获取失败", SnackbarUtil.Alert
                         ).show();

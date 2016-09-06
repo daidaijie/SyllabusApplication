@@ -1,13 +1,37 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              tools:context="com.example.daidaijie.syllabusapplication.activity.LibraryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/text"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLibLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
+                android:id="@+id/libRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
+
+            <TextView
+                android:id="@+id/emptyTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingTop="32dp"
+                android:text="查找不到该图书"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="20sp"
+                android:visibility="visible"/>
+        </FrameLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>

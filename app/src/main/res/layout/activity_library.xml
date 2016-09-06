@@ -33,6 +33,7 @@
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
+
     <LinearLayout
         android:id="@+id/queryLayout"
         android:background="@color/material_white"
