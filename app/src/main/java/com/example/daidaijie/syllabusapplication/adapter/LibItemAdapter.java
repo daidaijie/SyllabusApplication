@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.BookDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 
 import java.util.List;
@@ -19,13 +21,13 @@ import butterknife.ButterKnife;
 /**
  * Created by daidaijie on 2016/9/6.
  */
-public class LibItemAdpater extends RecyclerView.Adapter<LibItemAdpater.ViewHolder> {
+public class LibItemAdapter extends RecyclerView.Adapter<LibItemAdapter.ViewHolder> {
 
     Activity mActivity;
 
     List<LibraryBean> mLibraryBeen;
 
-    public LibItemAdpater(Activity activity, List<LibraryBean> libraryBeen) {
+    public LibItemAdapter(Activity activity, List<LibraryBean> libraryBeen) {
         mActivity = activity;
         mLibraryBeen = libraryBeen;
     }
@@ -48,7 +50,7 @@ public class LibItemAdpater extends RecyclerView.Adapter<LibItemAdpater.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        LibraryBean libraryBean = mLibraryBeen.get(position);
+        final LibraryBean libraryBean = mLibraryBeen.get(position);
 
         holder.mLibTitleTextView.setText(libraryBean.getName());
         holder.mLibAuthorTextview.setText(libraryBean.getAuthor());
@@ -65,6 +67,14 @@ public class LibItemAdpater extends RecyclerView.Adapter<LibItemAdpater.ViewHold
         }
 
         holder.mLibNumStateTextView.setText(nowNum + " / " + allNum);
+
+        holder.mLibCardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = BookDetailActivity.getIntent(mActivity,libraryBean);
+                mActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override

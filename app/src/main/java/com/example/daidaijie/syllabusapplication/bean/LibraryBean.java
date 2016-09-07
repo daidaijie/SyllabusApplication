@@ -1,9 +1,11 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by daidaijie on 2016/9/5.
  */
-public class LibraryBean {
+public class LibraryBean implements Serializable{
 
     /**
      * <td><span class="title"><a href="http://opac.lib.stu.edu.cn:83/opac/bookinfo.aspx?ctrlno=1935287" target="_blank">机械产品可靠性设计与试验 [专著]</a></span></td>
@@ -15,6 +17,8 @@ public class LibraryBean {
      * <td class="tbr">1</td>
      * <td style="display:none">
      */
+    private String url;
+
     private String name;
 
     private String author;
@@ -83,5 +87,13 @@ public class LibraryBean {
 
     public void setAllNum(int allNum) {
         this.allNum = allNum;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

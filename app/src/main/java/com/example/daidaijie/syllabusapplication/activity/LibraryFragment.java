@@ -9,13 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.adapter.LibItemAdpater;
-import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
+import com.example.daidaijie.syllabusapplication.adapter.LibItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.model.LibraryModel;
-import com.example.daidaijie.syllabusapplication.service.LibraryService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
@@ -58,7 +57,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private List<LibraryBean> mLibraryBeen;
 
-    private LibItemAdpater mLibItemAdpater;
+    private LibItemAdapter mLibItemAdapter;
 
     private static final String EXTRA_POS = "com.example.daidaijie.syllabusapplication.activity" +
             ".LibraryFragment.mPosition";
@@ -108,9 +107,9 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         ButterKnife.bind(this, view);
 
         mLibRecyclerView.setEmptyView(mEmptyTextView);
-        mLibItemAdpater = new LibItemAdpater(getActivity(), mLibraryBeen);
+        mLibItemAdapter = new LibItemAdapter(getActivity(), mLibraryBeen);
         mLibRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mLibRecyclerView.setAdapter(mLibItemAdpater);
+        mLibRecyclerView.setAdapter(mLibItemAdapter);
 
         mRefreshLibLayout.setColorSchemeResources(
                 android.R.color.holo_blue_light,
@@ -140,7 +139,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     .map(new Func1<String, List<LibraryBean>>() {
                         @Override
                         public List<LibraryBean> call(String s) {
-                            List<LibraryBean> libraryBeen = new ArrayList<LibraryBean>();
+                            List<LibraryBean> libraryBeen = new ArrayList<>();
 
                             Element body = Jsoup.parseBodyFragment(s).body();
                             Element table = body.select("table.tb").first();
@@ -151,6 +150,9 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                                 LibraryBean libraryBean = new LibraryBean();
 
                                 Elements tdItem = item.getElementsByTag("td");
+
+                                Element href = tdItem.get(1).getElementsByTag("span").first().getElementsByTag("a").first();
+                                libraryBean.setUrl(href.attr("href"));
 
                                 libraryBean.setName(tdItem.get(1).text());
                                 libraryBean.setAuthor(tdItem.get(2).text());
@@ -169,13 +171,14 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         @Override
                         public void onCompleted() {
                             mRefreshLibLayout.setRefreshing(false);
-                            mLibItemAdpater.setLibraryBeen(mLibraryBeen);
-                            mLibItemAdpater.notifyDataSetChanged();
+                            mLibItemAdapter.setLibraryBeen(mLibraryBeen);
+                            mLibItemAdapter.notifyDataSetChanged();
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             mRefreshLibLayout.setRefreshing(false);
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                             SnackbarUtil.LongSnackbar(
                                     mRefreshLibLayout, "获取失败", SnackbarUtil.Alert
                             ).show();
