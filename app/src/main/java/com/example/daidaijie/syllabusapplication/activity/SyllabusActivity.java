@@ -125,7 +125,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             }
         });
 
-        showSelectSemeber();
+        //showSelectSemeber();
     }
 
     private void setupToolbar() {
@@ -267,18 +267,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.nav_gallery) {
             mSyllabusMainPresenter.setWallpaper(this);
         } else if (id == R.id.nav_slideshow) {
             Intent intent = new Intent(this, GradeActivity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.nav_manage) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_share) {
-            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_send) {
             Intent intent = new Intent(this, ExamActivity.class);

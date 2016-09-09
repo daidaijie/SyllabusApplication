@@ -153,7 +153,7 @@
                 android:layout_weight="1"
                 android:background="@color/transparent"
                 app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardTitle="图书检索">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout

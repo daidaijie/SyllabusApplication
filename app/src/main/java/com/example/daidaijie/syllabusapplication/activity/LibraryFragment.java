@@ -178,7 +178,6 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                         @Override
                         public void onError(Throwable e) {
                             mRefreshLibLayout.setRefreshing(false);
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                             SnackbarUtil.LongSnackbar(
                                     mRefreshLibLayout, "获取失败", SnackbarUtil.Alert
                             ).show();
