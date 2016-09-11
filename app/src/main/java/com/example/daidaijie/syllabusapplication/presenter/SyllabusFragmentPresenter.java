@@ -15,9 +15,7 @@ import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
-import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
-import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -66,7 +64,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 User.getInstance().getAccount(),
                                 User.getInstance().getPassword(),
                                 "query",
-                                "2015-2016"
+                                "2016-2017"
                                 , "1"
                         );
                     }

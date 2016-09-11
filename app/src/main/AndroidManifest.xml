@@ -99,6 +99,7 @@
         </service>
 
         <activity
+            android:launchMode="singleTop"
             android:name=".activity.LoginInternetActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
