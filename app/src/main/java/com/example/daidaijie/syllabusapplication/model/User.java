@@ -11,7 +11,10 @@ import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,6 +41,12 @@ public class User {
     private static final String EXTRA_SYLLABUS
             = "com.example.daidaijie.syllabusapplication.model.User.mSyllabus";
 
+    private static final String EXTRA_SYLLABUSMAP
+            = "com.example.daidaijie.syllabusapplication.model.User.mSyllabusMap";
+
+    private static final String EXTRA_CURRENT_SEMESTER
+            = "com.example.daidaijie.syllabusapplication.model.User.mCurrentSemester";
+
 
     SharedPreferences mUserSharedPreferences;
     SharedPreferences.Editor mUserEditor;
@@ -53,17 +62,15 @@ public class User {
     //example *********
     private String mPassword;
 
-    //某个学期
-    private String nowSemester;
-
     private static User sUser = new User();
 
     private UserInfo mUserInfo;
 
     private UserBaseBean mUserBaseBean;
 
-    public Map<Semester, Syllabus> mSyllabusMap;
+    private Map<Semester, Syllabus> mSyllabusMap;
 
+    private Semester mCurrentSemester;
 
     //现在只测试一个学期的情况
     public Syllabus mSyllabus;
@@ -74,8 +81,15 @@ public class User {
         mUserEditor = mUserSharedPreferences.edit();
         mCurrentAccount = mUserSharedPreferences.getString(EXTRA_CURRENT_ACCOUNT, "");
 
-        if (mCurrentAccount.trim().isEmpty()) {
+        String currentSemesterString = mUserSharedPreferences.getString(EXTRA_CURRENT_SEMESTER, "");
+        if (currentSemesterString.trim().isEmpty()) {
+            mCurrentSemester = null;
+        } else {
+            mCurrentSemester = GsonUtil.getDefault().fromJson(currentSemesterString, Semester.class);
+        }
 
+
+        if (mCurrentAccount.trim().isEmpty()) {
         } else {
             setCurrentAccountStore();
         }
@@ -173,7 +187,18 @@ public class User {
         } else {
             mSyllabus = GsonUtil.getDefault().fromJson(syllabusJsonString, Syllabus.class);
         }
+
+        String syllabusMapJsonString = mSharedPreferences.getString(EXTRA_SYLLABUSMAP, "");
+        if (syllabusMapJsonString.trim().isEmpty()) {
+            mSyllabusMap = new HashMap<>();
+        } else {
+            mSyllabusMap = GsonUtil.getDefault().fromJson(syllabusMapJsonString,
+                    new TypeToken<HashMap<Semester, Syllabus>>() {
+                    }.getType());
+        }
+
     }
+
 
     public Syllabus getSyllabus() {
         return mSyllabus;
@@ -183,5 +208,25 @@ public class User {
         mSyllabus = syllabus;
         mEditor.putString(EXTRA_SYLLABUS, GsonUtil.getDefault().toJson(syllabus));
         mEditor.commit();
+    }
+
+    public Syllabus getSyllabus(Semester semester) {
+        return mSyllabusMap.get(semester);
+    }
+
+    public void setSyllabus(Semester semester, Syllabus syllabus) {
+        mSyllabusMap.put(semester, syllabus);
+        mEditor.putString(EXTRA_SYLLABUSMAP, GsonUtil.getDefault().toJson(mSyllabusMap));
+        mEditor.commit();
+    }
+
+    public Semester getCurrentSemester() {
+        return mCurrentSemester;
+    }
+
+    public void setCurrentSemester(Semester currentSemester) {
+        mCurrentSemester = currentSemester;
+        mUserEditor.putString(EXTRA_CURRENT_SEMESTER, GsonUtil.getDefault().toJson(mCurrentSemester));
+        mUserEditor.commit();
     }
 }

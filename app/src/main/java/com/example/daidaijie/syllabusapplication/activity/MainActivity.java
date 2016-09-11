@@ -31,11 +31,15 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.model.BannerModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.BannerService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;
+import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuiler;
+import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -81,8 +85,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     RelativeLayout navHeadRelativeLayout;
     SimpleDraweeView headImageDraweeView;
+    TextView semesterTextView;
     TextView nicknameTextView;
-
 
     public static final String TAG = "MainActivity";
     @BindView(R.id.nav_view)
@@ -119,8 +123,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         //获取NavavNavigationView中的控件
         navHeadRelativeLayout = (RelativeLayout) mNavView.getHeaderView(0);
         headImageDraweeView = (SimpleDraweeView) navHeadRelativeLayout.findViewById(R.id.headImageDraweeView);
+        semesterTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.semesterTextView);
         nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
 
+        setSemesterText();
 
         mBannerModel = BannerModel.getInstance();
 
@@ -257,10 +263,27 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             this.finish();
+        } else if (id == R.id.nav_change_semester) {
+            LinkagePicker picker = SelectSemesterBuiler.getSelectSemesterPicker(this);
+            picker.show();
+            picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
+                @Override
+                public void onPicked(String first, String second, String third) {
+                    Semester semester = new Semester(first, second);
+                    User.getInstance().setCurrentSemester(semester);
+                    setSemesterText();
+                }
+            });
+
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void setSemesterText() {
+        Semester semester = User.getInstance().getCurrentSemester();
+        semesterTextView.setText(semester.getYearString() + "　" + semester.getSeasonString());
     }
 
     private void setBannerPage(List<Banner> banners) {

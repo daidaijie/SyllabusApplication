@@ -38,7 +38,24 @@ public class Semester {
     }
 
     public String getYearString() {
-        return startYear + " - " + (startYear + 1);
+        return startYear + "-" + (startYear + 1);
+    }
+
+    public Semester(int startYear, int season) {
+        this.startYear = startYear;
+        this.season = season;
+    }
+
+    public Semester(String yearString, String seasonString) {
+        int index = yearString.indexOf("-");
+        startYear = Integer.parseInt(yearString.substring(0, index));
+        if (seasonString.equals("秋季学期")) {
+            season = 1;
+        } else if (seasonString.equals("春季学期")) {
+            season = 2;
+        } else if (seasonString.equals("夏季学期")) {
+            season = 3;
+        }
     }
 
     @Override

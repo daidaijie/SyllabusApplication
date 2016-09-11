@@ -1,6 +1,5 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -24,6 +23,7 @@ import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +37,7 @@ import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
+import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuiler;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
 import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -64,6 +65,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     RecyclerView mSelectWeeksRecyclerView;
     @BindView(R.id.selectWeeksLinearLayout)
     LinearLayout mSelectWeeksLinearLayout;
+    @BindView(R.id.weekTitleLayout)
+    LinearLayout mWeekTitleLayout;
+    @BindView(R.id.showWeekSelectImageView)
+    ImageView mShowWeekSelectImageView;
 
     private AlertDialog mLoadingDialog;
 
@@ -140,7 +145,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        mToolbar.setOnClickListener(new View.OnClickListener() {
+        mWeekTitleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!mSyllabusViewPager.isScrollable()) {
@@ -148,8 +153,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                 }
                 if (mSelectWeeksLinearLayout.getVisibility() == View.GONE) {
                     showSelectWeekLayout(true);
+                    mShowWeekSelectImageView.setRotation(180.0f);
                 } else {
                     showSelectWeekLayout(false);
+                    mShowWeekSelectImageView.setRotation(0.0f);
                 }
             }
         });
@@ -357,27 +364,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     }
 
     private void showSelectSemeber() {
-        int now = 2016;
 
-        ArrayList<String> semeberItemList = new ArrayList<>();
-        semeberItemList.add("夏季学期");
-        semeberItemList.add("秋季学期");
-        semeberItemList.add("春季学期");
-
-        ArrayList<String> yearList = new ArrayList<>();
-        ArrayList<ArrayList<String>> semeberList = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            int year = now - 4 + i;
-            yearList.add(year + "-" + (year + 1));
-            semeberList.add(semeberItemList);
-        }
-
-        LinkagePicker picker = new LinkagePicker(this, yearList, semeberList);
-        picker.setTitleText(Html.fromHtml("<b>选择学期</b>"));
-        picker.setSelectedItem("2016-2017", "秋季学期");
-        picker.setTextSize(16);
-        picker.setTextColor(ThemeModel.getInstance().colorPrimary);
-        picker.setLineColor(ThemeModel.getInstance().colorPrimaryDark);
+        LinkagePicker picker = SelectSemesterBuiler.getSelectSemesterPicker(this);
         picker.show();
 
         picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {

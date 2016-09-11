@@ -6,6 +6,7 @@ import android.util.Log;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
@@ -54,6 +55,8 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
         GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
+        final Semester semester = User.getInstance().getCurrentSemester();
+
         userBaseService.get_user(User.getInstance().getAccount())
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<UserBaseBean, Observable<UserInfo>>() {
@@ -64,8 +67,8 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 User.getInstance().getAccount(),
                                 User.getInstance().getPassword(),
                                 "query",
-                                "2016-2017"
-                                , "1"
+                                semester.getYearString()
+                                , semester.getSeason() + ""
                         );
                     }
                 })

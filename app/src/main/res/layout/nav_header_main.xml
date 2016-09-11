@@ -43,10 +43,11 @@
         android:layout_marginTop="8dp">
 
         <TextView
+            android:id="@+id/semesterTextView"
             android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2016-2017  秋季学期 〉"
+            android:text="2016-2017  秋季学期"
             android:textColor="@android:color/white"
             android:textSize="16sp"
             android:textStyle="bold"/>

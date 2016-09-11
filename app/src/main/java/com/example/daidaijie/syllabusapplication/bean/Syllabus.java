@@ -71,6 +71,16 @@ public class Syllabus {
     };
 
 
+    private int currentWeek;
+
+    public int getCurrentWeek() {
+        return currentWeek;
+    }
+
+    public void setCurrentWeek(int currentWeek) {
+        this.currentWeek = currentWeek;
+    }
+
     public Syllabus() {
         mSyllabusGrids = new ArrayList<>(new ArrayList());
         for (int i = 0; i < 7; i++) {

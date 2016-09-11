@@ -1,8 +1,7 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
-import android.util.Log;
-
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
@@ -28,11 +27,14 @@ import rx.schedulers.Schedulers;
  */
 public class LoginPresenter extends ILoginPresenter {
 
+    Semester mCurrentSemester;
+
     /**
      * 登陆逻辑
+     *
      * @param username 用户名
      * @param password 密码
-     * @param isLogin 是否需要登陆，如果是，就必须进行请求，不是的话，就查看是否有缓存
+     * @param isLogin  是否需要登陆，如果是，就必须进行请求，不是的话，就查看是否有缓存
      */
     @Override
     public void login(final String username, final String password, boolean isLogin) {
@@ -63,21 +65,30 @@ public class LoginPresenter extends ILoginPresenter {
         final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
         GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
-        String queryYear = "";
-        String querySem = "";
-        DateTime dateTime = DateTime.now();
-        int year = dateTime.getYear();
-        int month = dateTime.getMonthOfYear();
-        if (month < 8) {
-            queryYear = (year - 1) + "-" + year;
-            querySem = "1";
-        } else {
-            queryYear = year + "-" + (year + 1);
-            querySem = "2";
+
+        mCurrentSemester = User.getInstance().getCurrentSemester();
+
+        if (mCurrentSemester == null) {
+            int queryYear;
+            int querySem;
+            DateTime dateTime = DateTime.now();
+            int year = dateTime.getYear();
+            int month = dateTime.getMonthOfYear();
+            if (month < 8) {
+                queryYear = year - 1;
+                querySem = 1;
+            } else if (month == 8) {
+                queryYear = year;
+                querySem = 3;
+            } else {
+                queryYear = year;
+                querySem = 2;
+            }
+
+            mCurrentSemester = new Semester(queryYear, querySem);
+            User.getInstance().setCurrentSemester(mCurrentSemester);
         }
 
-        final String finalQueryYear = queryYear;
-        final String finalQuerySem = querySem;
 
         userBaseService.get_user(username)
                 .subscribeOn(Schedulers.io())
@@ -90,8 +101,8 @@ public class LoginPresenter extends ILoginPresenter {
                                 userBaseBean.getAccount(),
                                 password,
                                 "query",
-                                finalQueryYear
-                                , finalQuerySem
+                                mCurrentSemester.getYearString()
+                                , mCurrentSemester.getSeason() + ""
                         );
                     }
                 })
