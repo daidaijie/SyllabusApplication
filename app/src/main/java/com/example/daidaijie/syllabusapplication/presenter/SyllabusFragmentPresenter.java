@@ -94,9 +94,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                     @Override
                     public void onCompleted() {
                         Log.d("", "onCompleted: ");
-                        SharedPreferencesUtil.putString(SharedPreferencesUtil.SYLLABUS_GSON
-                                , GsonUtil.getDefault().toJson(mSyllabus));
-                        User.getInstance().mSyllabus = mSyllabus;
+                        User.getInstance().setSyllabus(mSyllabus);
                         LessonModel.getInstance().save();
                         showSyllabus();
                         updateUserInfo();
@@ -171,9 +169,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
     @Override
     public void reloadSyllabus() {
-        String syllabusJsonString = SharedPreferencesUtil
-                .getString(SharedPreferencesUtil.SYLLABUS_GSON);
-        mSyllabus = GsonUtil.getDefault().fromJson(syllabusJsonString, Syllabus.class);
+        mSyllabus = User.getInstance().getSyllabus();
     }
 
     public int getWeek() {

@@ -7,6 +7,6 @@ import com.example.daidaijie.syllabusapplication.view.ILoginView;
  */
 public abstract class ILoginPresenter extends BasePresenter<ILoginView> {
 
-    public abstract void login(String username, String password);
+    public abstract void login(String username, String password,boolean isLogin);
 
 }

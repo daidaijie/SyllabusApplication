@@ -10,6 +10,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 
 import java.util.Map;
 
@@ -34,8 +35,14 @@ public class User {
     private static final String EXTRA_USER_BASE_BEAN
             = "com.example.daidaijie.syllabusapplication.model.User.mUserBaseBean";
 
-    SharedPreferences mSharedPreferences;
+    private static final String EXTRA_SYLLABUS
+            = "com.example.daidaijie.syllabusapplication.model.User.mSyllabus";
 
+
+    SharedPreferences mUserSharedPreferences;
+    SharedPreferences.Editor mUserEditor;
+
+    SharedPreferences mSharedPreferences;
     SharedPreferences.Editor mEditor;
 
     private String mCurrentAccount;
@@ -62,28 +69,16 @@ public class User {
     public Syllabus mSyllabus;
 
     private User() {
-        mSharedPreferences = App.getContext().getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
+        //从Account文件里面获取当前用户名
+        mUserSharedPreferences = App.getContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
+        mUserEditor = mUserSharedPreferences.edit();
+        mCurrentAccount = mUserSharedPreferences.getString(EXTRA_CURRENT_ACCOUNT, "");
 
-        mCurrentAccount = mSharedPreferences.getString(EXTRA_CURRENT_ACCOUNT,"");
+        if (mCurrentAccount.trim().isEmpty()) {
 
-        mAccount = mSharedPreferences.getString(EXTRA_USERNAME, "");
-        mPassword = mSharedPreferences.getString(EXTRA_PASSWORD, "");
-
-        String userInfoJsonString = mSharedPreferences.getString(EXTRA_USER_INFO, "");
-        if (userInfoJsonString.isEmpty()) {
-            mUserInfo = null;
         } else {
-            mUserInfo = GsonUtil.getDefault().fromJson(userInfoJsonString, UserInfo.class);
+            setCurrentAccountStore();
         }
-
-        String userBaseBeanJsonString = mSharedPreferences.getString(EXTRA_USER_BASE_BEAN, "");
-        if (userBaseBeanJsonString.isEmpty()) {
-            mUserBaseBean = null;
-        } else {
-            mUserBaseBean = GsonUtil.getDefault().fromJson(userBaseBeanJsonString, UserBaseBean.class);
-        }
-
     }
 
     public static User getInstance() {
@@ -102,8 +97,6 @@ public class User {
         mUserInfo = userInfo;
     }
 
-    public static void saveUser() {
-    }
 
     public UserBaseBean getUserBaseBean() {
         return mUserBaseBean;
@@ -116,6 +109,9 @@ public class User {
     }
 
     public String getAccount() {
+        if (mAccount == null) {
+            return "";
+        }
         return mAccount;
     }
 
@@ -126,6 +122,9 @@ public class User {
     }
 
     public String getPassword() {
+        if (mPassword == null) {
+            return "";
+        }
         return mPassword;
     }
 
@@ -141,5 +140,48 @@ public class User {
 
     public void setCurrentAccount(String currentAccount) {
         mCurrentAccount = currentAccount;
+        mUserEditor.putString(EXTRA_CURRENT_ACCOUNT, currentAccount);
+        mUserEditor.commit();
+        setCurrentAccountStore();
+    }
+
+    private void setCurrentAccountStore() {
+        //再打开当前用户对应文件夹的信息
+        mSharedPreferences = App.getContext().getSharedPreferences(mCurrentAccount + FILE_NAME, Context.MODE_PRIVATE);
+        mEditor = mSharedPreferences.edit();
+
+        mAccount = mSharedPreferences.getString(EXTRA_USERNAME, "");
+        mPassword = mSharedPreferences.getString(EXTRA_PASSWORD, "");
+
+        String userInfoJsonString = mSharedPreferences.getString(EXTRA_USER_INFO, "");
+        if (userInfoJsonString.isEmpty()) {
+            mUserInfo = null;
+        } else {
+            mUserInfo = GsonUtil.getDefault().fromJson(userInfoJsonString, UserInfo.class);
+        }
+
+        String userBaseBeanJsonString = mSharedPreferences.getString(EXTRA_USER_BASE_BEAN, "");
+        if (userBaseBeanJsonString.isEmpty()) {
+            mUserBaseBean = null;
+        } else {
+            mUserBaseBean = GsonUtil.getDefault().fromJson(userBaseBeanJsonString, UserBaseBean.class);
+        }
+
+        String syllabusJsonString = mSharedPreferences.getString(EXTRA_SYLLABUS, "");
+        if (syllabusJsonString.trim().isEmpty()) {
+            mSyllabus = null;
+        } else {
+            mSyllabus = GsonUtil.getDefault().fromJson(syllabusJsonString, Syllabus.class);
+        }
+    }
+
+    public Syllabus getSyllabus() {
+        return mSyllabus;
+    }
+
+    public void setSyllabus(Syllabus syllabus) {
+        mSyllabus = syllabus;
+        mEditor.putString(EXTRA_SYLLABUS, GsonUtil.getDefault().toJson(syllabus));
+        mEditor.commit();
     }
 }

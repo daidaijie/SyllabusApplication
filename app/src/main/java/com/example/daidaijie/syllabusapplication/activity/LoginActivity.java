@@ -88,7 +88,8 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
         mLoginPresenter.login(
                 mUsernameEditText.getText().toString(),
-                mPasswordEditText.getText().toString()
+                mPasswordEditText.getText().toString(),
+                true
         );
     }
 

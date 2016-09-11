@@ -28,19 +28,33 @@ import rx.schedulers.Schedulers;
  */
 public class LoginPresenter extends ILoginPresenter {
 
+    /**
+     * 登陆逻辑
+     * @param username 用户名
+     * @param password 密码
+     * @param isLogin 是否需要登陆，如果是，就必须进行请求，不是的话，就查看是否有缓存
+     */
     @Override
-    public void login(final String username, final String password) {
+    public void login(final String username, final String password, boolean isLogin) {
 
-        if (username.trim().isEmpty() || password.trim().isEmpty()) {
-            mView.showLoginFail();
-            return;
-        }
-
-        if (User.getInstance().getUserBaseBean() != null && User.getInstance().getUserInfo() != null) {
-            if (User.getInstance().getUserInfo().getToken() != null
-                    && !User.getInstance().getUserInfo().getToken().isEmpty()) {
-                mView.showLoginSuccess();
+        if (!isLogin) {
+            /**
+             * 当前储存的不为空
+             */
+            if (username.trim().isEmpty() || password.trim().isEmpty()) {
+                mView.showLoginFail();
                 return;
+            }
+
+            /**
+             * 信息都不为空
+             */
+            if (User.getInstance().getUserBaseBean() != null && User.getInstance().getUserInfo() != null) {
+                if (User.getInstance().getUserInfo().getToken() != null
+                        && !User.getInstance().getUserInfo().getToken().isEmpty()) {
+                    mView.showLoginSuccess();
+                    return;
+                }
             }
         }
 
@@ -70,6 +84,7 @@ public class LoginPresenter extends ILoginPresenter {
                 .flatMap(new Func1<UserBaseBean, Observable<UserInfo>>() {
                     @Override
                     public Observable<UserInfo> call(UserBaseBean userBaseBean) {
+                        User.getInstance().setCurrentAccount(username);
                         User.getInstance().setUserBaseBean(userBaseBean);
                         return service.getUserInfo(
                                 userBaseBean.getAccount(),
@@ -139,7 +154,6 @@ public class LoginPresenter extends ILoginPresenter {
                                 SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids()
                                         .get(timeGrid.getWeekDate())
                                         .get(time);
-
 
 
                                 //将该课程添加到时间节点上去
