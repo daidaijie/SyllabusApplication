@@ -136,6 +136,7 @@ public class LoginPresenter extends ILoginPresenter {
                         User.getInstance().setAccount(username);
                         User.getInstance().setPassword(password);
                         LessonModel.getInstance().save();
+                        User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
                         mView.dismissLoadingDialog();
                         mView.showLoginSuccess();
 

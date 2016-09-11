@@ -25,6 +25,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPresenter;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
@@ -116,6 +117,17 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         showTime();
 
         mSyllabusFragmentPresenter.showSyllabus();
+
+        if (mWeek == 0 && User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()) == null) {
+            mSyllabusRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSyllabusRefreshLayout.setRefreshing(true);
+                    mSyllabusFragmentPresenter.updateSyllabus();
+                }
+            });
+        }
+
         return view;
     }
 
