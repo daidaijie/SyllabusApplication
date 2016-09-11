@@ -253,6 +253,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
             themePickerFragment.show(getSupportFragmentManager(),
                     ThemePickerFragment.DIALOG_THEME_PICKER);
+        } else if (id == R.id.nav_logout) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            this.finish();
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);

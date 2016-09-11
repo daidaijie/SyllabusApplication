@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+
+import java.util.Map;
 
 /**
  * Created by daidaijie on 2016/7/24.
@@ -43,13 +46,17 @@ public class User {
     //example *********
     private String mPassword;
 
+    //某个学期
+    private String nowSemester;
+
     private static User sUser = new User();
 
     private UserInfo mUserInfo;
 
     private UserBaseBean mUserBaseBean;
 
-//    public Map<String, Syllabus> mSyllabusMap;
+    public Map<Semester, Syllabus> mSyllabusMap;
+
 
     //现在只测试一个学期的情况
     public Syllabus mSyllabus;
