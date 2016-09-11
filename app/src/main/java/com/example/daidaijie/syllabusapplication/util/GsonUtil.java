@@ -10,6 +10,7 @@ public class GsonUtil {
 
     private static Gson mGson = new GsonBuilder()
             .setPrettyPrinting()
+            .enableComplexMapKeySerialization()
             .create();
 
     public static Gson getDefault() {

@@ -156,7 +156,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:background="@drawable/bg_extend_button"
-                android:gravity="center"
+                android:layout_gravity="center"
                 android:paddingBottom="8dp"
                 android:paddingTop="8dp"
                 android:rotation="180"

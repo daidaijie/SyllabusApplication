@@ -40,7 +40,6 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
     private int mWeek;
 
     public SyllabusFragmentPresenter() {
-        // TODO: 2016/7/26 目前暂时不保存UserInfo和User
         reloadSyllabus();
     }
 
@@ -95,7 +94,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                     @Override
                     public void onCompleted() {
                         Log.d("", "onCompleted: ");
-                        User.getInstance().setSyllabus(mSyllabus);
+                        User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
                         LessonModel.getInstance().save();
                         showSyllabus();
                         updateUserInfo();
@@ -170,7 +169,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
     @Override
     public void reloadSyllabus() {
-        mSyllabus = User.getInstance().getSyllabus();
+        mSyllabus = User.getInstance().getSyllabus(User.getInstance().getCurrentSemester());
     }
 
     public int getWeek() {

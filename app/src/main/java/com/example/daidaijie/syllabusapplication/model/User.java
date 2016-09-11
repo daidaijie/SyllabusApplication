@@ -193,9 +193,10 @@ public class User {
             mSyllabusMap = new HashMap<>();
         } else {
             mSyllabusMap = GsonUtil.getDefault().fromJson(syllabusMapJsonString,
-                    new TypeToken<HashMap<Semester, Syllabus>>() {
+                    new TypeToken<Map<Semester, Syllabus>>() {
                     }.getType());
         }
+//        Log.e("User", "setCurrentAccountStore: "+syllabusMapJsonString);
 
     }
 

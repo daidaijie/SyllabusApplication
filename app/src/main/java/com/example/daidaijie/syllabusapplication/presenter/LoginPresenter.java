@@ -74,15 +74,19 @@ public class LoginPresenter extends ILoginPresenter {
             DateTime dateTime = DateTime.now();
             int year = dateTime.getYear();
             int month = dateTime.getMonthOfYear();
-            if (month < 8) {
+            if (month > 1 && month < 8) {
                 queryYear = year - 1;
-                querySem = 1;
+                querySem = 2;
             } else if (month == 8) {
                 queryYear = year;
                 querySem = 3;
             } else {
-                queryYear = year;
-                querySem = 2;
+                if (month > 8) {
+                    queryYear = year;
+                } else {
+                    queryYear = year - 1;
+                }
+                querySem = 1;
             }
 
             mCurrentSemester = new Semester(queryYear, querySem);
