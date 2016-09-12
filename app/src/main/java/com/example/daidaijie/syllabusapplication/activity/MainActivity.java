@@ -31,6 +31,7 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
+import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.model.BannerModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
@@ -311,9 +312,10 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         Log.d(TAG, "getBanner: ");
         bannerService.getBanner()
                 .subscribeOn(Schedulers.io())
-                .filter(new Func1<BannerInfo, Boolean>() {
+                .filter(new Func1<HttpResult<BannerInfo>, Boolean>() {
                     @Override
-                    public Boolean call(BannerInfo bannerInfo) {
+                    public Boolean call(HttpResult<BannerInfo> result) {
+                        BannerInfo bannerInfo = result.getData();
                         if (bannerInfo.getLatest().getTimestamp() == mBannerModel.getTimestamp()) {
                             return false;
                         } else {
@@ -321,8 +323,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                             return true;
                         }
                     }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BannerInfo>() {
+                })
+                .filter(new Func1<HttpResult<BannerInfo>, Boolean>() {
+                    @Override
+                    public Boolean call(HttpResult<BannerInfo> result) {
+                        if (RetrofitUtil.isSuccessful(result)) {
+                            return true;
+                        }
+                        return false;
+                    }
+                }).
+                observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HttpResult<BannerInfo>>() {
                     @Override
                     public void onCompleted() {
                         setBannerPage(mBannerModel.mBanners);
@@ -334,7 +346,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
                     }
 
                     @Override
-                    public void onNext(BannerInfo bannerInfo) {
+                    public void onNext(HttpResult<BannerInfo> result) {
+                        BannerInfo bannerInfo = result.getData();
                         mBannerModel.setBanners(bannerInfo.getLatest().getBanners());
                     }
                 });

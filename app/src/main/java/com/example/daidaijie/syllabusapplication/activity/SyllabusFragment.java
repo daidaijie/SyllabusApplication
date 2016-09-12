@@ -328,10 +328,10 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
     }
 
     @Override
-    public void showFailBannner() {
+    public void showFailBanner(String msg) {
         SnackbarUtil.LongSnackbar(
                 mSyllabusRootLayout,
-                "课表同步失败",
+                msg,
                 SnackbarUtil.Alert
         ).setAction("再次同步", new View.OnClickListener() {
             @Override

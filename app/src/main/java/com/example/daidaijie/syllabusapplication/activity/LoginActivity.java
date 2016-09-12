@@ -101,9 +101,10 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     }
 
     @Override
-    public void showLoginFail() {
-        SnackbarUtil.ShortSnackbar(mPasswordEditText, "登录失败", SnackbarUtil.Alert).show();
+    public void showLoginFail(String msg) {
+        SnackbarUtil.ShortSnackbar(mPasswordEditText, msg, SnackbarUtil.Alert).show();
     }
+
 
     @Override
     public void showLoadingDialog() {

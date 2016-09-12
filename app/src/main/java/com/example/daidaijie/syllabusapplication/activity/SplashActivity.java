@@ -63,7 +63,7 @@ public class SplashActivity extends BaseActivity implements ILoginView {
     }
 
     @Override
-    public void showLoginFail() {
+    public void showLoginFail(String msg) {
         long nowTime = System.currentTimeMillis();
         final Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         if (nowTime - mStartTime >= SHOW_TIME_MIN) {
@@ -79,6 +79,7 @@ public class SplashActivity extends BaseActivity implements ILoginView {
             }, nowTime - mStartTime);
         }
     }
+
 
     @Override
     public void showLoadingDialog() {

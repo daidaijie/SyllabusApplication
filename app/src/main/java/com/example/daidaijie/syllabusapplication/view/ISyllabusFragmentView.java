@@ -18,7 +18,7 @@ public interface ISyllabusFragmentView extends MvpView, IUserInfoView, ISwipeLoa
     void showSuccessBanner();
 
     //设置不成功获取数据显示后的Bannner
-    void showFailBannner();
+    void showFailBanner(String msg);
 
     //设置ViewPager滑动
     void setViewPagerEnable(boolean enable);

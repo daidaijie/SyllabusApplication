@@ -11,11 +11,13 @@ import com.example.daidaijie.syllabusapplication.service.InterenetService;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
+import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -37,6 +39,8 @@ public class App extends Application {
 
     private static Context context;
 
+    public static final String TAG = "App";
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -49,7 +53,6 @@ public class App extends Application {
         initGalleryFinal();
 
         updateStreamInfo();
-
 
     }
 
@@ -72,7 +75,7 @@ public class App extends Application {
         GalleryFinal.init(coreConfig);
     }
 
-    private void updateStreamInfo(){
+    private void updateStreamInfo() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://1.1.1.2/ac_portal/")
                 .addConverterFactory(ScalarsConverterFactory.create())

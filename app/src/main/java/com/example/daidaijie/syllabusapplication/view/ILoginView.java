@@ -7,5 +7,6 @@ public interface ILoginView extends MvpView, ILoadingView {
 
     void showLoginSuccess();
 
-    void showLoginFail();
+    void showLoginFail(String msg);
+
 }

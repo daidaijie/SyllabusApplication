@@ -1,5 +1,8 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
+import android.util.Log;
+
+import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
@@ -27,7 +30,10 @@ import rx.schedulers.Schedulers;
  */
 public class LoginPresenter extends ILoginPresenter {
 
+    private static final String TAG = "LoginPresenter";
     Semester mCurrentSemester;
+
+    private boolean isSuccessLogin;
 
     /**
      * 登陆逻辑
@@ -39,12 +45,14 @@ public class LoginPresenter extends ILoginPresenter {
     @Override
     public void login(final String username, final String password, boolean isLogin) {
 
+        isSuccessLogin = false;
+
         if (!isLogin) {
             /**
              * 当前储存的不为空
              */
             if (username.trim().isEmpty() || password.trim().isEmpty()) {
-                mView.showLoginFail();
+                mView.showLoginFail("");
                 return;
             }
 
@@ -96,9 +104,25 @@ public class LoginPresenter extends ILoginPresenter {
 
         userBaseService.get_user(username)
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<UserBaseBean, Observable<UserInfo>>() {
+                .filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
                     @Override
-                    public Observable<UserInfo> call(UserBaseBean userBaseBean) {
+                    public Boolean call(HttpResult<UserBaseBean> result) {
+                        Log.e(TAG, "call: " + result.getCode());
+                        if (RetrofitUtil.isSuccessful(result)) {
+                            Log.e(TAG, "call: " + "success");
+                            return true;
+                        } else {
+                            Log.e(TAG, "call: " + result.getMessage());
+                            mView.showLoginFail(result.getMessage());
+                            return false;
+                        }
+                    }
+                })
+                .flatMap(new Func1<HttpResult<UserBaseBean>, Observable<HttpResult<UserInfo>>>() {
+                    @Override
+                    public Observable<HttpResult<UserInfo>> call(HttpResult<UserBaseBean> result) {
+                        Log.e(TAG, "call: " + "filter");
+                        UserBaseBean userBaseBean = result.getData();
                         User.getInstance().setCurrentAccount(username);
                         User.getInstance().setUserBaseBean(userBaseBean);
                         return service.getUserInfo(
@@ -110,9 +134,21 @@ public class LoginPresenter extends ILoginPresenter {
                         );
                     }
                 })
-                .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
+                .filter(new Func1<HttpResult<UserInfo>, Boolean>() {
                     @Override
-                    public Observable<Lesson> call(UserInfo userInfo) {
+                    public Boolean call(HttpResult<UserInfo> userInfoHttpResult) {
+                        if (RetrofitUtil.isSuccessful(userInfoHttpResult)) {
+                            return true;
+                        } else {
+                            mView.showLoginFail(userInfoHttpResult.getMessage());
+                            return false;
+                        }
+                    }
+                })
+                .flatMap(new Func1<HttpResult<UserInfo>, Observable<Lesson>>() {
+                    @Override
+                    public Observable<Lesson> call(HttpResult<UserInfo> result) {
+                        UserInfo userInfo = result.getData();
                         //这里就算登陆失败userInfo还是获取到，且id=0
                         User.getInstance().setUserInfo(userInfo);
                         return Observable.from(userInfo.getClasses());
@@ -132,24 +168,27 @@ public class LoginPresenter extends ILoginPresenter {
 
                     @Override
                     public void onCompleted() {
-
-                        User.getInstance().setAccount(username);
-                        User.getInstance().setPassword(password);
-                        LessonModel.getInstance().save();
-                        User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
+                        if (isSuccessLogin) {
+                            User.getInstance().setAccount(username);
+                            User.getInstance().setPassword(password);
+                            LessonModel.getInstance().save();
+                            User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
+                            mView.dismissLoadingDialog();
+                            mView.showLoginSuccess();
+                        }
                         mView.dismissLoadingDialog();
-                        mView.showLoginSuccess();
-
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         mView.dismissLoadingDialog();
-                        mView.showLoginFail();
+                        Log.e(TAG, "onError: " + e.getMessage());
+                        mView.showLoginFail("登陆失败");
                     }
 
                     @Override
                     public void onNext(Lesson lesson) {
+                        isSuccessLogin = true;
                         //将lesson的时间格式化
                         lesson.convertDays();
                         lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);

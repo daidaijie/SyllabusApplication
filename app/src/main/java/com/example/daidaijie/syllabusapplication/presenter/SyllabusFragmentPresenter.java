@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
@@ -39,6 +40,8 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
     private int mWeek;
 
+    private boolean isSuccess;
+
     public SyllabusFragmentPresenter() {
         reloadSyllabus();
     }
@@ -50,6 +53,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
     @Override
     public void updateSyllabus() {
+        isSuccess = false;
         mView.setViewPagerEnable(false);
         final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
         GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
@@ -58,9 +62,21 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
         userBaseService.get_user(User.getInstance().getAccount())
                 .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<UserBaseBean, Observable<UserInfo>>() {
+                .filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
                     @Override
-                    public Observable<UserInfo> call(UserBaseBean userBaseBean) {
+                    public Boolean call(HttpResult<UserBaseBean> result) {
+                        if (RetrofitUtil.isSuccessful(result)) {
+                            return true;
+                        } else {
+                            mView.showFailBanner(result.getMessage());
+                            return false;
+                        }
+                    }
+                })
+                .flatMap(new Func1<HttpResult<UserBaseBean>, Observable<HttpResult<UserInfo>>>() {
+                    @Override
+                    public Observable<HttpResult<UserInfo>> call(HttpResult<UserBaseBean> result) {
+                        UserBaseBean userBaseBean = result.getData();
                         User.getInstance().setUserBaseBean(userBaseBean);
                         return service.getUserInfo(
                                 User.getInstance().getAccount(),
@@ -71,9 +87,21 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         );
                     }
                 })
-                .flatMap(new Func1<UserInfo, Observable<Lesson>>() {
+                .filter(new Func1<HttpResult<UserInfo>, Boolean>() {
                     @Override
-                    public Observable<Lesson> call(UserInfo userInfo) {
+                    public Boolean call(HttpResult<UserInfo> userInfoHttpResult) {
+                        if (RetrofitUtil.isSuccessful(userInfoHttpResult)) {
+                            return true;
+                        } else {
+                            mView.showFailBanner(userInfoHttpResult.getMessage());
+                            return false;
+                        }
+                    }
+                })
+                .flatMap(new Func1<HttpResult<UserInfo>, Observable<Lesson>>() {
+                    @Override
+                    public Observable<Lesson> call(HttpResult<UserInfo> result) {
+                        UserInfo userInfo = result.getData();
                         if (userInfo.getToken() != null && !userInfo.getToken().isEmpty()) {
                             User.getInstance().setUserInfo(userInfo);
                         }
@@ -94,14 +122,16 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                     @Override
                     public void onCompleted() {
                         Log.d("", "onCompleted: ");
-                        User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
-                        LessonModel.getInstance().save();
-                        showSyllabus();
-                        updateUserInfo();
-                        mView.showSuccessBanner();
+                        if (isSuccess) {
+                            User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
+                            LessonModel.getInstance().save();
+                            showSyllabus();
+                            updateUserInfo();
+                            EventBus.getDefault().post(new SyllabusEvent(mWeek));
+                            mView.showSuccessBanner();
+                        }
                         mView.hideLoading();
                         mView.setViewPagerEnable(true);
-                        EventBus.getDefault().post(new SyllabusEvent(mWeek));
                     }
 
                     @Override
@@ -109,7 +139,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                         Log.d(TAG, "onError: " + e.getMessage());
                         e.printStackTrace();
                         mView.hideLoading();
-                        mView.showFailBannner();
+                        mView.showFailBanner("同步失败");
                         mView.setViewPagerEnable(true);
                     }
 
@@ -143,6 +173,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 syllabusGrid.getLessons().add(lesson.getIntID());
                             }
                         }
+                        isSuccess = true;
 
                     }
                 });

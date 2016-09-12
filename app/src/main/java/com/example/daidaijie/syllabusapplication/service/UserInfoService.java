@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.service;
 
+import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 
 import retrofit2.http.Field;
@@ -12,8 +13,8 @@ import rx.Observable;
  */
 public interface UserInfoService {
     @FormUrlEncoded
-    @POST("/credit/api/v2/syllabus")
-    Observable<UserInfo> getUserInfo(
+    @POST("/credit/api/v2.1/syllabus")
+    Observable<HttpResult<UserInfo>> getUserInfo(
             @Field("username") String username,
             @Field("password") String password,
             @Field("submit") String submit,
