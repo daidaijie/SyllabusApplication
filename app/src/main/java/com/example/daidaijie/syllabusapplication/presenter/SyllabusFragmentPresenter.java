@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
@@ -40,7 +41,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
     private int mWeek;
 
-    private boolean isSuccess;
+    private boolean isSuccessLogin;
 
     public SyllabusFragmentPresenter() {
         reloadSyllabus();
@@ -53,79 +54,63 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
     @Override
     public void updateSyllabus() {
-        isSuccess = false;
+        isSuccessLogin = true;
         mView.setViewPagerEnable(false);
-        final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
-        GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
+        final UserInfoService userInfoService = RetrofitUtil.getDefault().create(UserInfoService.class);
+        final GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
-        final Semester semester = User.getInstance().getCurrentSemester();
+        Semester mCurrentSemester = User.getInstance().getCurrentSemester();
 
-        userBaseService.get_user(User.getInstance().getAccount())
-                .subscribeOn(Schedulers.io())
-                .filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
-                    @Override
-                    public Boolean call(HttpResult<UserBaseBean> result) {
-                        if (RetrofitUtil.isSuccessful(result)) {
-                            return true;
-                        } else {
-                            mView.showFailBanner(result.getMessage());
-                            return false;
-                        }
-                    }
-                })
-                .flatMap(new Func1<HttpResult<UserBaseBean>, Observable<HttpResult<UserInfo>>>() {
-                    @Override
-                    public Observable<HttpResult<UserInfo>> call(HttpResult<UserBaseBean> result) {
-                        UserBaseBean userBaseBean = result.getData();
-                        User.getInstance().setUserBaseBean(userBaseBean);
-                        return service.getUserInfo(
-                                User.getInstance().getAccount(),
-                                User.getInstance().getPassword(),
-                                "query",
-                                semester.getYearString()
-                                , semester.getSeason() + ""
-                        );
-                    }
-                })
+        userInfoService.getUserInfo(
+                User.getInstance().getAccount(),
+                User.getInstance().getPassword(),
+                "query",
+                mCurrentSemester.getYearString()
+                , mCurrentSemester.getSeason() + ""
+        ).subscribeOn(Schedulers.io())
                 .filter(new Func1<HttpResult<UserInfo>, Boolean>() {
                     @Override
                     public Boolean call(HttpResult<UserInfo> userInfoHttpResult) {
                         if (RetrofitUtil.isSuccessful(userInfoHttpResult)) {
-                            isSuccess = true;
                             return true;
                         } else {
+                            isSuccessLogin = false;
                             mView.showFailBanner(userInfoHttpResult.getMessage());
                             return false;
                         }
                     }
-                })
-                .flatMap(new Func1<HttpResult<UserInfo>, Observable<Lesson>>() {
-                    @Override
-                    public Observable<Lesson> call(HttpResult<UserInfo> result) {
-                        UserInfo userInfo = result.getData();
-                        if (userInfo.getToken() != null && !userInfo.getToken().isEmpty()) {
-                            User.getInstance().setUserInfo(userInfo);
-                        }
-                        return Observable.from(userInfo.getClasses());
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Lesson>() {
+                }).flatMap(new Func1<HttpResult<UserInfo>, Observable<HttpResult<UserBaseBean>>>() {
+            @Override
+            public Observable<HttpResult<UserBaseBean>> call(HttpResult<UserInfo> result) {
+                UserInfo userInfo = result.getData();
+                User.getInstance().setUserInfo(userInfo);
 
-                    private int colorIndex = 0;
+                mSyllabus = new Syllabus();
+                mSyllabus.convertSyllabus(userInfo.getClasses());
+                User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
 
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                        mSyllabus = new Syllabus();
-                    }
-
+                return userBaseService.get_user(User.getInstance().getAccount());
+            }
+        }).filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
+            @Override
+            public Boolean call(HttpResult<UserBaseBean> result) {
+                Log.e(TAG, "call: " + result.getCode());
+                if (RetrofitUtil.isSuccessful(result)) {
+                    return true;
+                } else {
+                    mView.showFailBanner(result.getMessage());
+                    isSuccessLogin = false;
+                    return false;
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HttpResult<UserBaseBean>>() {
                     @Override
                     public void onCompleted() {
-                        Log.d("", "onCompleted: ");
-                        if (isSuccess) {
-                            User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
-                            LessonModel.getInstance().save();
+                        if (mView == null) {
+                            return;
+                        }
+                        if (isSuccessLogin) {
                             showSyllabus();
                             updateUserInfo();
                             EventBus.getDefault().post(new SyllabusEvent(mWeek));
@@ -137,46 +122,19 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError: " + e.getMessage());
-                        e.printStackTrace();
+                        if (mView == null) {
+                            return;
+                        }
                         mView.hideLoading();
                         mView.showFailBanner("同步失败");
                         mView.setViewPagerEnable(true);
                     }
 
                     @Override
-                    public void onNext(Lesson lesson) {
-
-                        //将lesson的时间格式化
-                        lesson.convertDays();
-                        lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
-
-                        //获取该课程上的节点上的时间列表
-                        List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
-                        /*if (timeGirds.size() != 0) {
-                            Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
-                        }*/
-                        //把该课程添加到课程管理去
-                        LessonModel.getInstance().addLesson(lesson);
-
-                        Log.d(TAG, "onNext: " + lesson.getName());
-                        for (int i = 0; i < timeGirds.size(); i++) {
-                            Lesson.TimeGird timeGrid = timeGirds.get(i);
-                            for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
-                                char x = timeGrid.getTimeList().charAt(j);
-                                int time = Syllabus.chat2time(x);
-
-                                SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids()
-                                        .get(timeGrid.getWeekDate())
-                                        .get(time);
-
-                                //将该课程添加到时间节点上去
-                                syllabusGrid.getLessons().add(lesson.getIntID());
-                            }
-                        }
+                    public void onNext(HttpResult<UserBaseBean> result) {
+                        User.getInstance().setUserBaseBean(result.getData());
                     }
                 });
-
     }
 
     @Override

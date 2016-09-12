@@ -331,7 +331,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
     public void showFailBanner(String msg) {
         SnackbarUtil.LongSnackbar(
                 mSyllabusRootLayout,
-                msg,
+                msg.toUpperCase(),
                 SnackbarUtil.Alert
         ).setAction("再次同步", new View.OnClickListener() {
             @Override

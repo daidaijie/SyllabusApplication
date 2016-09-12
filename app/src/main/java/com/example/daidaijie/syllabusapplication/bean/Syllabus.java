@@ -1,6 +1,9 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import android.util.Log;
+
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.model.LessonModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +120,40 @@ public class Syllabus {
             return (char) ('A' + (time - 11));
         } else {
             return '0';
+        }
+    }
+
+    public void convertSyllabus(List<Lesson> lessons) {
+        int colorIndex = 0;
+        for (Lesson lesson:lessons){
+            //将lesson的时间格式化
+            lesson.convertDays();
+            lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
+
+            //获取该课程上的节点上的时间列表
+            List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
+                        /*if (timeGirds.size() != 0) {
+                            Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
+                        }*/
+            //把该课程添加到课程管理去
+            LessonModel.getInstance().addLesson(lesson);
+
+            Log.d("Syllabus", "onNext: " + lesson.getName());
+            for (int i = 0; i < timeGirds.size(); i++) {
+                Lesson.TimeGird timeGrid = timeGirds.get(i);
+                for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
+                    char x = timeGrid.getTimeList().charAt(j);
+                    int time = Syllabus.chat2time(x);
+
+                    SyllabusGrid syllabusGrid = this.getSyllabusGrids()
+                            .get(timeGrid.getWeekDate())
+                            .get(time);
+
+                    //将该课程添加到时间节点上去
+                    syllabusGrid.getLessons().add(lesson.getIntID());
+                }
+            }
+            LessonModel.getInstance().save();
         }
     }
 }
