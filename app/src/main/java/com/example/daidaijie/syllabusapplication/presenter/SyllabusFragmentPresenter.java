@@ -91,6 +91,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                     @Override
                     public Boolean call(HttpResult<UserInfo> userInfoHttpResult) {
                         if (RetrofitUtil.isSuccessful(userInfoHttpResult)) {
+                            isSuccess = true;
                             return true;
                         } else {
                             mView.showFailBanner(userInfoHttpResult.getMessage());
@@ -173,8 +174,6 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                                 syllabusGrid.getLessons().add(lesson.getIntID());
                             }
                         }
-                        isSuccess = true;
-
                     }
                 });
 

@@ -102,7 +102,9 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     @Override
     public void showLoginFail(String msg) {
-        SnackbarUtil.ShortSnackbar(mPasswordEditText, msg, SnackbarUtil.Alert).show();
+        StringBuilder sb = new StringBuilder(msg);
+        sb.setCharAt(0, Character.toUpperCase(sb.charAt(0)));
+        SnackbarUtil.ShortSnackbar(mPasswordEditText, sb.toString(), SnackbarUtil.Alert).show();
     }
 
 

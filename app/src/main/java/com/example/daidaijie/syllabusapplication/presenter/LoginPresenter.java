@@ -43,7 +43,7 @@ public class LoginPresenter extends ILoginPresenter {
      * @param isLogin  是否需要登陆，如果是，就必须进行请求，不是的话，就查看是否有缓存
      */
     @Override
-    public void login(final String username, final String password, boolean isLogin) {
+    public void login(final String username, final String password, final boolean isLogin) {
 
         isSuccessLogin = false;
 
@@ -70,8 +70,8 @@ public class LoginPresenter extends ILoginPresenter {
 
         mView.showLoadingDialog();
 
-        final UserInfoService service = RetrofitUtil.getDefault().create(UserInfoService.class);
-        GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
+        final UserInfoService userInfoService = RetrofitUtil.getDefault().create(UserInfoService.class);
+        final GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
 
         mCurrentSemester = User.getInstance().getCurrentSemester();
@@ -101,7 +101,107 @@ public class LoginPresenter extends ILoginPresenter {
             User.getInstance().setCurrentSemester(mCurrentSemester);
         }
 
+        userInfoService.getUserInfo(
+                username,
+                password,
+                "query",
+                mCurrentSemester.getYearString()
+                , mCurrentSemester.getSeason() + ""
+        ).subscribeOn(Schedulers.io())
+                .filter(new Func1<HttpResult<UserInfo>, Boolean>() {
+                    @Override
+                    public Boolean call(HttpResult<UserInfo> userInfoHttpResult) {
+                        if (RetrofitUtil.isSuccessful(userInfoHttpResult)) {
+                            return true;
+                        } else {
+                            mView.showLoginFail(userInfoHttpResult.getMessage());
+                            return false;
+                        }
+                    }
+                }).flatMap(new Func1<HttpResult<UserInfo>, Observable<HttpResult<UserBaseBean>>>() {
+            @Override
+            public Observable<HttpResult<UserBaseBean>> call(HttpResult<UserInfo> result) {
+                UserInfo userInfo = result.getData();
+                User.getInstance().setCurrentAccount(username);
+                User.getInstance().setUserInfo(userInfo);
 
+                int colorIndex = 0;
+                Syllabus mSyllabus = new Syllabus();
+
+                for (Lesson lesson : userInfo.getClasses()) {
+                    isSuccessLogin = true;
+                    //将lesson的时间格式化
+                    lesson.convertDays();
+                    lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
+
+                    //获取该课程上的节点上的时间列表
+                    List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
+                        /*if (timeGirds.size() != 0) {
+                            Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
+                        }*/
+                    //把该课程添加到课程管理去
+                    LessonModel.getInstance().addLesson(lesson);
+                    for (int i = 0; i < timeGirds.size(); i++) {
+                        Lesson.TimeGird timeGrid = timeGirds.get(i);
+                        for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
+                            char x = timeGrid.getTimeList().charAt(j);
+                            int time = Syllabus.chat2time(x);
+
+                            SyllabusGrid syllabusGrid = mSyllabus.getSyllabusGrids()
+                                    .get(timeGrid.getWeekDate())
+                                    .get(time);
+
+                            //将该课程添加到时间节点上去
+                            syllabusGrid.getLessons().add(lesson.getIntID());
+                        }
+                    }
+                }
+                User.getInstance().setAccount(username);
+                User.getInstance().setPassword(password);
+                LessonModel.getInstance().save();
+                User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
+
+                return userBaseService.get_user(username);
+            }
+        }).filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
+            @Override
+            public Boolean call(HttpResult<UserBaseBean> result) {
+                Log.e(TAG, "call: " + result.getCode());
+                if (RetrofitUtil.isSuccessful(result)) {
+                    Log.e(TAG, "call: " + "success");
+                    return true;
+                } else {
+                    Log.e(TAG, "call: " + result.getMessage());
+                    mView.showLoginFail(result.getMessage());
+                    return false;
+                }
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<HttpResult<UserBaseBean>>() {
+                    @Override
+                    public void onCompleted() {
+                        if (isSuccessLogin) {
+                            mView.showLoginSuccess();
+                        }
+                        mView.dismissLoadingDialog();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.dismissLoadingDialog();
+                        Log.e(TAG, "onError: " + e.getMessage());
+                        mView.showLoginFail("登陆失败");
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<UserBaseBean> result) {
+                        User.getInstance().setUserBaseBean(result.getData());
+                        isSuccessLogin = true;
+                    }
+                });
+
+
+/*
         userBaseService.get_user(username)
                 .subscribeOn(Schedulers.io())
                 .filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
@@ -125,7 +225,7 @@ public class LoginPresenter extends ILoginPresenter {
                         UserBaseBean userBaseBean = result.getData();
                         User.getInstance().setCurrentAccount(username);
                         User.getInstance().setUserBaseBean(userBaseBean);
-                        return service.getUserInfo(
+                        return userInfoService.getUserInfo(
                                 userBaseBean.getAccount(),
                                 password,
                                 "query",
@@ -195,9 +295,11 @@ public class LoginPresenter extends ILoginPresenter {
 
                         //获取该课程上的节点上的时间列表
                         List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
-                        /*if (timeGirds.size() != 0) {
+                        */
+/*if (timeGirds.size() != 0) {
                             Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
-                        }*/
+                        }*//*
+
                         //把该课程添加到课程管理去
                         LessonModel.getInstance().addLesson(lesson);
                         for (int i = 0; i < timeGirds.size(); i++) {
@@ -217,5 +319,6 @@ public class LoginPresenter extends ILoginPresenter {
                         }
                     }
                 });
+*/
     }
 }
