@@ -13,6 +13,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.OADetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OARead;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
 import java.util.List;
 
@@ -57,10 +58,12 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
         final OABean oaBean = mOABeen.get(position);
         final Realm realm = Realm.getInstance(mActivity);
 
-        OARead results = realm.where(OARead.class)
+        final OARead results = realm.where(OARead.class)
                 .equalTo("id", oaBean.getID()).findFirst();
         if (results != null && results.isRead()) {
             holder.mOATitleTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
+        }else{
+            holder.mOATitleTextView.setTextColor(ThemeModel.getInstance().colorPrimary);
         }
 
         holder.mOASubTextView.setText("" + oaBean.getSUBCOMPANYNAME());
@@ -72,16 +75,20 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
             @Override
             public void onClick(View v) {
 
-                realm.beginTransaction();
+                Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
+                mActivity.startActivity(intent);
 
+                if (results != null && results.isRead()){
+                    return;
+                }
+
+                realm.beginTransaction();
                 OARead oaRead = realm.createObject(OARead.class);
                 oaRead.setId(oaBean.getID());
                 oaRead.setRead(true);
-
                 realm.commitTransaction();
                 holder.mOATitleTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
-                Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
-                mActivity.startActivity(intent);
+
             }
         });
     }
