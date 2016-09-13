@@ -113,9 +113,11 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                             + "/" + R.drawable.ic_syllabus_icon)
             );
         }
+
         holder.mNicknameTextView.setText(
                 user.getNickname().trim().isEmpty() ? user.getAccount() : user.getNickname()
         );
+
         holder.mPostInfoTextView.setText(postBean.getPost_time());
         if (postBean.getSource() != null) {
             String str = "来自 " + postBean.getSource();
@@ -163,14 +165,14 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CircleDetailActivity.getIntent(mActivity, postBean, mWidth);
+                    Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth);
                     mActivity.startActivity(intent);
                 }
             });
             holder.mCommentLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CircleDetailActivity.getIntent(mActivity, postBean, mWidth, true);
+                    Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth, true);
                     mActivity.startActivity(intent);
                 }
             });
@@ -190,10 +192,17 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             });
         }
 
+        holder.mContentTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth, true);
+                mActivity.startActivity(intent);
+            }
+        });
         holder.mContentTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                String[] items = {"复制到粘贴板"};
+                String[] items = {"复制"};
                 AlertDialog dialog = new AlertDialog.Builder(mActivity)
                         .setItems(items, new DialogInterface.OnClickListener() {
                             @Override

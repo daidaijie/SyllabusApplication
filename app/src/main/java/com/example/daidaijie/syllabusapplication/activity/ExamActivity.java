@@ -131,7 +131,7 @@ public class ExamActivity extends BaseActivity implements SwipeRefreshLayout.OnR
 
                     @Override
                     public void onError(Throwable e) {
-                        mRefreshExamLayout.setRefreshing(true);
+                        mRefreshExamLayout.setRefreshing(false);
                         Log.d(TAG, "onError: " + e.getMessage());
                         showFailBannner();
                     }

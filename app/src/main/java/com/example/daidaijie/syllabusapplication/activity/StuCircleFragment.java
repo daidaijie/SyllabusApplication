@@ -18,6 +18,7 @@ import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.bean.CircleBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
+import com.example.daidaijie.syllabusapplication.model.PostListModel;
 import com.example.daidaijie.syllabusapplication.service.CirclesService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -59,7 +60,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
     int lowID;
 
-    private List<PostListBean> mPostListBeen;
+    private PostListModel mPostListModel;
 
     public static final String TAG = "StuCircleFragment";
 
@@ -77,8 +78,9 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPostListModel = PostListModel.getInstance();
         if (savedInstanceState != null) {
-            mPostListBeen = (List<PostListBean>) savedInstanceState
+            mPostListModel.mPostListBeen = (List<PostListBean>) savedInstanceState
                     .getSerializable(SAVED_POST_LIST_BEEN);
         }
     }
@@ -96,11 +98,11 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
         mSpringView.setHeader(new MeituanHeader(getActivity(), pullAnimSrcs, refreshAnimSrcs));
         mSpringView.setFooter(new MeituanFooter(getActivity(), loadingAnimSrcs));
 
-        if (mPostListBeen == null) {
-            mPostListBeen = new ArrayList<>();
+        if (mPostListModel.mPostListBeen == null) {
+            mPostListModel.mPostListBeen = new ArrayList<>();
         }
 
-        mCirclesAdapter = new CirclesAdapter(getActivity(), mPostListBeen);
+        mCirclesAdapter = new CirclesAdapter(getActivity(), mPostListModel.mPostListBeen);
         //以后一定要记住这句话
         mCircleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mCircleRecyclerView.setAdapter(mCirclesAdapter);
@@ -152,11 +154,11 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                         Log.d(TAG, "onCompleted: " + tmpPostListBeen.size());
                         if (tmpPostListBeen != null) {
                             if (lowID != Integer.MAX_VALUE) {
-                                mPostListBeen.addAll(tmpPostListBeen);
-                                mCirclesAdapter.setPostListBeen(mPostListBeen);
+                                mPostListModel.mPostListBeen.addAll(tmpPostListBeen);
+                                mCirclesAdapter.setPostListBeen(mPostListModel.mPostListBeen);
                             } else {
-                                mPostListBeen = tmpPostListBeen;
-                                mCirclesAdapter.setPostListBeen(mPostListBeen);
+                                mPostListModel.mPostListBeen = tmpPostListBeen;
+                                mCirclesAdapter.setPostListBeen(mPostListModel.mPostListBeen);
                             }
                             lowID = tmpPostListBeen.get(tmpPostListBeen.size() - 1).getId();
                             mCirclesAdapter.notifyDataSetChanged();
@@ -204,7 +206,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putSerializable(SAVED_POST_LIST_BEEN, (Serializable) mPostListBeen);
+        outState.putSerializable(SAVED_POST_LIST_BEEN, (Serializable) mPostListModel.mPostListBeen);
     }
 
     @OnClick(R.id.postContentButton)

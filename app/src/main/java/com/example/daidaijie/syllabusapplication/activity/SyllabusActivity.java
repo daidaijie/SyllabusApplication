@@ -153,10 +153,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                 }
                 if (mSelectWeeksLinearLayout.getVisibility() == View.GONE) {
                     showSelectWeekLayout(true);
-                    mShowWeekSelectImageView.setRotation(180.0f);
                 } else {
                     showSelectWeekLayout(false);
-                    mShowWeekSelectImageView.setRotation(0.0f);
                 }
             }
         });
@@ -320,6 +318,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     @Override
     public void showSelectWeekLayout(boolean isShow) {
         mSelectWeeksLinearLayout.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        mShowWeekSelectImageView.setRotation(isShow ? 180.0f : 0.0f);
     }
 
     public boolean isSingleLock() {

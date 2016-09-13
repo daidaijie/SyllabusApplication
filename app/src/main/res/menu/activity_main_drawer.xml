@@ -8,7 +8,7 @@
             android:title="个人信息"/>
         <item
             android:id="@+id/nav_change_semester"
-            android:icon="@drawable/ic_change_semember"
+            android:icon="@drawable/ic_change_semester"
             android:title="切换学期"/>
         <item
             android:id="@+id/nav_change_theme"

@@ -25,6 +25,7 @@ import com.example.daidaijie.syllabusapplication.adapter.CommentAdapter;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostCommentBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.model.PostListModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.CircleCommentsService;
 import com.example.daidaijie.syllabusapplication.service.SendCommentService;
@@ -69,8 +70,8 @@ public class CircleDetailActivity extends BaseActivity {
 
     private PostListBean mPostListBean;
 
-    private static final String EXTRA_POST_BEAN =
-            "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.PostBean";
+    private static final String EXTRA_POST_BEAN_POS =
+            "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.PostBeanPos";
 
     private static final String EXTRA_PHOTO_WIDTH =
             "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.PhotoWidth";
@@ -86,6 +87,7 @@ public class CircleDetailActivity extends BaseActivity {
 
     //上一条评论
     private int lastPostion;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +107,7 @@ public class CircleDetailActivity extends BaseActivity {
             }
         });
 
-        mPostListBean = (PostListBean) getIntent().getSerializableExtra(EXTRA_POST_BEAN);
+        mPostListBean = PostListModel.getInstance().mPostListBeen.get(getIntent().getIntExtra(EXTRA_POST_BEAN_POS, 0));
 
         mPostListBeen = new ArrayList<>();
         mPostListBeen.add(mPostListBean);
@@ -206,13 +208,13 @@ public class CircleDetailActivity extends BaseActivity {
         return R.layout.activity_circle_detail;
     }
 
-    public static Intent getIntent(Context context, PostListBean postBean, int photoWidth) {
-        return getIntent(context, postBean, photoWidth, false);
+    public static Intent getIntent(Context context, int position, int photoWidth) {
+        return getIntent(context, position, photoWidth, false);
     }
 
-    public static Intent getIntent(Context context, PostListBean postBean, int photoWidth, boolean isComment) {
+    public static Intent getIntent(Context context, int position, int photoWidth, boolean isComment) {
         Intent intent = new Intent(context, CircleDetailActivity.class);
-        intent.putExtra(EXTRA_POST_BEAN, postBean);
+        intent.putExtra(EXTRA_POST_BEAN_POS, position);
         intent.putExtra(EXTRA_PHOTO_WIDTH, photoWidth);
         intent.putExtra(EXTRA_IS_COMMENT, isComment);
         return intent;
