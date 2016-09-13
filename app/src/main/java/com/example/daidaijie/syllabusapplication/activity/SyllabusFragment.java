@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 
+import android.Manifest;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -38,6 +39,7 @@ import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
+import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -49,6 +51,7 @@ import java.io.IOException;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.codetail.widget.RevealLinearLayout;
+import rx.Subscriber;
 
 public class SyllabusFragment extends Fragment implements ISyllabusFragmentView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -395,12 +398,9 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
             Bitmap timeBitmap = BitmapSaveUtil.getViewBitmap(mTimeLinearLayout);
             Bitmap dayBitmap = BitmapSaveUtil.getViewBitmap(mDateLinearLayout);
 
-            if (mSyllabusFragmentPresenter.saveSyllabus(
-                    syllabusBitmap, timeBitmap, dayBitmap)) {
-                Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_SHORT).show();
-            }
+            mSyllabusFragmentPresenter.saveSyllabus(
+                    syllabusBitmap, timeBitmap, dayBitmap);
+
         }
     }
 }

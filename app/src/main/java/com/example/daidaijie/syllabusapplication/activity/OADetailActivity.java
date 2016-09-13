@@ -167,13 +167,7 @@ public class OADetailActivity extends BaseActivity {
     private void screenShot() {
         Bitmap webViewScreen = captureScreen();
         if (webViewScreen != null) {
-            try {
-                BitmapSaveUtil.saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA", 80);
-                Toast.makeText(this, "已保存到图库", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "保存失败", Toast.LENGTH_SHORT).show();
-            }
+            BitmapSaveUtil.saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA", 80);
         } else {
             Toast.makeText(OADetailActivity.this, "图片太大，无法截取", Toast.LENGTH_SHORT).show();
         }

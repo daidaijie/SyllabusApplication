@@ -6,20 +6,15 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
-import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
-import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
-import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
@@ -29,8 +24,6 @@ import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -169,7 +162,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
     }
 
     @Override
-    public boolean saveSyllabus(Bitmap syllabusBitmap, Bitmap timeBitmap, Bitmap dayBitmap) {
+    public void saveSyllabus(Bitmap syllabusBitmap, Bitmap timeBitmap, Bitmap dayBitmap) {
         String wallPaperName = User.getInstance().getWallPaperFileName();
         Bitmap wallPaperBitmap;
 
@@ -203,20 +196,15 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         canvas.drawBitmap(timeBitmap, 0, dayBitmap.getHeight(), null);
         canvas.drawBitmap(syllabusBitmap, timeBitmap.getWidth(), dayBitmap.getHeight(), null);
 
-        try {
-            BitmapSaveUtil.saveFile(
-                    result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100);
-            return true;
-        } catch (IOException e) {
-            Log.e(TAG, "saveSyllabus: " + e.getMessage());
-            return false;
-        } finally {
-            wallPaperBitmap.recycle();
-            syllabusBitmap.recycle();
-            dayBitmap.recycle();
-            timeBitmap.recycle();
-            result.recycle();
-        }
+
+        BitmapSaveUtil.saveFile(
+                result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100);
+
+        wallPaperBitmap.recycle();
+        syllabusBitmap.recycle();
+        dayBitmap.recycle();
+        timeBitmap.recycle();
+        result.recycle();
     }
 
     public int getWeek() {
