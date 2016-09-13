@@ -3,6 +3,10 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -17,16 +21,20 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
+import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPresenter;
+import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
@@ -34,6 +42,9 @@ import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.io.File;
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -375,4 +386,21 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         fatherActivity.setNickName(nickName);
     }
 
+
+    @Subscribe
+    public void saveSyllaus(SaveSyllabusEvent saveSyllabusEvent) {
+        if (saveSyllabusEvent.position == mWeek) {
+
+            Bitmap syllabusBitmap = BitmapSaveUtil.getViewBitmap(mSyllabusGridLayout);
+            Bitmap timeBitmap = BitmapSaveUtil.getViewBitmap(mTimeLinearLayout);
+            Bitmap dayBitmap = BitmapSaveUtil.getViewBitmap(mDateLinearLayout);
+
+            if (mSyllabusFragmentPresenter.saveSyllabus(
+                    syllabusBitmap, timeBitmap, dayBitmap)) {
+                Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), "保存失败", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }

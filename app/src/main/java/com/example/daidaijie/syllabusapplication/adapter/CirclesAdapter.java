@@ -176,6 +176,13 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                     mActivity.startActivity(intent);
                 }
             });
+            holder.mContentTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth);
+                    mActivity.startActivity(intent);
+                }
+            });
 
         } else {
             //不知道为什么不加这句就不会显示selector
@@ -192,13 +199,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             });
         }
 
-        holder.mContentTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth, true);
-                mActivity.startActivity(intent);
-            }
-        });
+
         holder.mContentTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

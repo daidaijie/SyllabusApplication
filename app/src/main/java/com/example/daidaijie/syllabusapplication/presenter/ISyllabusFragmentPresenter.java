@@ -1,5 +1,8 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
 
 /**
@@ -18,5 +21,8 @@ public abstract class ISyllabusFragmentPresenter extends BasePresenter<ISyllabus
 
     //从gson中重新加载课表
     public abstract void reloadSyllabus();
+
+    //保存课表到图库
+    public abstract boolean saveSyllabus(Bitmap syllabusBitmap, Bitmap timeBitmap, Bitmap dayBitmap);
 
 }

@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +10,10 @@
     tools:context="com.example.daidaijie.syllabusapplication.activity.OfficeAutomationActivity">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -20,18 +22,19 @@
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.PopupOverlay"
             app:titleTextColor="@android:color/white">
+
             <LinearLayout
                 android:id="@+id/pageTitleLayout"
-                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal">
+                android:layout_gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal">
+                    android:layout_gravity="center_horizontal"
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/titleTextView"
@@ -46,10 +49,10 @@
 
                     <ImageView
                         android:id="@+id/showWeekSelectImageView"
-                        android:scaleType="fitXY"
-                        android:layout_gravity="center"
                         android:layout_width="12dp"
                         android:layout_height="12dp"
+                        android:layout_gravity="center"
+                        android:scaleType="fitXY"
                         android:src="@drawable/ic_tri"
                         android:tint="@color/material_white"/>
                 </LinearLayout>
@@ -59,28 +62,73 @@
 
         </android.support.v7.widget.Toolbar>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/material_white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp">
+
+            <EditText
+                android:id="@+id/pageEditext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/sendLayout"
+                android:layout_weight="1"
+                android:background="@drawable/bg_border_grey"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center"
+                android:hint="页码"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="16sp"/>
+
+
+            <info.hoang8f.widget.FButton
+                android:id="@+id/sendCommentButton"
+                android:layout_width="72dp"
+                android:layout_height="32dp"
+                android:layout_marginLeft="16dp"
+                android:text="GO"
+                android:textColor="@color/material_white"
+                android:textSize="14sp"
+                fbutton:buttonColor="?attr/colorPrimary"
+                fbutton:cornerRadius="4dp"
+                fbutton:shadowColor="@color/defaultShowColor"
+                fbutton:shadowEnabled="true"
+                fbutton:shadowHeight="1dp"/>
+
+        </LinearLayout>
+
         <android.support.v4.view.ViewPager
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:id="@+id/contentViewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         </android.support.v4.view.ViewPager>
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:src="@drawable/ic_search"
-        app:layout_behavior="com.example.daidaijie.syllabusapplication.widget.ScrollAwareFABBehavior"
         android:id="@+id/searchButton"
-        app:backgroundTint="@color/colorAccent"
-        app:pressedTranslationZ="4dp"
-        app:rippleColor="@color/colorAccentDark"
-        app:elevation="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="24dp"
         android:layout_marginRight="24dp"
-        android:layout_gravity="bottom|right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:src="@drawable/ic_search"
+        app:backgroundTint="@color/colorAccent"
+        app:elevation="8dp"
+        app:layout_behavior="com.example.daidaijie.syllabusapplication.widget.ScrollAwareFABBehavior"
+        app:pressedTranslationZ="4dp"
+        app:rippleColor="@color/colorAccentDark"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

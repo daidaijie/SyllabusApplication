@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
@@ -52,7 +53,6 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
     public void setUserInfo() {
         mUserInfo = User.getInstance().getUserInfo();
 
-        // TODO: 2016/7/25 一般到这里都有mUserInfo的了，但是现在还没写好。。。。所以只能加一步判断
         if (mUserInfo != null) {
             if (mUserInfo.getAvatar() != null) {
                 mView.setHeadImageView(Uri.parse(mUserInfo.getAvatar()));
@@ -70,10 +70,18 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
 
     @Override
     public void loadWallpaper(Context context) {
-        // TODO: 2016/7/25 这里暂时没获取壁纸，先假装有壁纸
 
-        Bitmap wallPaperBitmap = BitmapFactory.decodeResource(context.getResources()
-                , R.drawable.background);
+        String wallPaperName = User.getInstance().getWallPaperFileName();
+        Bitmap wallPaperBitmap;
+
+        if (!wallPaperName.isEmpty() && new File(wallPaperName).exists()) {
+            wallPaperBitmap = BitmapFactory.decodeFile(wallPaperName);
+        } else {
+            wallPaperBitmap = BitmapFactory.decodeResource(context.getResources()
+                    , R.drawable.background);
+        }
+
+
         mView.setBackground(wallPaperBitmap);
     }
 
@@ -110,26 +118,15 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
                         .subscribe(new Action1<File>() {
                             @Override
                             public void call(File file) {
+                                User.getInstance().setWallPaperFileName(file.toString());
                                 mView.setBackground(BitmapFactory.decodeFile(file.toString()));
                             }
                         });
-                        /*.map(new Func1<String, Bitmap>() {
-                            @Override
-                            public Bitmap call(String photoPath) {
-                                return BitmapFactory.decodeFile(photoPath);
-                            }
-                        }).observeOn(AndroidSchedulers.mainThread()).
-                        subscribe(new Action1<Bitmap>() {
-                            @Override
-                            public void call(Bitmap bitmap) {
-                                mView.setBackground(bitmap);
-                            }
-                        });*/
             }
 
             @Override
             public void onHanlderFailure(int requestCode, String errorMsg) {
-
+                Toast.makeText(context, "设置失败", Toast.LENGTH_SHORT).show();
             }
         });
     }

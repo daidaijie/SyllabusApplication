@@ -29,6 +29,7 @@ import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.OAFileService;
 import com.example.daidaijie.syllabusapplication.util.AssetUtil;
+import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.FileUtil;
 
 import org.jsoup.Jsoup;
@@ -167,7 +168,7 @@ public class OADetailActivity extends BaseActivity {
         Bitmap webViewScreen = captureScreen();
         if (webViewScreen != null) {
             try {
-                saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA");
+                BitmapSaveUtil.saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA", 80);
                 Toast.makeText(this, "已保存到图库", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -192,27 +193,6 @@ public class OADetailActivity extends BaseActivity {
         } catch (OutOfMemoryError error) {
             return null;
         }
-    }
-
-    public static void saveFile(Bitmap bm, String fileName, String path) throws IOException {
-        String subForder = FileUtil.get_app_folder(true) + path;
-        File foder = new File(subForder);
-        if (!foder.exists()) {
-            foder.mkdirs();
-        }
-        File myCaptureFile = new File(subForder, fileName);
-        if (!myCaptureFile.exists()) {
-            myCaptureFile.createNewFile();
-        }
-        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(myCaptureFile));
-        bm.compress(Bitmap.CompressFormat.JPEG, 80, bos);
-        bos.flush();
-        bos.close();
-
-        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        Uri uri = Uri.fromFile(myCaptureFile);
-        intent.setData(uri);
-        App.getContext().sendBroadcast(intent);
     }
 
     private void getOAFile() {

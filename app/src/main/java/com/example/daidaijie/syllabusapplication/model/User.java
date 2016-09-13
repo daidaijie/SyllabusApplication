@@ -47,6 +47,9 @@ public class User {
     private static final String EXTRA_CURRENT_SEMESTER
             = "com.example.daidaijie.syllabusapplication.model.User.mCurrentSemester";
 
+    private static final String EXTRA_WALL_PAPAER
+            = "com.example.daidaijie.syllabusapplication.model.User.mWallPaperFileName";
+
 
     SharedPreferences mUserSharedPreferences;
     SharedPreferences.Editor mUserEditor;
@@ -55,6 +58,8 @@ public class User {
     SharedPreferences.Editor mEditor;
 
     private String mCurrentAccount;
+
+    private String mWallPaperFileName;
 
     //example 13yjli3
     private String mAccount;
@@ -80,6 +85,8 @@ public class User {
         mUserSharedPreferences = App.getContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
         mUserEditor = mUserSharedPreferences.edit();
         mCurrentAccount = mUserSharedPreferences.getString(EXTRA_CURRENT_ACCOUNT, "");
+
+        mWallPaperFileName = mUserSharedPreferences.getString(EXTRA_WALL_PAPAER, "");
 
         String currentSemesterString = mUserSharedPreferences.getString(EXTRA_CURRENT_SEMESTER, "");
         if (currentSemesterString.trim().isEmpty()) {
@@ -229,5 +236,15 @@ public class User {
         mCurrentSemester = currentSemester;
         mUserEditor.putString(EXTRA_CURRENT_SEMESTER, GsonUtil.getDefault().toJson(mCurrentSemester));
         mUserEditor.commit();
+    }
+
+    public String getWallPaperFileName() {
+        return mWallPaperFileName;
+    }
+
+    public void setWallPaperFileName(String wallPaperFileName) {
+        mUserEditor.putString(EXTRA_WALL_PAPAER, wallPaperFileName);
+        mUserEditor.commit();
+        mWallPaperFileName = wallPaperFileName;
     }
 }

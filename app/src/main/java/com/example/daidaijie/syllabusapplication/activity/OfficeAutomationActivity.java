@@ -122,8 +122,17 @@ public class OfficeAutomationActivity extends BaseActivity {
                         mOAPagerAdapter = new OAPagerAdapter(getSupportFragmentManager());
                         mContentViewPager.setAdapter(mOAPagerAdapter);
                         mContentViewPager.setCurrentItem(0);
+                        mTitleTextView.setText("第 " + (mContentViewPager.getCurrentItem() + 1) + " 页");
                     }
                 }).create();
+
+
+        mPageTitleLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -150,6 +159,12 @@ public class OfficeAutomationActivity extends BaseActivity {
     public void onClick() {
         mSearchDialog.show();
     }
+
+    private void showPage(boolean isShow){
+
+    }
+
+
 
     private void animateIn(FloatingActionButton button) {
         button.setVisibility(View.VISIBLE);

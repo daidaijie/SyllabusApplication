@@ -32,8 +32,10 @@ import android.widget.Toast;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
+import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter;
+import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
@@ -42,6 +44,9 @@ import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
 import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -83,7 +88,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     private final static String TAG = "SyllabusActivity";
 
-    private final static String SAVED_PAGE_POSITION = "pagePositon";
+    private final static String SAVED_PAGE_POSITION = "pagePosition";
 
     private SyllabusMainPresenter mSyllabusMainPresenter = new SyllabusMainPresenter();
 
@@ -104,6 +109,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         navHeadRelativeLayout = (RelativeLayout) mNavView.getHeaderView(0);
         headImageDraweeView = (SimpleDraweeView) navHeadRelativeLayout.findViewById(R.id.headImageDraweeView);
         nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
+
+        if (savedInstanceState != null) {
+            pageIndex = savedInstanceState.getInt(SAVED_PAGE_POSITION, 0);
+        }
 
         setupToolbar();
         setupViewPager();
@@ -158,7 +167,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                 }
             }
         });
-
     }
 
     private void setupViewPager() {
@@ -174,6 +182,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
             @Override
             public void onPageSelected(int position) {
+                pageIndex = position;
                 setToolBarTitle("第 " + (position + 1) + " 周");
                 mWeekAdapter.setSelectItem(position);
                 mWeekAdapter.notifyDataSetChanged();
@@ -280,6 +289,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         } else if (id == R.id.nav_send) {
             Intent intent = new Intent(this, ExamActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_save_syllabus) {
+            EventBus.getDefault().post(new SaveSyllabusEvent(pageIndex));
         }
         //点击后关闭drawerLayout
         mDrawerLayout.closeDrawer(GravityCompat.START);

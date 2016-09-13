@@ -1,7 +1,12 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
@@ -18,10 +23,13 @@ import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
+import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import rx.Observable;
@@ -158,6 +166,57 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
     @Override
     public void reloadSyllabus() {
         mSyllabus = User.getInstance().getSyllabus(User.getInstance().getCurrentSemester());
+    }
+
+    @Override
+    public boolean saveSyllabus(Bitmap syllabusBitmap, Bitmap timeBitmap, Bitmap dayBitmap) {
+        String wallPaperName = User.getInstance().getWallPaperFileName();
+        Bitmap wallPaperBitmap;
+
+        if (!wallPaperName.isEmpty() && new File(wallPaperName).exists()) {
+            wallPaperBitmap = BitmapFactory.decodeFile(wallPaperName);
+        } else {
+            wallPaperBitmap = BitmapFactory.decodeResource(App.getContext().getResources()
+                    , R.drawable.background);
+        }
+
+        Matrix matrix = new Matrix();
+        float scale;
+        float scaleHeight = (dayBitmap.getHeight() + syllabusBitmap.getHeight()) * 1.0f
+                / wallPaperBitmap.getHeight();
+        float scaleWidht = (timeBitmap.getWidth() + syllabusBitmap.getWidth()) * 1.0f
+                / wallPaperBitmap.getWidth();
+        scale = Math.max(scaleHeight, scaleWidht);
+
+        matrix.postScale(scale, scale);
+
+        Bitmap result = Bitmap.createBitmap(timeBitmap.getWidth() + syllabusBitmap.getWidth(),
+                syllabusBitmap.getHeight() + dayBitmap.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(result);
+
+        Bitmap resizeBmp = Bitmap.createBitmap(wallPaperBitmap, 0, 0, wallPaperBitmap.getWidth(),
+                wallPaperBitmap.getHeight(), matrix, true);
+        canvas.drawBitmap(resizeBmp, 0, 0, null);
+
+        canvas.drawBitmap(dayBitmap, 0, 0, null);
+        canvas.drawBitmap(timeBitmap, 0, dayBitmap.getHeight(), null);
+        canvas.drawBitmap(syllabusBitmap, timeBitmap.getWidth(), dayBitmap.getHeight(), null);
+
+        try {
+            BitmapSaveUtil.saveFile(
+                    result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            wallPaperBitmap.recycle();
+            syllabusBitmap.recycle();
+            dayBitmap.recycle();
+            timeBitmap.recycle();
+            result.recycle();
+        }
     }
 
     public int getWeek() {
