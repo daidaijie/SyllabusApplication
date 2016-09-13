@@ -2,12 +2,14 @@ package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.OADetailActivity;
@@ -56,14 +58,17 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final OABean oaBean = mOABeen.get(position);
-        final Realm realm = Realm.getInstance(mActivity);
 
-        final OARead results = realm.where(OARead.class)
-                .equalTo("id", oaBean.getID()).findFirst();
-        if (results != null && results.isRead()) {
-            holder.mOATitleTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
-        }else{
+        final boolean[] isRead = new boolean[1];
+
+        isRead[0] = OARead.hasRead(mActivity, oaBean);
+
+        if (isRead[0]) {
+            holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
+            holder.mOASubTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
+        } else {
             holder.mOATitleTextView.setTextColor(ThemeModel.getInstance().colorPrimary);
+            holder.mOASubTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultTextColor));
         }
 
         holder.mOASubTextView.setText("" + oaBean.getSUBCOMPANYNAME());
@@ -77,18 +82,14 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
 
                 Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
                 mActivity.startActivity(intent);
-
-                if (results != null && results.isRead()){
+                if (isRead[0]) {
                     return;
                 }
 
-                realm.beginTransaction();
-                OARead oaRead = realm.createObject(OARead.class);
-                oaRead.setId(oaBean.getID());
-                oaRead.setRead(true);
-                realm.commitTransaction();
-                holder.mOATitleTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
-
+                OARead.save(mActivity, oaBean);
+                isRead[0] = true;
+                holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
+                holder.mOASubTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
             }
         });
     }
