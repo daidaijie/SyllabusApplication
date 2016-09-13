@@ -13,6 +13,7 @@ import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -53,6 +54,8 @@ public class ClassmateListActivity extends BaseActivity {
     SearchView mSearchView;
     @BindView(R.id.tv_empty_view)
     TextView mTvEmptyView;
+    @BindView(R.id.findNumberTextView)
+    TextView mFindNumberTextView;
 
     private List<StudentInfo> mStudentInfos;
     private StudentInfoAdapter mStudentInfoAdapter;
@@ -79,6 +82,9 @@ public class ClassmateListActivity extends BaseActivity {
         setupToolbar(mToolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mTitleTextView.setText("查看同学(" + mStudentInfos.size() + ")");
+        mFindNumberTextView.setVisibility(View.GONE);
 
     }
 
@@ -130,6 +136,7 @@ public class ClassmateListActivity extends BaseActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
+                mFindNumberTextView.setVisibility(View.GONE);
                 mStudentInfoAdapter.setStudentInfos(mStudentInfos);
                 mStudentInfoAdapter.notifyDataSetChanged();
                 return true;
@@ -181,6 +188,8 @@ public class ClassmateListActivity extends BaseActivity {
                     public void onCompleted() {
                         mStudentInfoAdapter.setStudentInfos(mQueryInfo);
                         mStudentInfoAdapter.notifyDataSetChanged();
+                        mFindNumberTextView.setVisibility(View.VISIBLE);
+                        mFindNumberTextView.setText("查找到" + mQueryInfo.size() + "位同学");
                     }
 
                     @Override

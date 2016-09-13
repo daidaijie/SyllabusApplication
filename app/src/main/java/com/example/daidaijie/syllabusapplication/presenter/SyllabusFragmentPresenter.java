@@ -208,7 +208,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                     result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100);
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "saveSyllabus: " + e.getMessage());
             return false;
         } finally {
             wallPaperBitmap.recycle();

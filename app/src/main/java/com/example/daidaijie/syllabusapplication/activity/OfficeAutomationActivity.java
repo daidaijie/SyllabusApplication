@@ -1,7 +1,6 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
@@ -13,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,6 +25,7 @@ import com.example.daidaijie.syllabusapplication.model.OAModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import info.hoang8f.widget.FButton;
 
 public class OfficeAutomationActivity extends BaseActivity {
 
@@ -48,12 +47,18 @@ public class OfficeAutomationActivity extends BaseActivity {
     int selectID;
 
     String inputKeyword;
-    @BindView(R.id.showWeekSelectImageView)
-    ImageView mShowWeekSelectImageView;
+    @BindView(R.id.showPageSelectImageView)
+    ImageView mShowPageSelectImageView;
     @BindView(R.id.pageTitleLayout)
     LinearLayout mPageTitleLayout;
     @BindView(R.id.searchButton)
     FloatingActionButton mSearchButton;
+    @BindView(R.id.titleLayout)
+    LinearLayout mTitleLayout;
+    @BindView(R.id.pageEditext)
+    EditText mPageEditext;
+    @BindView(R.id.gotoPageButton)
+    FButton mGotoPageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,11 +131,26 @@ public class OfficeAutomationActivity extends BaseActivity {
                     }
                 }).create();
 
-
-        mPageTitleLayout.setOnClickListener(new View.OnClickListener() {
+        showPage(false);
+        mTitleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (mPageTitleLayout.getVisibility() == View.GONE) {
+                    showPage(true);
+                } else {
+                    showPage(false);
+                }
+            }
+        });
 
+        mGotoPageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mPageEditext.getText().toString().isEmpty()){
+                    mPageEditext.setError("输入不能为空");
+                    return;
+                }
+                mContentViewPager.setCurrentItem(Integer.parseInt(mPageEditext.getText().toString())-1);
             }
         });
     }
@@ -160,10 +180,16 @@ public class OfficeAutomationActivity extends BaseActivity {
         mSearchDialog.show();
     }
 
-    private void showPage(boolean isShow){
-
+    private void showPage(boolean isShow) {
+        if (isShow) {
+            mPageEditext.setText("");
+            mPageTitleLayout.setVisibility(View.VISIBLE);
+            mShowPageSelectImageView.setRotation(180.0f);
+        } else {
+            mPageTitleLayout.setVisibility(View.GONE);
+            mShowPageSelectImageView.setRotation(0.0f);
+        }
     }
-
 
 
     private void animateIn(FloatingActionButton button) {

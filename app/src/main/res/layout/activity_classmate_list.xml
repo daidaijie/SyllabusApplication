@@ -38,6 +38,17 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <TextView
+        android:id="@+id/findNumberTextView"
+        android:background="@color/material_white"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16sp"
+        tools:text="查找到10位同学"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
