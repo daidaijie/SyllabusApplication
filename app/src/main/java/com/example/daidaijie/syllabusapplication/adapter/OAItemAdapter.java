@@ -59,13 +59,10 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final OABean oaBean = mOABeen.get(position);
 
-        final boolean[] isRead = new boolean[1];
-
-        isRead[0] = OARead.hasRead(mActivity, oaBean);
-
-        if (isRead[0]) {
+        if (oaBean.isRead()) {
             holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
-            holder.mOASubTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
+            holder.mOASubTextView.setTextColor(ColorUtils.setAlphaComponent(
+                    mActivity.getResources().getColor(R.color.defaultTextColor), 136));
         } else {
             holder.mOATitleTextView.setTextColor(ThemeModel.getInstance().colorPrimary);
             holder.mOASubTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultTextColor));
@@ -82,14 +79,15 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
 
                 Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
                 mActivity.startActivity(intent);
-                if (isRead[0]) {
+                if (oaBean.isRead()) {
                     return;
                 }
 
                 OARead.save(mActivity, oaBean);
-                isRead[0] = true;
+                oaBean.setRead(true);
                 holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
-                holder.mOASubTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
+                holder.mOASubTextView.setTextColor(ColorUtils.setAlphaComponent(
+                        mActivity.getResources().getColor(R.color.defaultTextColor), 136));
             }
         });
     }

@@ -45,6 +45,8 @@ public class OABean implements Serializable {
     private String SUBCOMPANYNAME;
     private String DEPARTMENTNAME;
 
+    private boolean isRead;
+
     public String getDOCCONTENT() {
         return DOCCONTENT;
     }
@@ -139,5 +141,13 @@ public class OABean implements Serializable {
 
     public void setDEPARTMENTNAME(String DEPARTMENTNAME) {
         this.DEPARTMENTNAME = DEPARTMENTNAME;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 }

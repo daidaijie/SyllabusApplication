@@ -13,7 +13,9 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
+import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.bean.OARead;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.service.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -111,20 +113,25 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                 "undefined", OAModel.getInstance().subID, OAModel.getInstance().keyword,
                 position * 10, (position + 1) * 10
         ).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<List<OABean>, Observable<OABean>>() {
                     @Override
                     public Observable<OABean> call(List<OABean> oaBeen) {
                         return Observable.from(oaBeen);
                     }
                 })
+                .observeOn(Schedulers.io())
                 .filter(new Func1<OABean, Boolean>() {
                     @Override
                     public Boolean call(OABean oaBean) {
-                        return (oaBean.getDOCVALIDDATE() != null
+                        boolean isNotNULL = (oaBean.getDOCVALIDDATE() != null
                                 && oaBean.getDOCVALIDTIME() != null);
+                        if (isNotNULL) {
+                            oaBean.setRead(OARead.hasRead(getActivity(), oaBean));
+                        }
+                        return isNotNULL;
                     }
                 })
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<OABean>() {
 
                     List<OABean> tmpOABeen = new ArrayList<>();
