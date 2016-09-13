@@ -12,11 +12,14 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.OADetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.bean.OARead;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by daidaijie on 2016/8/23.
@@ -50,8 +53,15 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final OABean oaBean = mOABeen.get(position);
+        final Realm realm = Realm.getInstance(mActivity);
+
+        OARead results = realm.where(OARead.class)
+                .equalTo("id", oaBean.getID()).findFirst();
+        if (results != null && results.isRead()) {
+            holder.mOATitleTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
+        }
 
         holder.mOASubTextView.setText("" + oaBean.getSUBCOMPANYNAME());
         holder.mOATimeTextView.setText("" + oaBean.getDOCVALIDDATE() + " "
@@ -61,6 +71,15 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
         holder.mOaCardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                realm.beginTransaction();
+
+                OARead oaRead = realm.createObject(OARead.class);
+                oaRead.setId(oaBean.getID());
+                oaRead.setRead(true);
+
+                realm.commitTransaction();
+                holder.mOATitleTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
                 Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
                 mActivity.startActivity(intent);
             }
