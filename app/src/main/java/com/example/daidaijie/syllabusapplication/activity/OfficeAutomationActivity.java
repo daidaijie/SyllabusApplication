@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.RequiresPermission;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -20,12 +21,18 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAPagerAdapter;
+import com.example.daidaijie.syllabusapplication.bean.OARead;
+import com.example.daidaijie.syllabusapplication.event.OAClearEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.hoang8f.widget.FButton;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class OfficeAutomationActivity extends BaseActivity {
 
@@ -146,11 +153,11 @@ public class OfficeAutomationActivity extends BaseActivity {
         mGotoPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mPageEditext.getText().toString().isEmpty()){
+                if (mPageEditext.getText().toString().isEmpty()) {
                     mPageEditext.setError("输入不能为空");
                     return;
                 }
-                mContentViewPager.setCurrentItem(Integer.parseInt(mPageEditext.getText().toString())-1);
+                mContentViewPager.setCurrentItem(Integer.parseInt(mPageEditext.getText().toString()) - 1);
             }
         });
     }
@@ -170,7 +177,14 @@ public class OfficeAutomationActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_search_oa) {
+        if (id == R.id.action_clear_browse) {
+            Realm realm = Realm.getInstance(this);
+            realm.beginTransaction();
+            RealmResults<OARead> results = realm.where(OARead.class).findAll();
+            results.clear();
+            realm.commitTransaction();
+            EventBus.getDefault().post(new OAClearEvent());
+            realm.close();
         }
         return super.onOptionsItemSelected(item);
     }

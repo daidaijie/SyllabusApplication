@@ -10,9 +10,9 @@
     tools:context="com.example.daidaijie.syllabusapplication.activity.OfficeAutomationActivity">
 
     <LinearLayout
-        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -119,17 +119,18 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:src="@drawable/ic_search"
         android:id="@+id/searchButton"
-        app:backgroundTint="@color/colorAccent"
-        app:pressedTranslationZ="4dp"
-        app:rippleColor="@color/colorAccentDark"
-        app:elevation="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="24dp"
         android:layout_marginRight="24dp"
-        android:layout_gravity="bottom|right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:src="@drawable/ic_search"
+        app:backgroundTint="@color/colorAccent"
+        app:elevation="8dp"
+        app:layout_behavior="com.example.daidaijie.syllabusapplication.widget.ScrollAwareFABBehavior"
+        app:pressedTranslationZ="4dp"
+        app:rippleColor="@color/colorAccentDark"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

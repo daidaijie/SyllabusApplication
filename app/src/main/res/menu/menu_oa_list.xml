@@ -2,8 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_search_oa"
-        android:icon="@drawable/ic_search"
-        android:title="搜索"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/action_clear_browse"
+        android:title="清除浏览记录"
+        app:showAsAction="never"/>
 </menu>

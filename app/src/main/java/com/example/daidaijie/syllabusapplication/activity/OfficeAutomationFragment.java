@@ -16,10 +16,15 @@ import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OARead;
+import com.example.daidaijie.syllabusapplication.event.OAClearEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.service.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +71,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         Bundle args = getArguments();
         position = args.getInt(EXTRA_POS, 0);
 
@@ -136,7 +142,6 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
 
                     List<OABean> tmpOABeen = new ArrayList<>();
 
-
                     @Override
                     public void onCompleted() {
                         mRefreshOALayout.setRefreshing(false);
@@ -159,5 +164,20 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                         tmpOABeen.add(oaBean);
                     }
                 });
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void clear(OAClearEvent oaClearEvent) {
+        for(OABean oaBean:mOABeen){
+            oaBean.setRead(false);
+        }
+        mOAItemAdapter.notifyDataSetChanged();
     }
 }
