@@ -178,13 +178,30 @@ public class OfficeAutomationActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_clear_browse) {
-            Realm realm = Realm.getDefaultInstance();
-            realm.beginTransaction();
-            RealmResults<OARead> results = realm.where(OARead.class).findAll();
-            results.deleteAllFromRealm();
-            realm.commitTransaction();
-            EventBus.getDefault().post(new OAClearEvent());
-            realm.close();
+            AlertDialog deleteEnsureDialog = new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setMessage("确定删除办公自动化浏览记录?")
+                    .setPositiveButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Realm realm = Realm.getDefaultInstance();
+                            realm.beginTransaction();
+                            RealmResults<OARead> results = realm.where(OARead.class).findAll();
+                            results.deleteAllFromRealm();
+                            realm.commitTransaction();
+                            EventBus.getDefault().post(new OAClearEvent());
+                            realm.close();
+                        }
+                    })
+                    .create();
+
+            deleteEnsureDialog.show();
         }
         return super.onOptionsItemSelected(item);
     }
