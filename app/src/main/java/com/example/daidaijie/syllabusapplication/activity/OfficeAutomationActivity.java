@@ -178,10 +178,10 @@ public class OfficeAutomationActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_clear_browse) {
-            Realm realm = Realm.getInstance(this);
+            Realm realm = Realm.getDefaultInstance();
             realm.beginTransaction();
             RealmResults<OARead> results = realm.where(OARead.class).findAll();
-            results.clear();
+            results.deleteAllFromRealm();
             realm.commitTransaction();
             EventBus.getDefault().post(new OAClearEvent());
             realm.close();

@@ -132,7 +132,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                         boolean isNotNULL = (oaBean.getDOCVALIDDATE() != null
                                 && oaBean.getDOCVALIDTIME() != null);
                         if (isNotNULL) {
-                            oaBean.setRead(OARead.hasRead(getActivity(), oaBean));
+                            oaBean.setRead(OARead.hasRead(oaBean));
                         }
                         return isNotNULL;
                     }
@@ -152,6 +152,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         mRefreshOALayout.setRefreshing(false);
                         SnackbarUtil.LongSnackbar(
                                 mRefreshOALayout, "获取失败", SnackbarUtil.Alert
@@ -175,7 +176,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void clear(OAClearEvent oaClearEvent) {
-        for(OABean oaBean:mOABeen){
+        for (OABean oaBean : mOABeen) {
             oaBean.setRead(false);
         }
         mOAItemAdapter.notifyDataSetChanged();

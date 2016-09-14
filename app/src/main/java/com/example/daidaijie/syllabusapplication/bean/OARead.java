@@ -40,8 +40,8 @@ public class OARead extends RealmObject {
         this.id = id;
     }
 
-    public static boolean hasRead(Context context, OABean oaBean) {
-        Realm realm = Realm.getInstance(context);
+    public static boolean hasRead(OABean oaBean) {
+        Realm realm = Realm.getDefaultInstance();
 
         OARead results = realm.where(OARead.class)
                 .equalTo("id", oaBean.getID()).findFirst();
@@ -54,8 +54,8 @@ public class OARead extends RealmObject {
         }
     }
 
-    public static void save(Context context, OABean oaBean) {
-        Realm createRealm = Realm.getInstance(context);
+    public static void save(OABean oaBean) {
+        Realm createRealm = Realm.getDefaultInstance();
         createRealm.beginTransaction();
         OARead oaRead = createRealm.createObject(OARead.class);
         oaRead.setId(oaBean.getID());

@@ -83,7 +83,7 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
                     return;
                 }
 
-                OARead.save(mActivity, oaBean);
+                OARead.save(oaBean);
                 oaBean.setRead(true);
                 holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
                 holder.mOASubTextView.setTextColor(ColorUtils.setAlphaComponent(
