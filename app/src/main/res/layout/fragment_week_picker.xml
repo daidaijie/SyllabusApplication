@@ -1,0 +1,79 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    tools:context="com.example.daidaijie.syllabusapplication.activity.WeekPickerFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="设定"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16sp"/>
+
+    <info.hoang8f.widget.FButton
+        app:buttonColor="@color/material_white"
+        app:cornerRadius="4dp"
+        app:shadowColor="@color/defaultDarkBackground"
+        app:shadowEnabled="true"
+        app:shadowHeight="1dp"
+        android:id="@+id/selectDateButton"
+        android:text="2016年9月14号"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16sp"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:calendarViewShown="false"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="为"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16sp"/>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/numberPickerView"
+            android:text="第"
+            android:textSize="16sp"/>
+
+        <NumberPicker
+            android:id="@+id/numberPickerView"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp">
+        </NumberPicker>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/numberPickerView"
+            android:text="周"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

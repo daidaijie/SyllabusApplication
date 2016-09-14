@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -46,7 +45,6 @@ public class ThemePickerFragment extends DialogFragment {
         mOnItemClickListener = onItemClickListener;
     }
 
-    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

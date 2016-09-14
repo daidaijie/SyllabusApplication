@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -45,9 +46,15 @@ import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeComparator;
+import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -139,7 +146,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             }
         });
 
-        //showSelectSemeber();
+        showSelectWeek();
     }
 
     private void setupToolbar() {
@@ -384,5 +391,29 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                 Toast.makeText(SyllabusActivity.this, first + second, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void showSelectWeek() {
+        WeekPickerFragment weekPickerFragment = new WeekPickerFragment();
+        weekPickerFragment.setOnSettingWeekListener(new WeekPickerFragment.OnSettingWeekListener() {
+            @Override
+            public void onSettingWeek(LocalDate date, int week) {
+                Toast.makeText(SyllabusActivity.this, date.getYear() + "年"
+                                + date.getMonthOfYear() + "月" + date.getDayOfMonth() + "号" + "\n是第" + week + "周",
+                        Toast.LENGTH_LONG).show();
+                date = date.plusDays(-(date.getDayOfWeek() % 7));
+                date = date.plusWeeks(-(week - 1));
+                Log.e(TAG, "onSettingWeek: " + date);
+                Period period = new Period(date, LocalDate.now(), PeriodType.weeks());
+
+
+                Log.e(TAG, "onSettingWeek: " + period.getWeeks());
+
+            }
+        });
+
+
+        weekPickerFragment.show(getSupportFragmentManager(),
+                WeekPickerFragment.DIALOG_WEEK_PICKER);
     }
 }
