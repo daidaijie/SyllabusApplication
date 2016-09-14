@@ -25,6 +25,7 @@ import com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.bean.PostUserBean;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
@@ -103,7 +104,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final PostListBean postBean = mPostListBeen.get(position);
 
-        PostListBean.PostUserBean user = postBean.getUser();
+        PostUserBean user = postBean.getUser();
 
         if (user.getImage() != null) {
             holder.mHeadImageDraweeView.setImageURI(user.getImage());

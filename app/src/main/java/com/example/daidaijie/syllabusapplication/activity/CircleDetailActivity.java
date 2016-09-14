@@ -280,8 +280,6 @@ public class CircleDetailActivity extends BaseActivity {
                     + ": " + postContent;
         }
 
-//        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserBaseBean().getId());
-//        Log.e("PostCommentBean", "sendComment: " + User.getInstance().getUserInfo().getToken());
 
         // TODO: 2016/9/2 别的设备登录这里怎么破.....
         PostCommentBean postCommentBean = new PostCommentBean(
@@ -308,7 +306,7 @@ public class CircleDetailActivity extends BaseActivity {
                         SnackbarUtil.ShortSnackbar(
                                 mCommentEditext, "发送失败", SnackbarUtil.Alert
                         ).show();
-                        Log.d("发送失败", "onError: " + e.getMessage());
+                        Log.d("发送失败", "发送失败: " + e.getMessage());
                     }
 
                     @Override

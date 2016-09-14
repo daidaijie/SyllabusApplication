@@ -3,7 +3,6 @@ package com.example.daidaijie.syllabusapplication;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ProviderInfo;
 import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
@@ -11,13 +10,11 @@ import com.example.daidaijie.syllabusapplication.service.InterenetService;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
-import org.joda.time.DateTime;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -55,6 +52,9 @@ public class App extends Application {
         initGalleryFinal();
 
         updateStreamInfo();
+
+        RealmConfiguration configuration = new RealmConfiguration.Builder(context).build();
+        Realm.setDefaultConfiguration(configuration);
 
     }
 
