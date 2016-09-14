@@ -17,6 +17,9 @@ import com.google.gson.reflect.TypeToken;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 /**
  * Created by daidaijie on 2016/7/24.
  */
@@ -204,6 +207,11 @@ public class User {
                     }.getType());
         }
 //        Log.e("User", "setCurrentAccountStore: "+syllabusMapJsonString);
+        RealmConfiguration configuration = new RealmConfiguration.Builder(App.getContext())
+                .name(mAccount + ".realm")
+                .schemaVersion(1)
+                .build();
+        Realm.setDefaultConfiguration(configuration);
 
     }
 

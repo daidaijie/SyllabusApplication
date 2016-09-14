@@ -56,9 +56,6 @@ public class App extends Application {
 
         updateStreamInfo();
 
-        RealmConfiguration configuration = new RealmConfiguration.Builder(context).build();
-        Realm.setDefaultConfiguration(configuration);
-
     }
 
     public static Context getContext() {

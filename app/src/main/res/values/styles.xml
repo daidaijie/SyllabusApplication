@@ -36,6 +36,15 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyCustomTabText</item>
+        <item name="tabSelectedTextColor">@color/material_white</item>
+    </style>
+
+    <style name="MyCustomTabText" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/defaultDarkBackgroundSelect</item>
+    </style>
 
     <style name="AppThemeRed" parent="AppThemeBase">
         <item name="colorPrimary">@color/material_red_500</item>
