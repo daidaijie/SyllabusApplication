@@ -150,6 +150,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         } else {
             holder.mPhotoRecyclerView.setVisibility(View.GONE);
         }
+
         if (postBean.getThumb_ups().size() > 0) {
             holder.mThumbUpView.setLike();
         } else {

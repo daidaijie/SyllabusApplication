@@ -31,7 +31,7 @@ public class SchoolDynamic {
      * comments : [{"uid":1137,"id":716}]
      */
 
-    private Object activity_end_time;
+    private String activity_end_time;
     private String activity_location;
     private String activity_start_time;
     private int post_type;
@@ -62,11 +62,11 @@ public class SchoolDynamic {
 
     private List<CommentsBean> comments;
 
-    public Object getActivity_end_time() {
+    public String getActivity_end_time() {
         return activity_end_time;
     }
 
-    public void setActivity_end_time(Object activity_end_time) {
+    public void setActivity_end_time(String activity_end_time) {
         this.activity_end_time = activity_end_time;
     }
 

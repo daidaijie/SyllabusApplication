@@ -2,7 +2,9 @@ package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDynamic;
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 import com.liaoinstan.springview.utils.DensityUtil;
 
@@ -83,6 +88,36 @@ public class SchoolDymamicAdapter extends RecyclerView.Adapter<SchoolDymamicAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        SchoolDynamic schoolDynamic = mSchoolDynamics.get(position);
+
+        holder.mNicknameTextView.setText(schoolDynamic.getSource());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(schoolDynamic.getActivity_start_time().substring(0, schoolDynamic.getActivity_start_time().length() - 3));
+        if (schoolDynamic.getActivity_end_time() != null && !schoolDynamic.getActivity_end_time().trim().isEmpty()) {
+            sb.append("　——>　");
+            sb.append(schoolDynamic.getActivity_end_time().substring(0, schoolDynamic.getActivity_end_time().length() - 3));
+        }
+
+        holder.mPostInfoTextView.setText(sb.toString());
+
+        holder.mContentTextView.setText(schoolDynamic.getDescription());
+
+        mWidth = mWidth > holder.mContentTextView.getWidth() ? mWidth : holder.mContentTextView.getWidth();
+
+        if (schoolDynamic.getPhoto_list_json() != null && !schoolDynamic.getPhoto_list_json().isEmpty()) {
+            Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + "photoList");
+            holder.mPhotoRecyclerView.setVisibility(View.VISIBLE);
+            PhotoInfo photoInfo = GsonUtil.getDefault()
+                    .fromJson(schoolDynamic.getPhoto_list_json(), PhotoInfo.class);
+            PhotoAdapter photoAdapter = new PhotoAdapter(mActivity, photoInfo,
+                    mWidth);
+            holder.mPhotoRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity,
+                    LinearLayoutManager.HORIZONTAL, false));
+            holder.mPhotoRecyclerView.setAdapter(photoAdapter);
+        } else {
+            holder.mPhotoRecyclerView.setVisibility(View.GONE);
+        }
 
     }
 
