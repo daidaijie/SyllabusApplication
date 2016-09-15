@@ -116,7 +116,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
                     mSpringView.callFresh();
 //                getCircles();
                 }
-            }, 50);
+            }, 0);
         }
 
         return view;
@@ -135,8 +135,7 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
     private void getCircles() {
         Log.d(TAG, "getCircles: ");
-        Retrofit retrofit = RetrofitUtil.getDefault();
-        CirclesService circlesService = retrofit.create(CirclesService.class);
+        CirclesService circlesService = RetrofitUtil.getDefault().create(CirclesService.class);
         circlesService.getCircles(10, lowID)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<CircleBean, List<PostListBean>>() {

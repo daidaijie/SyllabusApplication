@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:foreground="@drawable/fg_circle_card"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/material_white"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp">
+
+
+        <TextView
+            android:id="@+id/nicknameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="14sp"
+            tools:text="余强"/>
+
+
+        <TextView
+            android:id="@+id/postInfoTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/nicknameTextView"
+            android:layout_marginTop="4dp"
+            android:gravity="top"
+            android:singleLine="true"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="12sp"
+            tools:text="2016-08-06 17:58:20"/>
+
+
+        <TextView
+            android:id="@+id/contentTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/postInfoTextView"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_circle_cotent"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"
+            tools:text="8月13号12:50潮汕站👉汕大。三缺一。联系麦同学：661821。[流泪][流泪][流泪]"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/photoRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="168dp"
+            android:layout_below="@+id/contentTextView"
+            android:layout_marginTop="8dp">
+        </android.support.v7.widget.RecyclerView>
+
+        <View
+            android:id="@+id/horDivLine"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_below="@+id/photoRecyclerView"
+            android:layout_marginTop="8dp"
+            android:background="@color/defaultShowColor"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/horDivLine">
+
+            <LinearLayout
+                android:id="@+id/thumbUpLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.example.daidaijie.syllabusapplication.widget.ThumbUpView
+                    android:id="@+id/thumbUpView"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    app:cracksColor="@color/material_red_300"
+                    app:edgeColor="@color/defaultShowColor"
+                    app:fillColor="@color/material_red_300"
+                    app:unlikeType="0"/>
+
+                <TextView
+                    android:id="@+id/zanTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:singleLine="true"
+                    android:text="赞[0]"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/defaultShowColor"/>
+
+            <LinearLayout
+                android:id="@+id/commentLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/commentTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="评论[0]"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:background="@color/defaultShowColor"/>
+
+            <LinearLayout
+                android:id="@+id/webLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/webTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="推文"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

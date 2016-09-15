@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.example.daidaijie.syllabusapplication.activity.SchoolDymamicFragment;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
-import com.example.daidaijie.syllabusapplication.activity.SyllabusFragment;
 
 /**
  * Created by daidaijie on 2016/7/17.
@@ -18,7 +18,12 @@ public class StuCirclePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return StuCircleFragment.newInstance();
+        if (position == 0) {
+            return SchoolDymamicFragment.newInstance();
+        } else if (position == 1) {
+            return StuCircleFragment.newInstance();
+        }
+        return null;
     }
 
     @Override
