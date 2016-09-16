@@ -41,8 +41,6 @@ public class SchoolDymamicFragment extends Fragment implements SpringView.OnFres
     //已经加载的页数
     private int loadPage;
 
-    private long nowTimeStamp;
-
     private SchoolDymamicAdapter mSchoolDymamicAdapter;
 
     private List<SchoolDynamic> mSchoolDynamics;
@@ -84,7 +82,6 @@ public class SchoolDymamicFragment extends Fragment implements SpringView.OnFres
         mDymamicRecyclerView.setAdapter(mSchoolDymamicAdapter);
 
         loadPage = 0;
-        nowTimeStamp = System.currentTimeMillis();
 
         mSpringView.post(new Runnable() {
             @Override
@@ -98,7 +95,7 @@ public class SchoolDymamicFragment extends Fragment implements SpringView.OnFres
 
     private void loadPage() {
         SchoolDynamicService schoolDynamicService = RetrofitUtil.getDefault().create(SchoolDynamicService.class);
-        schoolDynamicService.getSchoolDynamic(0, nowTimeStamp, loadPage + 1, 10)
+        schoolDynamicService.getSchoolDynamic(1, loadPage + 1, 10)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<HttpResult<List<SchoolDynamic>>>() {
@@ -112,8 +109,6 @@ public class SchoolDymamicFragment extends Fragment implements SpringView.OnFres
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: " + e.getMessage());
-                        showFailBanner("获取失败");
                         mSpringView.onFinishFreshAndLoad();
                     }
 

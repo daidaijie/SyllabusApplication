@@ -29,7 +29,6 @@ public interface SchoolDynamicService {
     @GET("interaction/api/v2.1/activity")
     Observable<HttpResult<List<SchoolDynamic>>> getSchoolDynamic(
             @Query("type") int type,
-            @Query("activity_start_time") long activityStartTime,
             @Query("page_index") int pageIndex,
             @Query("page_size") int pageSize
     );

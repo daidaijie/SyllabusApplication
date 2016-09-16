@@ -5,18 +5,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LibItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.model.LibraryModel;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
-import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -39,7 +38,7 @@ import rx.schedulers.Schedulers;
 public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.libRecyclerView)
-    RecyclerViewEmptySupport mLibRecyclerView;
+    RecyclerView mLibRecyclerView;
     @BindView(R.id.emptyTextView)
     TextView mEmptyTextView;
     @BindView(R.id.refreshLibLayout)
@@ -106,10 +105,6 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         View view = inflater.inflate(R.layout.fragment_library, container, false);
         ButterKnife.bind(this, view);
 
-        mLibRecyclerView.setEmptyView(mEmptyTextView);
-        mLibItemAdapter = new LibItemAdapter(getActivity(), mLibraryBeen);
-        mLibRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mLibRecyclerView.setAdapter(mLibItemAdapter);
 
         mRefreshLibLayout.setColorSchemeResources(
                 android.R.color.holo_blue_light,
@@ -118,13 +113,22 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 android.R.color.holo_red_light
         );
         mRefreshLibLayout.setOnRefreshListener(this);
-        mRefreshLibLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mRefreshLibLayout.setRefreshing(true);
-                getLibInfo();
-            }
-        }, 50);
+
+        if (LibraryModel.getInstance().mStoreQueryMap.get(mPosition) == null) {
+            mRefreshLibLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mRefreshLibLayout.setRefreshing(true);
+                    getLibInfo();
+                }
+            }, 50);
+        } else {
+            mLibraryBeen = LibraryModel.getInstance().mStoreQueryMap.get(mPosition);
+        }
+
+        mLibItemAdapter = new LibItemAdapter(getActivity(), mLibraryBeen);
+        mLibRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLibRecyclerView.setAdapter(mLibItemAdapter);
 
 
         return view;
@@ -133,6 +137,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     public void getLibInfo() {
         try {
+            mEmptyTextView.setText("");
             LibraryModel.getInstance().getLibraryBy(mTag, mkeyword, mSF, mOB, mPosition + 1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())
@@ -173,6 +178,10 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             mRefreshLibLayout.setRefreshing(false);
                             mLibItemAdapter.setLibraryBeen(mLibraryBeen);
                             mLibItemAdapter.notifyDataSetChanged();
+                            LibraryModel.getInstance().mStoreQueryMap.put(mPosition, mLibraryBeen);
+                            if (mLibraryBeen.size() == 0) {
+                                mEmptyTextView.setText("查找不到对应图书");
+                            }
                         }
 
                         @Override

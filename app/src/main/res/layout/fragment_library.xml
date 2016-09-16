@@ -26,7 +26,6 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:paddingTop="32dp"
-                android:text="查找不到该图书"
                 android:textColor="@color/defaultTextColor"
                 android:textSize="20sp"
                 android:visibility="visible"/>

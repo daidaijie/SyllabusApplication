@@ -2,15 +2,16 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LibraryPagerAdapter;
@@ -51,6 +52,10 @@ public class LibraryActivity extends BaseActivity {
     Button mSearchOBButton;
     @BindView(R.id.queryLayout)
     LinearLayout mQueryLayout;
+    @BindView(R.id.showQuerySelectImageView)
+    ImageView mShowQuerySelectImageView;
+    @BindView(R.id.showQueryLayout)
+    LinearLayout mShowQueryLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,11 +126,10 @@ public class LibraryActivity extends BaseActivity {
                     }
                 }).create();
 
-
-
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LibraryModel.getInstance().mStoreQueryMap.clear();
                 mLibraryPagerAdapter = new LibraryPagerAdapter(getSupportFragmentManager(),
                         LibraryModel.getInstance().searchWords.get(searchWordWhich),
                         mSearchEditText.getText().toString().trim(),
@@ -136,14 +140,14 @@ public class LibraryActivity extends BaseActivity {
             }
         });
 
-
-        mToolbar.setOnClickListener(new View.OnClickListener() {
+        showQuery(true);
+        mShowQueryLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mQueryLayout.getVisibility()==View.GONE){
-                    mQueryLayout.setVisibility(View.VISIBLE);
-                }else{
-                    mQueryLayout.setVisibility(View.GONE);
+                if (mQueryLayout.getVisibility() == View.GONE) {
+                    showQuery(true);
+                } else {
+                    showQuery(false);
                 }
             }
         });
@@ -152,5 +156,15 @@ public class LibraryActivity extends BaseActivity {
     @Override
     protected int getContentView() {
         return R.layout.activity_library;
+    }
+
+    private void showQuery(boolean isShow) {
+        if (isShow) {
+            mShowQuerySelectImageView.setRotation(180.0f);
+            mQueryLayout.setVisibility(View.VISIBLE);
+        } else {
+            mShowQuerySelectImageView.setRotation(0.0f);
+            mQueryLayout.setVisibility(View.GONE);
+        }
     }
 }

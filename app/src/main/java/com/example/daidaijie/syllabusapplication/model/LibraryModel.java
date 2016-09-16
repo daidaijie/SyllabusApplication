@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication.model;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.service.LibraryService;
 
 import java.io.UnsupportedEncodingException;
@@ -36,6 +37,8 @@ public class LibraryModel {
     public List<String> libSFs;
 
     public List<String> libOBs;
+
+    public Map<Integer, List<LibraryBean>> mStoreQueryMap;
 
 
     private static LibraryModel ourInstance = new LibraryModel();
@@ -72,8 +75,9 @@ public class LibraryModel {
 
         libSFs = Arrays.asList(App.getContext().getResources().getStringArray(R.array.query_lib_sf));
         libOBs = Arrays.asList(App.getContext().getResources().getStringArray(R.array.query_lib_ob));
-    }
 
+        mStoreQueryMap = new HashMap<>();
+    }
 
 
     public Observable<String> getLibraryBy(String tag, String word, String sf, String ob, int position) throws UnsupportedEncodingException {
