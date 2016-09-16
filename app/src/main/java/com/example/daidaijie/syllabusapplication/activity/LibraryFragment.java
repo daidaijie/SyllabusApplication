@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,11 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LibItemAdapter;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
+import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
 import com.example.daidaijie.syllabusapplication.model.LibraryModel;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -147,6 +150,15 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             List<LibraryBean> libraryBeen = new ArrayList<>();
 
                             Element body = Jsoup.parseBodyFragment(s).body();
+
+                            if (!LibraryModel.getInstance().isGetCount){
+                                Element countString = body.select("span#ctl00_ContentPlaceHolder1_countlbl").first();
+
+                                if (!countString.text().trim().isEmpty()) {
+                                    EventBus.getDefault().post(new LibPageCountEvent(Integer.parseInt(countString.text().trim())));
+                                }
+
+                            }
                             Element table = body.select("table.tb").first();
                             Elements items = table.getElementsByTag("tr");
                             items.remove(0);

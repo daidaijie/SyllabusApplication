@@ -20,12 +20,16 @@ public class LibraryPagerAdapter extends FragmentStatePagerAdapter {
 
     private String mOB;
 
+    private int pageCount;
+
+
     public LibraryPagerAdapter(FragmentManager fm, String tag, String keyword, String SF, String OB) {
         super(fm);
         mTag = tag;
         mKeyword = keyword;
         mSF = SF;
         mOB = OB;
+        pageCount = 1;
     }
 
     @Override
@@ -35,6 +39,14 @@ public class LibraryPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return Integer.MAX_VALUE;
+        return pageCount;
+    }
+
+    public int getPageCount() {
+        return pageCount;
+    }
+
+    public void setPageCount(int pageCount) {
+        this.pageCount = pageCount;
     }
 }

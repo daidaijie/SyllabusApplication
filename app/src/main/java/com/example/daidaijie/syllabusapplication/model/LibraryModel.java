@@ -40,6 +40,7 @@ public class LibraryModel {
 
     public Map<Integer, List<LibraryBean>> mStoreQueryMap;
 
+    public boolean isGetCount;
 
     private static LibraryModel ourInstance = new LibraryModel();
 
@@ -56,7 +57,7 @@ public class LibraryModel {
         dt = "ALL";
         cl = "ALL";
         dept = "ALL";
-        dp = 20;
+        dp = 10;
         sm = "table";
 
 
@@ -77,6 +78,8 @@ public class LibraryModel {
         libOBs = Arrays.asList(App.getContext().getResources().getStringArray(R.array.query_lib_ob));
 
         mStoreQueryMap = new HashMap<>();
+
+        isGetCount = false;
     }
 
 
