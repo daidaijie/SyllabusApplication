@@ -23,14 +23,18 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.CommentAdapter;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
+import com.example.daidaijie.syllabusapplication.bean.CommentsBean;
 import com.example.daidaijie.syllabusapplication.bean.PostCommentBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.model.PostListModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.CircleCommentsService;
 import com.example.daidaijie.syllabusapplication.service.SendCommentService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +91,7 @@ public class CircleDetailActivity extends BaseActivity {
 
     //上一条评论
     private int lastPostion;
+    private int mPosition;
 
 
     @Override
@@ -107,7 +112,8 @@ public class CircleDetailActivity extends BaseActivity {
             }
         });
 
-        mPostListBean = PostListModel.getInstance().mPostListBeen.get(getIntent().getIntExtra(EXTRA_POST_BEAN_POS, 0));
+        mPosition = getIntent().getIntExtra(EXTRA_POST_BEAN_POS, 0);
+        mPostListBean = PostListModel.getInstance().mPostListBeen.get(mPosition);
 
         mPostListBeen = new ArrayList<>();
         mPostListBeen.add(mPostListBean);
@@ -252,8 +258,21 @@ public class CircleDetailActivity extends BaseActivity {
                 .subscribe(new Subscriber<CommentInfo>() {
                     @Override
                     public void onCompleted() {
+
                         mCommentAdapter.setCommentInfo(mCommentInfo);
                         mCommentAdapter.notifyDataSetChanged();
+
+                        //更新数据
+                        List<CommentsBean> commentsBeen = new ArrayList<>();
+                        for (CommentInfo.CommentsBean commentsBean : mCommentInfo.getComments()) {
+                            CommentsBean commentsBeanID = new CommentsBean();
+                            commentsBeanID.setId(commentsBean.getId());
+                            commentsBeanID.setUid(commentsBean.getUid());
+                            commentsBeen.add(commentsBeanID);
+                        }
+                        mPostListBean.setComments(commentsBeen);
+                        mCirclesAdapter.notifyDataSetChanged();
+                        EventBus.getDefault().post(new CircleStateChangeEvent(mPosition));
                     }
 
                     @Override
@@ -299,6 +318,7 @@ public class CircleDetailActivity extends BaseActivity {
                         // TODO: 2016/8/18 这里要动态更改评论的数量
                         mCommentEditext.setText("");
                         getComment();
+
                     }
 
                     @Override

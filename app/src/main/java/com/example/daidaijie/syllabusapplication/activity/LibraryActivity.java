@@ -194,6 +194,7 @@ public class LibraryActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LibraryModel.getInstance().mStoreQueryMap.clear();
         EventBus.getDefault().unregister(this);
     }
 }

@@ -17,6 +17,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.bean.CircleBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.model.PostListModel;
 import com.example.daidaijie.syllabusapplication.service.CirclesService;
@@ -185,6 +186,18 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putSerializable(SAVED_POST_LIST_BEEN, (Serializable) mPostListModel.mPostListBeen);
+    }
+
+    @OnClick(R.id.postContentButton)
+    public void onClick() {
+        Intent intent = PostContentActivity.getIntent(getActivity());
+        getActivity().startActivity(intent);
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void toTop(ToTopEvent toTopEvent) {
         mCircleRecyclerView.smoothScrollToPosition(0);
@@ -202,15 +215,8 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putSerializable(SAVED_POST_LIST_BEEN, (Serializable) mPostListModel.mPostListBeen);
-    }
-
-    @OnClick(R.id.postContentButton)
-    public void onClick() {
-        Intent intent = PostContentActivity.getIntent(getActivity());
-        getActivity().startActivity(intent);
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void circleStateChange(CircleStateChangeEvent event) {
+        mCirclesAdapter.notifyItemChanged(event.position);
     }
 }
