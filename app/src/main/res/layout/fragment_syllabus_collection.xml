@@ -1,0 +1,37 @@
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/defaultDarkBackground"
+    tools:context="com.example.daidaijie.syllabusapplication.activity.StuCircleFragment">
+
+    <com.liaoinstan.springview.widget.SpringView
+        android:id="@+id/springView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/collectionRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </com.liaoinstan.springview.widget.SpringView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:src="@drawable/ic_add_white"
+        android:id="@+id/addCollectionButton"
+        app:backgroundTint="@color/colorAccent"
+        app:pressedTranslationZ="4dp"
+        app:rippleColor="@color/colorAccentDark"
+        app:elevation="8dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_gravity="bottom|right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</android.support.design.widget.CoordinatorLayout>

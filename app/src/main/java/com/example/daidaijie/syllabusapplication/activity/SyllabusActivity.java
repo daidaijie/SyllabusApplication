@@ -19,7 +19,6 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -36,7 +35,6 @@ import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter;
-import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
@@ -46,15 +44,9 @@ import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeComparator;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.BindView;
 
@@ -298,6 +290,9 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             startActivity(intent);
         } else if (id == R.id.nav_save_syllabus) {
             EventBus.getDefault().post(new SaveSyllabusEvent(pageIndex));
+        } else if (id == R.id.nav_syllabus_collection) {
+            Intent intent = new Intent(this, SyllabusCollectionActivity.class);
+            startActivity(intent);
         }
         //点击后关闭drawerLayout
         mDrawerLayout.closeDrawer(GravityCompat.START);

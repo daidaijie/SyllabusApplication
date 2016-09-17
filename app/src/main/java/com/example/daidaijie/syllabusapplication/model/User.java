@@ -27,6 +27,8 @@ public class User {
 
     private static final String FILE_NAME = "User";
 
+    public static final String TAG = "User";
+
     public static final String EXTRA_CURRENT_ACCOUNT
             = "com.example.daidaijie.syllabusapplication.model.User.currentAccount";
 

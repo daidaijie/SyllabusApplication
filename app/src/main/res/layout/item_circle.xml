@@ -10,9 +10,9 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
+    android:foreground="@drawable/fg_circle_card"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/material_white"
-    android:foreground="@drawable/fg_circle_card"
     app:cardCornerRadius="4dp"
     app:cardElevation="1dp">
 
@@ -44,7 +44,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/contentTextView"
             android:layout_below="@+id/nicknameTextView"
             android:layout_marginRight="8dp"
@@ -65,27 +65,27 @@
 
             <TextView
                 android:id="@+id/postDeviceTextView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="6dp"
                 android:layout_toRightOf="@+id/postInfoTextView"
                 android:ellipsize="end"
                 android:gravity="top|right"
                 android:singleLine="true"
                 android:textColor="@color/defaultShowColor"
-                android:textSize="12sp"
+                android:textSize="10sp"
                 tools:text="来自iOS"/>
         </RelativeLayout>
 
         <TextView
-            android:background="@drawable/bg_circle_cotent"
             android:id="@+id/contentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/headImageDraweeView"
             android:layout_marginTop="8dp"
+            android:background="@drawable/bg_circle_cotent"
             android:textColor="@color/defaultTextColor"
             android:textSize="14sp"
             tools:text="8月13号12:50潮汕站👉汕大。三缺一。联系麦同学：661821。[流泪][流泪][流泪]"/>
@@ -121,11 +121,11 @@
             android:layout_below="@+id/horDivLine">
 
             <LinearLayout
-                android:gravity="center"
                 android:id="@+id/thumbUpLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_weight="1"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <com.example.daidaijie.syllabusapplication.widget.ThumbUpView
