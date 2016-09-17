@@ -136,6 +136,12 @@ public class CircleDetailActivity extends BaseActivity {
         mContentRecyclerView = new RecyclerView(this);
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mContentRecyclerView.setAdapter(mCirclesAdapter);
+        mCirclesAdapter.setOnLikeStateChangeListener(new CirclesAdapter.OnLikeStateChangeListener() {
+            @Override
+            public void onLike(boolean isLike, int position) {
+                EventBus.getDefault().post(new CircleStateChangeEvent(mPosition));
+            }
+        });
 
         mCommentInfo = null;
         mCommentAdapter = new CommentAdapter(this, mCommentInfo);
@@ -315,7 +321,6 @@ public class CircleDetailActivity extends BaseActivity {
                 .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onCompleted() {
-                        // TODO: 2016/8/18 这里要动态更改评论的数量
                         mCommentEditext.setText("");
                         getComment();
 

@@ -23,11 +23,19 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.PostUserBean;
+import com.example.daidaijie.syllabusapplication.bean.ThumbUp;
+import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
+import com.example.daidaijie.syllabusapplication.bean.ThumbUpsBean;
+import com.example.daidaijie.syllabusapplication.model.PostListModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.model.User;
+import com.example.daidaijie.syllabusapplication.service.ThumbUpService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.liaoinstan.springview.utils.DensityUtil;
@@ -36,11 +44,17 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit2.Retrofit;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by daidaijie on 2016/8/9.
  */
 public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHolder> {
+
+    public static final String TAG = "CirclesAdapter";
 
     Activity mActivity;
 
@@ -64,6 +78,20 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     }
 
     OnCommentListener mCommentListener;
+
+    public interface OnLikeStateChangeListener {
+        void onLike(boolean isLike, int position);
+    }
+
+    OnLikeStateChangeListener mOnLikeStateChangeListener;
+
+    public OnLikeStateChangeListener getOnLikeStateChangeListener() {
+        return mOnLikeStateChangeListener;
+    }
+
+    public void setOnLikeStateChangeListener(OnLikeStateChangeListener onLikeStateChangeListener) {
+        mOnLikeStateChangeListener = onLikeStateChangeListener;
+    }
 
     public CirclesAdapter(Activity activity, List<PostListBean> postListBeen) {
         mActivity = activity;
@@ -150,7 +178,12 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         } else {
             holder.mPhotoRecyclerView.setVisibility(View.GONE);
         }
-        if (postBean.getThumb_ups().size() > 0) {
+
+        /**
+         * 点赞
+         */
+        holder.mThumbUpView.setEnabled(false);
+        if (postBean.isMyLove) {
             holder.mThumbUpView.setLike();
         } else {
             holder.mThumbUpView.setUnLike();
@@ -158,9 +191,89 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         holder.mThumbUpLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                holder.mThumbUpView.Like();
+                ThumbUpService service = RetrofitUtil.getDefault().create(ThumbUpService.class);
+                holder.mThumbUpLinearLayout.setEnabled(false);
+                Log.e(TAG, "onClick: " + postBean.isMyLove);
+                if (!postBean.isMyLove) {
+                    service.like(new ThumbUp(postBean.getId(),
+                            User.getInstance().getUserInfo().getUser_id(),
+                            User.getInstance().getUserInfo().getToken()))
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Subscriber<HttpResult<ThumbUpReturn>>() {
+                                @Override
+                                public void onCompleted() {
+                                    Log.e(TAG, "onCompleted: ");
+                                    postBean.isMyLove = true;
+                                    holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
+                                    holder.mThumbUpView.Like();
+                                    holder.mThumbUpLinearLayout.setEnabled(true);
+                                    if (mOnLikeStateChangeListener != null) {
+                                        mOnLikeStateChangeListener.onLike(true, position);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    holder.mThumbUpLinearLayout.setEnabled(true);
+                                    Log.e(TAG, "onError: " + e.getMessage());
+                                }
+
+                                @Override
+                                public void onNext(HttpResult<ThumbUpReturn> thumbUpReturnHttpResult) {
+                                    if (thumbUpReturnHttpResult.getData() != null) {
+                                        ThumbUpsBean bean = new ThumbUpsBean();
+                                        bean.setUid(User.getInstance().getUserInfo().getUser_id());
+                                        bean.setId(bean.getId());
+                                        postBean.getThumb_ups().add(bean);
+                                        Log.e(TAG, "onNext: ");
+                                    }
+                                }
+                            });
+                } else {
+                    ThumbUpsBean myThumbUpsBean = null;
+                    for (ThumbUpsBean bean : postBean.getThumb_ups()) {
+                        if (bean.getUid() == User.getInstance().getUserInfo().getUser_id()) {
+                            myThumbUpsBean = bean;
+                            break;
+                        }
+                    }
+                    if (myThumbUpsBean == null) return;
+                    final ThumbUpsBean finalMyThumbUpsBean = myThumbUpsBean;
+                    service.unlike(myThumbUpsBean.getId(),
+                            User.getInstance().getUserInfo().getUser_id(),
+                            User.getInstance().getUserInfo().getToken())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Subscriber<HttpResult<Void>>() {
+                                @Override
+                                public void onCompleted() {
+                                    Log.e(TAG, "onCompleted: ");
+                                    postBean.isMyLove = false;
+                                    postBean.getThumb_ups().remove(finalMyThumbUpsBean);
+
+                                    holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
+                                    holder.mThumbUpLinearLayout.setEnabled(true);
+                                    holder.mThumbUpView.UnLike();
+                                    if (mOnLikeStateChangeListener != null) {
+                                        mOnLikeStateChangeListener.onLike(false, position);
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+                                    holder.mThumbUpLinearLayout.setEnabled(true);
+                                    Log.e(TAG, "onError: " + e.getMessage());
+                                }
+
+                                @Override
+                                public void onNext(HttpResult<Void> thumbUpReturnHttpResult) {
+                                }
+                            });
+                }
             }
         });
+
 
         if (!isOnlyOne) {
             holder.mItemCardView.setOnClickListener(new View.OnClickListener() {

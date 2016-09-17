@@ -17,9 +17,11 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.bean.CircleBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.bean.ThumbUpsBean;
 import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.model.PostListModel;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.CirclesService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -174,6 +176,14 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
                     @Override
                     public void onNext(List<PostListBean> postListBeen) {
+                        for (PostListBean bean : postListBeen) {
+                            for (ThumbUpsBean thumbUpsBean : bean.getThumb_ups()) {
+                                if (thumbUpsBean.getUid() == User.getInstance().getUserInfo().getUser_id()) {
+                                    bean.isMyLove = true;
+                                    break;
+                                }
+                            }
+                        }
                         tmpPostListBeen = postListBeen;
                     }
                 });

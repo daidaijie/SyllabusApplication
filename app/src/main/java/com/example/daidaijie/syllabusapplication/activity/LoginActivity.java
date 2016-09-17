@@ -70,11 +70,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
     }
 
     @Override
-    protected boolean isCanBack() {
-        return false;
-    }
-
-    @Override
     public void onClick(View v) {
 
         if (mUsernameEditText.getText().toString().trim().isEmpty()) {

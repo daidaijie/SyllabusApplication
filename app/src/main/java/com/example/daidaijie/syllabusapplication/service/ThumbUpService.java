@@ -5,6 +5,8 @@ import com.example.daidaijie.syllabusapplication.bean.ThumbUp;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
 
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -14,6 +16,9 @@ import rx.Observable;
  */
 public interface ThumbUpService {
 
-    @POST("/interaction/api/v2/like")
-    Observable<HttpResult<ThumbUpReturn>> like_this(@Body ThumbUp thumbUp);
+    @POST("/interaction/api/v2.1/like")
+    Observable<HttpResult<ThumbUpReturn>> like(@Body ThumbUp thumbUp);
+
+    @DELETE("/interaction/api/v2.1/like")
+    Observable<HttpResult<Void>> unlike(@Header("id") int like_id, @Header("uid") int uid, @Header("token") String token);
 }

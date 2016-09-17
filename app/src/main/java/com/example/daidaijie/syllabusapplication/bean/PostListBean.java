@@ -8,6 +8,9 @@ import java.util.List;
  */
 public class PostListBean implements Serializable {
     private String content;
+
+    public boolean isMyLove;
+
     /**
      * account : 15jhzhao3
      * nickname : HoraceChiu

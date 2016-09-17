@@ -577,7 +577,7 @@ public class ThumbUpView extends View {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        if (MotionEvent.ACTION_DOWN == event.getAction()) {
+        /*if (MotionEvent.ACTION_DOWN == event.getAction()) {
             startX = event.getX();
             startY = event.getY();
             return true;
@@ -605,7 +605,7 @@ public class ThumbUpView extends View {
             }
 
 
-        }
+        }*/
 
         return false;
     }
