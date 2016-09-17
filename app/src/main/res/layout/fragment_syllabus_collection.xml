@@ -7,8 +7,8 @@
     android:background="@color/defaultDarkBackground"
     tools:context="com.example.daidaijie.syllabusapplication.activity.StuCircleFragment">
 
-    <com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/springView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/refreshCollectionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,7 +19,7 @@
 
         </android.support.v7.widget.RecyclerView>
 
-    </com.liaoinstan.springview.widget.SpringView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:src="@drawable/ic_add_white"

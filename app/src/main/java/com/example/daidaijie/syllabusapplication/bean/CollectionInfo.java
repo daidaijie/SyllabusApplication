@@ -2,12 +2,10 @@ package com.example.daidaijie.syllabusapplication.bean;
 
 import java.util.List;
 
-import io.realm.RealmObject;
-
 /**
  * Created by daidaijie on 2016/9/17.
  */
-public class CollectionInfo extends RealmObject {
+public class CollectionInfo {
 
 
     private List<CollectionBean> collection_ids;

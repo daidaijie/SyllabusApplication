@@ -113,6 +113,8 @@
         </activity>
         <activity android:name=".activity.SyllabusCollectionActivity">
         </activity>
+        <activity android:name=".activity.AddCollectionActivity">
+        </activity>
     </application>
 
 </manifest>
