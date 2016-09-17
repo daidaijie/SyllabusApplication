@@ -62,4 +62,5 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-scalars:2.1.0'
     compile 'info.hoang8f:fbutton:1.0.5'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
+    compile 'com.orhanobut:logger:1.15'
 }

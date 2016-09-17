@@ -35,4 +35,12 @@ public interface SyllabusCollectionService {
                                                        @Field("token") String token,
                                                        @Field("start_year") int start_year,
                                                        @Field("season") int season);
+
+    @FormUrlEncoded
+    @POST("interaction/api/v2.1/syllabus_collection")
+    Observable<HttpResult<CollectionId>> sendSyllabus(@Field("username") String username,
+                                                      @Field("token") String token,
+                                                      @Field("start_year") int start_year,
+                                                      @Field("season") int season,
+                                                      @Field("syllabus") int syllabus);
 }

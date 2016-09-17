@@ -52,7 +52,7 @@ public class SyllabusCollectionFragment extends Fragment implements SwipeRefresh
 
     public static final String TAG = "SyllabusCollectionFragment";
 
-    public static SyllabusCollectionFragment newInstancce() {
+    public static SyllabusCollectionFragment newInstance() {
         SyllabusCollectionFragment fragment = new SyllabusCollectionFragment();
         return fragment;
     }

@@ -115,6 +115,8 @@
         </activity>
         <activity android:name=".activity.AddCollectionActivity">
         </activity>
+        <activity android:name=".activity.SendSyllabusActivity">
+        </activity>
     </application>
 
 </manifest>

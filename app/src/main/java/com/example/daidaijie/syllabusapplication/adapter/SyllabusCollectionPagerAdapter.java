@@ -4,8 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.daidaijie.syllabusapplication.activity.SchoolDymamicFragment;
-import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.activity.SentSyllabusFragment;
 import com.example.daidaijie.syllabusapplication.activity.SyllabusCollectionFragment;
 
 /**
@@ -20,9 +19,9 @@ public class SyllabusCollectionPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0) {
-            return SyllabusCollectionFragment.newInstancce();
+            return SyllabusCollectionFragment.newInstance();
         } else if (position == 1) {
-            return SyllabusCollectionFragment.newInstancce();
+            return SentSyllabusFragment.newInstance();
         }
         return null;
     }

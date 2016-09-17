@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.SendSyllabusActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="?attr/colorPrimary"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:gravity="center_vertical"
+        android:theme="@style/AppTheme.PopupOverlay"
+        app:titleTextColor="@android:color/white">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:text="发送课表"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+
+    </android.support.v7.widget.Toolbar>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:paddingTop="16dp"
+        android:text="选择学期"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16sp"/>
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/selectSemesterButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:calendarViewShown="false"
+        android:text="2015-2016 秋季学期"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="16sp"
+        app:buttonColor="@color/material_white"
+        app:cornerRadius="4dp"
+        app:shadowColor="@color/defaultDarkBackground"
+        app:shadowEnabled="true"
+        app:shadowHeight="1dp"/>
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/finishButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="32dp"
+        android:calendarViewShown="false"
+        android:text="完成"
+        android:textColor="@color/material_white"
+        android:textSize="16sp"
+        app:buttonColor="?attr/colorPrimary"
+        app:cornerRadius="4dp"
+        app:shadowColor="@color/defaultDarkBackground"
+        app:shadowEnabled="true"
+        app:shadowHeight="1dp"/>
+
+
+</LinearLayout>
