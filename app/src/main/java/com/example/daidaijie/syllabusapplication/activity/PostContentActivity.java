@@ -27,6 +27,7 @@ import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.PushPostService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
@@ -34,6 +35,7 @@ import com.example.daidaijie.syllabusapplication.util.ImageUploader;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
+import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.liaoinstan.springview.utils.DensityUtil;
 
@@ -81,6 +83,8 @@ public class PostContentActivity extends BaseActivity {
 
     public static final String TAG = "PostContentActivity";
 
+    AlertDialog mLoadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +99,7 @@ public class PostContentActivity extends BaseActivity {
 
         mPhotoImgs = new ArrayList<>();
         setUpFlow();
+        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
     }
 
     @Override
@@ -275,13 +280,20 @@ public class PostContentActivity extends BaseActivity {
     }
 
     private void pushContent(@Nullable String photoListJson) {
+        mLoadingDialog.show();
         PostContent postContent = new PostContent();
         postContent.content = mContentEditText.getText().toString();
         postContent.token = User.getInstance().getUserInfo().getToken();
         postContent.description = "None";
         postContent.post_type = PushPostService.POST_TYPE_TOPIC;
         postContent.photo_list_json = photoListJson;
-        postContent.source = "iPhone 7s plus";
+        if (mPostAsAndroidButton.isChecked()) {
+            postContent.source = mPostAsAndroidButton.getText().toString();
+        } else if (mPostAsPhoneButton.isChecked()) {
+            postContent.source = mPostAsPhoneButton.getText().toString();
+        } else if (mPostAsOtherButton.isChecked()) {
+            postContent.source = mPostAsOtherButton.getText().toString();
+        }
         postContent.uid = User.getInstance().getUserBaseBean().getId();
 
         Retrofit retrofit = RetrofitUtil.getDefault();
@@ -292,15 +304,17 @@ public class PostContentActivity extends BaseActivity {
                 .subscribe(new Subscriber<Void>() {
                     @Override
                     public void onCompleted() {
-                        EventBus.getDefault().post(new ToTopEvent(true,true));
+                        EventBus.getDefault().post(new ToTopEvent(true, true));
+                        mLoadingDialog.dismiss();
                         PostContentActivity.this.finish();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         Log.d(TAG, "onError: Push" + e.getMessage());
-                        SnackbarUtil.LongSnackbar(mContentEditText,"发送失败",SnackbarUtil.Alert)
+                        SnackbarUtil.LongSnackbar(mContentEditText, "发送失败", SnackbarUtil.Alert)
                                 .show();
+                        mLoadingDialog.dismiss();
                     }
 
                     @Override
