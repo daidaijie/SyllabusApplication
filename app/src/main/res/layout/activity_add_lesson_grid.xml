@@ -30,18 +30,75 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:textSize="16sp"
-        android:textColor="@color/defaultTextColor"
         android:gravity="center"
         android:text="选择周数"
+        android:textColor="@color/defaultTextColor"
+        android:textSize="20sp"/>
+
+    <LinearLayout
+        android:padding="1px"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_retangle_grey">
+
+        <TextView
+            android:id="@+id/singleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="单周"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16sp"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/defaultShowColor"/>
+
+        <TextView
+            android:id="@+id/doubleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="双周"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16sp"/>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/defaultShowColor"/>
+
+        <TextView
+            android:id="@+id/allTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="全选"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="8dp"
+        android:id="@+id/weekRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp">
     </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

@@ -46,7 +46,7 @@ public class AddLessonFragment extends Fragment {
         mAddLessonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SelectTimeActivity.class);
+                Intent intent = new Intent(getActivity(), AddLessonGridActivity.class);
                 startActivity(intent);
             }
         });
