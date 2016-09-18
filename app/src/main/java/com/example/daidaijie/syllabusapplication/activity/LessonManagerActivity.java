@@ -1,26 +1,26 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.adapter.LessonManagerPagerAdapter;
 
 import butterknife.BindView;
 
 public class LessonManagerActivity extends BaseActivity {
 
+
+    @BindView(R.id.titleTextView)
+    TextView mTitleTextView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @BindView(R.id.tabLayout)
-    TabLayout mTabLayout;
-    @BindView(R.id.mainAppBarLayout)
-    AppBarLayout mMainAppBarLayout;
-    @BindView(R.id.containerViewPager)
-    ViewPager mContainerViewPager;
+    @BindView(R.id.lessonManagerViewPager)
+    ViewPager mLessonManagerViewPager;
+
+    private LessonManagerPagerAdapter mLessonManagerPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,9 @@ public class LessonManagerActivity extends BaseActivity {
         setupToolbar(mToolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        mLessonManagerPagerAdapter = new LessonManagerPagerAdapter(getSupportFragmentManager());
+        mLessonManagerViewPager.setAdapter(mLessonManagerPagerAdapter);
 
     }
 

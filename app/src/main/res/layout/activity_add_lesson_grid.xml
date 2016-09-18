@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.LessonManagerActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.activity.AddLessonGridActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,23 +18,30 @@
         app:titleTextColor="@android:color/white">
 
         <TextView
-            android:layout_marginRight="48dp"
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:paddingTop="8dp"
             android:singleLine="true"
-            android:text="添加课程"
+            android:text="添加时间段"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/lessonManagerViewPager"
+    <TextView
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:textColor="@color/defaultTextColor"
+        android:gravity="center"
+        android:text="选择周数"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"/>
 
-    </android.support.v4.view.ViewPager>
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

@@ -132,6 +132,70 @@ public class Lesson implements Serializable {
         return sb.toString();
     }
 
+
+    /**
+     * 将获取的w0,w1,w2,w3等转化成TimeGird类型
+     * 以便于使用
+     */
+    public void convertDays() {
+        TimeGird timeGrid;
+
+        int index = duration.indexOf("-");
+        int startWeek = Integer.parseInt(duration.substring(0, index).trim());
+        int endWeek = Integer.parseInt(duration.substring(index + 1, duration.length()).trim());
+
+
+        timeGrid = convertForWn(this.getDays().getW0(), 0, startWeek, endWeek);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW1(), 1, startWeek, endWeek);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW2(), 2, startWeek, endWeek);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW3(), 3, startWeek, endWeek);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW4(), 4, startWeek, endWeek);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW5(), 5, startWeek, endWeek);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+
+        timeGrid = convertForWn(this.getDays().getW6(), 6, startWeek, endWeek);
+        if (timeGrid != null) mTimeGirds.add(timeGrid);
+        if (mTimeGirds.size() != 0) {
+            Log.e(TAG, "convertDays: " + Long.toBinaryString(mTimeGirds.get(0).getWeekOfTime()));
+        }
+    }
+
+    /**
+     *
+     */
+    private TimeGird convertForWn(String timeOfWeek, int week, int startWeek, int endWeek) {
+        TimeGird timeGird = new TimeGird();
+        timeGird.startWeek = startWeek;
+        timeGird.endWeek = endWeek;
+        if (!timeOfWeek.trim().equals("None")) {
+            timeGird.setWeekDate(week);
+            if (timeOfWeek.charAt(0) == '单') {
+                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.SINGLE);
+                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
+            } else if (timeOfWeek.charAt(0) == '双') {
+                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.DOUBLE);
+                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
+            } else {
+                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.FULL);
+                timeGird.setTimeList(timeOfWeek);
+            }
+            return timeGird;
+        }
+
+        return null;
+    }
+
+
     public static class TimeGird implements Serializable {
 
         public int startWeek;
@@ -262,68 +326,6 @@ public class Lesson implements Serializable {
             sb.append(mTimeList);
             return sb.toString();
         }
-    }
-
-    /**
-     * 将获取的w0,w1,w2,w3等转化成TimeGird类型
-     * 以便于使用
-     */
-    public void convertDays() {
-        TimeGird timeGrid;
-
-        int index = duration.indexOf("-");
-        int startWeek = Integer.parseInt(duration.substring(0, index).trim());
-        int endWeek = Integer.parseInt(duration.substring(index + 1, duration.length()).trim());
-
-
-        timeGrid = convertForWn(this.getDays().getW0(), 0, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-
-        timeGrid = convertForWn(this.getDays().getW1(), 1, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-
-        timeGrid = convertForWn(this.getDays().getW2(), 2, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-
-        timeGrid = convertForWn(this.getDays().getW3(), 3, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-
-        timeGrid = convertForWn(this.getDays().getW4(), 4, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-
-        timeGrid = convertForWn(this.getDays().getW5(), 5, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-
-        timeGrid = convertForWn(this.getDays().getW6(), 6, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-        if (mTimeGirds.size() != 0) {
-            Log.e(TAG, "convertDays: " + Long.toBinaryString(mTimeGirds.get(0).getWeekOfTime()));
-        }
-    }
-
-    /**
-     *
-     */
-    private TimeGird convertForWn(String timeOfWeek, int week, int startWeek, int endWeek) {
-        TimeGird timeGird = new TimeGird();
-        timeGird.startWeek = startWeek;
-        timeGird.endWeek = endWeek;
-        if (!timeOfWeek.trim().equals("None")) {
-            timeGird.setWeekDate(week);
-            if (timeOfWeek.charAt(0) == '单') {
-                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.SINGLE);
-                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
-            } else if (timeOfWeek.charAt(0) == '双') {
-                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.DOUBLE);
-                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
-            } else {
-                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.FULL);
-                timeGird.setTimeList(timeOfWeek);
-            }
-            return timeGird;
-        }
-
-        return null;
     }
 
     /**
