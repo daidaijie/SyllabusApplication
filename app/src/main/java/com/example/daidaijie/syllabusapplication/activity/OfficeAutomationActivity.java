@@ -139,7 +139,7 @@ public class OfficeAutomationActivity extends BaseActivity {
                 }).create();
 
         showPage(false);
-        mTitleTextView.setOnClickListener(new View.OnClickListener() {
+        mTitleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mPageTitleLayout.getVisibility() == View.GONE) {

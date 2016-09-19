@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import rx.Observable;
+import info.hoang8f.widget.FButton;
 
 public class AddLessonGridActivity extends BaseActivity {
 
@@ -34,6 +37,13 @@ public class AddLessonGridActivity extends BaseActivity {
     TextView mDoubleTextView;
     @BindView(R.id.allTextView)
     TextView mAllTextView;
+    @BindView(R.id.selectTimeButton)
+    FButton mSelectTimeButton;
+    @BindView(R.id.hasSelectTimeTextView)
+    TextView mHasSelectTimeTextView;
+
+    public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
+            ".AddLessonGridActivity.position";
 
     private boolean isSingle;
     private boolean isDouble;
@@ -42,6 +52,8 @@ public class AddLessonGridActivity extends BaseActivity {
     private List<Boolean> selectWeeks;
 
     private WeekSelectAdapter mWeekSelectAdapter;
+
+    private int mPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,23 +64,29 @@ public class AddLessonGridActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        selectWeeks = new ArrayList<>();
-        for (int i = 0; i < 16; i++) {
-            selectWeeks.add(false);
-        }
+        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
+        selectWeeks = AddLessonModel.getInstance().mTimes.get(mPosition).selectWeeks;
 
-        isSingle = isDouble = isAll = false;
-        setWeekType();
+        getSelectType();
 
         mWeekSelectAdapter = new WeekSelectAdapter();
         mWeekRecyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         mWeekRecyclerView.setAdapter(mWeekSelectAdapter);
+
+        mSelectTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = SelectTimeActivity.getIntent(AddLessonGridActivity.this, mPosition);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
     protected int getContentView() {
         return R.layout.activity_add_lesson_grid;
     }
+
 
     @OnClick({R.id.singleTextView, R.id.doubleTextView, R.id.allTextView})
     public void onClick(View view) {
@@ -142,7 +160,6 @@ public class AddLessonGridActivity extends BaseActivity {
             }
         }
 
-
         setWeekType();
     }
 
@@ -168,6 +185,12 @@ public class AddLessonGridActivity extends BaseActivity {
             mDoubleTextView.setTextColor(getResources().getColor(R.color.defaultTextColor));
             mDoubleTextView.setBackgroundColor(getResources().getColor(R.color.material_white));
         }
+    }
+
+    public static Intent getIntent(Context context, int position) {
+        Intent intent = new Intent(context, AddLessonGridActivity.class);
+        intent.putExtra(EXTRA_POSITION, position);
+        return intent;
     }
 
 
@@ -226,4 +249,5 @@ public class AddLessonGridActivity extends BaseActivity {
             }
         }
     }
+
 }

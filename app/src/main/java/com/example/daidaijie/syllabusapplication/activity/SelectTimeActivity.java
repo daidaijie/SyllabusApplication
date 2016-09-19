@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +16,9 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
+import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +27,14 @@ import butterknife.BindView;
 
 public class SelectTimeActivity extends BaseActivity {
 
-    private List<List<Boolean>> mSelectTimes;
-
     private int timeWidth;
     private int gridWidth;
     private int gridHeight;
+
+    public List<List<Boolean>> mSelectTimes;
+
+    public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
+            ".SelectTimeActivity.position";
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -57,17 +64,18 @@ public class SelectTimeActivity extends BaseActivity {
         timeWidth = deviceWidth - gridWidth * 7;
         gridHeight = getResources().getDimensionPixelOffset(R.dimen.syllabus_grid_height);
 
+        mSelectTimes = AddLessonModel.getInstance().mTimes.get(getIntent().getIntExtra(EXTRA_POSITION, 0)).mSelectTimes;
+
+        for (int i = 0; i < 7; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < 13; j++) {
+                sb.append(mSelectTimes.get(i).get(j) + ", ");
+            }
+            Logger.e("mSelectTimes " + i + ": " + sb.toString());
+        }
+
         showDate();
         showTime();
-
-        mSelectTimes = new ArrayList<>();
-        for (int i = 0; i < 7; ++i) {
-            List<Boolean> selectTimeList = new ArrayList<>();
-            for (int j = 0; j < 13; j++) {
-                selectTimeList.add(false);
-            }
-            mSelectTimes.add(selectTimeList);
-        }
 
         showSelectTime();
     }
@@ -100,6 +108,11 @@ public class SelectTimeActivity extends BaseActivity {
                         }
                     }
                 });
+                if (mSelectTimes.get(i).get(j)) {
+                    lessonTextView.setBackgroundDrawable(selectShape);
+                } else {
+                    lessonTextView.setBackgroundDrawable(unselectShape);
+                }
                 lessonTextView.setWidth(gridWidth);
                 lessonTextView.setHeight(gridHeight);
                 GridLayout.Spec rowSpec = GridLayout.spec(j, 1);
@@ -160,4 +173,11 @@ public class SelectTimeActivity extends BaseActivity {
         }
 
     }
+
+    public static Intent getIntent(Context context, int position) {
+        Intent intent = new Intent(context, SelectTimeActivity.class);
+        intent.putExtra(EXTRA_POSITION, position);
+        return intent;
+    }
+
 }

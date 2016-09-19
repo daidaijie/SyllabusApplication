@@ -21,6 +21,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="48dp"
             android:gravity="center"
             android:paddingTop="8dp"
             android:singleLine="true"
@@ -39,13 +40,13 @@
         android:textSize="20sp"/>
 
     <LinearLayout
-        android:padding="1px"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/bg_retangle_grey">
+        android:background="@drawable/bg_retangle_grey"
+        android:padding="1px">
 
         <TextView
             android:id="@+id/singleTextView"
@@ -100,5 +101,37 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="8dp">
     </android.support.v7.widget.RecyclerView>
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/selectTimeButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:calendarViewShown="false"
+        android:text="选择时间"
+        android:textColor="@color/material_white"
+        android:textSize="16sp"
+        app:buttonColor="?attr/colorPrimary"
+        app:cornerRadius="4dp"
+        app:shadowColor="@color/defaultDarkBackground"
+        app:shadowEnabled="true"
+        app:shadowHeight="1dp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/hasSelectTimeTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="目前选择时间\n\n周一 3464790\n周二 12"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="16sp"/>
+
+    </ScrollView>
 
 </LinearLayout>

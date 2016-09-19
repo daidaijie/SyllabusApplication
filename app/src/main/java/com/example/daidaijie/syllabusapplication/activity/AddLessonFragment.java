@@ -12,6 +12,10 @@ import android.view.ViewGroup;
 
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,6 +33,8 @@ public class AddLessonFragment extends Fragment {
     @BindView(R.id.header)
     RecyclerViewHeader mHeader;
 
+    AddLessonModel mAddLessonModel;
+
     public static AddLessonFragment newInstance() {
         AddLessonFragment fragment = new AddLessonFragment();
         return fragment;
@@ -42,11 +48,16 @@ public class AddLessonFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_add_lesson, container, false);
         ButterKnife.bind(this, view);
 
+        mAddLessonModel = AddLessonModel.getInstance();
+
+        mAddLessonModel.mLesson = new Lesson();
+        mAddLessonModel.mTimes = new ArrayList<>();
 
         mAddLessonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddLessonGridActivity.class);
+                mAddLessonModel.mTimes.add(new AddLessonModel.SelectTime());
+                Intent intent = AddLessonGridActivity.getIntent(getActivity(), mAddLessonModel.mTimes.size() - 1);
                 startActivity(intent);
             }
         });

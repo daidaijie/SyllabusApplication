@@ -153,7 +153,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
                 android:background="@color/transparent"
-                app:cardIcon="@drawable/ic_oa"
+                app:cardIcon="@drawable/ic_library"
                 app:cardTitle="图书检索">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
@@ -161,8 +161,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardIcon="@drawable/ic_school_email"
+                app:cardTitle="校内邮箱">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
@@ -170,8 +170,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
-                app:cardIcon="@drawable/ic_oa"
-                app:cardTitle="办公自动化">
+                app:cardIcon="@drawable/ic_question"
+                app:cardTitle="敬请期待">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
         </LinearLayout>
