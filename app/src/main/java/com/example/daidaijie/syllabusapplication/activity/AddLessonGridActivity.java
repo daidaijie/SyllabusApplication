@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
@@ -55,6 +57,8 @@ public class AddLessonGridActivity extends BaseActivity {
 
     private int mPosition;
 
+    private static final int REQUEST_ADD_TIME = 203;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,9 +81,13 @@ public class AddLessonGridActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = SelectTimeActivity.getIntent(AddLessonGridActivity.this, mPosition);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_ADD_TIME);
             }
         });
+
+        setSelectTimeText();
+
+        setResult(204);
     }
 
     @Override
@@ -87,6 +95,10 @@ public class AddLessonGridActivity extends BaseActivity {
         return R.layout.activity_add_lesson_grid;
     }
 
+    private void setSelectTimeText() {
+        mHasSelectTimeTextView.setText(Html.fromHtml("<b>目前已选择时间</b><br/><br/>"
+                + AddLessonModel.getInstance().mTimes.get(mPosition).toHtmlSelectTimeString()));
+    }
 
     @OnClick({R.id.singleTextView, R.id.doubleTextView, R.id.allTextView})
     public void onClick(View view) {
@@ -193,6 +205,13 @@ public class AddLessonGridActivity extends BaseActivity {
         return intent;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ADD_TIME) {
+            setSelectTimeText();
+        }
+    }
 
     public class WeekSelectAdapter extends RecyclerView.Adapter<WeekSelectAdapter.ViewHolder> {
 

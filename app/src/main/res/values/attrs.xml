@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <declare-styleable name="LessonDetaiLayout">
+    <declare-styleable name="LessonDetailLayout">
         <attr name="titltText" format="string"></attr>
         <attr name="titltTextColor" format="color"></attr>
         <attr name="detailIcon" format="reference"></attr>

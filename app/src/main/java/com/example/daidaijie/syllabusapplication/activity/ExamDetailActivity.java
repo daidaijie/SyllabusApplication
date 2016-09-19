@@ -21,7 +21,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.widget.CustomMarqueeTextView;
-import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
+import com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
@@ -49,17 +49,17 @@ public class ExamDetailActivity extends BaseActivity {
     @BindView(R.id.app_bar)
     AppBarLayout mAppBar;
     @BindView(R.id.lessonNumberLayout)
-    LessonDetaiLayout mLessonNumberLayout;
+    LessonDetailLayout mLessonNumberLayout;
     @BindView(R.id.lessonTimeLayout)
-    LessonDetaiLayout mLessonTimeLayout;
+    LessonDetailLayout mLessonTimeLayout;
     @BindView(R.id.lessonTeacherLayout)
-    LessonDetaiLayout mLessonTeacherLayout;
+    LessonDetailLayout mLessonTeacherLayout;
     @BindView(R.id.examRoomLayout)
-    LessonDetaiLayout mExamRoomLayout;
+    LessonDetailLayout mExamRoomLayout;
     @BindView(R.id.positionLayout)
-    LessonDetaiLayout mPositionLayout;
+    LessonDetailLayout mPositionLayout;
     @BindView(R.id.studentSumLayout)
-    LessonDetaiLayout mStudentSumLayout;
+    LessonDetailLayout mStudentSumLayout;
     @BindView(R.id.detailContentLayout)
     LinearLayout mDetailContentLayout;
     @BindView(R.id.contentScrollView)
@@ -67,9 +67,9 @@ public class ExamDetailActivity extends BaseActivity {
     @BindView(R.id.examDetailRootLayout)
     CoordinatorLayout mExamDetailRootLayout;
     @BindView(R.id.examTipLayout)
-    LessonDetaiLayout mExamTipLayout;
+    LessonDetailLayout mExamTipLayout;
     @BindView(R.id.examStateLayout)
-    LessonDetaiLayout mExamStateLayout;
+    LessonDetailLayout mExamStateLayout;
 
 
     private enum CollapsingToolbarLayoutState {

@@ -11,50 +11,50 @@
     android:paddingBottom="32dp"
     android:paddingTop="32dp">
 
-    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout
         android:id="@+id/lessonNumberLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="班号"
         app:detailIcon="@drawable/ic_id_lesson"
         app:titltText="67564">
-    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout>
 
-    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout
         android:id="@+id/lessonCreditLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="学分"
         app:detailIcon="@drawable/ic_credit_lesson"
         app:titltText="2.0">
-    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout>
 
-    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout
         android:id="@+id/lessonRoomLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="教室"
         app:detailIcon="@drawable/ic_place_lesson"
         app:titltText="D505">
-    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout>
 
-    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout
         android:id="@+id/lessonTeacherLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="教师"
         app:detailIcon="@drawable/ic_teacher_lesson"
         app:titltText="方若宇">
-    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout>
 
-    <com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout
         android:id="@+id/lessonTimeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:descText="时间"
         app:detailIcon="@drawable/ic_time_lesson"
         app:titltText="1-16周 , AB">
-    </com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout>
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout>
 
 
     <FrameLayout

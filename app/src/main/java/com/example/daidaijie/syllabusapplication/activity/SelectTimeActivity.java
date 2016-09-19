@@ -51,6 +51,7 @@ public class SelectTimeActivity extends BaseActivity {
     @BindView(R.id.syllabusRootLayout)
     LinearLayout mSyllabusRootLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +79,8 @@ public class SelectTimeActivity extends BaseActivity {
         showTime();
 
         showSelectTime();
+
+        setResult(203);
     }
 
     private void showSelectTime() {

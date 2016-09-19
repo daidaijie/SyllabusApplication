@@ -1,7 +1,9 @@
 package com.example.daidaijie.syllabusapplication.model;
 
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,5 +45,50 @@ public class AddLessonModel {
             }
 
         }
+
+        public String toHtmlSelectTimeString() {
+            String[] weekString = new String[]{"周日", "周一", "周二", "周三", "周四", "周五", "周六"};
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 7; i++) {
+                boolean haveTimeOfWeek = false;
+                StringBuilder weekSb = new StringBuilder();
+                for (int j = 0; j < 13; j++) {
+                    if (mSelectTimes.get(i).get(j)) {
+                        haveTimeOfWeek = true;
+                        weekSb.append(Syllabus.time2char(j + 1));
+                    }
+                }
+                if (haveTimeOfWeek) {
+                    sb.append("<b>" + weekString[i] + "</b>");
+                    sb.append(" ");
+                    sb.append(weekSb);
+                    sb.append("<br/>");
+                }
+            }
+            return sb.toString();
+        }
+
+        public String toHtmlString() {
+            StringBuilder sb = new StringBuilder();
+            boolean isFound = false;
+            for (int i = 0; i < 16; i++) {
+                if (selectWeeks.get(i)) {
+                    if (!isFound) {
+                        sb.append("第");
+                        sb.append("" + (i + 1));
+                        isFound = true;
+                    } else {
+                        sb.append(", " + (i + 1));
+                    }
+                }
+            }
+            if (isFound) {
+                sb.append("周<br/>");
+            }
+
+            sb.append(toHtmlSelectTimeString());
+            return sb.toString();
+        }
+
     }
 }

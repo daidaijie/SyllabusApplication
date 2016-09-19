@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/defaultLightBackground"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout
+        android:id="@+id/lessonTimeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:descText="时间"
+        app:detailIcon="@drawable/ic_time_lesson"
+        app:titltText="1 - 16周\n周一AB\n周二CD">
+    </com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout>
+
+</LinearLayout>

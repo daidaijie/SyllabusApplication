@@ -12,14 +12,17 @@ import android.view.ViewGroup;
 
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.adapter.LessonTimeAdapter;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import info.hoang8f.widget.FButton;
+import retrofit2.http.GET;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +37,10 @@ public class AddLessonFragment extends Fragment {
     RecyclerViewHeader mHeader;
 
     AddLessonModel mAddLessonModel;
+
+    LessonTimeAdapter mLessonTimeAdapter;
+
+    public static final int REQUEST_ADD_TIME_GRID = 204;
 
     public static AddLessonFragment newInstance() {
         AddLessonFragment fragment = new AddLessonFragment();
@@ -58,14 +65,26 @@ public class AddLessonFragment extends Fragment {
             public void onClick(View v) {
                 mAddLessonModel.mTimes.add(new AddLessonModel.SelectTime());
                 Intent intent = AddLessonGridActivity.getIntent(getActivity(), mAddLessonModel.mTimes.size() - 1);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_ADD_TIME_GRID);
             }
         });
 
         mLessonTimeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLessonTimeAdapter = new LessonTimeAdapter(getActivity(), mAddLessonModel.mTimes);
+        mLessonTimeRecycler.setAdapter(mLessonTimeAdapter);
+
         mHeader.attachTo(mLessonTimeRecycler);
 
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ADD_TIME_GRID) {
+            Logger.e("Size: " + mAddLessonModel.mTimes.size());
+            mLessonTimeAdapter.setTimes(mAddLessonModel.mTimes);
+            mLessonTimeAdapter.notifyDataSetChanged();
+        }
+    }
 }

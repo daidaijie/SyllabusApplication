@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.transition.Explode;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -29,7 +28,7 @@ import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.service.LessonDetailService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
-import com.example.daidaijie.syllabusapplication.widget.LessonDetaiLayout;
+import com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,13 +45,13 @@ import rx.schedulers.Schedulers;
 public class LessonInfoActivity extends BaseActivity {
 
     @BindView(R.id.lessonNumberLayout)
-    LessonDetaiLayout mLessonNumberLayout;
+    LessonDetailLayout mLessonNumberLayout;
     @BindView(R.id.lessonRoomLayout)
-    LessonDetaiLayout mLessonRoomLayout;
+    LessonDetailLayout mLessonRoomLayout;
     @BindView(R.id.lessonTeacherLayout)
-    LessonDetaiLayout mLessonTeacherLayout;
+    LessonDetailLayout mLessonTeacherLayout;
     @BindView(R.id.lessonTimeLayout)
-    LessonDetaiLayout mLessonTimeLayout;
+    LessonDetailLayout mLessonTimeLayout;
     @BindView(R.id.detailContentLayout)
     LinearLayout mDetailContentLayout;
     @BindView(R.id.lessonDetailRootLayout)
@@ -72,7 +71,7 @@ public class LessonInfoActivity extends BaseActivity {
     @BindView(R.id.showClassMateButton)
     Button mShowClassMateButton;
     @BindView(R.id.lessonCreditLayout)
-    LessonDetaiLayout mLessonCreditLayout;
+    LessonDetailLayout mLessonCreditLayout;
 
     private AlertDialog mLoadingDialog;
 
