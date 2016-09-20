@@ -112,8 +112,8 @@ public class Lesson implements Serializable {
         this.bgColor = bgColor;
     }
 
-    public int getIntID() {
-        return Integer.parseInt(id);
+    public long getIntID() {
+        return Long.parseLong(id);
     }
 
     public String getTrueName() {

@@ -100,7 +100,7 @@ public class LessonInfoActivity extends BaseActivity {
             getWindow().setEnterTransition(new Explode().setDuration(300));
         }
 
-        lesson = LessonModel.getInstance().getLesson(getIntent().getIntExtra(EXTRA_LESSON_ID,00));
+        lesson = LessonModel.getInstance().getLesson(getIntent().getIntExtra(EXTRA_LESSON_ID,0));
 
         Log.d(TAG, "onCreate: " + lesson.getName());
 
@@ -230,7 +230,7 @@ public class LessonInfoActivity extends BaseActivity {
                 });
     }
 
-    public static Intent getIntent(Context packageContext, int id) {
+    public static Intent getIntent(Context packageContext, long id) {
         Intent intent = new Intent(packageContext, LessonInfoActivity.class);
         intent.putExtra(EXTRA_LESSON_ID, id);
         return intent;

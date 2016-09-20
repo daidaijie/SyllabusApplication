@@ -235,7 +235,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                 SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
                 Log.e(TAG, "showSyllabus: " + i + " , " + j + " " + syllabusGrid.getLessons().size());
                 Lesson lesson = null;
-                for (Integer lessonID : syllabusGrid.getLessons()) {
+                for (Long lessonID : syllabusGrid.getLessons()) {
                     Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
                     boolean flag = false;
                     for (Lesson.TimeGird timeGird : tmpLesson.getTimeGirds()) {
@@ -271,7 +271,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                         if (nextSyllabusGrid.getLessons().size() == 0) break;
 
                         Lesson nextlesson = null;
-                        for (Integer lessonID : nextSyllabusGrid.getLessons()) {
+                        for (Long lessonID : nextSyllabusGrid.getLessons()) {
                             Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
                             boolean flag = false;
                             for (Lesson.TimeGird timeGird : tmpLesson.getTimeGirds()) {

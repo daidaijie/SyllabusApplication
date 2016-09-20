@@ -2,8 +2,10 @@ package com.example.daidaijie.syllabusapplication.bean;
 
 import android.util.Log;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +127,7 @@ public class Syllabus {
 
     public void convertSyllabus(List<Lesson> lessons) {
         int colorIndex = 0;
-        for (Lesson lesson:lessons){
+        for (Lesson lesson : lessons) {
             //将lesson的时间格式化
             lesson.convertDays();
             lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
@@ -155,5 +157,41 @@ public class Syllabus {
             }
             LessonModel.getInstance().save();
         }
+    }
+
+    public void addLessonToSyllabus(Lesson lesson, int color) {
+        addLessonToSyllabus(lesson, color, false);
+    }
+
+    public void addLessonToSyllabus(Lesson lesson, int color, boolean isConverDay) {
+        //将lesson的时间格式化
+        if (isConverDay) {
+            lesson.convertDays();
+        }
+        lesson.setBgColor(color);
+
+        //获取该课程上的节点上的时间列表
+        List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
+
+        //把该课程添加到课程管理去
+        LessonModel.getInstance().addLesson(lesson);
+
+        for (int i = 0; i < timeGirds.size(); i++) {
+            Lesson.TimeGird timeGrid = timeGirds.get(i);
+            for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
+                char x = timeGrid.getTimeList().charAt(j);
+                int time = Syllabus.chat2time(x);
+
+                SyllabusGrid syllabusGrid = this.getSyllabusGrids()
+                        .get(timeGrid.getWeekDate())
+                        .get(time);
+                //如果该位置没有重复的就添加上去
+                if (syllabusGrid.getLessons().indexOf(lesson.getIntID()) == -1) {
+                    syllabusGrid.getLessons().add(lesson.getIntID());
+                    Logger.t("LessonAdd").e("here");
+                }
+            }
+        }
+        LessonModel.getInstance().save();
     }
 }

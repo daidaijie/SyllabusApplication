@@ -1,10 +1,7 @@
 package com.example.daidaijie.syllabusapplication.model;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.util.SparseArray;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
@@ -19,7 +16,7 @@ import java.util.HashMap;
  */
 public class LessonModel {
 
-    private HashMap<Integer, Lesson> mLessonHashMap;
+    private HashMap<Long, Lesson> mLessonHashMap;
 
     SharedPreferences mSharedPreferences;
 
@@ -46,7 +43,7 @@ public class LessonModel {
             save();
         } else {
             mLessonHashMap = GsonUtil.getDefault().fromJson(lessonsJsonString, new TypeToken<
-                    HashMap<Integer, Lesson>>() {
+                    HashMap<Long, Lesson>>() {
             }.getType());
         }
 
@@ -57,7 +54,7 @@ public class LessonModel {
         mLessonHashMap.put(lesson.getIntID(), lesson);
     }
 
-    public Lesson getLesson(int id) {
+    public Lesson getLesson(long id) {
         return mLessonHashMap.get(id);
     }
 
