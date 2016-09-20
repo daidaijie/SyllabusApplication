@@ -13,6 +13,7 @@ import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -196,7 +197,6 @@ public class User {
                     new TypeToken<Map<Semester, Syllabus>>() {
                     }.getType());
         }
-//        Log.e("User", "setCurrentAccountStore: "+syllabusMapJsonString);
         RealmConfiguration configuration = new RealmConfiguration.Builder(App.getContext())
                 .name(mAccount + ".realm")
                 .schemaVersion(1)
@@ -216,7 +216,7 @@ public class User {
         mEditor.commit();
     }
 
-    public void saveSyllabus(){
+    public void saveSyllabus() {
         mEditor.putString(EXTRA_SYLLABUSMAP, GsonUtil.getDefault().toJson(mSyllabusMap));
         mEditor.commit();
     }
@@ -227,6 +227,11 @@ public class User {
 
     public void setCurrentSemester(Semester currentSemester) {
         mCurrentSemester = currentSemester;
+        for (Semester semester : mSyllabusMap.keySet()) {
+            if (semester.equals(mCurrentSemester)) {
+                mCurrentSemester = semester;
+            }
+        }
         mUserEditor.putString(EXTRA_CURRENT_SEMESTER, GsonUtil.getDefault().toJson(mCurrentSemester));
         mUserEditor.commit();
     }
