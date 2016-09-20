@@ -14,6 +14,7 @@ import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
@@ -116,6 +117,9 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                             updateUserInfo();
                             EventBus.getDefault().post(new SyllabusEvent(mWeek));
                             mView.showSuccessBanner();
+                            if (User.getInstance().getCurrentSemester().getStartWeekTime() == 0) {
+                                EventBus.getDefault().post(new SettingWeekEvent());
+                            }
                         }
                         mView.hideLoading();
                         mView.setViewPagerEnable(true);

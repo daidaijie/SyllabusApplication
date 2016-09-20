@@ -270,7 +270,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                         SyllabusGrid nextSyllabusGrid = syllabus.getSyllabusGrids().get(i).get(k);
                         if (nextSyllabusGrid.getLessons().size() == 0) break;
 
-                        Lesson nextlesson = null;
+                        Lesson nextLesson = null;
                         for (Long lessonID : nextSyllabusGrid.getLessons()) {
                             Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
                             boolean flag = false;
@@ -283,14 +283,14 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                                 }
                             }
                             if (flag) {
-                                nextlesson = tmpLesson;
+                                nextLesson = tmpLesson;
                                 break;
                             }
                         }
 
-                        if (nextlesson == null) break;
+                        if (nextLesson == null) break;
 
-                        if (nextlesson.getId().equals(lesson.getId())) {
+                        if (nextLesson.getId().equals(lesson.getId())) {
                             span++;
                         }
                     }

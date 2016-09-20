@@ -24,6 +24,8 @@ import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 
+import org.joda.time.LocalDate;
+
 import java.io.File;
 import java.util.List;
 
@@ -129,6 +131,17 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
                 Toast.makeText(context, "设置失败", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void settingWeek(LocalDate date, int week) {
+        date = date.plusDays(-(date.getDayOfWeek() % 7));
+        date = date.plusWeeks(-(week - 1));
+        Log.e(TAG, "onSettingWeek: " + date);
+        User.getInstance().getCurrentSemester().setStartWeekTime(date.toDate().getTime());
+        User.getInstance().saveSyllabus();
+        User.getInstance().setCurrentSemester(User.getInstance().getCurrentSemester());
+        mView.moveToNowWeek();
     }
 
 }

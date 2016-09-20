@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.NumberPicker;
@@ -78,7 +79,7 @@ public class WeekPickerFragment extends DialogFragment {
             }
         });
 
-        return new AlertDialog.Builder(getActivity())
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
                 .setTitle("周数设定")
                 .setView(view)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -89,7 +90,20 @@ public class WeekPickerFragment extends DialogFragment {
                     }
                 })
                 .create();
+        dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        return dialog;
     }
+
 
     private void setFButtonDate(String year, String month, String day) {
         selectDateButton.setText(year + "年" + month + "月" + day + "号");

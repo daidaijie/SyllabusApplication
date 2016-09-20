@@ -34,4 +34,7 @@ public interface ISyllabusMainView extends MvpView, IUserInfoView ,ILoadingView{
 
     //展开或者关闭周数选择
     void showSelectWeekLayout(boolean isShow);
+
+    //移动至当前周数
+    void moveToNowWeek();
 }

@@ -27,8 +27,8 @@ import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.service.LessonDetailService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
-import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout;
+import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,7 +100,7 @@ public class LessonInfoActivity extends BaseActivity {
             getWindow().setEnterTransition(new Explode().setDuration(300));
         }
 
-        lesson = LessonModel.getInstance().getLesson(getIntent().getIntExtra(EXTRA_LESSON_ID,0));
+        lesson = LessonModel.getInstance().getLesson(getIntent().getLongExtra(EXTRA_LESSON_ID, 0));
 
         Log.d(TAG, "onCreate: " + lesson.getName());
 

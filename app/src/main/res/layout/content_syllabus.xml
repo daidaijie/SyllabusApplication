@@ -61,16 +61,18 @@
         android:visibility="gone">
 
         <LinearLayout
+            android:id="@+id/settingWeekLayout"
             android:layout_width="64dp"
             android:layout_height="match_parent"
-            android:background="@color/defaultLightBackground"
+            android:background="@drawable/bg_select_week_layout"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
+                android:tint="?attr/colorPrimary"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_wifi"/>
+                android:src="@drawable/ic_marking"/>
 
             <TextView
                 android:layout_width="match_parent"

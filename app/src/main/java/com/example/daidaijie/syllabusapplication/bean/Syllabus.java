@@ -130,6 +130,7 @@ public class Syllabus {
         for (Lesson lesson : lessons) {
             //将lesson的时间格式化
             lesson.convertDays();
+            lesson.setTYPE(Lesson.TYPE_SYSTEM);
             lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
 
             //获取该课程上的节点上的时间列表

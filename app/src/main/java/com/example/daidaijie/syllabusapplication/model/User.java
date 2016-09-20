@@ -43,9 +43,6 @@ public class User {
     private static final String EXTRA_USER_BASE_BEAN
             = "com.example.daidaijie.syllabusapplication.model.User.mUserBaseBean";
 
-    private static final String EXTRA_SYLLABUS
-            = "com.example.daidaijie.syllabusapplication.model.User.mSyllabus";
-
     private static final String EXTRA_SYLLABUSMAP
             = "com.example.daidaijie.syllabusapplication.model.User.mSyllabusMap";
 
@@ -82,8 +79,6 @@ public class User {
 
     private Semester mCurrentSemester;
 
-    //现在只测试一个学期的情况
-    public Syllabus mSyllabus;
 
     private User() {
         //从Account文件里面获取当前用户名
@@ -193,13 +188,6 @@ public class User {
             mUserBaseBean = GsonUtil.getDefault().fromJson(userBaseBeanJsonString, UserBaseBean.class);
         }
 
-        String syllabusJsonString = mSharedPreferences.getString(EXTRA_SYLLABUS, "");
-        if (syllabusJsonString.trim().isEmpty()) {
-            mSyllabus = null;
-        } else {
-            mSyllabus = GsonUtil.getDefault().fromJson(syllabusJsonString, Syllabus.class);
-        }
-
         String syllabusMapJsonString = mSharedPreferences.getString(EXTRA_SYLLABUSMAP, "");
         if (syllabusMapJsonString.trim().isEmpty()) {
             mSyllabusMap = new HashMap<>();
@@ -218,22 +206,17 @@ public class User {
     }
 
 
-    public Syllabus getSyllabus() {
-        return mSyllabus;
-    }
-
-    public void setSyllabus(Syllabus syllabus) {
-        mSyllabus = syllabus;
-        mEditor.putString(EXTRA_SYLLABUS, GsonUtil.getDefault().toJson(syllabus));
-        mEditor.commit();
-    }
-
     public Syllabus getSyllabus(Semester semester) {
         return mSyllabusMap.get(semester);
     }
 
     public void setSyllabus(Semester semester, Syllabus syllabus) {
         mSyllabusMap.put(semester, syllabus);
+        mEditor.putString(EXTRA_SYLLABUSMAP, GsonUtil.getDefault().toJson(mSyllabusMap));
+        mEditor.commit();
+    }
+
+    public void saveSyllabus(){
         mEditor.putString(EXTRA_SYLLABUSMAP, GsonUtil.getDefault().toJson(mSyllabusMap));
         mEditor.commit();
     }

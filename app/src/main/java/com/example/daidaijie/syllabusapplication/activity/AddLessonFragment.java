@@ -114,6 +114,7 @@ public class AddLessonFragment extends Fragment {
     private void addLesson() {
         Lesson lesson = new Lesson();
         lesson.setId(System.currentTimeMillis() + "");
+        lesson.setTYPE(Lesson.TYPE_DIY);
         lesson.setName(mLessonNameEditText.getText().toString().trim());
         lesson.setRoom(mClassroomEditText.getText().toString().trim());
         lesson.setTeacher(mTeacherEditText.getText().toString().trim());

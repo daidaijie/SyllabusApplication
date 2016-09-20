@@ -118,7 +118,7 @@ public class SnackbarUtil {
     private static void switchType(Snackbar snackbar, int type) {
         switch (type) {
             case Info:
-                setSnackbarColor(snackbar, blue);
+                setSnackbarColor(snackbar, Color.WHITE, blue);
                 break;
             case Confirm:
                 setSnackbarColor(snackbar, Color.WHITE, green);

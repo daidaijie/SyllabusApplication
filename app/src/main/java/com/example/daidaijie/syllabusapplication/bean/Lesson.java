@@ -12,6 +12,11 @@ import java.util.List;
  */
 public class Lesson implements Serializable {
 
+    private int TYPE;
+
+    public final static int TYPE_SYSTEM = 0;
+    public final static int TYPE_DIY = 2;
+
     /**
      * days : {"w1":"None","w4":"None","w6":"None","w0":"None","w3":"None","w2":"None","w5":"89"}
      * room : G座303
@@ -132,6 +137,13 @@ public class Lesson implements Serializable {
         return sb.toString();
     }
 
+    public int getTYPE() {
+        return TYPE;
+    }
+
+    public void setTYPE(int TYPE) {
+        this.TYPE = TYPE;
+    }
 
     /**
      * 将获取的w0,w1,w2,w3等转化成TimeGird类型

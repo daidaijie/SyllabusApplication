@@ -5,9 +5,19 @@ package com.example.daidaijie.syllabusapplication.bean;
  */
 public class Semester {
 
+    private long startWeekTime;
+
     private int startYear;
 
     private int season;
+
+    public long getStartWeekTime() {
+        return startWeekTime;
+    }
+
+    public void setStartWeekTime(long startWeekTime) {
+        this.startWeekTime = startWeekTime;
+    }
 
     public int getStartYear() {
         return startYear;
