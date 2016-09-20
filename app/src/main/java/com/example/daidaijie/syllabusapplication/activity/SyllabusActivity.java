@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
@@ -85,6 +86,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     private RelativeLayout navHeadRelativeLayout;
     private SimpleDraweeView headImageDraweeView;
     private TextView nicknameTextView;
+    private TextView semesterTextView;
 
     private SyllabusPagerAdapter syllabusPagerAdapter;
     private WeekAdapter mWeekAdapter;
@@ -115,6 +117,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         navHeadRelativeLayout = (RelativeLayout) mNavView.getHeaderView(0);
         headImageDraweeView = (SimpleDraweeView) navHeadRelativeLayout.findViewById(R.id.headImageDraweeView);
         nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
+        semesterTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.semesterTextView);
+
+        Semester semester = User.getInstance().getCurrentSemester();
+        semesterTextView.setText(semester.getYearString() + "　" + semester.getSeasonString());
 
         if (savedInstanceState != null) {
             pageIndex = savedInstanceState.getInt(SAVED_PAGE_POSITION, 0);

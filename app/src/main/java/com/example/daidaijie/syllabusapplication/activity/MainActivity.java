@@ -128,6 +128,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
 
         setSemesterText();
+        setHeadImage();
+        setNiceName();
+
 
         mBannerModel = BannerModel.getInstance();
 
@@ -284,9 +287,17 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
         return true;
     }
 
+    private void setHeadImage() {
+        headImageDraweeView.setImageURI(User.getInstance().getUserInfo().getAvatar());
+    }
+
     private void setSemesterText() {
         Semester semester = User.getInstance().getCurrentSemester();
         semesterTextView.setText(semester.getYearString() + "　" + semester.getSeasonString());
+    }
+
+    private void setNiceName() {
+        nicknameTextView.setText(User.getInstance().getUserInfo().getNickname());
     }
 
     private void setBannerPage(List<Banner> banners) {
