@@ -8,29 +8,21 @@
             android:title="选择壁纸"/>
         <item
             android:id="@+id/nav_save_syllabus"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_save_syllabus"
             android:title="保存课表"/>
 
     </group>
 
-    <item android:title="校园">
+    <item android:title="功能">
         <menu>
             <item
-                android:id="@+id/nav_slideshow"
-                android:icon="@drawable/ic_menu_slideshow"
-                android:title="成绩单"/>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="考试"/>
-            <item
                 android:id="@+id/nav_add_lesson"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_add_lesson"
                 android:title="添加课程"/>
 
             <item
                 android:id="@+id/nav_syllabus_collection"
-                android:icon="@drawable/ic_menu_send"
+                android:icon="@drawable/ic_syllabus_collection"
                 android:title="课表收集"/>
 
         </menu>

@@ -96,13 +96,13 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                 android.R.color.holo_red_light
         );
         mRefreshOALayout.setOnRefreshListener(this);
-        mRefreshOALayout.postDelayed(new Runnable() {
+        mRefreshOALayout.post(new Runnable() {
             @Override
             public void run() {
                 mRefreshOALayout.setRefreshing(true);
                 getOAinfo();
             }
-        }, 50);
+        });
 
 
         return view;
@@ -114,6 +114,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
     }
 
     private void getOAinfo() {
+        mEmptyTextView.setText("");
         OAService oaService = OAModel.getInstance().mRetrofit.create(OAService.class);
         oaService.getOAInfo(
                 "undefined", OAModel.getInstance().subID, OAModel.getInstance().keyword,
@@ -148,11 +149,14 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
                         mOABeen = tmpOABeen;
                         mOAItemAdapter.setOABeen(mOABeen);
                         mOAItemAdapter.notifyDataSetChanged();
+                        if (mOABeen.size() == 0) {
+                            mEmptyTextView.setText("暂无办公自动化信息");
+                        }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
+                        mEmptyTextView.setText("暂无办公自动化信息");
                         mRefreshOALayout.setRefreshing(false);
                         SnackbarUtil.LongSnackbar(
                                 mRefreshOALayout, "获取失败", SnackbarUtil.Alert

@@ -155,7 +155,14 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
+                <ImageView
+                    android:tint="@color/defaultShowColor"
+                    android:src="@drawable/ic_comment"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"/>
+
                 <TextView
+                    android:layout_marginLeft="8dp"
                     android:id="@+id/commentTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

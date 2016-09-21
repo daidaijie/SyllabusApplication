@@ -120,7 +120,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         semesterTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.semesterTextView);
 
         Semester semester = User.getInstance().getCurrentSemester();
-        semesterTextView.setText(semester.getYearString() + "　" + semester.getSeasonString());
+        semesterTextView.setText(semester.getYearString() + " " + semester.getSeasonString());
 
         if (savedInstanceState != null) {
             pageIndex = savedInstanceState.getInt(SAVED_PAGE_POSITION, 0);
@@ -311,12 +311,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
         if (id == R.id.nav_gallery) {
             mSyllabusMainPresenter.setWallpaper(this);
-        } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, GradeActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_send) {
-            Intent intent = new Intent(this, ExamActivity.class);
-            startActivity(intent);
         } else if (id == R.id.nav_save_syllabus) {
             EventBus.getDefault().post(new SaveSyllabusEvent(pageIndex));
         } else if (id == R.id.nav_syllabus_collection) {

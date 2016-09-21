@@ -27,7 +27,6 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:paddingTop="32dp"
-                android:text="暂无办公自动化信息"
                 android:textColor="@color/defaultTextColor"
                 android:textSize="20sp"
                 android:visibility="visible"/>

@@ -227,10 +227,13 @@ public class User {
 
     public void setCurrentSemester(Semester currentSemester) {
         mCurrentSemester = currentSemester;
-        for (Semester semester : mSyllabusMap.keySet()) {
-            if (semester.equals(mCurrentSemester)) {
-                mCurrentSemester = semester;
+        if (mSyllabusMap != null) {
+            for (Semester semester : mSyllabusMap.keySet()) {
+                if (semester.equals(mCurrentSemester)) {
+                    mCurrentSemester = semester;
+                }
             }
+
         }
         mUserEditor.putString(EXTRA_CURRENT_SEMESTER, GsonUtil.getDefault().toJson(mCurrentSemester));
         mUserEditor.commit();

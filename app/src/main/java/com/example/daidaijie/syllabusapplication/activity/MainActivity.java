@@ -83,6 +83,8 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     MaterialRippleLayout mToSyllabusItemLayout;
     @BindView(R.id.toExamCardItem)
     ItemCardLayout mToExamCardItem;
+    @BindView(R.id.toGradeCardItem)
+    ItemCardLayout mToGradeCardItem;
 
     RelativeLayout navHeadRelativeLayout;
     SimpleDraweeView headImageDraweeView;
@@ -172,6 +174,20 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
+                startActivity(intent);
+            }
+        });
+        mToExamCardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ExamActivity.class);
+                startActivity(intent);
+            }
+        });
+        mToGradeCardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GradeActivity.class);
                 startActivity(intent);
             }
         });
@@ -293,7 +309,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
 
     private void setSemesterText() {
         Semester semester = User.getInstance().getCurrentSemester();
-        semesterTextView.setText(semester.getYearString() + "　" + semester.getSeasonString());
+        semesterTextView.setText(semester.getYearString() + " " + semester.getSeasonString());
     }
 
     private void setNiceName() {
