@@ -9,11 +9,10 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/defaultDarkBackground"
         android:id="@+id/lessonTimeRecycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp">
+        android:background="@color/defaultDarkBackground">
     </android.support.v7.widget.RecyclerView>
 
     <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
@@ -27,96 +26,103 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="16dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/defaultTextColor"
-                    android:text="课程名　"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="课程名　"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="16sp"/>
+
                 <EditText
                     android:id="@+id/lessonNameEditText"
-                    android:textColorHint="?attr/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="(必填, 20字以内)"
                     android:maxLength="20"
                     android:singleLine="true"
+                    android:textColorHint="?attr/colorPrimary"
                     android:textSize="16sp"/>
             </LinearLayout>
 
             <View
-                android:layout_margin="8dp"
-                android:background="@color/defaultShowColor"
                 android:layout_width="match_parent"
-                android:layout_height="1px"/>
+                android:layout_height="1px"
+                android:layout_margin="8dp"
+                android:background="@color/defaultShowColor"/>
+
             <LinearLayout
-                android:layout_margin="8dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/defaultTextColor"
-                    android:text="教室　　"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="教室　　"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="16sp"/>
+
                 <EditText
                     android:id="@+id/classroomEditText"
-                    android:textColorHint="?attr/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="(选填, 20字以内)"
                     android:maxLength="20"
                     android:singleLine="true"
+                    android:textColorHint="?attr/colorPrimary"
                     android:textSize="16sp"/>
             </LinearLayout>
 
             <View
-                android:layout_margin="8dp"
-                android:background="@color/defaultShowColor"
                 android:layout_width="match_parent"
-                android:layout_height="1px"/>
+                android:layout_height="1px"
+                android:layout_margin="8dp"
+                android:background="@color/defaultShowColor"/>
 
             <LinearLayout
-                android:layout_margin="8dp"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+
                 <TextView
-                    android:layout_marginLeft="16dp"
-                    android:textSize="16sp"
-                    android:textColor="@color/defaultTextColor"
-                    android:text="教师　　"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="教师　　"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="16sp"/>
+
                 <EditText
                     android:id="@+id/teacherEditText"
-                    android:textColorHint="?attr/colorPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:hint="(选填, 20字以内)"
                     android:maxLength="20"
                     android:singleLine="true"
+                    android:textColorHint="?attr/colorPrimary"
                     android:textSize="16sp"/>
             </LinearLayout>
 
             <View
-                android:layout_margin="8dp"
-                android:background="@color/defaultShowColor"
                 android:layout_width="match_parent"
-                android:layout_height="1px"/>
+                android:layout_height="1px"
+                android:layout_margin="8dp"
+                android:background="@color/defaultShowColor"/>
 
             <info.hoang8f.widget.FButton
                 android:id="@+id/addLessonButton"

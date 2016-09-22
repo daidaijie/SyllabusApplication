@@ -106,8 +106,8 @@
         android:id="@+id/selectTimeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:calendarViewShown="false"
         android:text="选择时间"
@@ -115,7 +115,7 @@
         android:textSize="16sp"
         app:buttonColor="?attr/colorPrimary"
         app:cornerRadius="4dp"
-        app:shadowColor="@color/defaultDarkBackground"
+        app:shadowColor="@color/defaultShowColor"
         app:shadowEnabled="true"
         app:shadowHeight="1dp"/>
 

@@ -87,7 +87,11 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                 UserInfo userInfo = result.getData();
                 User.getInstance().setUserInfo(userInfo);
 
-                mSyllabus = new Syllabus();
+                if (User.getInstance().getSyllabus(mCurrentSemester) == null) {
+                    mSyllabus = new Syllabus();
+                } else {
+                    mSyllabus = User.getInstance().getSyllabus(mCurrentSemester);
+                }
                 mSyllabus.convertSyllabus(userInfo.getClasses(), mCurrentSemester);
 
                 return userBaseService.get_user(User.getInstance().getAccount());

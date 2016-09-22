@@ -31,6 +31,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".activity.LessonManagerActivity"
             android:screenOrientation="portrait">
         </activity>
@@ -109,17 +110,35 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.BookDetailActivity">
+        <activity
+            android:name=".activity.BookDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.SyllabusCollectionActivity">
+        <activity
+            android:name=".activity.SyllabusCollectionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.AddCollectionActivity">
+        <activity
+            android:name=".activity.AddCollectionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.SendSyllabusActivity">
+        <activity
+            android:name=".activity.SendSyllabusActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.SelectTimeActivity">
+        <activity
+            android:name=".activity.SelectTimeActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".activity.AddLessonGridActivity">
+        <activity
+            android:name=".activity.AddLessonGridActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
         </activity>
     </application>
 
