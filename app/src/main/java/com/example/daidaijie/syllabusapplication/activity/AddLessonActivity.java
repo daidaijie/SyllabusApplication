@@ -1,19 +1,18 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
@@ -22,29 +21,31 @@ import com.example.daidaijie.syllabusapplication.adapter.LessonTimeAdapter;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.orhanobut.logger.Logger;
-
-import org.joda.time.format.FormatUtils;
+import com.liaoinstan.springview.utils.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import info.hoang8f.widget.FButton;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AddLessonFragment extends Fragment {
+public class AddLessonActivity extends BaseActivity {
 
-    @BindView(R.id.addLessonButton)
-    FButton mAddLessonButton;
+    @BindView(R.id.titleTextView)
+    TextView mTitleTextView;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
     @BindView(R.id.lessonTimeRecycler)
     RecyclerView mLessonTimeRecycler;
+    @BindView(R.id.lessonNameEditText)
+    EditText mLessonNameEditText;
+    @BindView(R.id.classroomEditText)
+    EditText mClassroomEditText;
+    @BindView(R.id.teacherEditText)
+    EditText mTeacherEditText;
+    @BindView(R.id.addLessonButton)
+    FButton mAddLessonButton;
     @BindView(R.id.header)
     RecyclerViewHeader mHeader;
 
@@ -54,30 +55,14 @@ public class AddLessonFragment extends Fragment {
 
     public static final int REQUEST_ADD_TIME_GRID = 204;
 
-    @BindView(R.id.lessonNameEditText)
-    EditText mLessonNameEditText;
-    @BindView(R.id.classroomEditText)
-    EditText mClassroomEditText;
-    @BindView(R.id.teacherEditText)
-    EditText mTeacherEditText;
-
-    public static AddLessonFragment newInstance() {
-        AddLessonFragment fragment = new AddLessonFragment();
-        return fragment;
-    }
-
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_lesson, container, false);
-        ButterKnife.bind(this, view);
+        mToolbar.setTitle("");
+        setupToolbar(mToolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAddLessonModel = AddLessonModel.getInstance();
 
@@ -88,18 +73,21 @@ public class AddLessonFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mAddLessonModel.mTimes.add(new AddLessonModel.SelectTime());
-                Intent intent = AddLessonGridActivity.getIntent(getActivity(), mAddLessonModel.mTimes.size() - 1);
+                Intent intent = AddLessonGridActivity.getIntent(AddLessonActivity.this, mAddLessonModel.mTimes.size() - 1);
                 startActivityForResult(intent, REQUEST_ADD_TIME_GRID);
             }
         });
 
-        mLessonTimeRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mLessonTimeAdapter = new LessonTimeAdapter(getActivity(), mAddLessonModel.mTimes);
+        mLessonTimeRecycler.setLayoutManager(new LinearLayoutManager(this));
+        mLessonTimeAdapter = new LessonTimeAdapter(this, mAddLessonModel.mTimes);
         mLessonTimeRecycler.setAdapter(mLessonTimeAdapter);
 
         mHeader.attachTo(mLessonTimeRecycler);
+    }
 
-        return view;
+    @Override
+    protected int getContentView() {
+        return R.layout.activity_add_lesson;
     }
 
     @Override
@@ -112,7 +100,6 @@ public class AddLessonFragment extends Fragment {
                 mAddLessonModel.mTimes.remove(mAddLessonModel.mTimes.size() - 1);
                 mLessonTimeAdapter.notifyDataSetChanged();
             }
-
         }
     }
 
@@ -166,22 +153,56 @@ public class AddLessonFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_post_content, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if (mAddLessonModel.mTimes.size() != 0
+                || mClassroomEditText.getText().toString().trim().length() != 0
+                || mLessonNameEditText.getText().toString().trim().length() != 0
+                || mTeacherEditText.getText().toString().trim().length() != 0
+                ) {
+            TextView textView = new TextView(this);
+            textView.setTextSize(16);
+            textView.setTextColor(getResources().getColor(R.color.defaultTextColor));
+            int padding = DensityUtil.dip2px(this, 16);
+            textView.setPadding(padding + padding / 2, padding, padding, padding);
+            textView.setText("你正在编辑中,是否要退出?");
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle("提示")
+                    .setView(textView)
+                    .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            AddLessonActivity.super.onBackPressed();
+                        }
+                    }).create();
+            dialog.show();
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_finish) {
             addLesson();
-            Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
-            getActivity().finish();
+            Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+            this.onBackPressed();
         }
         return super.onOptionsItemSelected(item);
     }
-
 
 }

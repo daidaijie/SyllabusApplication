@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.daidaijie.syllabusapplication.activity.AddLessonActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="?attr/colorPrimary"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.PopupOverlay"
+        app:titleTextColor="@android:color/white">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:text="添加课程"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/defaultLightBackground">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lessonTimeRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/defaultDarkBackground">
+        </android.support.v7.widget.RecyclerView>
+
+        <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
+            android:id="@+id/header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="课程名　"
+                        android:textColor="@color/defaultTextColor"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/lessonNameEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="(必填, 20字以内)"
+                        android:maxLength="20"
+                        android:singleLine="true"
+                        android:textColorHint="?attr/colorPrimary"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_margin="8dp"
+                    android:background="@color/defaultShowColor"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="教室　　"
+                        android:textColor="@color/defaultTextColor"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/classroomEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="(选填, 20字以内)"
+                        android:maxLength="20"
+                        android:singleLine="true"
+                        android:textColorHint="?attr/colorPrimary"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_margin="8dp"
+                    android:background="@color/defaultShowColor"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="教师　　"
+                        android:textColor="@color/defaultTextColor"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/teacherEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="(选填, 20字以内)"
+                        android:maxLength="20"
+                        android:singleLine="true"
+                        android:textColorHint="?attr/colorPrimary"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_margin="8dp"
+                    android:background="@color/defaultShowColor"/>
+
+                <info.hoang8f.widget.FButton
+                    android:id="@+id/addLessonButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:calendarViewShown="false"
+                    android:text="添加时间"
+                    android:textColor="@color/material_white"
+                    android:textSize="16sp"
+                    app:buttonColor="?attr/colorPrimary"
+                    app:cornerRadius="4dp"
+                    app:shadowColor="@color/defaultDarkBackground"
+                    app:shadowEnabled="true"
+                    app:shadowHeight="1dp"/>
+            </LinearLayout>
+
+        </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
+
+    </FrameLayout>
+
+
+</LinearLayout>

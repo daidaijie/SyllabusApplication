@@ -8,6 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -16,8 +19,10 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -47,6 +52,10 @@ public class AddLessonGridActivity extends BaseActivity {
     public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
             ".AddLessonGridActivity.position";
 
+    public static final int RESULT_OK = 200;
+
+    public static final int RESULT_CANCEL = 201;
+
     private boolean isSingle;
     private boolean isDouble;
     private boolean isAll;
@@ -69,7 +78,8 @@ public class AddLessonGridActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        selectWeeks = AddLessonModel.getInstance().mTimes.get(mPosition).selectWeeks;
+        selectWeeks = new ArrayList<>();
+        selectWeeks.addAll(AddLessonModel.getInstance().mTimes.get(mPosition).selectWeeks);
 
         getSelectType();
 
@@ -87,7 +97,6 @@ public class AddLessonGridActivity extends BaseActivity {
 
         setSelectTimeText();
 
-        setResult(204);
     }
 
     @Override
@@ -208,7 +217,7 @@ public class AddLessonGridActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_ADD_TIME) {
+        if (requestCode == REQUEST_ADD_TIME && resultCode == SelectTimeActivity.RESULT_OK) {
             setSelectTimeText();
         }
     }
@@ -269,4 +278,60 @@ public class AddLessonGridActivity extends BaseActivity {
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_post_content, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_finish) {
+            boolean isFinish = false;
+            for (boolean isSelect : selectWeeks) {
+                if (isSelect) {
+                    isFinish = true;
+                    break;
+                }
+            }
+            if (!isFinish) {
+                showWarning("还没选择周数!");
+                return true;
+            }
+            isFinish = false;
+            for (List<Boolean> selectList : AddLessonModel.getInstance().mTimes.get(mPosition).mSelectTimes) {
+                if (isFinish) break;
+                for (boolean isSelect : selectList) {
+                    if (isSelect) {
+                        isFinish = true;
+                        break;
+                    }
+                }
+            }
+            if (!isFinish) {
+                showWarning("还没选择时间!");
+                return true;
+            }
+            if (isFinish) {
+                AddLessonModel.getInstance().mTimes.get(mPosition).selectWeeks = selectWeeks;
+                setResult(RESULT_OK);
+                this.finish();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCEL);
+        super.onBackPressed();
+    }
+
+    public void showWarning(String msg) {
+        SnackbarUtil.ShortSnackbar(mWeekRecyclerView, msg, SnackbarUtil.Warning).show();
+    }
 }

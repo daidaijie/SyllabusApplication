@@ -7,6 +7,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
@@ -18,6 +21,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -35,6 +39,10 @@ public class SelectTimeActivity extends BaseActivity {
 
     public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
             ".SelectTimeActivity.position";
+
+    public static final int RESULT_OK = 200;
+
+    public static final int RESULT_CANCEL = 201;
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -65,7 +73,8 @@ public class SelectTimeActivity extends BaseActivity {
         timeWidth = deviceWidth - gridWidth * 7;
         gridHeight = getResources().getDimensionPixelOffset(R.dimen.syllabus_grid_height);
 
-        mSelectTimes = AddLessonModel.getInstance().mTimes.get(getIntent().getIntExtra(EXTRA_POSITION, 0)).mSelectTimes;
+        mSelectTimes = new ArrayList<>();
+        mSelectTimes.addAll(AddLessonModel.getInstance().mTimes.get(getIntent().getIntExtra(EXTRA_POSITION, 0)).mSelectTimes);
 
         for (int i = 0; i < 7; i++) {
             StringBuilder sb = new StringBuilder();
@@ -183,4 +192,49 @@ public class SelectTimeActivity extends BaseActivity {
         return intent;
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_post_content, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_finish) {
+            boolean isFinish = false;
+            for (List<Boolean> selectList : mSelectTimes) {
+                if (isFinish) break;
+                for (boolean isSelect : selectList) {
+                    if (isSelect) {
+                        isFinish = true;
+                        break;
+                    }
+                }
+            }
+            if (!isFinish) {
+                showWarning("还没选择时间!");
+                return true;
+            }
+            if (isFinish) {
+                AddLessonModel.getInstance().mTimes.get(getIntent().getIntExtra(EXTRA_POSITION, 0)).mSelectTimes = mSelectTimes;
+                setResult(RESULT_OK);
+                this.finish();
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCEL);
+        super.onBackPressed();
+    }
+
+    public void showWarning(String msg) {
+        SnackbarUtil.ShortSnackbar(mSyllabusGridLayout, msg, SnackbarUtil.Warning).show();
+    }
 }

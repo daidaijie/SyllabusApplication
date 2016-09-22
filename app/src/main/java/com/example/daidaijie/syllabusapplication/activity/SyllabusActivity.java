@@ -321,7 +321,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             Intent intent = new Intent(this, SyllabusCollectionActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_add_lesson) {
-            Intent intent = new Intent(this, LessonManagerActivity.class);
+            Intent intent = new Intent(this, AddLessonActivity.class);
             startActivity(intent);
         }
         //点击后关闭drawerLayout
