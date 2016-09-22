@@ -2,8 +2,9 @@ package com.example.daidaijie.syllabusapplication.bean;
 
 import android.util.Log;
 
+import com.orhanobut.logger.Logger;
+
 import java.io.Serializable;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -108,6 +109,76 @@ public class Lesson implements Serializable {
 
     public void setTimeGirds(List<TimeGird> timeGirds) {
         mTimeGirds = timeGirds;
+    }
+
+    public void mergeTimeGrid() {
+        for (int i = 0; i < mTimeGirds.size(); i++) {
+
+            TimeGird thisTimeGrid = mTimeGirds.get(i);
+
+            boolean deleteFlag = false;
+            for (int j = i + 1; j < mTimeGirds.size(); j++) {
+                TimeGird thatTimeGrid = mTimeGirds.get(j);
+
+                if (thisTimeGrid.getWeekDate() == thatTimeGrid.getWeekDate()) {
+                    //找出共有部分
+                    StringBuilder sb = new StringBuilder();
+                    for (char x : thisTimeGrid.getTimeList().toCharArray()) {
+                        if (thatTimeGrid.getTimeList().contains(x + "")) {
+                            sb.append(x);
+                        }
+                    }
+                    String mergeTimeList = sb.toString();
+
+                    //没有共有部分就继续
+                    if (mergeTimeList.length() == 0) {
+                        continue;
+                    }
+
+                    //消去共有部分
+                    StringBuilder thisTimeSB = new StringBuilder(thisTimeGrid.getTimeList());
+                    StringBuilder thatTimeSB = new StringBuilder(thatTimeGrid.getTimeList());
+
+                    for (char x : mergeTimeList.toCharArray()) {
+                        thisTimeSB.deleteCharAt(thisTimeSB.indexOf(x + ""));
+                        thatTimeSB.deleteCharAt(thatTimeSB.indexOf(x + ""));
+                    }
+                    thisTimeGrid.setTimeList(thisTimeSB.toString());
+                    thatTimeGrid.setTimeList(thatTimeSB.toString());
+
+                    //将共有部分创建一个新的格子
+                    TimeGird mergeTimeGird = new TimeGird();
+                    mergeTimeGird.setTimeList(mergeTimeList);
+                    mergeTimeGird.setWeekDate(thisTimeGrid.getWeekDate());
+                    mergeTimeGird.setWeekOfTime(thisTimeGrid.getWeekOfTime() | thatTimeGrid.getWeekOfTime());
+                    mTimeGirds.add(mergeTimeGird);
+
+                    if (thisTimeSB.length() == 0 && thatTimeSB.length() == 0) {
+                        mTimeGirds.remove(thatTimeGrid);
+                        deleteFlag = true;
+                        break;
+                    } else {
+                        if (thatTimeSB.length() == 0) {
+                            mTimeGirds.remove(thatTimeGrid);
+                            j--;
+                            continue;
+                        }
+
+                        if (thisTimeSB.length() == 0) {
+                            deleteFlag = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (deleteFlag) {
+                mTimeGirds.remove(thisTimeGrid);
+                i--;
+            }
+        }
+        for (TimeGird timeGird : mTimeGirds) {
+            Logger.t("mTimeGirds").e(timeGird.getWeekDate() + "\n" + timeGird.getTimeList() + "\n" + timeGird.getWeekOfTime());
+        }
     }
 
     public int getBgColor() {

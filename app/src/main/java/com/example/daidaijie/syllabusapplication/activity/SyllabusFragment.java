@@ -235,11 +235,12 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                 SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
                 Log.e(TAG, "showSyllabus: " + i + " , " + j + " " + syllabusGrid.getLessons().size());
                 Lesson lesson = null;
+                //在当前节点上找在本周上课的课程
                 for (Long lessonID : syllabusGrid.getLessons()) {
                     Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
                     boolean flag = false;
                     for (Lesson.TimeGird timeGird : tmpLesson.getTimeGirds()) {
-                        if (timeGird.getWeekDate() == i) {
+                        if (timeGird.getWeekDate() == i && timeGird.getTimeString().contains(Syllabus.time2char((j + 1)) + "")) {
                             long weekOfTime = timeGird.getWeekOfTime();
                             if (((weekOfTime >> mWeek) & 1) == 1) {
                                 flag = true;
@@ -275,7 +276,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                             Lesson tmpLesson = LessonModel.getInstance().getLesson(lessonID);
                             boolean flag = false;
                             for (Lesson.TimeGird timeGird : tmpLesson.getTimeGirds()) {
-                                if (timeGird.getWeekDate() == i) {
+                                if (timeGird.getWeekDate() == i && timeGird.getTimeString().contains(Syllabus.time2char((k + 1)) + "")) {
                                     long weekOfTime = timeGird.getWeekOfTime();
                                     if (((weekOfTime >> mWeek) & 1) == 1) {
                                         flag = true;

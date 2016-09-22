@@ -142,15 +142,16 @@ public class AddLessonFragment extends Fragment {
                     timeGird.setWeekOfTime(selectWeekInt);
                     timeGird.setTimeList(sb.toString());
                     timeGirds.add(timeGird);
-                    Logger.e(timeGird.getTimeList() + "\n" + timeGird.getWeekDate() + "\n" + timeGird.getWeekOfTime());
                 }
             }
 
         }
         lesson.setTimeGirds(timeGirds);
+        lesson.mergeTimeGrid();
         User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()).addLessonToSyllabus(
                 lesson, R.color.colorPrimary
         );
+        User.getInstance().saveSyllabus();
     }
 
     @Override
