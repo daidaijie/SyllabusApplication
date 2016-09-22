@@ -13,6 +13,7 @@ import java.util.List;
 public class Lesson implements Serializable {
 
     private int TYPE;
+    private Semester mSemester;
 
     public final static int TYPE_SYSTEM = 0;
     public final static int TYPE_DIY = 2;
@@ -119,6 +120,14 @@ public class Lesson implements Serializable {
 
     public long getIntID() {
         return Long.parseLong(id);
+    }
+
+    public Semester getSemester() {
+        return mSemester;
+    }
+
+    public void setSemester(Semester semester) {
+        mSemester = semester;
     }
 
     public String getTrueName() {

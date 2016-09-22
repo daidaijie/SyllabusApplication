@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.App;
+import com.orhanobut.logger.Logger;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import java.io.BufferedOutputStream;
@@ -22,7 +23,7 @@ import rx.Subscriber;
  * Created by daidaijie on 2016/9/13.
  */
 public class BitmapSaveUtil {
-    public static void saveFile(final Bitmap bm, final String fileName, final String path, final int quality)  {
+    public static void saveFile(final Bitmap bm, final String fileName, final String path, final int quality) {
 
         RxPermissions.getInstance(App.getContext())
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -30,22 +31,24 @@ public class BitmapSaveUtil {
                     @Override
                     public void onCompleted() {
                         Toast.makeText(App.getContext(), "保存成功", Toast.LENGTH_SHORT).show();
+                        bm.recycle();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         Toast.makeText(App.getContext(), "授权失败", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            String subForder = FileUtil.get_app_folder(true) + path;
-                            File foder = new File(subForder);
-                            if (!foder.exists()) {
-                                foder.mkdirs();
+                            String subFolder = FileUtil.get_app_folder(true) + path;
+                            File folder = new File(subFolder);
+                            if (!folder.exists()) {
+                                folder.mkdirs();
                             }
-                            File myCaptureFile = new File(subForder, fileName);
+                            File myCaptureFile = new File(subFolder, fileName);
                             if (!myCaptureFile.exists()) {
                                 try {
                                     myCaptureFile.createNewFile();

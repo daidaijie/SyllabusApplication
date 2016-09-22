@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +13,12 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
-import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OARead;
 import com.example.daidaijie.syllabusapplication.event.OAClearEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.service.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
-import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,7 +41,7 @@ import rx.schedulers.Schedulers;
 public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.oARecyclerView)
-    RecyclerViewEmptySupport mOARecyclerView;
+    RecyclerView mOARecyclerView;
     @BindView(R.id.emptyTextView)
     TextView mEmptyTextView;
     @BindView(R.id.refreshOALayout)
@@ -84,7 +82,6 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
         View view = inflater.inflate(R.layout.fragment_office_automation, container, false);
         ButterKnife.bind(this, view);
 
-        mOARecyclerView.setEmptyView(mEmptyTextView);
         mOAItemAdapter = new OAItemAdapter(getActivity(), mOABeen);
         mOARecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mOARecyclerView.setAdapter(mOAItemAdapter);

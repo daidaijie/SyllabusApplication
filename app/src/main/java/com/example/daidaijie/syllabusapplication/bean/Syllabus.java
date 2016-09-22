@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
+import com.example.daidaijie.syllabusapplication.model.User;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -76,16 +77,6 @@ public class Syllabus {
     };
 
 
-    private int currentWeek;
-
-    public int getCurrentWeek() {
-        return currentWeek;
-    }
-
-    public void setCurrentWeek(int currentWeek) {
-        this.currentWeek = currentWeek;
-    }
-
     public Syllabus() {
         mSyllabusGrids = new ArrayList<>(new ArrayList());
         for (int i = 0; i < 7; i++) {
@@ -125,13 +116,31 @@ public class Syllabus {
         }
     }
 
-    public void convertSyllabus(List<Lesson> lessons) {
+    public void removeSystemLesson(Semester semester) {
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 13; j++) {
+                SyllabusGrid syllabusGrid = getSyllabusGrids().get(i).get(j);
+                for (long id : syllabusGrid.getLessons()) {
+                    Lesson lesson = LessonModel.getInstance().getLesson(id);
+                    if (lesson.equals(semester)) {
+                        syllabusGrid.getLessons().remove(id);
+                    }
+                }
+            }
+        }
+    }
+
+    public void convertSyllabus(List<Lesson> lessons, Semester semester) {
         int colorIndex = 0;
+        removeSystemLesson(semester);
+        LessonModel.getInstance().removeSystemLesson(semester);
         for (Lesson lesson : lessons) {
             //将lesson的时间格式化
             lesson.convertDays();
             lesson.setTYPE(Lesson.TYPE_SYSTEM);
             lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
+            Semester lessonSemester = new Semester(semester.getStartYear(), semester.getSeason());
+            lesson.setSemester(lessonSemester);
 
             //获取该课程上的节点上的时间列表
             List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
@@ -158,6 +167,8 @@ public class Syllabus {
             }
             LessonModel.getInstance().save();
         }
+        User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), this);
+
     }
 
     public void addLessonToSyllabus(Lesson lesson, int color) {

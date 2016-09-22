@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.AddCollectionActivity"
-    >
+    tools:context="com.example.daidaijie.syllabusapplication.activity.AddCollectionActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -22,14 +21,14 @@
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingRight="48dp"
             android:gravity="center"
+            android:paddingRight="48dp"
             android:paddingTop="8dp"
             android:singleLine="true"
             android:text="申请收集"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textAllCaps="false"/>
+            android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
 
@@ -45,11 +44,11 @@
 
     <info.hoang8f.widget.FButton
         android:id="@+id/selectSemesterButton"
-        android:layout_width="342dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:calendarViewShown="false"
+        android:elevation="0dp"
         android:text="2015-2016 秋季学期"
         android:textColor="@color/defaultTextColor"
         android:textSize="16sp"
@@ -57,9 +56,7 @@
         app:cornerRadius="4dp"
         app:shadowColor="@color/defaultDarkBackground"
         app:shadowEnabled="true"
-        app:shadowHeight="1dp"
-        android:fontFamily="sans-serif-medium"
-        android:elevation="0dp"/>
+        app:shadowHeight="1dp"/>
 
     <info.hoang8f.widget.FButton
         android:id="@+id/finishButton"

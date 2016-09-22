@@ -128,7 +128,7 @@ public class LoginPresenter extends ILoginPresenter {
                 User.getInstance().setUserInfo(userInfo);
 
                 Syllabus mSyllabus = new Syllabus();
-                mSyllabus.convertSyllabus(userInfo.getClasses());
+                mSyllabus.convertSyllabus(userInfo.getClasses(),mCurrentSemester);
 
                 User.getInstance().setAccount(username);
                 User.getInstance().setPassword(password);

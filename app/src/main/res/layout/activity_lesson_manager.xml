@@ -18,16 +18,15 @@
         app:titleTextColor="@android:color/white">
 
         <TextView
-            android:layout_marginRight="48dp"
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:paddingTop="8dp"
-            android:singleLine="true"
             android:text="添加课程"
             android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:maxLines="1"/>
     </android.support.v7.widget.Toolbar>
 
     <android.support.v4.view.ViewPager

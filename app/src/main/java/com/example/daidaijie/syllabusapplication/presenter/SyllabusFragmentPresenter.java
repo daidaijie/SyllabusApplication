@@ -61,7 +61,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         final UserInfoService userInfoService = RetrofitUtil.getDefault().create(UserInfoService.class);
         final GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
 
-        Semester mCurrentSemester = User.getInstance().getCurrentSemester();
+        final Semester mCurrentSemester = User.getInstance().getCurrentSemester();
 
         userInfoService.getUserInfo(
                 User.getInstance().getAccount(),
@@ -88,8 +88,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
                 User.getInstance().setUserInfo(userInfo);
 
                 mSyllabus = new Syllabus();
-                mSyllabus.convertSyllabus(userInfo.getClasses());
-                User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
+                mSyllabus.convertSyllabus(userInfo.getClasses(), mCurrentSemester);
 
                 return userBaseService.get_user(User.getInstance().getAccount());
             }
@@ -127,6 +126,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         if (mView == null) {
                             return;
                         }
@@ -208,7 +208,6 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         syllabusBitmap.recycle();
         dayBitmap.recycle();
         timeBitmap.recycle();
-        result.recycle();
     }
 
     public int getWeek() {

@@ -153,6 +153,10 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
         if (User.getInstance().getCurrentSemester().getStartWeekTime() != 0) {
             moveToNowWeek();
+        } else {
+            if (User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()) != null) {
+                showSelectWeek(new SettingWeekEvent());
+            }
         }
 
         mSettingWeekLayout.setOnClickListener(new View.OnClickListener() {

@@ -5,10 +5,13 @@ import android.content.SharedPreferences;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by daidaijie on 2016/8/31.
@@ -56,6 +59,21 @@ public class LessonModel {
 
     public Lesson getLesson(long id) {
         return mLessonHashMap.get(id);
+    }
+
+    public void removeSystemLesson(Semester semester) {
+        Iterator<Map.Entry<Long, Lesson>> it = mLessonHashMap.entrySet().iterator();
+        if (it.hasNext()) {
+            Map.Entry<Long, Lesson> entry = it.next();
+            long id = entry.getKey();
+            Lesson lesson = entry.getValue();
+            if (lesson.getTYPE() == Lesson.TYPE_SYSTEM) {
+                if (mLessonHashMap.get(id).getSemester().equals(semester)) {
+                    mLessonHashMap.remove(id);
+                }
+            }
+        }
+        save();
     }
 
     public void save() {
