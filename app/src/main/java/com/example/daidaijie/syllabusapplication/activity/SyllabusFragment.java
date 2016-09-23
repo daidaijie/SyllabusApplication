@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -16,11 +17,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +41,7 @@ import com.example.daidaijie.syllabusapplication.presenter.SyllabusFragmentPrese
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
+import com.example.daidaijie.syllabusapplication.widget.SelectLessonPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -47,6 +51,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -232,7 +237,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
         mSyllabusGridLayout.removeAllViews();
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 13; j++) {
-                SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
+                final SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids().get(i).get(j);
                 Log.e(TAG, "showSyllabus: " + i + " , " + j + " " + syllabusGrid.getLessons().size());
                 Lesson lesson = null;
                 //在当前节点上找在本周上课的课程
@@ -300,7 +305,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                         @Override
                         public void onClick(View v) {
                             SyllabusActivity activity = (SyllabusActivity) getActivity();
-                            if (!activity.isSingleLock()) {
+                            /*if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
                                 activity.showSelectWeekLayout(false);
                                 Intent intent = LessonInfoActivity.getIntent(
@@ -313,7 +318,14 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                                 } else {
                                     activity.startActivityForResult(intent, 200);
                                 }
-                            }
+                            }*/
+                            Toast.makeText(activity, "哭死", Toast.LENGTH_SHORT).show();
+                            List<Long> lessonIDs = syllabusGrid.getLessons();
+                            SelectLessonPopWindow selectLessonPopWindow = new SelectLessonPopWindow(activity, lessonIDs);
+                            selectLessonPopWindow.setBackgroundDrawable(new BitmapDrawable());
+                            selectLessonPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+                            selectLessonPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                            selectLessonPopWindow.showAtLocation(mSyllabusRootLayout, Gravity.CENTER, 0, 0);
                         }
                     });
 
