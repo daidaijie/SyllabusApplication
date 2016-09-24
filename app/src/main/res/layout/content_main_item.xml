@@ -131,12 +131,13 @@
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.ItemCardLayout
+                android:id="@+id/toTakeOutCardItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_weight="1"
                 app:cardIcon="@drawable/ic_takeout"
-                app:cardTitle="东门外卖">
+                app:cardTitle="校园外卖">
             </com.example.daidaijie.syllabusapplication.widget.ItemCardLayout>
 
         </LinearLayout>

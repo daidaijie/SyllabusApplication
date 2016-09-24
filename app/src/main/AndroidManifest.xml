@@ -145,6 +145,8 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
+        <activity android:name=".activity.TakeOutActivity">
+        </activity>
     </application>
 
 </manifest>

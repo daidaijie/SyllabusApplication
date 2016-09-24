@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool_bar="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/classmateRootLayout"
@@ -31,10 +30,10 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:paddingTop="8dp"
-            android:singleLine="true"
             android:text="班级同学"
             android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:maxLines="1"/>
 
     </android.support.v7.widget.Toolbar>
 
