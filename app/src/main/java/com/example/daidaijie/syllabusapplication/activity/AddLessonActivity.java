@@ -147,7 +147,7 @@ public class AddLessonActivity extends BaseActivity {
         lesson.setTimeGirds(timeGirds);
         lesson.mergeTimeGrid();
         User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()).addLessonToSyllabus(
-                lesson, R.color.colorPrimary
+                lesson, User.getInstance().getCurrentSemester(), R.color.colorPrimary
         );
         User.getInstance().saveSyllabus();
     }
@@ -200,7 +200,7 @@ public class AddLessonActivity extends BaseActivity {
         if (id == R.id.action_finish) {
             addLesson();
             Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
-            this.onBackPressed();
+            this.finish();
         }
         return super.onOptionsItemSelected(item);
     }

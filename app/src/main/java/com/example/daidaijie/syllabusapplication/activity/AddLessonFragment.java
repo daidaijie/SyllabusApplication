@@ -160,7 +160,7 @@ public class AddLessonFragment extends Fragment {
         lesson.setTimeGirds(timeGirds);
         lesson.mergeTimeGrid();
         User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()).addLessonToSyllabus(
-                lesson, R.color.colorPrimary
+                lesson, User.getInstance().getCurrentSemester(), R.color.colorPrimary
         );
         User.getInstance().saveSyllabus();
     }

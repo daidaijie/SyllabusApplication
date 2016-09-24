@@ -1,8 +1,11 @@
 package com.example.daidaijie.syllabusapplication.widget;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +37,8 @@ public class SelectLessonPopWindow extends PopupWindow {
 
     private MyVpAdapter mMyVpAdapter;
 
+    OnItemClickListener mOnItemClickListener;
+
     public SelectLessonPopWindow(Context context, List<Long> lesson) {
         super(context);
         mContext = context;
@@ -52,12 +57,26 @@ public class SelectLessonPopWindow extends PopupWindow {
         setOutsideTouchable(true);
     }
 
+    public interface OnItemClickListener {
+        void onClick(long lessonID);
+    }
+
+    public OnItemClickListener getOnItemClickListener() {
+        return mOnItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
     public class MyVpAdapter extends PagerAdapter {
+
 
         @Override
         public int getCount() {
             return mLessons.size();
         }
+
 
         @Override
         public boolean isViewFromObject(View view, Object object) {
@@ -65,19 +84,35 @@ public class SelectLessonPopWindow extends PopupWindow {
         }
 
         @Override
-        public Object instantiateItem(ViewGroup container, int position) {
-            Lesson lesson = LessonModel.getInstance().getLesson(mLessons.get(position));
+        public Object instantiateItem(ViewGroup container, final int position) {
+            final Lesson lesson = LessonModel.getInstance().getLesson(mLessons.get(position));
 
 //            View view = LayoutInflater.from(mContext).inflate(R.layout.item_select_lesson, null);
+            CardView cardView = new CardView(mContext);
+            cardView.setCardBackgroundColor(mContext.getResources().getColor(lesson.getBgColor()));
+            int padding = DensityUtil.dip2px(mContext, 4);
+            cardView.setRadius(padding);
+            cardView.setCardElevation(padding);
+            padding = DensityUtil.dip2px(mContext, 16);
+            cardView.setContentPadding(padding, padding, padding, padding);
             TextView textView = new TextView(mContext);
             textView.setTextSize(16);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(mContext.getResources().getColor(R.color.material_white));
-            textView.setBackgroundColor(mContext.getResources().getColor(lesson.getBgColor()));
             textView.setText(lesson.getTrueName() + "\n@" + lesson.getRoom());
 
-            container.addView(textView);
-            return textView;
+            cardView.addView(textView);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) {
+                        mOnItemClickListener.onClick(lesson.getIntID());
+                    }
+                }
+            });
+
+            container.addView(cardView);
+            return cardView;
         }
 
         @Override

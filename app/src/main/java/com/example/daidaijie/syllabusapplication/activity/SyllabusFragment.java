@@ -1,13 +1,9 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 
-import android.Manifest;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
@@ -28,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
-import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
@@ -43,20 +38,19 @@ import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusFragmentView;
 import com.example.daidaijie.syllabusapplication.widget.SelectLessonPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
-import com.tbruyelle.rxpermissions.RxPermissions;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.codetail.widget.RevealLinearLayout;
-import rx.Subscriber;
 
 public class SyllabusFragment extends Fragment implements ISyllabusFragmentView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -230,7 +224,7 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
     }
 
     @Override
-    public void showSyllabus(Syllabus syllabus) {
+    public void showSyllabus(final Syllabus syllabus) {
         if (syllabus == null) {
             return;
         }
@@ -301,31 +295,62 @@ public class SyllabusFragment extends Fragment implements ISyllabusFragmentView,
                         }
                     }
                     final Lesson finalLesson = lesson;
+                    final int finalSpan = span;
+                    final int finalI = i;
+                    final int finalJ = j;
                     lessonRippleLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            SyllabusActivity activity = (SyllabusActivity) getActivity();
-                            /*if (!activity.isSingleLock()) {
+                            final SyllabusActivity activity = (SyllabusActivity) getActivity();
+                            if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
                                 activity.showSelectWeekLayout(false);
-                                Intent intent = LessonInfoActivity.getIntent(
-                                        getActivity(), finalLesson.getIntID()
-                                );
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,
-                                            lessonLinearLayout, "lesson_grid");
-                                    activity.startActivityForResult(intent, 200, options.toBundle());
-                                } else {
-                                    activity.startActivityForResult(intent, 200);
+
+                                Set<Long> lessonSet = new LinkedHashSet<>();
+                                for (int k = 0; k < finalSpan; ++k) {
+                                    SyllabusGrid tmpSyllabusGrid = syllabus.getSyllabusGrids().get(finalI).get(finalJ + k);
+                                    lessonSet.addAll(tmpSyllabusGrid.getLessons());
                                 }
-                            }*/
-                            Toast.makeText(activity, "哭死", Toast.LENGTH_SHORT).show();
-                            List<Long> lessonIDs = syllabusGrid.getLessons();
-                            SelectLessonPopWindow selectLessonPopWindow = new SelectLessonPopWindow(activity, lessonIDs);
-                            selectLessonPopWindow.setBackgroundDrawable(new BitmapDrawable());
-                            selectLessonPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-                            selectLessonPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-                            selectLessonPopWindow.showAtLocation(mSyllabusRootLayout, Gravity.CENTER, 0, 0);
+                                List<Long> lessonIDs = new ArrayList<>();
+                                lessonIDs.addAll(lessonSet);
+                                if (lessonIDs.size()>1){
+                                    final SelectLessonPopWindow selectLessonPopWindow = new SelectLessonPopWindow(activity, lessonIDs);
+                                    selectLessonPopWindow.setBackgroundDrawable(new BitmapDrawable());
+                                    selectLessonPopWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+                                    selectLessonPopWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+                                    selectLessonPopWindow.setOnItemClickListener(new SelectLessonPopWindow.OnItemClickListener() {
+                                        @Override
+                                        public void onClick(long lessonID) {
+                                            Intent intent = LessonInfoActivity.getIntent(
+                                                    getActivity(), lessonID
+                                            );
+                                            activity.startActivityForResult(intent, 200);
+                                            selectLessonPopWindow.dismiss();
+
+                                        }
+                                    });
+                                    selectLessonPopWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                                        @Override
+                                        public void onDismiss() {
+                                            activity.setSingleLock(false);
+                                        }
+                                    });
+                                    selectLessonPopWindow.showAtLocation(mSyllabusRootLayout, Gravity.CENTER, 0, 0);
+                                }else {
+                                    Intent intent = LessonInfoActivity.getIntent(
+                                            getActivity(), finalLesson.getIntID()
+                                    );
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(activity,
+                                                lessonLinearLayout, "lesson_grid");
+                                        activity.startActivityForResult(intent, 200, options.toBundle());
+                                    } else {
+                                        activity.startActivityForResult(intent, 200);
+                                    }
+                                }
+
+                            }
+
                         }
                     });
 

@@ -9,6 +9,7 @@ import com.example.daidaijie.syllabusapplication.model.User;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -120,10 +121,12 @@ public class Syllabus {
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 13; j++) {
                 SyllabusGrid syllabusGrid = getSyllabusGrids().get(i).get(j);
-                for (long id : syllabusGrid.getLessons()) {
+                Iterator<Long> iterator = syllabusGrid.getLessons().iterator();
+                while (iterator.hasNext()) {
+                    long id = iterator.next();
                     Lesson lesson = LessonModel.getInstance().getLesson(id);
-                    if (lesson.equals(semester)) {
-                        syllabusGrid.getLessons().remove(id);
+                    if (lesson.getTYPE() == Lesson.TYPE_SYSTEM && lesson.getSemester().equals(semester)) {
+                        iterator.remove();
                     }
                 }
             }
@@ -171,17 +174,18 @@ public class Syllabus {
 
     }
 
-    public void addLessonToSyllabus(Lesson lesson, int color) {
-        addLessonToSyllabus(lesson, color, false);
+    public void addLessonToSyllabus(Lesson lesson, Semester semester, int color) {
+        addLessonToSyllabus(lesson, semester, color, false);
     }
 
-    public void addLessonToSyllabus(Lesson lesson, int color, boolean isConverDay) {
+    public void addLessonToSyllabus(Lesson lesson, Semester semester, int color, boolean isConverDay) {
         //将lesson的时间格式化
         if (isConverDay) {
             lesson.convertDays();
         }
         lesson.setBgColor(color);
-
+        Semester lessonSemester = new Semester(semester.getStartYear(), semester.getSeason());
+        lesson.setSemester(lessonSemester);
         //获取该课程上的节点上的时间列表
         List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
 
