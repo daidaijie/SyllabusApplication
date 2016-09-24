@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
@@ -14,6 +15,7 @@ import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
 import com.example.daidaijie.syllabusapplication.service.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.orhanobut.logger.Logger;
 
 import org.joda.time.DateTime;
 
@@ -120,28 +122,31 @@ public class LoginPresenter extends ILoginPresenter {
                             return false;
                         }
                     }
-                }).flatMap(new Func1<HttpResult<UserInfo>, Observable<HttpResult<UserBaseBean>>>() {
-            @Override
-            public Observable<HttpResult<UserBaseBean>> call(HttpResult<UserInfo> result) {
-                UserInfo userInfo = result.getData();
-                User.getInstance().setCurrentAccount(username);
-                User.getInstance().setUserInfo(userInfo);
+                })
+                .flatMap(new Func1<HttpResult<UserInfo>, Observable<HttpResult<UserBaseBean>>>() {
+                    @Override
+                    public Observable<HttpResult<UserBaseBean>> call(HttpResult<UserInfo> result) {
+                        UserInfo userInfo = result.getData();
+                        User.getInstance().setCurrentAccount(username);
+                        User.getInstance().setUserInfo(userInfo);
 
-                Syllabus mSyllabus;
-                if (User.getInstance().getSyllabus(mCurrentSemester) == null) {
-                    mSyllabus = new Syllabus();
-                } else {
-                    mSyllabus = User.getInstance().getSyllabus(mCurrentSemester);
-                }
-                mSyllabus.convertSyllabus(userInfo.getClasses(), mCurrentSemester);
+                        User.getInstance().setAccount(username);
+                        User.getInstance().setPassword(password);
+                        LessonModel.getInstance().setCurrentLessonModel(username);
 
-                User.getInstance().setAccount(username);
-                User.getInstance().setPassword(password);
-                User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
+                        Syllabus mSyllabus;
+                        if (User.getInstance().getSyllabus(mCurrentSemester) == null) {
+                            mSyllabus = new Syllabus();
+                        } else {
+                            mSyllabus = User.getInstance().getSyllabus(mCurrentSemester);
+                        }
+                        mSyllabus.convertSyllabus(userInfo.getClasses(), mCurrentSemester);
 
-                return userBaseService.get_user(username);
-            }
-        }).filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
+                        User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), mSyllabus);
+
+                        return userBaseService.get_user(username);
+                    }
+                }).filter(new Func1<HttpResult<UserBaseBean>, Boolean>() {
             @Override
             public Boolean call(HttpResult<UserBaseBean> result) {
                 Log.e(TAG, "call: " + result.getCode());
@@ -165,6 +170,7 @@ public class LoginPresenter extends ILoginPresenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         mView.dismissLoadingDialog();
                         Log.e(TAG, "onError: " + e.getMessage());
                         mView.showLoginFail("登陆失败");

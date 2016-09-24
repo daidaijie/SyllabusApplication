@@ -37,7 +37,13 @@ public class LessonModel {
     }
 
     private LessonModel() {
-        mSharedPreferences = App.getContext().getSharedPreferences("Lessons", Context.MODE_PRIVATE);
+        if (!User.getInstance().getCurrentAccount().trim().isEmpty()){
+            setCurrentLessonModel(User.getInstance().getCurrentAccount());
+        }
+    }
+
+    public void setCurrentLessonModel(String account) {
+        mSharedPreferences = App.getContext().getSharedPreferences(account + "Lessons", Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
 
         String lessonsJsonString = mSharedPreferences.getString(EXTRA_LESSONS, "");
@@ -49,7 +55,6 @@ public class LessonModel {
                     HashMap<Long, Lesson>>() {
             }.getType());
         }
-
     }
 
 

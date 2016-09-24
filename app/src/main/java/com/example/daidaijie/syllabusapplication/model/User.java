@@ -10,10 +10,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
