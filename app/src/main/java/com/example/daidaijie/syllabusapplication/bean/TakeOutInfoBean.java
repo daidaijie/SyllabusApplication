@@ -1,5 +1,10 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+
 /**
  * Created by daidaijie on 2016/9/24.
  */
@@ -24,6 +29,8 @@ public class TakeOutInfoBean {
     private String short_number;
     private String updatedAt;
     private String menu;
+
+    private List<TakeOutSubMenu> mTakeOutSubMenus;
 
     public String getMenu() {
         return menu;
@@ -87,5 +94,21 @@ public class TakeOutInfoBean {
 
     public void setUpdatedAt(String updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public void loadTakeOutSubMenus() {
+        if (menu == null || menu.trim().isEmpty()) {
+            return;
+        }
+        mTakeOutSubMenus = GsonUtil.getDefault().fromJson(menu, new TypeToken<List<TakeOutSubMenu>>() {
+        }.getType());
+    }
+
+    public List<TakeOutSubMenu> getTakeOutSubMenus() {
+        return mTakeOutSubMenus;
+    }
+
+    public void setTakeOutSubMenus(List<TakeOutSubMenu> takeOutSubMenus) {
+        mTakeOutSubMenus = takeOutSubMenus;
     }
 }

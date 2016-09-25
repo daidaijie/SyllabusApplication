@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/material_white"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="1dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:id="@+id/menuInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/takeoutNameTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                tools:text="粿条很粗"/>
+
+            <TextView
+                android:id="@+id/longNumberTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="14sp"
+                tools:text="长号 : 13411997245"/>
+
+            <TextView
+                android:id="@+id/shortNumberTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="96dp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="14sp"
+                tools:text="短号 : 64245"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/divLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menuInfoLayout"
+            android:layout_marginBottom="-16dp"
+            android:layout_marginTop="-16dp">
+
+            <View
+                android:id="@+id/div_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@color/defaultDarkBackground"/>
+
+            <android.support.design.widget.FloatingActionButton
+                app:backgroundTint="?attr/colorPrimary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="24dp"
+                android:layout_marginTop="4dp"
+                android:src="@drawable/ic_action_phone"
+                android:tint="@color/material_white"
+                app:elevation="4dp"
+                app:fabSize="mini"
+                app:rippleColor="?attr/colorPrimaryDark"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/conditionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/divLayout"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="96dp"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="12sp"
+            tools:text="备注 : 10元起送"/>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

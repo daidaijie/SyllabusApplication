@@ -7,17 +7,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * Created by daidaijie on 2016/9/24.
  */
-public class TakeOutModel {
+public class BmobModel {
 
     public Retrofit mRetrofit;
 
-    private static TakeOutModel ourInstance = new TakeOutModel();
+    private static BmobModel ourInstance = new BmobModel();
 
-    public static TakeOutModel getInstance() {
+    public static BmobModel getInstance() {
         return ourInstance;
     }
 
-    private TakeOutModel() {
+    private BmobModel() {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl("https://api.bmob.cn/1/")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
