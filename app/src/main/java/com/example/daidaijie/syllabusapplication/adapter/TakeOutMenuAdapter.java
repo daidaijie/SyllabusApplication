@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.MainActivity;
+import com.example.daidaijie.syllabusapplication.activity.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.ColorModel;
 
@@ -49,12 +52,20 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         TakeOutInfoBean takeOutInfoBean = mTakeOutInfoBeen.get(position);
         holder.mTakeoutNameTextView.setText(takeOutInfoBean.getName());
         holder.mLongNumberTextView.setText("长号 : " + takeOutInfoBean.getLong_number());
         holder.mShortNumberTextView.setText("短号 : " + takeOutInfoBean.getShort_number());
         holder.mConditionTextView.setText("备注 : " + takeOutInfoBean.getCondition());
+
+        holder.mCardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = TakeOutDetailMenuActivity.getIntent(mActivity,position);
+                mActivity.startActivity(intent);
+            }
+        });
     }
 
     @Override

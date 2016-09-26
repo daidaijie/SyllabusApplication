@@ -1,8 +1,11 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import android.view.SubMenu;
+
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -110,5 +113,17 @@ public class TakeOutInfoBean {
 
     public void setTakeOutSubMenus(List<TakeOutSubMenu> takeOutSubMenus) {
         mTakeOutSubMenus = takeOutSubMenus;
+    }
+
+    public List<Dishes> getDishes() {
+        if (mTakeOutSubMenus == null) return null;
+        List<Dishes> mDishesList = new ArrayList<>();
+        for (TakeOutSubMenu subMenu : mTakeOutSubMenus) {
+            for (Dishes dishes : subMenu.getDishes()) {
+                dishes.sticky = subMenu.getName();
+                mDishesList.add(dishes);
+            }
+        }
+        return mDishesList;
     }
 }

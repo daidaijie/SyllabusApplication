@@ -16,7 +16,9 @@ public class Dishes {
     private String price;
 
     @SerializedName("dist")
-    private String nName;
+    private String name;
+
+    public String sticky;
 
     public String getPrice() {
         return price;
@@ -26,11 +28,11 @@ public class Dishes {
         this.price = price;
     }
 
-    public String getnName() {
-        return nName;
+    public String getName() {
+        return name;
     }
 
-    public void setnName(String nName) {
-        this.nName = nName;
+    public void setName(String name) {
+        this.name = name;
     }
 }

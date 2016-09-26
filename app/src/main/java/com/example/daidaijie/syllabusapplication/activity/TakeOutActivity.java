@@ -13,6 +13,7 @@ import com.example.daidaijie.syllabusapplication.adapter.TakeOutMenuAdapter;
 import com.example.daidaijie.syllabusapplication.bean.BmobResult;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.BmobModel;
+import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
 import com.example.daidaijie.syllabusapplication.service.TakeOutInfoService;
 import com.orhanobut.logger.Logger;
 
@@ -36,8 +37,6 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
 
     TakeOutMenuAdapter mTakeOutMenuAdapter;
 
-    List<TakeOutInfoBean> mTakeOutInfoBeen;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +46,7 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mTakeOutMenuAdapter = new TakeOutMenuAdapter(this, mTakeOutInfoBeen);
+        mTakeOutMenuAdapter = new TakeOutMenuAdapter(this, TakeOutModel.getInstance().getTakeOutInfoBeen());
         mMenuListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mMenuListRecyclerView.setAdapter(mTakeOutMenuAdapter);
 
@@ -59,13 +58,15 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
                 android.R.color.holo_red_light
         );
 
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeRefreshLayout.setRefreshing(true);
-                getTakeOutInfo();
-            }
-        });
+        if (TakeOutModel.getInstance().getTakeOutInfoBeen().size() == 0) {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    getTakeOutInfo();
+                }
+            });
+        }
 
     }
 
@@ -82,7 +83,7 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
                 .subscribe(new Subscriber<BmobResult<TakeOutInfoBean>>() {
                     @Override
                     public void onCompleted() {
-                        mTakeOutMenuAdapter.setTakeOutInfoBeen(mTakeOutInfoBeen);
+                        mTakeOutMenuAdapter.setTakeOutInfoBeen(TakeOutModel.getInstance().getTakeOutInfoBeen());
                         mTakeOutMenuAdapter.notifyDataSetChanged();
                         mSwipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(TakeOutActivity.this, "OK", Toast.LENGTH_SHORT).show();
@@ -98,7 +99,9 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
 
                     @Override
                     public void onNext(BmobResult<TakeOutInfoBean> bmobResult) {
-                        mTakeOutInfoBeen = bmobResult.getResults();
+                        if (bmobResult.getResults().size() != 0) {
+                            TakeOutModel.getInstance().setTakeOutInfoBeen(bmobResult.getResults());
+                        }
                     }
                 });
     }

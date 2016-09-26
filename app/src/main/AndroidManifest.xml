@@ -147,6 +147,8 @@
         </activity>
         <activity android:name=".activity.TakeOutActivity">
         </activity>
+        <activity android:name=".activity.TakeOutDetailMenuActivity">
+        </activity>
     </application>
 
 </manifest>
