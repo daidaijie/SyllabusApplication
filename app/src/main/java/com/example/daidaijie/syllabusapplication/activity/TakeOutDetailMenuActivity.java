@@ -93,16 +93,15 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             mDishesList = mTakeOutInfoBean.getDishes();
         }
 
-        mLinearLayoutManager = new LinearLayoutManager(this);
-        mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList);
-        mDishesRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mDishesRecyclerView.setAdapter(mTakeOutMenuAdapter);
-
 
         mSubMenuAdapter = new SubMenuAdapter(this, mTakeOutInfoBean.getTakeOutSubMenus());
         mSubMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mSubMenuRecyclerView.setAdapter(mSubMenuAdapter);
 
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList);
+        mDishesRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mDishesRecyclerView.setAdapter(mTakeOutMenuAdapter);
 
         mDishesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -146,42 +145,22 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             }
         });
 
-        /*mSubMenuAdapter.setOnItemClickListener(new SubMenuAdapter.OnItemClickListener() {
+        mSubMenuAdapter.setOnItemClickListener(new SubMenuAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
                 int pos = mTakeOutInfoBean
                         .getTakeOutSubMenus().get(position).getFirstItemPos();
-
-                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
-                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
-
-                if (pos <= firstItem) {
-                    mDishesRecyclerView.scrollToPosition(pos);
-                } else if (pos <= lastItem) {
-                    int top = mDishesRecyclerView.getChildAt(pos - firstItem).getTop();
-                    mDishesRecyclerView.scrollBy(0, top);
-                } else {
-                    mDishesRecyclerView.scrollToPosition(pos);
-                    move = true;
-                    mIndex = pos;   
-                }
-                Toast.makeText(TakeOutDetailMenuActivity.this, "position : " + position, Toast.LENGTH_SHORT).show();
-                mSubMenuAdapter.setSelectItem(position);
-
-
-                *//*mDishesRecyclerView.scrollToPosition();
-                mSubMenuAdapter.setSelectItem(position);
-                mSubMenuAdapter.notifyDataSetChanged();*//*
+                moveToPosition(pos);
             }
-        });*/
+        });
 
-/*        mDishesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        mDishesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 if (move) {
-                    Toast.makeText(TakeOutDetailMenuActivity.this, "030", Toast.LENGTH_SHORT).show();
                     move = false;
+                    //获取要置顶的项在当前屏幕的位置，mIndex是记录的要置顶项在RecyclerView中的位置
                     int n = mIndex - mLinearLayoutManager.findFirstVisibleItemPosition();
                     if (0 <= n && n < mDishesRecyclerView.getChildCount()) {
                         //获取要置顶的项顶部离RecyclerView顶部的距离
@@ -191,8 +170,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                     }
                 }
             }
-        })*/
-        ;
+        });
 
         mSwipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_light,
@@ -203,6 +181,27 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
+    }
+
+    private void moveToPosition(int n) {
+        //先从RecyclerView的LayoutManager中获取第一项和最后一项的Position
+        int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+        int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+        //然后区分情况
+        if (n <= firstItem) {
+            //当要置顶的项在当前显示的第一个项的前面时
+            mDishesRecyclerView.scrollToPosition(n);
+        } else if (n <= lastItem) {
+            //当要置顶的项已经在屏幕上显示时
+            int top = mDishesRecyclerView.getChildAt(n - firstItem).getTop();
+            mDishesRecyclerView.scrollBy(0, top);
+        } else {
+            //当要置顶的项在当前显示的最后一项的后面时
+            mDishesRecyclerView.scrollToPosition(n);
+            //这里这个变量是用在RecyclerView滚动监听里面的
+            mIndex = n;
+            move = true;
+        }
     }
 
     private void getDetailMenu() {
@@ -241,6 +240,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                     }
                 });
     }
+
 
     private void showFailMessage(String msg) {
         SnackbarUtil.ShortSnackbar(
