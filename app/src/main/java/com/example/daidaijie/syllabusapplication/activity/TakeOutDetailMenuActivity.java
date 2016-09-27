@@ -3,10 +3,10 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
-import com.example.daidaijie.syllabusapplication.adapter.TakeOutMenuAdapter;
+import com.example.daidaijie.syllabusapplication.adapter.SubMenuAdapter;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutSubMenu;
@@ -31,7 +31,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class TakeOutDetailMenuActivity extends BaseActivity {
+public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -40,12 +40,18 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
     @BindView(R.id.dishesRecyclerView)
     RecyclerView mDishesRecyclerView;
     @BindView(R.id.tv_sticky_header_view)
-    TextView mTvStickyHeaderView;
+    LinearLayout mTvStickyHeaderView;
+    @BindView(R.id.stickyTextView)
+    TextView mStickyTextView;
     @BindView(R.id.activity_take_out_detail_menu)
     LinearLayout mActivityTakeOutDetailMenu;
 
     public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
             ".TakeOutDetailMenuActivity";
+    @BindView(R.id.subMenuRecyclerView)
+    RecyclerView mSubMenuRecyclerView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     private int mPosition;
 
@@ -54,6 +60,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
     private List<Dishes> mDishesList;
 
     private DishesAdapter mTakeOutMenuAdapter;
+
+    private SubMenuAdapter mSubMenuAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +76,13 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
 
         mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
         if (mTakeOutInfoBean.getTakeOutSubMenus() == null) {
-            getDetailMenu();
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    getDetailMenu();
+                }
+            });
         } else {
             mDishesList = mTakeOutInfoBean.getDishes();
         }
@@ -76,6 +90,12 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
         mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList);
         mDishesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDishesRecyclerView.setAdapter(mTakeOutMenuAdapter);
+
+
+        mSubMenuAdapter = new SubMenuAdapter(this, mTakeOutInfoBean.getTakeOutSubMenus());
+        mSubMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mSubMenuRecyclerView.setAdapter(mSubMenuAdapter);
+
 
         mDishesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -87,7 +107,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
                         mTvStickyHeaderView.getMeasuredWidth() / 2, 5);
 
                 if (stickyInfoView != null && stickyInfoView.getContentDescription() != null) {
-                    mTvStickyHeaderView.setText(String.valueOf(stickyInfoView.getContentDescription()));
+                    mStickyTextView.setText(String.valueOf(stickyInfoView.getContentDescription()));
                 }
 
                 // Get the sticky view's translationY by the first view below the sticky's height.
@@ -113,6 +133,15 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
             }
         });
 
+        mSwipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
     }
 
     private void getDetailMenu() {
@@ -123,14 +152,19 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
                 .subscribe(new Subscriber<TakeOutInfoBean>() {
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(TakeOutDetailMenuActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                        mSwipeRefreshLayout.setRefreshing(false);
                         mDishesList = mTakeOutInfoBean.getDishes();
+
                         mTakeOutMenuAdapter.setDishesList(mDishesList);
                         mTakeOutMenuAdapter.notifyDataSetChanged();
+
+                        mSubMenuAdapter.setSubMenus(mTakeOutInfoBean.getTakeOutSubMenus());
+                        mSubMenuAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        mSwipeRefreshLayout.setRefreshing(false);
                         showFailMessage("获取失败");
                     }
 
@@ -162,5 +196,11 @@ public class TakeOutDetailMenuActivity extends BaseActivity {
         Intent intent = new Intent(context, TakeOutDetailMenuActivity.class);
         intent.putExtra(EXTRA_POSITION, position);
         return intent;
+    }
+
+
+    @Override
+    public void onRefresh() {
+        getDetailMenu();
     }
 }

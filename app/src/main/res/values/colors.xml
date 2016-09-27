@@ -11,7 +11,11 @@
 
     <color name="defaultShowColor">#999999</color>
 
+    <color name="grey66Color">#666666</color>
+
     <color name="defaultLightBackground">#FAFAFA</color>
+
+    <color name="greyF6Color">#F6F6F6</color>
 
     <color name="defaultLineColor">@color/material_grey_300</color>
 

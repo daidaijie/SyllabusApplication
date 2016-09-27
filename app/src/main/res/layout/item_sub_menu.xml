@@ -2,24 +2,26 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/tv_sticky_header_view"
+    android:id="@+id/subMenuLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/greyF6Color"
-    android:orientation="horizontal">
-
-    <View
-        android:layout_width="2dp"
-        android:layout_height="match_parent"
-        android:background="@color/defaultDarkBackgroundSelect"/>
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/stickyTextView"
+        android:id="@+id/subMenuTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:layout_margin="8dp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:textColor="@color/grey66Color"
         android:textSize="12sp"
-        android:textStyle="bold"
-        tools:text="吸顶文本"/>
+        tools:text="菜单类"/>
+
+    <View
+        android:id="@+id/div_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/defaultDarkBackground"/>
 </LinearLayout>

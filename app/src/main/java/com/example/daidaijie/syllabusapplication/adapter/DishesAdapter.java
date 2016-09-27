@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,9 +56,6 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (position == mDishesList.size() - 1) {
-            holder.mDivLine.setVisibility(View.GONE);
-        }
 
         Dishes dishes = mDishesList.get(position);
         holder.mDishesNameTextView.setText(dishes.getName());
@@ -65,16 +63,24 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
 
         if (position == 0) {
             holder.mTvStickyHeaderView.setVisibility(View.VISIBLE);
-            holder.mTvStickyHeaderView.setText(dishes.sticky);
+            holder.mStickyTextView.setText(dishes.sticky);
             holder.itemView.setTag(FIRST_STICKY_VIEW);
         } else {
             if (!TextUtils.equals(dishes.sticky, mDishesList.get(position - 1).sticky)) {
                 holder.mTvStickyHeaderView.setVisibility(View.VISIBLE);
-                holder.mTvStickyHeaderView.setText(dishes.sticky);
+                holder.mStickyTextView.setText(dishes.sticky);
                 holder.itemView.setTag(HAS_STICKY_VIEW);
             } else {
                 holder.mTvStickyHeaderView.setVisibility(View.GONE);
                 holder.itemView.setTag(NONE_STICKY_VIEW);
+            }
+        }
+
+        holder.mDivLine.setVisibility(View.VISIBLE);
+
+        if (position > 0 && position < mDishesList.size() - 1) {
+            if (!TextUtils.equals(dishes.sticky, mDishesList.get(position + 1).sticky)) {
+                holder.mDivLine.setVisibility(View.GONE);
             }
         }
 
@@ -91,7 +97,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_sticky_header_view)
-        TextView mTvStickyHeaderView;
+        LinearLayout mTvStickyHeaderView;
+        @BindView(R.id.stickyTextView)
+        TextView mStickyTextView;
         @BindView(R.id.dishesNameTextView)
         TextView mDishesNameTextView;
         @BindView(R.id.dishesPriceTextView)
