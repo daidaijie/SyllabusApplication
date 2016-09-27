@@ -20,6 +20,8 @@ public class Dishes {
 
     public String sticky;
 
+    public int subMenuPos;
+
     public String getPrice() {
         return price;
     }

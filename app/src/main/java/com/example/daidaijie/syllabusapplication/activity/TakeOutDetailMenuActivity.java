@@ -63,6 +63,12 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     private SubMenuAdapter mSubMenuAdapter;
 
+    private boolean move;
+
+    private LinearLayoutManager mLinearLayoutManager;
+
+    private int mIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,8 +93,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             mDishesList = mTakeOutInfoBean.getDishes();
         }
 
+        mLinearLayoutManager = new LinearLayoutManager(this);
         mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList);
-        mDishesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mDishesRecyclerView.setLayoutManager(mLinearLayoutManager);
         mDishesRecyclerView.setAdapter(mTakeOutMenuAdapter);
 
 
@@ -107,7 +114,13 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                         mTvStickyHeaderView.getMeasuredWidth() / 2, 5);
 
                 if (stickyInfoView != null && stickyInfoView.getContentDescription() != null) {
-                    mStickyTextView.setText(String.valueOf(stickyInfoView.getContentDescription()));
+                    int subPos = Integer.parseInt(String.valueOf(stickyInfoView.getContentDescription()));
+                    mStickyTextView.setText(mTakeOutInfoBean.getTakeOutSubMenus().get(subPos).getName());
+                    if (subPos != mSubMenuAdapter.getSelectItem()) {
+                        mSubMenuRecyclerView.scrollToPosition(subPos);
+                        mSubMenuAdapter.setSelectItem(subPos);
+                        mSubMenuAdapter.notifyDataSetChanged();
+                    }
                 }
 
                 // Get the sticky view's translationY by the first view below the sticky's height.
@@ -132,6 +145,54 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
             }
         });
+
+        /*mSubMenuAdapter.setOnItemClickListener(new SubMenuAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(int position) {
+                int pos = mTakeOutInfoBean
+                        .getTakeOutSubMenus().get(position).getFirstItemPos();
+
+                int firstItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+                int lastItem = mLinearLayoutManager.findLastVisibleItemPosition();
+
+                if (pos <= firstItem) {
+                    mDishesRecyclerView.scrollToPosition(pos);
+                } else if (pos <= lastItem) {
+                    int top = mDishesRecyclerView.getChildAt(pos - firstItem).getTop();
+                    mDishesRecyclerView.scrollBy(0, top);
+                } else {
+                    mDishesRecyclerView.scrollToPosition(pos);
+                    move = true;
+                    mIndex = pos;   
+                }
+                Toast.makeText(TakeOutDetailMenuActivity.this, "position : " + position, Toast.LENGTH_SHORT).show();
+                mSubMenuAdapter.setSelectItem(position);
+
+
+                *//*mDishesRecyclerView.scrollToPosition();
+                mSubMenuAdapter.setSelectItem(position);
+                mSubMenuAdapter.notifyDataSetChanged();*//*
+            }
+        });*/
+
+/*        mDishesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (move) {
+                    Toast.makeText(TakeOutDetailMenuActivity.this, "030", Toast.LENGTH_SHORT).show();
+                    move = false;
+                    int n = mIndex - mLinearLayoutManager.findFirstVisibleItemPosition();
+                    if (0 <= n && n < mDishesRecyclerView.getChildCount()) {
+                        //获取要置顶的项顶部离RecyclerView顶部的距离
+                        int top = mDishesRecyclerView.getChildAt(n).getTop();
+                        //最后的移动
+                        mDishesRecyclerView.scrollBy(0, top);
+                    }
+                }
+            }
+        })*/
+        ;
 
         mSwipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_light,

@@ -16,6 +16,16 @@ public class TakeOutSubMenu {
     @SerializedName("sub_list")
     private List<Dishes> mDishes;
 
+    private int firstItemPos;
+
+    public int getFirstItemPos() {
+        return firstItemPos;
+    }
+
+    public void setFirstItemPos(int firstItemPos) {
+        this.firstItemPos = firstItemPos;
+    }
+
     public String getName() {
         return mName;
     }

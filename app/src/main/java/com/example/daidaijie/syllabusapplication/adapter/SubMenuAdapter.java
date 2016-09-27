@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,34 @@ public class SubMenuAdapter extends RecyclerView.Adapter<SubMenuAdapter.ViewHold
 
     List<TakeOutSubMenu> mSubMenus;
 
+    private int selectItem;
+
+    public interface OnItemClickListener {
+        public void onClick(int position);
+    }
+
+    OnItemClickListener mOnItemClickListener;
+
+    public OnItemClickListener getOnItemClickListener() {
+        return mOnItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+    public int getSelectItem() {
+        return selectItem;
+    }
+
+    public void setSelectItem(int selectItem) {
+        this.selectItem = selectItem;
+    }
+
     public SubMenuAdapter(Activity activity, List<TakeOutSubMenu> subMenus) {
         mActivity = activity;
         mSubMenus = subMenus;
+        selectItem = 0;
     }
 
     public List<TakeOutSubMenu> getSubMenus() {
@@ -48,9 +74,24 @@ public class SubMenuAdapter extends RecyclerView.Adapter<SubMenuAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         TakeOutSubMenu subMenu = mSubMenus.get(position);
-        holder.mSubMenuTitle.setText(subMenu.getName());
+        if (selectItem == position) {
+            holder.mSubMenuTitle.setText(Html.fromHtml("<b>" + subMenu.getName() + "</b>"));
+            holder.mSubMenuLayout.setBackgroundColor(mActivity.getResources().getColor(R.color.defaultLightBackground));
+        } else {
+            holder.mSubMenuTitle.setText(subMenu.getName());
+            holder.mSubMenuLayout.setBackgroundColor(mActivity.getResources().getColor(R.color.defaultDarkBackground));
+        }
+
+        holder.mSubMenuLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onClick(position);
+                }
+            }
+        });
     }
 
     @Override

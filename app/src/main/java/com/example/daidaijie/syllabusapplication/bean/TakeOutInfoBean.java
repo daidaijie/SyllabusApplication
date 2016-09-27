@@ -118,12 +118,17 @@ public class TakeOutInfoBean {
     public List<Dishes> getDishes() {
         if (mTakeOutSubMenus == null) return null;
         List<Dishes> mDishesList = new ArrayList<>();
-        for (TakeOutSubMenu subMenu : mTakeOutSubMenus) {
-            for (Dishes dishes : subMenu.getDishes()) {
+        for (int i = 0; i < mTakeOutSubMenus.size(); i++) {
+            TakeOutSubMenu subMenu = mTakeOutSubMenus.get(i);
+            for (int j = 0; j < subMenu.getDishes().size(); j++) {
+                if (j == 0) subMenu.setFirstItemPos(mDishesList.size());
+                Dishes dishes = subMenu.getDishes().get(j);
                 dishes.sticky = subMenu.getName();
+                dishes.subMenuPos = i;
                 mDishesList.add(dishes);
             }
         }
         return mDishesList;
     }
+
 }

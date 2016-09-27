@@ -84,9 +84,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
             }
         }
 
-        holder.itemView.setContentDescription(dishes.sticky);
-
-
+        holder.itemView.setContentDescription(dishes.subMenuPos + "");
     }
 
     @Override
