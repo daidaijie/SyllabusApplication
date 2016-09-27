@@ -23,5 +23,5 @@
         android:id="@+id/div_line"
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/defaultDarkBackground"/>
+        android:background="@color/defaultDarkBackgroundSelect"/>
 </LinearLayout>

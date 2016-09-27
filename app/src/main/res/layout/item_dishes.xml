@@ -26,22 +26,39 @@
             android:textStyle="bold"
             tools:text="爆炒鸡米花"/>
 
-        <TextView
-            android:id="@+id/dishesPriceTextView"
+        <LinearLayout
+            android:id="@+id/priceLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dishesNameTextView"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:textColor="@color/material_orange_900"
-            android:textSize="16sp"
-            tools:text="￥15"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="¥"
+                android:textColor="@color/material_orange_900"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/dishesPriceTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:textColor="@color/material_orange_900"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="15"/>
+
+        </LinearLayout>
 
         <View
             android:id="@+id/div_line"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:layout_below="@+id/dishesPriceTextView"
+            android:layout_below="@+id/priceLayout"
             android:background="@color/defaultDarkBackground"/>
 
     </RelativeLayout>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tool_bar="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_take_out_detail_menu"
     android:layout_width="match_parent"
@@ -9,39 +9,113 @@
     android:orientation="vertical"
     tools:context="com.example.daidaijie.syllabusapplication.activity.TakeOutDetailMenuActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height"
-        android:background="?attr/colorPrimary"
-        android:clipToPadding="true"
+        android:layout_height="176dp"
         android:fitsSystemWindows="true"
-        android:gravity="center_vertical"
-        android:popupTheme="@style/AppTheme.PopupOverlay"
-        android:theme="@style/AppTheme.PopupOverlay"
-        android:transitionName="tool_bar"
-        tool_bar:titleTextColor="@android:color/white"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:transitionName="lesson_grid"
         tools:targetApi="lollipop">
 
-        <TextView
-            android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:maxLines="1"
-            android:paddingTop="8dp"
-            android:text="校园外卖"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"/>
+            android:transitionName="tool_bar"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+            app:statusBarScrim="@android:color/transparent">
 
-    </android.support.v7.widget.Toolbar>
+            <RelativeLayout
+                android:id="@+id/takeoutNameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="48dp"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7">
+
+                <TextView
+                    android:id="@+id/takeoutNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="64dp"
+                    android:textColor="@color/material_white"
+                    android:textSize="20sp"
+                    tools:text="老四小炒"/>
+
+                <TextView
+                    android:id="@+id/longNumberTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/takeoutNameTextView"
+                    android:layout_marginLeft="64dp"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/material_white"
+                    android:textSize="14sp"
+                    tools:text="长号 : 13355522667"/>
+
+                <TextView
+                    android:id="@+id/shortNumberTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/conditionTextView"
+                    android:layout_below="@+id/longNumberTextView"
+                    android:layout_marginLeft="64dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/material_white"
+                    android:textSize="14sp"
+                    tools:text="短号 : 642667"/>
+
+                <TextView
+                    android:id="@+id/conditionTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginTop="4dp"
+                    android:background="#402B2B2B"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="64dp"
+                    android:paddingTop="4dp"
+                    android:textColor="@color/defaultLightBackground"
+                    android:textSize="12sp"
+                    tools:text="备注 : 15元起送"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:gravity="center_vertical"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <com.example.daidaijie.syllabusapplication.widget.CustomMarqueeTextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="56dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingTop="8dp"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    tools:text="东门菜单"/>
+
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
 
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,7 +124,7 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/subMenuRecyclerView"
-                android:layout_width="64dp"
+                android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="20dp">
 
@@ -63,7 +137,8 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/dishesRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:scrollbars="vertical">
 
                 </android.support.v7.widget.RecyclerView>
 
@@ -74,5 +149,13 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_action_phone"
+        app:layout_anchor="@id/swipeRefreshLayout"
+        app:layout_anchorGravity="top|end"/>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

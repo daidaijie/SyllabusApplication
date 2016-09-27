@@ -3,14 +3,18 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
@@ -44,7 +48,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     @BindView(R.id.stickyTextView)
     TextView mStickyTextView;
     @BindView(R.id.activity_take_out_detail_menu)
-    LinearLayout mActivityTakeOutDetailMenu;
+    CoordinatorLayout mActivityTakeOutDetailMenu;
 
     public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
             ".TakeOutDetailMenuActivity";
@@ -52,6 +56,22 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     RecyclerView mSubMenuRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout mToolbarLayout;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBar;
+    @BindView(R.id.takeoutNameTextView)
+    TextView mTakeoutNameTextView;
+    @BindView(R.id.longNumberTextView)
+    TextView mLongNumberTextView;
+    @BindView(R.id.conditionTextView)
+    TextView mConditionTextView;
+    @BindView(R.id.takeoutNameLayout)
+    RelativeLayout mTakeoutNameLayout;
+    @BindView(R.id.fab)
+    FloatingActionButton mFab;
+    @BindView(R.id.shortNumberTextView)
+    TextView mShortNumberTextView;
 
     private int mPosition;
 
@@ -69,18 +89,52 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     private int mIndex;
 
+    private enum CollapsingToolbarLayoutState {
+        EXPANDED,
+        COLLAPSED,
+        INTERNEDIATE
+    }
+
+    private CollapsingToolbarLayoutState state;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mToolbarLayout.setTitle("");
         mToolbar.setTitle("");
-        setupToolbar(mToolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
         mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
+        setUpTakoutInfo();
+        mTitleTextView.setText(mTakeOutInfoBean.getName());
+        mTitleTextView.setVisibility(View.GONE);
+        mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) {
+                    if (state != CollapsingToolbarLayoutState.EXPANDED) {
+                        state = CollapsingToolbarLayoutState.EXPANDED;//修改状态标记为展开
+                        mTitleTextView.setVisibility(View.GONE);
+                    }
+                } else if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    if (state != CollapsingToolbarLayoutState.COLLAPSED) {
+                        mTitleTextView.setVisibility(View.VISIBLE);
+                        state = CollapsingToolbarLayoutState.COLLAPSED;//修改状态标记为折叠
+                    }
+                } else {
+                    if (state != CollapsingToolbarLayoutState.INTERNEDIATE) {
+                        mTitleTextView.setVisibility(View.GONE);
+                        state = CollapsingToolbarLayoutState.INTERNEDIATE;//修改状态标记为中间
+                    }
+                }
+            }
+        });
+
+
         if (mTakeOutInfoBean.getTakeOutSubMenus() == null) {
             mSwipeRefreshLayout.post(new Runnable() {
                 @Override
@@ -93,7 +147,26 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             mDishesList = mTakeOutInfoBean.getDishes();
         }
 
+        mSwipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
 
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
+        setupRecyclerView();
+    }
+
+    private void setUpTakoutInfo() {
+        mTakeoutNameTextView.setText(mTakeOutInfoBean.getName());
+        mLongNumberTextView.setText("长号 : " + mTakeOutInfoBean.getLong_number());
+        mShortNumberTextView.setText("短号 : " + mTakeOutInfoBean.getShort_number());
+        mConditionTextView.setText("备注 : " + mTakeOutInfoBean.getCondition());
+    }
+
+    private void setupRecyclerView() {
         mSubMenuAdapter = new SubMenuAdapter(this, mTakeOutInfoBean.getTakeOutSubMenus());
         mSubMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mSubMenuRecyclerView.setAdapter(mSubMenuAdapter);
@@ -171,16 +244,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                 }
             }
         });
-
-        mSwipeRefreshLayout.setColorSchemeResources(
-                android.R.color.holo_blue_light,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light
-        );
-
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-
     }
 
     private void moveToPosition(int n) {
@@ -220,6 +283,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
                         mSubMenuAdapter.setSubMenus(mTakeOutInfoBean.getTakeOutSubMenus());
                         mSubMenuAdapter.notifyDataSetChanged();
+
+                        setUpTakoutInfo();
                     }
 
                     @Override
