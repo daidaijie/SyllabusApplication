@@ -1,20 +1,17 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.animation.ValueAnimatorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,17 +20,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnimationSet;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SubMenuAdapter;
@@ -52,10 +45,8 @@ import com.orhanobut.logger.Logger;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.XMLFormatter;
 
 import butterknife.BindView;
-import io.codetail.widget.RevealFrameLayout;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -73,7 +64,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     @BindView(R.id.stickyTextView)
     TextView mStickyTextView;
     @BindView(R.id.activity_take_out_detail_menu)
-    CoordinatorLayout mActivityTakeOutDetailMenu;
+    RelativeLayout mActivityTakeOutDetailMenu;
 
     public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
             ".TakeOutDetailMenuActivity";
@@ -97,8 +88,16 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     FloatingActionButton mFab;
     @BindView(R.id.shortNumberTextView)
     TextView mShortNumberTextView;
+    @BindView(R.id.shoppingImg)
+    ImageView mShoppingImg;
+    @BindView(R.id.buyNumTextView)
+    TextView mBuyNumTextView;
+    @BindView(R.id.shoppingLayout)
+    RelativeLayout mShoppingLayout;
 
     private int mPosition;
+
+    private int buyNum;
 
     private TakeOutInfoBean mTakeOutInfoBean;
 
@@ -143,6 +142,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
         mBuyMap = new LinkedHashMap<>();
+        buyNum = 0;
 
         mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
         setUpTakoutInfo();
@@ -309,6 +309,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     @Override
     public void onAddNum(View v, int position) {
+        buyNum++;
+        mBuyNumTextView.setText(buyNum + "");
+
         Dishes dishes = mDishesList.get(position);
         if (mBuyMap.get(dishes) != null) {
             mBuyMap.put(dishes, mBuyMap.get(dishes) + 1);
@@ -339,12 +342,16 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         text.setX(lf);
         text.setY(tf);
 
+        int[] shoppingLocation = new int[2];
+        mShoppingImg.getLocationInWindow(shoppingLocation);
+
+
         ObjectAnimator anix = ObjectAnimator.ofFloat(
-                text, "x", lf, -width
+                text, "x", lf, shoppingLocation[0]
         );
 
         ObjectAnimator aniy = ObjectAnimator.ofFloat(
-                text, "y", tf, devideHeight + width
+                text, "y", tf, shoppingLocation[1]
         );
         anix.setInterpolator(new LinearInterpolator());
         aniy.setInterpolator(new AccelerateInterpolator());
@@ -352,32 +359,34 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         dumpAni.play(anix).with(aniy);
         dumpAni.setDuration(500);
         dumpAni.start();
-        dumpAni.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
 
-            }
 
+        dumpAni.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 aniLayout.removeView(text);
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-
+                ObjectAnimator aniScaleX = ObjectAnimator.ofFloat(
+                        mShoppingLayout, "scaleX", 0.7f, 1.0f
+                );
+                ObjectAnimator aniScaleY = ObjectAnimator.ofFloat(
+                        mShoppingLayout, "scaleY", 0.7f, 1.0f
+                );
+                AnimatorSet scaleAni = new AnimatorSet();
+                scaleAni.play(aniScaleX).with(aniScaleY);
+                scaleAni.setDuration(200);
+                scaleAni.setInterpolator(new AccelerateInterpolator());
+                scaleAni.start();
             }
         });
+
 
     }
 
     @Override
     public void onReduceNum(int position) {
+        buyNum--;
+        mBuyNumTextView.setText(buyNum + "");
         Dishes dishes = mDishesList.get(position);
 
         if (mBuyMap.get(dishes) != null) {
@@ -387,6 +396,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             }
         }
         mTakeOutMenuAdapter.notifyItemChanged(position);
+
     }
 
 
