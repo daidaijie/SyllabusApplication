@@ -37,4 +37,23 @@ public class Dishes {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Dishes dishes = (Dishes) o;
+
+        if (price != null ? !price.equals(dishes.price) : dishes.price != null) return false;
+        return name != null ? name.equals(dishes.name) : dishes.name == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = price != null ? price.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }

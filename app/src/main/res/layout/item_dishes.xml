@@ -44,7 +44,7 @@
 
             <TextView
                 android:id="@+id/dishesPriceTextView"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="1dp"
                 android:textColor="@color/material_orange_900"
@@ -52,6 +52,47 @@
                 android:textStyle="bold"
                 tools:text="15"/>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right|center_vertical"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:visibility="gone"
+                    android:id="@+id/minusButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_minus_dishes"
+                    android:padding="4dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_action_minus"
+                    android:tint="?attr/colorPrimary"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/buyNumTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:gravity="center"
+                    android:text="12"
+                    android:textColor="@color/grey66Color"
+                    android:textSize="16sp"/>
+
+                <ImageButton
+                    android:id="@+id/addButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:background="@drawable/bg_add_dishes"
+                    android:padding="4dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_action_add"
+                    android:tint="@color/material_white"/>
+
+            </LinearLayout>
         </LinearLayout>
 
         <View

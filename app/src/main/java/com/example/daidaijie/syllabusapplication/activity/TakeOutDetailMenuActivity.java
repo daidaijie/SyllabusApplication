@@ -1,21 +1,39 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.animation.ValueAnimatorCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SubMenuAdapter;
@@ -24,18 +42,25 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutSubMenu;
 import com.example.daidaijie.syllabusapplication.model.BmobModel;
 import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.TakeOutMenuDetailService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
+import com.liaoinstan.springview.utils.DensityUtil;
 import com.orhanobut.logger.Logger;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.XMLFormatter;
 
 import butterknife.BindView;
+import io.codetail.widget.RevealFrameLayout;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, DishesAdapter.OnNumChangeListener {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -89,6 +114,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     private int mIndex;
 
+
     private enum CollapsingToolbarLayoutState {
         EXPANDED,
         COLLAPSED,
@@ -97,9 +123,17 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     private CollapsingToolbarLayoutState state;
 
+    private Map<Dishes, Integer> mBuyMap;
+    FrameLayout aniLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        aniLayout = new FrameLayout(this);
+
+        final ViewGroup decorView = (ViewGroup) this.getWindow().getDecorView();
+        decorView.addView(aniLayout);
 
         mToolbarLayout.setTitle("");
         mToolbar.setTitle("");
@@ -107,6 +141,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
+
+        mBuyMap = new LinkedHashMap<>();
 
         mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
         setUpTakoutInfo();
@@ -157,6 +193,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         setupRecyclerView();
+
     }
 
     private void setUpTakoutInfo() {
@@ -172,9 +209,10 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mSubMenuRecyclerView.setAdapter(mSubMenuAdapter);
 
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList);
+        mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList, mBuyMap);
         mDishesRecyclerView.setLayoutManager(mLinearLayoutManager);
         mDishesRecyclerView.setAdapter(mTakeOutMenuAdapter);
+        mDishesRecyclerView.setItemAnimator(new MyItemAnimator());
 
         mDishesRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -217,6 +255,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
             }
         });
+
+        mTakeOutMenuAdapter.setOnNumChangeListener(this);
 
         mSubMenuAdapter.setOnItemClickListener(new SubMenuAdapter.OnItemClickListener() {
             @Override
@@ -266,6 +306,89 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             move = true;
         }
     }
+
+    @Override
+    public void onAddNum(View v, int position) {
+        Dishes dishes = mDishesList.get(position);
+        if (mBuyMap.get(dishes) != null) {
+            mBuyMap.put(dishes, mBuyMap.get(dishes) + 1);
+        } else {
+            mBuyMap.put(dishes, 1);
+        }
+        mTakeOutMenuAdapter.notifyItemChanged(position);
+        int[] location = new int[2];
+        v.getLocationInWindow(location);
+
+        final TextView text = new TextView(this);
+        text.setText(Html.fromHtml("<b>1</b>"));
+        text.setGravity(Gravity.CENTER);
+        GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.bg_add_dishes);
+        drawable.setColor(ThemeModel.getInstance().colorPrimary);
+        text.setBackgroundDrawable(drawable);
+        text.setTextColor(getResources().getColor(R.color.material_white));
+        text.setTextSize(12);
+
+        aniLayout.addView(text);
+        int width = DensityUtil.dip2px(this, 24);
+        text.getLayoutParams().width = width;
+        text.getLayoutParams().height = width;
+
+        int lf = location[0];
+        int tf = location[1];
+
+        text.setX(lf);
+        text.setY(tf);
+
+        ObjectAnimator anix = ObjectAnimator.ofFloat(
+                text, "x", lf, -width
+        );
+
+        ObjectAnimator aniy = ObjectAnimator.ofFloat(
+                text, "y", tf, devideHeight + width
+        );
+        anix.setInterpolator(new LinearInterpolator());
+        aniy.setInterpolator(new AccelerateInterpolator());
+        AnimatorSet dumpAni = new AnimatorSet();
+        dumpAni.play(anix).with(aniy);
+        dumpAni.setDuration(500);
+        dumpAni.start();
+        dumpAni.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                aniLayout.removeView(text);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onReduceNum(int position) {
+        Dishes dishes = mDishesList.get(position);
+
+        if (mBuyMap.get(dishes) != null) {
+            mBuyMap.put(dishes, mBuyMap.get(dishes) - 1);
+            if (mBuyMap.get(dishes) <= 0) {
+                mBuyMap.remove(dishes);
+            }
+        }
+        mTakeOutMenuAdapter.notifyItemChanged(position);
+    }
+
 
     private void getDetailMenu() {
         TakeOutMenuDetailService service = BmobModel.getInstance().mRetrofit.create(TakeOutMenuDetailService.class);

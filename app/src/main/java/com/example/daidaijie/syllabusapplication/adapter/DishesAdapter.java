@@ -1,19 +1,26 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.liaoinstan.springview.utils.DensityUtil;
 
 import java.util.List;
+import java.util.Map;
+import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,10 +39,20 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
 
     List<Dishes> mDishesList;
 
+    Map<Dishes, Integer> mBuyMap;
 
-    public DishesAdapter(Activity activity, List<Dishes> dishesList) {
+    public DishesAdapter(Activity activity, List<Dishes> dishesList, Map<Dishes, Integer> buyMap) {
         mActivity = activity;
         mDishesList = dishesList;
+        mBuyMap = buyMap;
+    }
+
+    public Map<Dishes, Integer> getBuyMap() {
+        return mBuyMap;
+    }
+
+    public void setBuyMap(Map<Dishes, Integer> buyMap) {
+        mBuyMap = buyMap;
     }
 
     public List<Dishes> getDishesList() {
@@ -46,6 +63,22 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
         mDishesList = dishesList;
     }
 
+    public interface OnNumChangeListener {
+        void onAddNum(View v, int position);
+
+        void onReduceNum(int position);
+    }
+
+    private OnNumChangeListener mOnNumChangeListener;
+
+    public OnNumChangeListener getOnNumChangeListener() {
+        return mOnNumChangeListener;
+    }
+
+    public void setOnNumChangeListener(OnNumChangeListener onNumChangeListener) {
+        mOnNumChangeListener = onNumChangeListener;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
@@ -54,8 +87,9 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         Dishes dishes = mDishesList.get(position);
         holder.mDishesNameTextView.setText(dishes.getName());
@@ -85,6 +119,44 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
         }
 
         holder.itemView.setContentDescription(dishes.subMenuPos + "");
+
+        GradientDrawable addDrawable = (GradientDrawable) App.getContext().getDrawable(R.drawable.bg_add_dishes);
+        GradientDrawable minusDrawable = (GradientDrawable) App.getContext().getDrawable(R.drawable.bg_minus_dishes);
+
+        addDrawable.setColor(ThemeModel.getInstance().colorPrimary);
+        holder.mAddButton.setBackgroundDrawable(addDrawable);
+
+        minusDrawable.setStroke(DensityUtil.dip2px(mActivity, 1), ThemeModel.getInstance().colorPrimary);
+        holder.mMinusButton.setBackgroundDrawable(minusDrawable);
+
+        if (mBuyMap.get(dishes) != null && mBuyMap.get(dishes) > 0) {
+            holder.mMinusButton.setVisibility(View.VISIBLE);
+            holder.mBuyNumTextView.setVisibility(View.VISIBLE);
+            holder.mBuyNumTextView.setText(mBuyMap.get(dishes) + "");
+        } else {
+            holder.mBuyNumTextView.setText("0");
+            holder.mMinusButton.setVisibility(View.GONE);
+            holder.mBuyNumTextView.setVisibility(View.GONE);
+        }
+
+        holder.mAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnNumChangeListener != null) {
+                    mOnNumChangeListener.onAddNum(v, position);
+                }
+            }
+        });
+
+        holder.mMinusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnNumChangeListener != null) {
+                    mOnNumChangeListener.onReduceNum(position);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -94,6 +166,12 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.minusButton)
+        ImageButton mMinusButton;
+        @BindView(R.id.buyNumTextView)
+        TextView mBuyNumTextView;
+        @BindView(R.id.addButton)
+        ImageButton mAddButton;
         @BindView(R.id.tv_sticky_header_view)
         LinearLayout mTvStickyHeaderView;
         @BindView(R.id.stickyTextView)
