@@ -120,8 +120,8 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
 
         holder.itemView.setContentDescription(dishes.subMenuPos + "");
 
-        GradientDrawable addDrawable = (GradientDrawable) App.getContext().getDrawable(R.drawable.bg_add_dishes);
-        GradientDrawable minusDrawable = (GradientDrawable) App.getContext().getDrawable(R.drawable.bg_minus_dishes);
+        GradientDrawable addDrawable = (GradientDrawable) mActivity.getResources().getDrawable(R.drawable.bg_add_dishes);
+        GradientDrawable minusDrawable = (GradientDrawable) mActivity.getResources().getDrawable(R.drawable.bg_minus_dishes);
 
         addDrawable.setColor(ThemeModel.getInstance().colorPrimary);
         holder.mAddButton.setBackgroundDrawable(addDrawable);

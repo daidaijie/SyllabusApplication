@@ -20,6 +20,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -374,8 +375,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                 );
                 AnimatorSet scaleAni = new AnimatorSet();
                 scaleAni.play(aniScaleX).with(aniScaleY);
-                scaleAni.setDuration(200);
-                scaleAni.setInterpolator(new AccelerateInterpolator());
+                scaleAni.setDuration(300);
+                scaleAni.setInterpolator(new AnticipateOvershootInterpolator());
                 scaleAni.start();
             }
         });
