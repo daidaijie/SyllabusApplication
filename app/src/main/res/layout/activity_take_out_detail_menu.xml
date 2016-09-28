@@ -189,7 +189,7 @@
             android:text="下单"
             android:id="@+id/submitButton"
             android:layout_alignParentRight="true"
-            android:background="@color/material_lightGreen_300"
+            android:background="@color/material_lightGreen_400"
             android:layout_alignParentBottom="true"
             android:layout_width="88dp"
             android:layout_height="48dp"/>

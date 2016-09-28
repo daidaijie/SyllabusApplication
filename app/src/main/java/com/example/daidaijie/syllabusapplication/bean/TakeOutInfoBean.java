@@ -125,6 +125,7 @@ public class TakeOutInfoBean {
                 Dishes dishes = subMenu.getDishes().get(j);
                 dishes.sticky = subMenu.getName();
                 dishes.subMenuPos = i;
+                dishes.mPos = mDishesList.size();
                 mDishesList.add(dishes);
             }
         }

@@ -476,7 +476,20 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
 
     private void showPopWindows() {
-        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean.getBuyMap());
+        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean);
+        popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
+            @Override
+            public void onChange(int position) {
+                mTakeOutMenuAdapter.notifyItemChanged(position);
+                showPrice();
+            }
+
+            @Override
+            public void onChangeAll() {
+                mTakeOutMenuAdapter.notifyDataSetChanged();
+                showPrice();
+            }
+        });
         popWindow.show();
     }
 

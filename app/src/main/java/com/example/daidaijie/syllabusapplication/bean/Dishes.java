@@ -22,6 +22,8 @@ public class Dishes {
 
     public int subMenuPos;
 
+    public int mPos;
+
     public String getPrice() {
         return price;
     }

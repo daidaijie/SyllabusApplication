@@ -2,7 +2,9 @@ package com.example.daidaijie.syllabusapplication.bean;
 
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,13 +19,17 @@ public class TakeOutBuyBean {
 
     private int unCalcNum;
 
-    private Map<Dishes,Integer> mBuyMap;
+    private Map<Dishes, Integer> mBuyMap;
+
+    private List<Dishes> mDishesList;
+
 
     public TakeOutBuyBean() {
         num = 0;
         sumPrice = 0;
         unCalcNum = 0;
         mBuyMap = new LinkedHashMap<>();
+        mDishesList = new ArrayList<>();
     }
 
     public int getNum() {
@@ -42,33 +48,48 @@ public class TakeOutBuyBean {
         mBuyMap = buyMap;
     }
 
-    public void addDishes(Dishes dishes){
+    public void addDishes(Dishes dishes) {
         if (mBuyMap.get(dishes) != null) {
             mBuyMap.put(dishes, mBuyMap.get(dishes) + 1);
         } else {
             mBuyMap.put(dishes, 1);
+            mDishesList.add(dishes);
         }
         num++;
-        if (StringUtil.isNumberic(dishes.getPrice())){
+        if (StringUtil.isNumberic(dishes.getPrice())) {
             sumPrice += Integer.parseInt(dishes.getPrice());
-        }else{
+        } else {
             unCalcNum++;
         }
     }
 
-    public void removeDishes(Dishes dishes){
+    public boolean removeDishes(Dishes dishes) {
+        boolean isNone = false;
         if (mBuyMap.get(dishes) != null) {
             mBuyMap.put(dishes, mBuyMap.get(dishes) - 1);
             if (mBuyMap.get(dishes) <= 0) {
                 mBuyMap.remove(dishes);
+                mDishesList.remove(dishes);
+                isNone = true;
             }
             num--;
-            if (StringUtil.isNumberic(dishes.getPrice())){
+            if (StringUtil.isNumberic(dishes.getPrice())) {
                 sumPrice -= Integer.parseInt(dishes.getPrice());
-            }else{
+            } else {
                 unCalcNum--;
             }
+        } else {
+            isNone = true;
         }
+        return isNone;
+    }
+
+    public List<Dishes> getDishesList() {
+        return mDishesList;
+    }
+
+    public void setDishesList(List<Dishes> dishesList) {
+        mDishesList = dishesList;
     }
 
     public int getSumPrice() {
@@ -85,5 +106,13 @@ public class TakeOutBuyBean {
 
     public void setUnCalcNum(int unCalcNum) {
         this.unCalcNum = unCalcNum;
+    }
+
+    public void clear(){
+        num = 0;
+        sumPrice = 0;
+        unCalcNum = 0;
+        mBuyMap.clear();
+        mDishesList.clear();
     }
 }
