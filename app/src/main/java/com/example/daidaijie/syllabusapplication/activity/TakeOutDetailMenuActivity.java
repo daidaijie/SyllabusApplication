@@ -6,22 +6,28 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +38,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SubMenuAdapter;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
+import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutSubMenu;
 import com.example.daidaijie.syllabusapplication.model.BmobModel;
@@ -39,13 +46,12 @@ import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.TakeOutMenuDetailService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.liaoinstan.springview.utils.DensityUtil;
 import com.orhanobut.logger.Logger;
 
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import rx.Subscriber;
@@ -93,10 +99,22 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     TextView mBuyNumTextView;
     @BindView(R.id.shoppingLayout)
     RelativeLayout mShoppingLayout;
+    @BindView(R.id.bottomBgLayout)
+    LinearLayout mBottomBgLayout;
+    @BindView(R.id.bottomLayout)
+    RelativeLayout mBottomLayout;
+    @BindView(R.id.contentLayout)
+    CoordinatorLayout mContentLayout;
+    @BindView(R.id.sumPriceTextView)
+    TextView mSumPriceTextView;
+    @BindView(R.id.div_line)
+    View mDivLine;
+    @BindView(R.id.unCalcNumTextView)
+    TextView mUnCalcNumTextView;
+    @BindView(R.id.submitButton)
+    Button mSubmitButton;
 
     private int mPosition;
-
-    private int buyNum;
 
     private TakeOutInfoBean mTakeOutInfoBean;
 
@@ -112,6 +130,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     private int mIndex;
 
+    private TakeOutBuyBean mTakeOutBuyBean;
 
     private enum CollapsingToolbarLayoutState {
         EXPANDED,
@@ -121,7 +140,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     private CollapsingToolbarLayoutState state;
 
-    private Map<Dishes, Integer> mBuyMap;
     FrameLayout aniLayout;
 
     @Override
@@ -140,8 +158,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
-        mBuyMap = new LinkedHashMap<>();
-        buyNum = 0;
+        mTakeOutBuyBean = new TakeOutBuyBean();
 
         mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
         setUpTakoutInfo();
@@ -193,6 +210,13 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
         setupRecyclerView();
 
+
+        mBottomBgLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopWindows();
+            }
+        });
     }
 
     private void setUpTakoutInfo() {
@@ -208,7 +232,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mSubMenuRecyclerView.setAdapter(mSubMenuAdapter);
 
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList, mBuyMap);
+        mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList, mTakeOutBuyBean.getBuyMap());
         mDishesRecyclerView.setLayoutManager(mLinearLayoutManager);
         mDishesRecyclerView.setAdapter(mTakeOutMenuAdapter);
         mDishesRecyclerView.setItemAnimator(new MyItemAnimator());
@@ -308,15 +332,10 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     @Override
     public void onAddNum(View v, int position) {
-        buyNum++;
-        mBuyNumTextView.setText(buyNum + "");
-
         Dishes dishes = mDishesList.get(position);
-        if (mBuyMap.get(dishes) != null) {
-            mBuyMap.put(dishes, mBuyMap.get(dishes) + 1);
-        } else {
-            mBuyMap.put(dishes, 1);
-        }
+        mTakeOutBuyBean.addDishes(dishes);
+        showPrice();
+
         mTakeOutMenuAdapter.notifyItemChanged(position);
         int[] location = new int[2];
         v.getLocationInWindow(location);
@@ -384,16 +403,10 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     @Override
     public void onReduceNum(int position) {
-        buyNum--;
-        mBuyNumTextView.setText(buyNum + "");
         Dishes dishes = mDishesList.get(position);
+        mTakeOutBuyBean.removeDishes(dishes);
+        showPrice();
 
-        if (mBuyMap.get(dishes) != null) {
-            mBuyMap.put(dishes, mBuyMap.get(dishes) - 1);
-            if (mBuyMap.get(dishes) <= 0) {
-                mBuyMap.remove(dishes);
-            }
-        }
         mTakeOutMenuAdapter.notifyItemChanged(position);
 
     }
@@ -456,9 +469,33 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         return intent;
     }
 
-
     @Override
     public void onRefresh() {
         getDetailMenu();
+    }
+
+
+    private void showPopWindows() {
+        WindowManager windowManager = this.getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+
+        BuyPopWindow popWindow = new BuyPopWindow(this);
+        popWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#60000000")));
+        popWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+        popWindow.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+        popWindow.showAtLocation(this.getWindow().getDecorView(), Gravity.TOP, 0, 0);
+    }
+
+    private void showPrice() {
+        mBuyNumTextView.setText(mTakeOutBuyBean.getNum() + "");
+        mSumPriceTextView.setText("¥"+mTakeOutBuyBean.getSumPrice());
+        if (mTakeOutBuyBean.getUnCalcNum()!=0){
+            mDivLine.setVisibility(View.VISIBLE);
+            mUnCalcNumTextView.setVisibility(View.VISIBLE);
+            mUnCalcNumTextView.setText("不可计价份数: "+mTakeOutBuyBean.getUnCalcNum());
+        }else{
+            mDivLine.setVisibility(View.GONE);
+            mUnCalcNumTextView.setVisibility(View.GONE);
+        }
     }
 }

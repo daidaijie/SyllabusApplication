@@ -8,6 +8,7 @@
     tools:context="com.example.daidaijie.syllabusapplication.activity.TakeOutDetailMenuActivity">
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/contentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="48dp">
@@ -135,18 +136,70 @@
         android:layout_gravity="bottom">
 
         <LinearLayout
+            android:layout_toLeftOf="@+id/submitButton"
+            android:id="@+id/bottomBgLayout"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:background="@color/defaultTextColor"
             android:layout_alignParentBottom="true"
-            android:background="@color/defaultTextColor">
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:paddingLeft="72dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:maxLines="1"
+                android:id="@+id/sumPriceTextView"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_marginLeft="8dp"
+                android:textColor="@color/material_white"
+                android:text="¥0"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <View
+                tools:visibility="visible"
+                android:id="@+id/div_line"
+                android:visibility="gone"
+                android:layout_margin="8dp"
+                android:background="@color/material_white"
+                android:layout_width="1px"
+                android:layout_height="16dp"/>
+
+            <TextView
+                android:maxLines="1"
+                tools:visibility="visible"
+                android:visibility="gone"
+                android:id="@+id/unCalcNumTextView"
+                android:layout_marginTop="2dp"
+                android:textSize="12sp"
+                android:textColor="@color/defaultDarkBackgroundSelect"
+                tools:text="不可计价: 5份"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
         </LinearLayout>
+
+        <Button
+            android:textSize="16sp"
+            android:textColor="@color/material_white"
+            android:textStyle="bold"
+            android:text="下单"
+            android:id="@+id/submitButton"
+            android:layout_alignParentRight="true"
+            android:background="@color/material_lightGreen_300"
+            android:layout_alignParentBottom="true"
+            android:layout_width="88dp"
+            android:layout_height="48dp"/>
 
         <RelativeLayout
             android:id="@+id/shoppingLayout"
             android:layout_width="wrap_content"
             android:layout_height="56dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp">
+            android:layout_marginLeft="16dp">
 
             <ImageView
                 android:id="@+id/shoppingImg"
@@ -176,6 +229,7 @@
                 android:textStyle="bold"/>
 
         </RelativeLayout>
+
 
     </RelativeLayout>
 

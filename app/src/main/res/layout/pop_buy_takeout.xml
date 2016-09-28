@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:orientation="vertical">
+
+    <View
+        android:fitsSystemWindows="true"
+        android:id="@+id/emptyView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buyActionLayout">
+
+    </View>
+
+    <RelativeLayout
+        android:id="@+id/buyActionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buyRecyclerView"
+        android:background="@color/greyF6Color"
+        android:padding="8dp">
+
+        <TextView
+            android:textStyle="bold"
+            android:layout_marginLeft="8dp"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="口袋"
+            android:textColor="@color/grey66Color"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/clearBuyTextView"
+            android:src="@drawable/ic_crash"
+            android:tint="@color/defaultShowColor"/>
+
+        <TextView
+            android:layout_marginRight="8dp"
+            android:textSize="14sp"
+            android:id="@+id/clearBuyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="清空"
+            android:textColor="@color/defaultShowColor"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/buyRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/defaultLightBackground"
+        android:minHeight="160dp">
+    </android.support.v7.widget.RecyclerView>
+</RelativeLayout>
