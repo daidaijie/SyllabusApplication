@@ -64,8 +64,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     LinearLayout mTvStickyHeaderView;
     @BindView(R.id.stickyTextView)
     TextView mStickyTextView;
-    @BindView(R.id.activity_take_out_detail_menu)
-    RelativeLayout mActivityTakeOutDetailMenu;
 
     public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
             ".TakeOutDetailMenuActivity";

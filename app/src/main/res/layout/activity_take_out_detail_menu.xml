@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_take_out_detail_menu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.daidaijie.syllabusapplication.activity.TakeOutDetailMenuActivity">
@@ -11,8 +10,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomLayout"
-        android:layout_marginBottom="-24dp">
+        android:layout_marginBottom="48dp">
 
         <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
@@ -133,7 +131,8 @@
         android:id="@+id/bottomLayout"
         android:layout_width="match_parent"
         android:layout_height="72dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -180,4 +179,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</FrameLayout>
