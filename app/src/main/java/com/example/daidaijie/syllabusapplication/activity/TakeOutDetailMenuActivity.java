@@ -476,24 +476,18 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
 
     private void showPopWindows() {
-        WindowManager windowManager = this.getWindowManager();
-        Display display = windowManager.getDefaultDisplay();
-
-        BuyPopWindow popWindow = new BuyPopWindow(this);
-        popWindow.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#60000000")));
-        popWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
-        popWindow.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
-        popWindow.showAtLocation(this.getWindow().getDecorView(), Gravity.TOP, 0, 0);
+        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean.getBuyMap());
+        popWindow.show();
     }
 
     private void showPrice() {
         mBuyNumTextView.setText(mTakeOutBuyBean.getNum() + "");
-        mSumPriceTextView.setText("¥"+mTakeOutBuyBean.getSumPrice());
-        if (mTakeOutBuyBean.getUnCalcNum()!=0){
+        mSumPriceTextView.setText("¥" + mTakeOutBuyBean.getSumPrice());
+        if (mTakeOutBuyBean.getUnCalcNum() != 0) {
             mDivLine.setVisibility(View.VISIBLE);
             mUnCalcNumTextView.setVisibility(View.VISIBLE);
-            mUnCalcNumTextView.setText("不可计价份数: "+mTakeOutBuyBean.getUnCalcNum());
-        }else{
+            mUnCalcNumTextView.setText("不可计价份数: " + mTakeOutBuyBean.getUnCalcNum());
+        } else {
             mDivLine.setVisibility(View.GONE);
             mUnCalcNumTextView.setVisibility(View.GONE);
         }

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:id="@+id/priceLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/dishesNameTextView"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/defaultTextColor"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:layout_marginRight="20dp"
+            tools:text="爆炒鸡米花炒鸡米花"/>
+
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/actionButtonLayout"
+            android:layout_toRightOf="@+id/dishesNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="¥"
+                android:textColor="@color/material_orange_900"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_marginRight="16dp"
+                android:id="@+id/dishesPriceTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:textColor="@color/material_orange_900"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="151"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_centerInParent="true"
+            android:id="@+id/actionButtonLayout"
+            android:gravity="center|right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/minusButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/bg_minus_dishes"
+                android:padding="4dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_action_minus"
+                android:tint="?attr/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/buyNumTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:gravity="center"
+                tools:text="0"
+                android:textColor="?attr/colorPrimary"
+                android:textSize="16sp"/>
+
+            <ImageButton
+                android:id="@+id/addButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:background="@drawable/bg_add_dishes"
+                android:padding="4dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_action_add"
+                android:tint="@color/material_white"/>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/div_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/priceLayout"
+        android:background="@color/defaultShowColor"/>
+
+</LinearLayout>

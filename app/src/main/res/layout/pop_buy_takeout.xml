@@ -1,65 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:fitsSystemWindows="true"
+             android:orientation="vertical">
+
+    <com.example.daidaijie.syllabusapplication.widget.MaxHeightView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mhv_HeightRatio="0.7">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/buyActionLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:background="@color/greyF6Color"
+                android:padding="8dp">
 
-    <View
-        android:fitsSystemWindows="true"
-        android:id="@+id/emptyView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/buyActionLayout">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:text="口袋"
+                    android:textColor="@color/grey66Color"
+                    android:textSize="14sp"
+                    android:textStyle="bold"/>
 
-    </View>
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/clearBuyTextView"
+                    android:src="@drawable/ic_crash"
+                    android:tint="@color/defaultShowColor"/>
 
-    <RelativeLayout
-        android:id="@+id/buyActionLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buyRecyclerView"
-        android:background="@color/greyF6Color"
-        android:padding="8dp">
+                <TextView
+                    android:id="@+id/clearBuyTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:text="清空"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
 
-        <TextView
-            android:textStyle="bold"
-            android:layout_marginLeft="8dp"
-            android:textSize="14sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="口袋"
-            android:textColor="@color/grey66Color"/>
+            </RelativeLayout>
 
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/clearBuyTextView"
-            android:src="@drawable/ic_crash"
-            android:tint="@color/defaultShowColor"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/buyRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/buyActionLayout"
+                android:background="@color/defaultLightBackground">
+            </android.support.v7.widget.RecyclerView>
+        </RelativeLayout>
 
-        <TextView
-            android:layout_marginRight="8dp"
-            android:textSize="14sp"
-            android:id="@+id/clearBuyTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:text="清空"
-            android:textColor="@color/defaultShowColor"/>
 
-    </RelativeLayout>
+    </com.example.daidaijie.syllabusapplication.widget.MaxHeightView>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/buyRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/defaultLightBackground"
-        android:minHeight="160dp">
-    </android.support.v7.widget.RecyclerView>
-</RelativeLayout>
+
+</FrameLayout>
