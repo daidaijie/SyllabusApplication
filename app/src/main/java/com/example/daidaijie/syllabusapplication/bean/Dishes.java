@@ -1,21 +1,26 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 /**
  * Created by daidaijie on 2016/9/25.
  */
 
-public class Dishes {
+public class Dishes implements Serializable {
 
     /**
      * price : 8
      * dist : 咸菜肉片粥
      */
 
+    @Expose
     private String price;
 
     @SerializedName("dist")
+    @Expose
     private String name;
 
     public String sticky;

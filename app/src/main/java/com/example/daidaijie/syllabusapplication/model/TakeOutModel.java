@@ -5,7 +5,8 @@ import android.content.SharedPreferences;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -30,7 +31,15 @@ public class TakeOutModel {
 
     SharedPreferences.Editor mEditor;
 
+    private Gson mGson;
+
     private TakeOutModel() {
+
+        mGson = new GsonBuilder()
+                .setPrettyPrinting()
+                .enableComplexMapKeySerialization()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
 
 
         mSharedPreferences = App.getContext().getSharedPreferences("TakeOut", Context.MODE_PRIVATE);
@@ -41,7 +50,7 @@ public class TakeOutModel {
         if (menuJson.isEmpty()) {
             mTakeOutInfoBeen = new ArrayList<>();
         } else {
-            mTakeOutInfoBeen = GsonUtil.getDefault().fromJson(menuJson,
+            mTakeOutInfoBeen = mGson.fromJson(menuJson,
                     new TypeToken<List<TakeOutInfoBean>>() {
                     }.getType());
         }
@@ -52,13 +61,13 @@ public class TakeOutModel {
     }
 
     public void setTakeOutInfoBeen(List<TakeOutInfoBean> takeOutInfoBeen) {
-        mEditor.putString(EXTRA_TAKEOUT_BEEN, GsonUtil.getDefault().toJson(takeOutInfoBeen));
+        mEditor.putString(EXTRA_TAKEOUT_BEEN, mGson.toJson(takeOutInfoBeen));
         mEditor.commit();
         mTakeOutInfoBeen = takeOutInfoBeen;
     }
 
     public void save() {
-        mEditor.putString(EXTRA_TAKEOUT_BEEN, GsonUtil.getDefault().toJson(mTakeOutInfoBeen));
+        mEditor.putString(EXTRA_TAKEOUT_BEEN, mGson.toJson(mTakeOutInfoBeen));
         mEditor.commit();
     }
 }

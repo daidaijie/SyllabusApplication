@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/bottomLayout"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:layout_alignParentBottom="true"
+    android:layout_gravity="bottom"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/bottomBgLayout"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/submitButton"
+        android:background="@color/defaultTextColor"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="72dp">
+
+        <TextView
+            android:id="@+id/sumPriceTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:maxLines="1"
+            android:text="¥0"
+            android:textColor="@color/material_white"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <View
+            android:id="@+id/div_line"
+            android:layout_width="1px"
+            android:layout_height="16dp"
+            android:layout_margin="8dp"
+            android:background="@color/material_white"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/unCalcNumTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:maxLines="1"
+            android:textColor="@color/defaultDarkBackgroundSelect"
+            android:textSize="12sp"
+            android:visibility="gone"
+            tools:text="不可计价: 5份"
+            tools:visibility="visible"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="@color/material_lightGreen_400"
+        android:text="拨号"
+        android:textColor="@color/material_white"
+        android:textSize="16sp"
+        android:textStyle="bold"/>
+
+    <RelativeLayout
+        android:id="@+id/shoppingLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp">
+
+        <ImageView
+            android:id="@+id/shoppingImg"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:background="@drawable/bg_img_shopping"
+            android:elevation="1dp"
+            android:padding="4dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_shopping_car"
+            tools:targetApi="lollipop"/>
+
+        <TextView
+            android:id="@+id/buyNumTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="-12dp"
+            android:layout_toRightOf="@+id/shoppingImg"
+            android:background="@drawable/bg_buy_num"
+            android:elevation="1dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="0"
+            android:textColor="@color/material_white"
+            android:textSize="10sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

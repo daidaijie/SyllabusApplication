@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication.bean;
 
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Map;
  * Created by daidaijie on 2016/9/28.
  */
 
-public class TakeOutBuyBean {
+public class TakeOutBuyBean implements Serializable{
 
     private int num;
 

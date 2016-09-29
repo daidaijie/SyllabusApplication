@@ -121,116 +121,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_action_phone"
+            android:src="@drawable/ic_search"
             app:layout_anchor="@id/swipeRefreshLayout"
             app:layout_anchorGravity="top|end"/>
 
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <RelativeLayout
+    <include
         android:id="@+id/bottomLayout"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom">
-
-        <LinearLayout
-            android:layout_toLeftOf="@+id/submitButton"
-            android:id="@+id/bottomBgLayout"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@color/defaultTextColor"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:paddingLeft="72dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:maxLines="1"
-                android:id="@+id/sumPriceTextView"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_marginLeft="8dp"
-                android:textColor="@color/material_white"
-                android:text="¥0"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <View
-                tools:visibility="visible"
-                android:id="@+id/div_line"
-                android:visibility="gone"
-                android:layout_margin="8dp"
-                android:background="@color/material_white"
-                android:layout_width="1px"
-                android:layout_height="16dp"/>
-
-            <TextView
-                android:maxLines="1"
-                tools:visibility="visible"
-                android:visibility="gone"
-                android:id="@+id/unCalcNumTextView"
-                android:layout_marginTop="2dp"
-                android:textSize="12sp"
-                android:textColor="@color/defaultDarkBackgroundSelect"
-                tools:text="不可计价: 5份"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <Button
-            android:textSize="16sp"
-            android:textColor="@color/material_white"
-            android:textStyle="bold"
-            android:text="下单"
-            android:id="@+id/submitButton"
-            android:layout_alignParentRight="true"
-            android:background="@color/material_lightGreen_400"
-            android:layout_alignParentBottom="true"
-            android:layout_width="88dp"
-            android:layout_height="48dp"/>
-
-        <RelativeLayout
-            android:id="@+id/shoppingLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="56dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="16dp">
-
-            <ImageView
-                android:id="@+id/shoppingImg"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:background="@drawable/bg_img_shopping"
-                android:elevation="1dp"
-                android:padding="4dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_shopping_car"
-                tools:targetApi="lollipop"/>
-
-            <TextView
-                android:id="@+id/buyNumTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="-12dp"
-                android:layout_toRightOf="@+id/shoppingImg"
-                android:background="@drawable/bg_buy_num"
-                android:elevation="1dp"
-                android:gravity="center"
-                android:maxLines="1"
-                android:text="0"
-                android:textColor="@color/material_white"
-                android:textSize="10sp"
-                android:textStyle="bold"/>
-
-        </RelativeLayout>
-
-
-    </RelativeLayout>
-
+        layout="@layout/item_takeout_bottom"/>
 </FrameLayout>

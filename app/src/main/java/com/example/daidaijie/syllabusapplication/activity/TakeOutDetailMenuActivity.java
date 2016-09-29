@@ -6,8 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -19,11 +17,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.LinearInterpolator;
@@ -70,9 +66,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     LinearLayout mTvStickyHeaderView;
     @BindView(R.id.stickyTextView)
     TextView mStickyTextView;
-
-    public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
-            ".TakeOutDetailMenuActivity";
     @BindView(R.id.subMenuRecyclerView)
     RecyclerView mSubMenuRecyclerView;
     @BindView(R.id.swipeRefreshLayout)
@@ -114,6 +107,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     @BindView(R.id.submitButton)
     Button mSubmitButton;
 
+    FrameLayout aniLayout;
+
+
     private int mPosition;
 
     private TakeOutInfoBean mTakeOutInfoBean;
@@ -140,7 +136,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     private CollapsingToolbarLayoutState state;
 
-    FrameLayout aniLayout;
+    public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
+            ".TakeOutDetailMenuActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,10 +156,12 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
-        mTakeOutBuyBean = new TakeOutBuyBean();
 
         mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
+        mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
+
         setUpTakoutInfo();
+
         mTitleTextView.setText(mTakeOutInfoBean.getName());
         mTitleTextView.setVisibility(View.GONE);
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -215,6 +215,14 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             @Override
             public void onClick(View v) {
                 showPopWindows();
+            }
+        });
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TakeOutDetailMenuActivity.this, SearchTakeOutActivity.class);
+                startActivity(intent);
             }
         });
     }

@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.bean;
 import android.view.SubMenu;
 
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -24,15 +25,26 @@ public class TakeOutInfoBean {
      * updatedAt : 2016-09-24 19:45:22
      */
 
+    @Expose
     private String condition;
+    @Expose
     private String createdAt;
+    @Expose
     private String long_number;
+    @Expose
     private String name;
+    @Expose
     private String objectId;
+    @Expose
     private String short_number;
+    @Expose
     private String updatedAt;
+    @Expose
     private String menu;
 
+    private TakeOutBuyBean mTakeOutBuyBean;
+
+    @Expose
     private List<TakeOutSubMenu> mTakeOutSubMenus;
 
     public String getMenu() {
@@ -132,4 +144,14 @@ public class TakeOutInfoBean {
         return mDishesList;
     }
 
+    public TakeOutBuyBean getTakeOutBuyBean() {
+        if (mTakeOutBuyBean == null) {
+            mTakeOutBuyBean = new TakeOutBuyBean();
+        }
+        return mTakeOutBuyBean;
+    }
+
+    public void setTakeOutBuyBean(TakeOutBuyBean takeOutBuyBean) {
+        mTakeOutBuyBean = takeOutBuyBean;
+    }
 }

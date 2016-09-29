@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -11,9 +12,11 @@ import java.util.List;
 public class TakeOutSubMenu {
 
     @SerializedName("sub_menu")
+    @Expose
     private String mName;
 
     @SerializedName("sub_list")
+    @Expose
     private List<Dishes> mDishes;
 
     private int firstItemPos;
