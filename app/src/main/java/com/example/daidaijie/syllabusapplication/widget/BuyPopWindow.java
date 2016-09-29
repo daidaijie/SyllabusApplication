@@ -1,25 +1,34 @@
 package com.example.daidaijie.syllabusapplication.widget;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.SearchTakeOutActivity;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
+import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
 import com.orhanobut.logger.Logger;
 
@@ -37,11 +46,7 @@ import butterknife.ButterKnife;
 public class BuyPopWindow extends Dialog {
 
 
-    private View mView;
-
-    private Context mContext;
-
-    private View mEmptyView;
+    private Activity mContext;
 
     private RecyclerView mBuyRecyclerView;
 
@@ -51,10 +56,19 @@ public class BuyPopWindow extends Dialog {
 
     private TextView clearBuyTextView;
 
-    public BuyPopWindow(Context context, TakeOutBuyBean been) {
+    private TextView mBuyNumTextView;
+    private TextView mSumPriceTextView;
+    private TextView mUnCalcNumTextView;
+    private View mDivLine;
+    private FrameLayout mRootLayout;
+    private Button mSubmitButton;
+    private int mPosition;
+
+    public BuyPopWindow(Activity context, TakeOutBuyBean been, int position) {
         super(context, R.style.dialog);
         mContext = context;
         mTakeOutBuyBean = been;
+        mPosition = position;
     }
 
     public interface OnDataChangeListener {
@@ -91,6 +105,7 @@ public class BuyPopWindow extends Dialog {
             public void onAdd(Dishes dishes, int position) {
                 mTakeOutBuyBean.addDishes(dishes);
                 mBuyAdatper.notifyItemChanged(position);
+                showPrice();
                 if (mOnDataChangeListener != null) {
                     mOnDataChangeListener.onChange(dishes.mPos);
                 }
@@ -101,7 +116,6 @@ public class BuyPopWindow extends Dialog {
                 boolean isNone = mTakeOutBuyBean.removeDishes(dishes);
                 Logger.t("isNone").e(isNone + "");
                 if (isNone) {
-                    mBuyAdatper.notifyItemRemoved(position);
                     mBuyAdatper.notifyDataSetChanged();
                 } else {
                     mBuyAdatper.notifyItemChanged(position);
@@ -110,6 +124,7 @@ public class BuyPopWindow extends Dialog {
                 if (mOnDataChangeListener != null) {
                     mOnDataChangeListener.onChange(dishes.mPos);
                 }
+                showPrice();
             }
         });
 
@@ -119,9 +134,10 @@ public class BuyPopWindow extends Dialog {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mTakeOutBuyBean.clear();
-                        if (mOnDataChangeListener!=null){
+                        if (mOnDataChangeListener != null) {
                             mOnDataChangeListener.onChangeAll();
                         }
+                        showPrice();
                         dialog.dismiss();
                         BuyPopWindow.this.dismiss();
                     }
@@ -138,20 +154,78 @@ public class BuyPopWindow extends Dialog {
                 dialog.show();
             }
         });
+
+        mBuyNumTextView = (TextView) findViewById(R.id.buyNumTextView);
+        mSumPriceTextView = (TextView) findViewById(R.id.sumPriceTextView);
+        mUnCalcNumTextView = (TextView) findViewById(R.id.unCalcNumTextView);
+        mDivLine = findViewById(R.id.div_line);
+
+        showPrice();
+
+        mRootLayout = (FrameLayout) findViewById(R.id.rootLayout);
+        mRootLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BuyPopWindow.this.dismiss();
+
+            }
+        });
+
+        mSubmitButton = (Button) findViewById(R.id.submitButton);
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (TakeOutModel.getInstance()
+                        .getTakeOutInfoBeen().get(mPosition).getPhoneList().length == 0)
+                    return;
+                AlertDialog dialog = CallPhoneDialog.
+                        createDialog(mContext, TakeOutModel.getInstance()
+                                .getTakeOutInfoBeen().get(mPosition).getPhoneList());
+                dialog.show();
+            }
+        });
     }
+
 
     private void initWindow() {
         Window win = this.getWindow();
         win.getDecorView().setPadding(0, 0, 0, 0);
 
+
+        int devideHeight = mContext.getWindowManager().getDefaultDisplay().getHeight();
+        devideHeight -= getStatusBarHeight();
+
         WindowManager.LayoutParams lp = win.getAttributes();
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = devideHeight;
         lp.gravity = Gravity.BOTTOM;
         win.setAttributes(lp);
 
         this.setCanceledOnTouchOutside(true);
 
+    }
+
+    protected int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = App.getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = App.getContext().getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+
+    private void showPrice() {
+        mBuyNumTextView.setText(mTakeOutBuyBean.getNum() + "");
+        mSumPriceTextView.setText("¥" + mTakeOutBuyBean.getSumPrice());
+        if (mTakeOutBuyBean.getUnCalcNum() != 0) {
+            mDivLine.setVisibility(View.VISIBLE);
+            mUnCalcNumTextView.setVisibility(View.VISIBLE);
+            mUnCalcNumTextView.setText("不可计价份数: " + mTakeOutBuyBean.getUnCalcNum());
+        } else {
+            mDivLine.setVisibility(View.GONE);
+            mUnCalcNumTextView.setVisibility(View.GONE);
+        }
     }
 
     public static class BuyAdatper extends RecyclerView.Adapter<BuyAdatper.ViewHolder> {

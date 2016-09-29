@@ -7,6 +7,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -153,5 +154,29 @@ public class TakeOutInfoBean {
 
     public void setTakeOutBuyBean(TakeOutBuyBean takeOutBuyBean) {
         mTakeOutBuyBean = takeOutBuyBean;
+    }
+
+    public String[] getPhoneList() {
+        List<String> stringList = new ArrayList<>();
+        String[] longNums = long_number.split("/");
+        for (String phone : longNums) {
+            phone = phone.trim();
+            if (!phone.isEmpty()) {
+                stringList.add(phone);
+            }
+        }
+        String[] shortNums = short_number.split("/");
+        for (String phone : shortNums) {
+            phone = phone.trim();
+            if (!phone.isEmpty()) {
+                stringList.add(phone);
+            }
+        }
+
+        String[] phones = new String[stringList.size()];
+
+        stringList.toArray(phones);
+
+        return phones;
     }
 }

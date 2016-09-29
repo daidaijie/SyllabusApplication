@@ -50,7 +50,7 @@ import com.example.daidaijie.syllabusapplication.R;
  *
  * @author Carbs.Wang
  */
-public class MaxHeightView extends RelativeLayout {
+public class MaxHeightView extends FrameLayout {
 
     private static final float DEFAULT_MAX_RATIO_WITHOUT_ARGU = 0.6f;
     private static final float DEFAULT_MAX_RATIO = 0f;

@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/defaultLightBackground"
     android:layout_height="match_parent"
 
     tools:context="com.example.daidaijie.syllabusapplication.activity.SearchTakeOutActivity">
@@ -41,7 +42,6 @@
 
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/removeTextImageView"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
@@ -49,7 +49,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
                 android:paddingBottom="4dp"
-                android:src="@drawable/ic_action_remove"/>
+                android:src="@drawable/ic_action_remove"
+                android:visibility="gone"/>
 
             <View
                 android:id="@+id/editLine"
@@ -63,12 +64,12 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
-        android:background="@color/cardview_light_background"
         android:id="@+id/dishesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_marginBottom="64dp">
+        android:layout_marginBottom="64dp"
+        android:background="@color/cardview_light_background">
 
     </android.support.v7.widget.RecyclerView>
 

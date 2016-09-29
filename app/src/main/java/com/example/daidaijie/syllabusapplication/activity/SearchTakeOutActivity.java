@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -38,6 +39,7 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
+import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.liaoinstan.springview.utils.DensityUtil;
 
@@ -210,6 +212,16 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
         showPrice();
 
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTakeOutInfoBean.getPhoneList().length == 0) return;
+                AlertDialog dialog = CallPhoneDialog.
+                        createDialog(SearchTakeOutActivity.this, mTakeOutInfoBean.getPhoneList());
+                dialog.show();
+            }
+        });
+
         setResult(RESULT_OK);
     }
 
@@ -336,7 +348,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     private void showPopWindows() {
         hideInput();
-        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean);
+        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean, mPosition);
         popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
             @Override
             public void onChange(int position) {

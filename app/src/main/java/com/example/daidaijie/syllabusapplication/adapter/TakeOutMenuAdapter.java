@@ -2,6 +2,8 @@ package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,9 +13,11 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.MainActivity;
+import com.example.daidaijie.syllabusapplication.activity.SearchTakeOutActivity;
 import com.example.daidaijie.syllabusapplication.activity.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.ColorModel;
+import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 
 import java.util.List;
 
@@ -53,7 +57,7 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        TakeOutInfoBean takeOutInfoBean = mTakeOutInfoBeen.get(position);
+        final TakeOutInfoBean takeOutInfoBean = mTakeOutInfoBeen.get(position);
         holder.mTakeoutNameTextView.setText(takeOutInfoBean.getName());
         holder.mLongNumberTextView.setText("长号 : " + takeOutInfoBean.getLong_number());
         holder.mShortNumberTextView.setText("短号 : " + takeOutInfoBean.getShort_number());
@@ -62,10 +66,21 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
         holder.mCardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = TakeOutDetailMenuActivity.getIntent(mActivity,position);
+                Intent intent = TakeOutDetailMenuActivity.getIntent(mActivity, position);
                 mActivity.startActivity(intent);
             }
         });
+
+        holder.mCallPhoneFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (takeOutInfoBean.getPhoneList().length == 0) return;
+                AlertDialog dialog = CallPhoneDialog.
+                        createDialog(mActivity, takeOutInfoBean.getPhoneList());
+                dialog.show();
+            }
+        });
+
     }
 
     @Override
@@ -87,6 +102,8 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
         TextView mConditionTextView;
         @BindView(R.id.cardItem)
         CardView mCardItem;
+        @BindView(R.id.callPhoneFab)
+        FloatingActionButton mCallPhoneFab;
 
         public ViewHolder(View itemView) {
             super(itemView);

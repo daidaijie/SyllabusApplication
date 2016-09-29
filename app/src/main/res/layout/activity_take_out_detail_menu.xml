@@ -82,10 +82,11 @@
                         android:background="#402B2B2B"
                         android:paddingBottom="4dp"
                         android:paddingLeft="64dp"
+                        android:paddingRight="72dp"
                         android:paddingTop="4dp"
                         android:textColor="@color/defaultLightBackground"
                         android:textSize="12sp"
-                        tools:text="备注 : 15元起送"/>
+                        tools:text="备注 : 15元起送15元起送15元起送15元起送送"/>
                 </RelativeLayout>
 
                 <android.support.v7.widget.Toolbar
@@ -122,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:src="@drawable/ic_search"
+            app:elevation="4dp"
             app:layout_anchor="@id/swipeRefreshLayout"
             app:layout_anchorGravity="top|end"/>
 

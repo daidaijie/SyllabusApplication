@@ -13,6 +13,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +44,7 @@ import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.TakeOutMenuDetailService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
+import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.liaoinstan.springview.utils.DensityUtil;
 import com.orhanobut.logger.Logger;
@@ -224,7 +226,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             public void onClick(View v) {
                 if (mTakeOutInfoBean.getDishes() != null && mTakeOutInfoBean.getDishes().size() != 0) {
                     Intent intent = SearchTakeOutActivity.getIntent(TakeOutDetailMenuActivity.this, mPosition);
-                    startActivityForResult(intent,REQUEST_SEARCH);
+                    startActivityForResult(intent, REQUEST_SEARCH);
                 }
             }
         });
@@ -232,7 +234,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==REQUEST_SEARCH){
+        if (requestCode == REQUEST_SEARCH) {
             mTakeOutMenuAdapter.notifyDataSetChanged();
             showPrice();
         }
@@ -325,6 +327,16 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                         mDishesRecyclerView.scrollBy(0, top);
                     }
                 }
+            }
+        });
+
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mTakeOutInfoBean.getPhoneList().length == 0) return;
+                AlertDialog dialog = CallPhoneDialog.
+                        createDialog(TakeOutDetailMenuActivity.this, mTakeOutInfoBean.getPhoneList());
+                dialog.show();
             }
         });
     }
@@ -495,7 +507,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     }
 
     private void showPopWindows() {
-        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean);
+        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean, mPosition);
         popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
             @Override
             public void onChange(int position) {

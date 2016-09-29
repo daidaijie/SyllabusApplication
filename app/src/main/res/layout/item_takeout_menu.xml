@@ -11,6 +11,7 @@
     android:foreground="@drawable/fg_circle_card"
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
+    app:cardPreventCornerOverlap="false"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/material_white"
     app:cardCornerRadius="4dp"
@@ -77,6 +78,7 @@
                 android:background="@color/defaultDarkBackground"/>
 
             <android.support.design.widget.FloatingActionButton
+                android:id="@+id/callPhoneFab"
                 app:backgroundTint="?attr/colorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
