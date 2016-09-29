@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -19,6 +20,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -84,8 +87,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     TextView mConditionTextView;
     @BindView(R.id.takeoutNameLayout)
     RelativeLayout mTakeoutNameLayout;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
     @BindView(R.id.shortNumberTextView)
     TextView mShortNumberTextView;
     @BindView(R.id.shoppingImg)
@@ -164,6 +165,10 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
 
         setUpTakoutInfo();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) mTakeoutNameLayout.getLayoutParams();
+            layoutParams.topMargin += getStatusBarHeight();
+        }
 
         mTitleTextView.setText(mTakeOutInfoBean.getName());
         mTitleTextView.setVisibility(View.GONE);
@@ -213,7 +218,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
         setupRecyclerView();
 
-
         mBottomBgLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,15 +225,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             }
         });
 
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTakeOutInfoBean.getDishes() != null && mTakeOutInfoBean.getDishes().size() != 0) {
-                    Intent intent = SearchTakeOutActivity.getIntent(TakeOutDetailMenuActivity.this, mPosition);
-                    startActivityForResult(intent, REQUEST_SEARCH);
-                }
-            }
-        });
     }
 
     @Override
@@ -487,7 +482,14 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     private void showFailMessage(String msg) {
         SnackbarUtil.ShortSnackbar(
                 mDishesRecyclerView, msg, SnackbarUtil.Alert
-        ).show();
+        ).setAction("再次获取", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSwipeRefreshLayout.setRefreshing(true);
+                getDetailMenu();
+            }
+        }).show();
+
     }
 
     @Override
@@ -535,5 +537,23 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             mDivLine.setVisibility(View.GONE);
             mUnCalcNumTextView.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_takeout, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_search_takeout) {
+            if (mTakeOutInfoBean.getDishes() != null && mTakeOutInfoBean.getDishes().size() != 0) {
+                Intent intent = SearchTakeOutActivity.getIntent(TakeOutDetailMenuActivity.this, mPosition);
+                startActivityForResult(intent, REQUEST_SEARCH);
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

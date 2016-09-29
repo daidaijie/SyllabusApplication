@@ -5,6 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,7 +15,9 @@ import com.example.daidaijie.syllabusapplication.bean.BmobResult;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.BmobModel;
 import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.TakeOutInfoService;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
@@ -86,24 +89,41 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
                         mTakeOutMenuAdapter.setTakeOutInfoBeen(TakeOutModel.getInstance().getTakeOutInfoBeen());
                         mTakeOutMenuAdapter.notifyDataSetChanged();
                         mSwipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(TakeOutActivity.this, "OK", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         mSwipeRefreshLayout.setRefreshing(false);
-                        e.printStackTrace();
-                        Logger.t("takeout").e(e.getMessage());
-                        Toast.makeText(TakeOutActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        showFailMessge("获取失败");
                     }
 
                     @Override
                     public void onNext(BmobResult<TakeOutInfoBean> bmobResult) {
                         if (bmobResult.getResults().size() != 0) {
-                            TakeOutModel.getInstance().setTakeOutInfoBeen(bmobResult.getResults());
+                            List<TakeOutInfoBean> takeOutInfoBeen = bmobResult.getResults();
+                            for (TakeOutInfoBean takeOutInfoBean : takeOutInfoBeen) {
+                                TakeOutInfoBean hasBean = TakeOutModel.getInstance().getBeanByID(takeOutInfoBean.getObjectId());
+                                if (hasBean != null) {
+                                    takeOutInfoBean.setMenu(hasBean.getMenu());
+                                    takeOutInfoBean.setTakeOutSubMenus(hasBean.getTakeOutSubMenus());
+                                }
+                            }
+                            TakeOutModel.getInstance().setTakeOutInfoBeen(takeOutInfoBeen);
                         }
                     }
                 });
+    }
+
+    public void showFailMessge(String msg){
+        SnackbarUtil.ShortSnackbar(mMenuListRecyclerView,msg,SnackbarUtil.Alert)
+                .setAction("再次获取", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mSwipeRefreshLayout.setRefreshing(true);
+                        getTakeOutInfo();
+                    }
+                })
+                .show();
     }
 
     @Override

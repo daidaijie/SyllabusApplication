@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <android.support.v7.widget.RecyclerView
+            android:background="@color/greyF6Color"
             android:id="@+id/subMenuRecyclerView"
             android:layout_width="80dp"
             android:layout_height="match_parent">
