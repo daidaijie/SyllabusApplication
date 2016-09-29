@@ -27,7 +27,7 @@
                 android:id="@+id/searchEditText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/div_line"
+                android:layout_above="@+id/editLine"
                 android:background="@null"
                 android:gravity="bottom"
                 android:hint="搜索店内商品"
@@ -45,14 +45,14 @@
                 android:id="@+id/removeTextImageView"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:layout_above="@+id/div_line"
+                android:layout_above="@+id/editLine"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="16dp"
                 android:paddingBottom="4dp"
                 android:src="@drawable/ic_action_remove"/>
 
             <View
-                android:id="@+id/div_line"
+                android:id="@+id/editLine"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_alignParentBottom="true"
@@ -63,11 +63,12 @@
     </android.support.v7.widget.Toolbar>
 
     <android.support.v7.widget.RecyclerView
+        android:background="@color/cardview_light_background"
         android:id="@+id/dishesRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_marginBottom="48dp">
+        android:layout_marginBottom="64dp">
 
     </android.support.v7.widget.RecyclerView>
 

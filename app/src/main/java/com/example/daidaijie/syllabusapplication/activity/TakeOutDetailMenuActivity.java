@@ -137,8 +137,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     private CollapsingToolbarLayoutState state;
 
     public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
-            ".TakeOutDetailMenuActivity";
+            ".TakeOutDetailMenuActivity.mPosition";
 
+    public static final int REQUEST_SEARCH = 205;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -221,10 +222,21 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(TakeOutDetailMenuActivity.this, SearchTakeOutActivity.class);
-                startActivity(intent);
+                if (mTakeOutInfoBean.getDishes() != null && mTakeOutInfoBean.getDishes().size() != 0) {
+                    Intent intent = SearchTakeOutActivity.getIntent(TakeOutDetailMenuActivity.this, mPosition);
+                    startActivityForResult(intent,REQUEST_SEARCH);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==REQUEST_SEARCH){
+            mTakeOutMenuAdapter.notifyDataSetChanged();
+            showPrice();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void setUpTakoutInfo() {
@@ -481,7 +493,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     public void onRefresh() {
         getDetailMenu();
     }
-
 
     private void showPopWindows() {
         BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean);

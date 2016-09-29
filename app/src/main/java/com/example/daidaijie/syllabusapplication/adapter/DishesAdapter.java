@@ -3,7 +3,10 @@ package com.example.daidaijie.syllabusapplication.adapter;
 import android.app.Activity;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.liaoinstan.springview.utils.DensityUtil;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 import java.util.Map;
-import java.util.zip.Inflater;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,11 +43,32 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
 
     Map<Dishes, Integer> mBuyMap;
 
+    /**
+     * mode = 0表示默认状态，1表示是搜索栏的状态
+     */
+    int mode;
+
+    /**
+     * mode=1的时候用到
+     */
+    String mKeyword;
+
     public DishesAdapter(Activity activity, List<Dishes> dishesList, Map<Dishes, Integer> buyMap) {
         mActivity = activity;
         mDishesList = dishesList;
         mBuyMap = buyMap;
+        mKeyword = "";
+        mode = 0;
     }
+
+    public DishesAdapter(Activity activity, List<Dishes> dishesList, Map<Dishes, Integer> buyMap, String keyword) {
+        mActivity = activity;
+        mDishesList = dishesList;
+        mBuyMap = buyMap;
+        mKeyword = keyword;
+        mode = 1;
+    }
+
 
     public Map<Dishes, Integer> getBuyMap() {
         return mBuyMap;
@@ -79,6 +102,14 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
         mOnNumChangeListener = onNumChangeListener;
     }
 
+    public String getKeyword() {
+        return mKeyword;
+    }
+
+    public void setKeyword(String keyword) {
+        mKeyword = keyword;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
@@ -87,27 +118,47 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
         Dishes dishes = mDishesList.get(position);
-        holder.mDishesNameTextView.setText(dishes.getName());
         holder.mDishesPriceTextView.setText(dishes.getPrice());
 
-        if (position == 0) {
-            holder.mTvStickyHeaderView.setVisibility(View.VISIBLE);
-            holder.mStickyTextView.setText(dishes.sticky);
-            holder.itemView.setTag(FIRST_STICKY_VIEW);
+
+        if (mode == 0) {
+            holder.mDishesNameTextView.setText(dishes.getName());
         } else {
-            if (!TextUtils.equals(dishes.sticky, mDishesList.get(position - 1).sticky)) {
+            if (mKeyword.trim().isEmpty()) {
+                holder.mDishesNameTextView.setText(dishes.getName());
+            } else {
+                SpannableStringBuilder style = new SpannableStringBuilder(dishes.getName());
+                int index = dishes.getName().indexOf(mKeyword);
+                style.setSpan(new ForegroundColorSpan(ThemeModel.getInstance().colorPrimary),
+                        index, index + mKeyword.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                );
+
+                holder.mDishesNameTextView.setText(style);
+            }
+        }
+
+        if (mode == 0) {
+            if (position == 0) {
                 holder.mTvStickyHeaderView.setVisibility(View.VISIBLE);
                 holder.mStickyTextView.setText(dishes.sticky);
-                holder.itemView.setTag(HAS_STICKY_VIEW);
+                holder.itemView.setTag(FIRST_STICKY_VIEW);
             } else {
-                holder.mTvStickyHeaderView.setVisibility(View.GONE);
-                holder.itemView.setTag(NONE_STICKY_VIEW);
+                if (!TextUtils.equals(dishes.sticky, mDishesList.get(position - 1).sticky)) {
+                    holder.mTvStickyHeaderView.setVisibility(View.VISIBLE);
+                    holder.mStickyTextView.setText(dishes.sticky);
+                    holder.itemView.setTag(HAS_STICKY_VIEW);
+                } else {
+                    holder.mTvStickyHeaderView.setVisibility(View.GONE);
+                    holder.itemView.setTag(NONE_STICKY_VIEW);
+                }
             }
+        } else {
+            holder.mTvStickyHeaderView.setVisibility(View.GONE);
+            holder.itemView.setTag(NONE_STICKY_VIEW);
         }
 
         holder.mDivLine.setVisibility(View.VISIBLE);

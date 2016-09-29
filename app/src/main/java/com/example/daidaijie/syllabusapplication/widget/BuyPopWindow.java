@@ -55,7 +55,6 @@ public class BuyPopWindow extends Dialog {
         super(context, R.style.dialog);
         mContext = context;
         mTakeOutBuyBean = been;
-
     }
 
     public interface OnDataChangeListener {
