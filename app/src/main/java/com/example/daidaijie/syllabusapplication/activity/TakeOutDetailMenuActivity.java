@@ -165,10 +165,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
 
         setUpTakoutInfo();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            CollapsingToolbarLayout.LayoutParams layoutParams = (CollapsingToolbarLayout.LayoutParams) mTakeoutNameLayout.getLayoutParams();
-            layoutParams.topMargin += getStatusBarHeight();
-        }
 
         mTitleTextView.setText(mTakeOutInfoBean.getName());
         mTitleTextView.setVisibility(View.GONE);
@@ -225,6 +221,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             }
         });
 
+        showPrice();
+        setResult(RESULT_OK,TakeOutActivity.getIntent(mPosition));
     }
 
     @Override

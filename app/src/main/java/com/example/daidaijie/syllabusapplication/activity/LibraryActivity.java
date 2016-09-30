@@ -189,6 +189,7 @@ public class LibraryActivity extends BaseActivity {
         mLibCountTextView.setVisibility(View.VISIBLE);
         mLibCountTextView.setText("共检索到" + event.count + "本图书");
         mLibraryPagerAdapter.notifyDataSetChanged();
+        showQuery(false);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -39,6 +40,9 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     TakeOutMenuAdapter mTakeOutMenuAdapter;
+
+    private static final String RESULT_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
+            ".TakeOutActivity.resultPosition";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +118,8 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
                 });
     }
 
-    public void showFailMessge(String msg){
-        SnackbarUtil.ShortSnackbar(mMenuListRecyclerView,msg,SnackbarUtil.Alert)
+    public void showFailMessge(String msg) {
+        SnackbarUtil.ShortSnackbar(mMenuListRecyclerView, msg, SnackbarUtil.Alert)
                 .setAction("再次获取", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -129,5 +133,26 @@ public class TakeOutActivity extends BaseActivity implements SwipeRefreshLayout.
     @Override
     public void onRefresh() {
         getTakeOutInfo();
+    }
+
+    public static Intent getIntent(int position) {
+        Intent intent = new Intent();
+        intent.putExtra(RESULT_POSITION, position);
+        return intent;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 206 & resultCode == RESULT_OK) {
+            int resultPos = data.getIntExtra(RESULT_POSITION, -1);
+            if (resultPos != -1) {
+                mTakeOutMenuAdapter.notifyItemChanged(resultPos);
+            } else {
+                mTakeOutMenuAdapter.notifyDataSetChanged();
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -50,8 +50,8 @@
 
                     <ImageView
                         android:id="@+id/showPageSelectImageView"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
                         android:layout_gravity="center"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_tri"

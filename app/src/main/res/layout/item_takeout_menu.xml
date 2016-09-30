@@ -8,14 +8,14 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="4dp"
     android:layout_marginLeft="8dp"
-    android:foreground="@drawable/fg_circle_card"
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
-    app:cardPreventCornerOverlap="false"
+    android:foreground="@drawable/fg_circle_card"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/material_white"
     app:cardCornerRadius="4dp"
-    app:cardElevation="1dp">
+    app:cardElevation="1dp"
+    app:cardPreventCornerOverlap="false">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -79,7 +79,6 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/callPhoneFab"
-                app:backgroundTint="?attr/colorPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -90,6 +89,7 @@
                 android:layout_marginTop="4dp"
                 android:src="@drawable/ic_action_phone"
                 android:tint="@color/material_white"
+                app:backgroundTint="?attr/colorPrimary"
                 app:elevation="4dp"
                 app:fabSize="mini"
                 app:rippleColor="?attr/colorPrimaryDark"/>
@@ -107,6 +107,20 @@
             android:textSize="12sp"
             tools:text="备注 : 10元起送"/>
 
+        <TextView
+            android:id="@+id/buyNumTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/bg_buy_num"
+            android:elevation="1dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:textColor="@color/material_white"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            tools:text="12"/>
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

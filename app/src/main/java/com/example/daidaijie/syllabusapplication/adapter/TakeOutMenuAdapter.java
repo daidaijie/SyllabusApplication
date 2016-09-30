@@ -67,7 +67,7 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = TakeOutDetailMenuActivity.getIntent(mActivity, position);
-                mActivity.startActivity(intent);
+                mActivity.startActivityForResult(intent, 206);
             }
         });
 
@@ -81,6 +81,12 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
             }
         });
 
+        holder.mBuyNumTextView.setText(takeOutInfoBean.getTakeOutBuyBean().getNum() + "");
+        if (takeOutInfoBean.getTakeOutBuyBean().getNum() == 0) {
+            holder.mBuyNumTextView.setVisibility(View.GONE);
+        } else {
+            holder.mBuyNumTextView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -104,6 +110,8 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
         CardView mCardItem;
         @BindView(R.id.callPhoneFab)
         FloatingActionButton mCallPhoneFab;
+        @BindView(R.id.buyNumTextView)
+        TextView mBuyNumTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);

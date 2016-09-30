@@ -23,10 +23,10 @@
 
         <LinearLayout
             android:id="@+id/weekTitleLayout"
-            android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/titleTextView"
@@ -41,10 +41,10 @@
 
             <ImageView
                 android:id="@+id/showWeekSelectImageView"
-                android:scaleType="fitXY"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:scaleType="fitXY"
                 android:src="@drawable/ic_tri"
                 android:tint="@color/material_white"/>
         </LinearLayout>
@@ -69,10 +69,10 @@
             android:orientation="vertical">
 
             <ImageView
-                android:tint="?attr/colorPrimary"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_marking"/>
+                android:src="@drawable/ic_marking"
+                android:tint="?attr/colorPrimary"/>
 
             <TextView
                 android:layout_width="match_parent"

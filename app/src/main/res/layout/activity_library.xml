@@ -41,8 +41,8 @@
 
             <ImageView
                 android:id="@+id/showQuerySelectImageView"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:layout_gravity="center"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_tri"
@@ -157,9 +157,9 @@
         android:layout_height="wrap_content"
         android:background="@color/defaultLightBackground"
         android:padding="8dp"
-        tools:text="共检索到100本图书"
         android:textColor="?attr/colorPrimary"
-        android:textSize="14sp"/>
+        android:textSize="14sp"
+        tools:text="共检索到100本图书"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/libraryViewPager"
