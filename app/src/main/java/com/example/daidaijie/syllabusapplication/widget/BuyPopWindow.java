@@ -278,8 +278,8 @@ public class BuyPopWindow extends Dialog {
             int num = mTakeOutBuyBean.getBuyMap().get(dishes);
 
             holder.mDishesNameTextView.setText(dishes.getName());
-            if (StringUtil.isNumberic(dishes.getPrice())) {
-                holder.mDishesPriceTextView.setText((Integer.parseInt(dishes.getPrice()) * num) + "");
+            if (StringUtil.isPrice(dishes.getPrice())) {
+                holder.mDishesPriceTextView.setText((Double.parseDouble(dishes.getPrice()) * num) + "");
             } else {
                 holder.mDishesPriceTextView.setText(num + "×" + dishes.getPrice());
             }

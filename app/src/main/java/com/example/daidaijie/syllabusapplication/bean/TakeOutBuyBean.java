@@ -12,11 +12,11 @@ import java.util.Map;
  * Created by daidaijie on 2016/9/28.
  */
 
-public class TakeOutBuyBean implements Serializable{
+public class TakeOutBuyBean implements Serializable {
 
     private int num;
 
-    private int sumPrice;
+    private double sumPrice;
 
     private int unCalcNum;
 
@@ -57,8 +57,8 @@ public class TakeOutBuyBean implements Serializable{
             mDishesList.add(dishes);
         }
         num++;
-        if (StringUtil.isNumberic(dishes.getPrice())) {
-            sumPrice += Integer.parseInt(dishes.getPrice());
+        if (StringUtil.isPrice(dishes.getPrice())) {
+            sumPrice += Double.parseDouble(dishes.getPrice());
         } else {
             unCalcNum++;
         }
@@ -74,8 +74,8 @@ public class TakeOutBuyBean implements Serializable{
                 isNone = true;
             }
             num--;
-            if (StringUtil.isNumberic(dishes.getPrice())) {
-                sumPrice -= Integer.parseInt(dishes.getPrice());
+            if (StringUtil.isPrice(dishes.getPrice())) {
+                sumPrice -= Double.parseDouble(dishes.getPrice());
             } else {
                 unCalcNum--;
             }
@@ -93,11 +93,11 @@ public class TakeOutBuyBean implements Serializable{
         mDishesList = dishesList;
     }
 
-    public int getSumPrice() {
+    public double getSumPrice() {
         return sumPrice;
     }
 
-    public void setSumPrice(int sumPrice) {
+    public void setSumPrice(double sumPrice) {
         this.sumPrice = sumPrice;
     }
 
@@ -109,7 +109,7 @@ public class TakeOutBuyBean implements Serializable{
         this.unCalcNum = unCalcNum;
     }
 
-    public void clear(){
+    public void clear() {
         num = 0;
         sumPrice = 0;
         unCalcNum = 0;

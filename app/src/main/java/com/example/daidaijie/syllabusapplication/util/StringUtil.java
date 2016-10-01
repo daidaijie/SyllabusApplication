@@ -12,4 +12,9 @@ public class StringUtil {
         Pattern p = Pattern.compile("[0-9]*");
         return p.matcher(txt).matches();
     }
+
+    public static boolean isPrice(String txt) {
+        Pattern p = Pattern.compile("[0-9]+(\\.\\d{1,2})?");
+        return p.matcher(txt).matches();
+    }
 }

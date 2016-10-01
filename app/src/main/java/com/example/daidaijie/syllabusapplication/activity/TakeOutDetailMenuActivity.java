@@ -222,7 +222,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         });
 
         showPrice();
-        setResult(RESULT_OK,TakeOutActivity.getIntent(mPosition));
+        setResult(RESULT_OK, TakeOutActivity.getIntent(mPosition));
     }
 
     @Override

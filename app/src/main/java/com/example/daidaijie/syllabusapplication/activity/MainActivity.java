@@ -86,6 +86,9 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     ItemCardLayout mToExamCardItem;
     @BindView(R.id.toGradeCardItem)
     ItemCardLayout mToGradeCardItem;
+    @BindView(R.id.toEmailCardItem)
+    ItemCardLayout mToEmailCardItem;
+
 
     RelativeLayout navHeadRelativeLayout;
     SimpleDraweeView headImageDraweeView;
@@ -200,6 +203,14 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, TakeOutActivity.class);
                 startActivity(intent);
+            }
+        });
+        mToEmailCardItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, EmailWebActivity.class);
+                startActivity(intent);
+
             }
         });
 
