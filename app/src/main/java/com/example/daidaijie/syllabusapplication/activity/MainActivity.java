@@ -28,6 +28,7 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
@@ -202,7 +203,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-        Log.e(TAG, "onCreate: token" + User.getInstance().getUserInfo().getToken());
+//        Log.e(TAG, "onCreate: token" + User.getInstance().getUserInfo().getToken());
     }
 
     @Override
@@ -314,15 +315,18 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
     }
 
     private void setHeadImage() {
+        if (App.isDebug) return;
         headImageDraweeView.setImageURI(User.getInstance().getUserInfo().getAvatar());
     }
 
     private void setSemesterText() {
+        if (App.isDebug) return;
         Semester semester = User.getInstance().getCurrentSemester();
         semesterTextView.setText(semester.getYearString() + " " + semester.getSeasonString());
     }
 
     private void setNiceName() {
+        if (App.isDebug) return;
         nicknameTextView.setText(User.getInstance().getUserInfo().getNickname());
     }
 

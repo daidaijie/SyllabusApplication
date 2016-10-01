@@ -40,6 +40,8 @@ public class App extends Application {
 
     public static final String TAG = "App";
 
+    public static boolean isDebug = true;
+
     @Override
     public void onCreate() {
         super.onCreate();

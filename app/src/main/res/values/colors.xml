@@ -26,8 +26,10 @@
     <color name="defaultSelectForeground">#20000000</color>
 
 
+    <color name="colorClassic">#F44336</color>
+    <color name="colorClassicDark">#E53935</color>
+
     <color name="colorBlack">#393A3F</color>
     <color name="colorBlackDark">#303135</color>
-
 
 </resources>

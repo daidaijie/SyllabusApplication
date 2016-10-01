@@ -52,7 +52,7 @@ public class ThemeModel {
         mThemeBeen.add(new ThemeBean(R.color.material_green_500, R.style.AppThemeGreen));
         mThemeBeen.add(new ThemeBean(R.color.material_lightGreen_500, R.style.AppThemeLightGreen));
         mThemeBeen.add(new ThemeBean(R.color.material_Lime_500, R.style.AppThemeLime));
-        mThemeBeen.add(new ThemeBean(R.color.material_yellow_500, R.style.AppThemeYellow));
+        mThemeBeen.add(new ThemeBean(R.color.colorClassic, R.style.AppThemeClassic));
         mThemeBeen.add(new ThemeBean(R.color.material_amber_500, R.style.AppThemeAmber));
         mThemeBeen.add(new ThemeBean(R.color.material_orange_500, R.style.AppThemeOrange));
         mThemeBeen.add(new ThemeBean(R.color.material_deepOrange_500, R.style.AppThemeDeepOrange));
