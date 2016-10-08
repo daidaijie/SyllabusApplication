@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.takeout.mainMenu;
+package com.example.daidaijie.syllabusapplication.takeout;
 
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 
@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface ITakeOutModel {
 
-    public interface OnLoadListener {
+    interface OnLoadListener {
         void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen);
 
-        void onLoadFail();
+        void onLoadFail(String msg);
     }
 
     void loadDataFromNet(OnLoadListener onLoadListener);

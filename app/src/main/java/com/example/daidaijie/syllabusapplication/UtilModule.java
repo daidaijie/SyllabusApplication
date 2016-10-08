@@ -2,7 +2,10 @@ package com.example.daidaijie.syllabusapplication;
 
 import android.content.Context;
 
+import com.example.daidaijie.syllabusapplication.qualifier.gson.DefaultGson;
 import com.example.daidaijie.syllabusapplication.qualifier.realm.DefaultRealm;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import javax.inject.Provider;
 import javax.inject.Singleton;
@@ -17,14 +20,27 @@ import io.realm.RealmConfiguration;
  */
 
 @Module
-public class RealmModule {
+public class UtilModule {
 
     @Provides
     @Singleton
     @DefaultRealm
     Realm provideRealm(Context context) {
-        RealmConfiguration configuration = new RealmConfiguration.Builder(context).build();
+        RealmConfiguration configuration = new RealmConfiguration
+                .Builder(context)
+                .deleteRealmIfMigrationNeeded()
+                .build();
         Realm.setDefaultConfiguration(configuration);
         return Realm.getDefaultInstance();
+    }
+
+    @Provides
+    @Singleton
+    @DefaultGson
+    Gson provideGson() {
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .enableComplexMapKeySerialization()
+                .create();
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.WindowCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
@@ -85,6 +86,15 @@ public abstract class BaseActivity extends AppCompatActivity {
         } else {
             devideHeight -= getStatusBarHeight();
         }
+    }
+
+    protected void setupSwipeRefreshLayout(SwipeRefreshLayout mRefreshLayout){
+        mRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_light,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light
+        );
     }
 
     @Override

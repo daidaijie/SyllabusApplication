@@ -1,11 +1,13 @@
 package com.example.daidaijie.syllabusapplication.takeout.mainMenu;
 
 import com.example.daidaijie.syllabusapplication.PerActivity;
+import com.example.daidaijie.syllabusapplication.qualifier.gson.DefaultGson;
 import com.example.daidaijie.syllabusapplication.qualifier.realm.DefaultRealm;
 import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.BmobRetrofit;
 import com.example.daidaijie.syllabusapplication.service.TakeOutInfoApi;
-import com.example.daidaijie.syllabusapplication.takeout.TakeOutContract;
+import com.example.daidaijie.syllabusapplication.takeout.ITakeOutModel;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModel;
+import com.google.gson.Gson;
 
 import dagger.Module;
 import dagger.Provides;
@@ -33,7 +35,9 @@ public class TakeOutModule {
 
     @Provides
     @PerActivity
-    ITakeOutModel provideTakeOutModel(@DefaultRealm Realm realm, @BmobRetrofit Retrofit retrofit) {
-        return new TakeOutModel(realm, retrofit.create(TakeOutInfoApi.class));
+    ITakeOutModel provideTakeOutModel(@DefaultRealm Realm realm,
+                                      @BmobRetrofit Retrofit retrofit,
+                                      @DefaultGson Gson gson) {
+        return new TakeOutModel(realm, retrofit.create(TakeOutInfoApi.class), gson);
     }
 }

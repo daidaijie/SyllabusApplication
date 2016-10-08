@@ -3,11 +3,14 @@ package com.example.daidaijie.syllabusapplication.takeout;
 import com.example.daidaijie.syllabusapplication.bean.BmobResult;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.service.TakeOutInfoApi;
-import com.example.daidaijie.syllabusapplication.takeout.mainMenu.ITakeOutModel;
+import com.google.gson.Gson;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.realm.Realm;
+import io.realm.RealmResults;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -20,10 +23,13 @@ public class TakeOutModel implements ITakeOutModel {
 
     private Realm mRealm;
     private TakeOutInfoApi mTakeOutInfoApi;
+    private Gson mGson;
 
-    public TakeOutModel(Realm realm, TakeOutInfoApi takeOutInfoApi) {
+    @Inject
+    public TakeOutModel(Realm realm, TakeOutInfoApi takeOutInfoApi, Gson gson) {
         mRealm = realm;
         mTakeOutInfoApi = takeOutInfoApi;
+        mGson = gson;
     }
 
     @Override
@@ -40,30 +46,50 @@ public class TakeOutModel implements ITakeOutModel {
 
                     @Override
                     public void onCompleted() {
+                        mRealm.executeTransaction(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                for (TakeOutInfoBean takeOutInfoBean : takeOutInfoBeen) {
+                                    TakeOutInfoBean hasBean = getTakeOutInfoBeanById(takeOutInfoBean.getObjectId());
+                                    if (hasBean != null) {
+                                        takeOutInfoBean.setMenu(hasBean.getMenu());
+                                    }
+                                    realm.copyToRealmOrUpdate(takeOutInfoBean);
+                                }
+                            }
+                        });
                         onLoadListener.onLoadSuccess(takeOutInfoBeen);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        onLoadListener.onLoadFail();
+                        onLoadListener.onLoadFail(e.getMessage());
                     }
 
                     @Override
                     public void onNext(BmobResult<TakeOutInfoBean> bmobResult) {
                         takeOutInfoBeen = bmobResult.getResults();
-                        /*for (TakeOutInfoBean takeOutInfoBean : takeOutInfoBeen) {
-                            TakeOutInfoBean hasBean = TakeOutManager.getInstance().getBeanByID(takeOutInfoBean.getObjectId());
-                            if (hasBean != null) {
-                                takeOutInfoBean.setMenu(hasBean.getMenu());
-                                takeOutInfoBean.setTakeOutSubMenus(hasBean.getTakeOutSubMenus());
-                            }
-                        }*/
                     }
                 });
     }
 
     @Override
-    public void loadDataFromDist(OnLoadListener onLoadListener) {
+    public void loadDataFromDist(final OnLoadListener onLoadListener) {
+        try {
+            RealmResults<TakeOutInfoBean> takeOutInfoBeanResults =
+                    mRealm.where(TakeOutInfoBean.class).findAll();
+            List<TakeOutInfoBean> mTakeOutInfoBeen = takeOutInfoBeanResults.subList(0,
+                    takeOutInfoBeanResults.size());
+            onLoadListener.onLoadSuccess(mTakeOutInfoBeen);
+        } catch (Throwable e) {
+            onLoadListener.onLoadFail(e.getMessage());
+        }
+    }
 
+    public TakeOutInfoBean getTakeOutInfoBeanById(String objectID) {
+        TakeOutInfoBean bean = mRealm.where(TakeOutInfoBean.class)
+                .equalTo("objectId", objectID)
+                .findFirst();
+        return bean;
     }
 }

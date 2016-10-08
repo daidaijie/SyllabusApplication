@@ -1,20 +1,20 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
-import android.view.SubMenu;
-
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by daidaijie on 2016/9/24.
  */
 
-public class TakeOutInfoBean {
+public class TakeOutInfoBean extends RealmObject {
 
     /**
      * condition : 20元起送
@@ -26,26 +26,21 @@ public class TakeOutInfoBean {
      * updatedAt : 2016-09-24 19:45:22
      */
 
-    @Expose
-    private String condition;
-    @Expose
-    private String createdAt;
-    @Expose
-    private String long_number;
-    @Expose
-    private String name;
-    @Expose
+    @PrimaryKey
     private String objectId;
-    @Expose
+
+    private String condition;
+    private String createdAt;
+    private String long_number;
+    private String name;
     private String short_number;
-    @Expose
     private String updatedAt;
-    @Expose
     private String menu;
 
+    @Ignore
     private TakeOutBuyBean mTakeOutBuyBean;
 
-    @Expose
+    @Ignore
     private List<TakeOutSubMenu> mTakeOutSubMenus;
 
     public String getMenu() {

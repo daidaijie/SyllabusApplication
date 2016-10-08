@@ -5,11 +5,13 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+
 /**
  * Created by daidaijie on 2016/9/25.
  */
 
-public class Dishes implements Serializable {
+public class Dishes extends RealmObject implements Serializable {
 
     /**
      * price : 8

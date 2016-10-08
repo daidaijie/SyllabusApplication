@@ -9,7 +9,6 @@ import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.service.InterenetService;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.squareup.leakcanary.LeakCanary;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,8 +45,6 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        LeakCanary.install(this);
         Fresco.initialize(this);
 
         context = getApplicationContext();
@@ -55,7 +52,7 @@ public class App extends Application {
         mAppComponent = DaggerAppComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .retrofitModule(new RetrofitModule())
-                .realmModule(new RealmModule())
+                .utilModule(new UtilModule())
                 .build();
 
         initGalleryFinal();
