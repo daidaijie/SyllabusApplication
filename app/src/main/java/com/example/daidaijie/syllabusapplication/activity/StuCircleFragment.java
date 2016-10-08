@@ -176,11 +176,13 @@ public class StuCircleFragment extends Fragment implements SpringView.OnFreshLis
 
                     @Override
                     public void onNext(List<PostListBean> postListBeen) {
-                        for (PostListBean bean : postListBeen) {
-                            for (ThumbUpsBean thumbUpsBean : bean.getThumb_ups()) {
-                                if (thumbUpsBean.getUid() == User.getInstance().getUserInfo().getUser_id()) {
-                                    bean.isMyLove = true;
-                                    break;
+                        if (User.getInstance().getUserInfo()!=null){
+                            for (PostListBean bean : postListBeen) {
+                                for (ThumbUpsBean thumbUpsBean : bean.getThumb_ups()) {
+                                    if (thumbUpsBean.getUid() == User.getInstance().getUserInfo().getUser_id()) {
+                                        bean.isMyLove = true;
+                                        break;
+                                    }
                                 }
                             }
                         }

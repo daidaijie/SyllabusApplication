@@ -161,6 +161,16 @@ public class LibraryActivity extends BaseActivity {
                 }
             }
         });
+
+        mLibraryViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                if (mQueryLayout.getVisibility() == View.GONE) {
+                    showPageNum(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -172,10 +182,16 @@ public class LibraryActivity extends BaseActivity {
         if (isShow) {
             mShowQuerySelectImageView.setRotation(180.0f);
             mQueryLayout.setVisibility(View.VISIBLE);
+            mTitleTextView.setText("图书检索");
         } else {
             mShowQuerySelectImageView.setRotation(0.0f);
             mQueryLayout.setVisibility(View.GONE);
+            showPageNum(mLibraryViewPager.getCurrentItem());
         }
+    }
+
+    private void showPageNum(int position) {
+        mTitleTextView.setText("第 " + (position + 1) + " 页");
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
