@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -19,22 +17,15 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.PopupWindow;
-import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.SearchTakeOutActivity;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
-import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
+import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
 import com.orhanobut.logger.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -175,11 +166,11 @@ public class BuyPopWindow extends Dialog {
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TakeOutModel.getInstance()
+                if (TakeOutManager.getInstance()
                         .getTakeOutInfoBeen().get(mPosition).getPhoneList().length == 0)
                     return;
                 AlertDialog dialog = CallPhoneDialog.
-                        createDialog(mContext, TakeOutModel.getInstance()
+                        createDialog(mContext, TakeOutManager.getInstance()
                                 .getTakeOutInfoBeen().get(mPosition).getPhoneList());
                 dialog.show();
             }

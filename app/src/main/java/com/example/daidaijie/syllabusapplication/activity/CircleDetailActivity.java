@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.CommentAdapter;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
 import com.example.daidaijie.syllabusapplication.bean.CommentsBean;
 import com.example.daidaijie.syllabusapplication.bean.PostCommentBean;

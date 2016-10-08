@@ -1,20 +1,14 @@
 package com.example.daidaijie.syllabusapplication.activity;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.adapter.StuCirclePagerAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusCollectionPagerAdapter;
-import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
-
-import org.greenrobot.eventbus.EventBus;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 
 import butterknife.BindView;
 

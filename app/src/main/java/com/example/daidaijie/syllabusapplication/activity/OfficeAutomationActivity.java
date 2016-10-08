@@ -2,7 +2,6 @@ package com.example.daidaijie.syllabusapplication.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.annotation.RequiresPermission;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
@@ -21,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAPagerAdapter;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.OARead;
 import com.example.daidaijie.syllabusapplication.event.OAClearEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;

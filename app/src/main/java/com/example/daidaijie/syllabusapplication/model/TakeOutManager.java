@@ -17,10 +17,10 @@ import java.util.Map;
 /**
  * Created by daidaijie on 2016/9/26.
  */
-public class TakeOutModel {
-    private static TakeOutModel ourInstance = new TakeOutModel();
+public class TakeOutManager {
+    private static TakeOutManager ourInstance = new TakeOutManager();
 
-    public static TakeOutModel getInstance() {
+    public static TakeOutManager getInstance() {
         return ourInstance;
     }
 
@@ -40,7 +40,7 @@ public class TakeOutModel {
 
     private Gson mGson;
 
-    private TakeOutModel() {
+    private TakeOutManager() {
 
         mGson = new GsonBuilder()
                 .setPrettyPrinting()

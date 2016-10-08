@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.LoginInfo;
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.model.InternetModel;

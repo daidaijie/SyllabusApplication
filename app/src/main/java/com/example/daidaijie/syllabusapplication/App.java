@@ -9,6 +9,7 @@ import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.service.InterenetService;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.squareup.leakcanary.LeakCanary;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -22,8 +23,6 @@ import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.ThemeConfig;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -42,21 +41,26 @@ public class App extends Application {
 
     public static boolean isDebug = true;
 
+    AppComponent mAppComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-//        LeakCanary.install(this);
+        LeakCanary.install(this);
         Fresco.initialize(this);
 
         context = getApplicationContext();
 
+        mAppComponent = DaggerAppComponent.builder()
+                .applicationModule(new ApplicationModule(this))
+                .retrofitModule(new RetrofitModule())
+                .realmModule(new RealmModule())
+                .build();
+
         initGalleryFinal();
 
         updateStreamInfo();
-
-        RealmConfiguration configuration = new RealmConfiguration.Builder(context).build();
-        Realm.setDefaultConfiguration(configuration);
 
     }
 
@@ -142,4 +146,7 @@ public class App extends Application {
         }, 0, 1000);
     }
 
+    public AppComponent getAppComponent() {
+        return mAppComponent;
+    }
 }

@@ -13,7 +13,7 @@ import rx.Observable;
  * Created by daidaijie on 2016/9/24.
  */
 
-public interface TakeOutInfoService {
+public interface TakeOutInfoApi {
 
     @Headers({
             "X-Bmob-Application-Id: 2e393350bc5c4c265fcc405559503d41",

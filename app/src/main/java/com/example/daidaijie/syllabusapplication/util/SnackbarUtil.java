@@ -127,7 +127,7 @@ public class SnackbarUtil {
                 setSnackbarColor(snackbar, Color.WHITE, orange);
                 break;
             case Alert:
-                setSnackbarColor(snackbar, Color.YELLOW, red);
+                setSnackbarColor(snackbar, Color.WHITE, red);
                 setSnackbarActionColor(snackbar, Color.WHITE);
                 break;
         }

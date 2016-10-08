@@ -12,11 +12,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.MainActivity;
-import com.example.daidaijie.syllabusapplication.activity.SearchTakeOutActivity;
-import com.example.daidaijie.syllabusapplication.activity.TakeOutDetailMenuActivity;
+import com.example.daidaijie.syllabusapplication.takeout.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.model.ColorModel;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 
 import java.util.List;

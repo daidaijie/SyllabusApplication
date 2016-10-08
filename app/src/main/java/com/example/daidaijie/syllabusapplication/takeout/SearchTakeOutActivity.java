@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.takeout;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,14 +29,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
+import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
@@ -117,7 +117,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
+        mTakeOutInfoBean = TakeOutManager.getInstance().getTakeOutInfoBeen().get(mPosition);
         mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
 
         mSearchDishes = new ArrayList<>();

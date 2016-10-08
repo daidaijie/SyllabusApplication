@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LessonManagerPagerAdapter;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 
 import butterknife.BindView;
 

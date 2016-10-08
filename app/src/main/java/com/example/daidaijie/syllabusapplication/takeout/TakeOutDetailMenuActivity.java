@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.takeout;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -7,12 +7,10 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,14 +35,16 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SubMenuAdapter;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutSubMenu;
 import com.example.daidaijie.syllabusapplication.model.BmobModel;
-import com.example.daidaijie.syllabusapplication.model.TakeOutModel;
+import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.service.TakeOutMenuDetailService;
+import com.example.daidaijie.syllabusapplication.takeout.mainMenu.TakeOutActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
@@ -161,7 +161,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
 
 
-        mTakeOutInfoBean = TakeOutModel.getInstance().getTakeOutInfoBeen().get(mPosition);
+        mTakeOutInfoBean = TakeOutManager.getInstance().getTakeOutInfoBeen().get(mPosition);
         mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
 
         setUpTakoutInfo();
@@ -470,8 +470,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                         for (TakeOutSubMenu subMenu : mTakeOutInfoBean.getTakeOutSubMenus()) {
                             Logger.t("subMenu").e(subMenu.getName());
                         }
-                        TakeOutModel.getInstance().getTakeOutInfoBeen().set(mPosition, mTakeOutInfoBean);
-                        TakeOutModel.getInstance().save();
+                        TakeOutManager.getInstance().getTakeOutInfoBeen().set(mPosition, mTakeOutInfoBean);
+                        TakeOutManager.getInstance().save();
                     }
                 });
     }

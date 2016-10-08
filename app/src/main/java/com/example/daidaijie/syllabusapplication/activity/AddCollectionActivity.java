@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.CollectionBean;
 import com.example.daidaijie.syllabusapplication.bean.CollectionId;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;

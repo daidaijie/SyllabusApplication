@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;

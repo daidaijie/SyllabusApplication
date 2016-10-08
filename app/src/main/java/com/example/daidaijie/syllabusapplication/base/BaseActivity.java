@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.base;
 
 import android.content.Context;
 import android.os.Build;
@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
@@ -25,9 +27,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected int deviceWidth;
     protected int devideHeight;
 
+    protected AppComponent mAppComponent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mAppComponent = ((App) getApplication()).getAppComponent();
+
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_MODE_OVERLAY);
 
         setTheme(ThemeModel.getInstance().getStyle());

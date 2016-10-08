@@ -16,7 +16,6 @@ public class RetrofitUtil {
             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build();
-    ;
 
     public static Retrofit getDefault() {
         return mRetrofit;

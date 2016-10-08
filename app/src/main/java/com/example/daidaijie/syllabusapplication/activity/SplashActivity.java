@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.presenter.LoginPresenter;
 import com.example.daidaijie.syllabusapplication.view.ILoginView;
-import com.squareup.haha.perflib.Main;
 
 public class SplashActivity extends BaseActivity implements ILoginView {
 
