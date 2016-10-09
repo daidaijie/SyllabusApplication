@@ -12,9 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.takeout.TakeOutDetailMenuActivity;
+import com.example.daidaijie.syllabusapplication.takeout.detailMenu.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
+import com.example.daidaijie.syllabusapplication.widget.SelectLessonPopWindow;
 
 import java.util.List;
 
@@ -30,6 +31,20 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
     Activity mActivity;
 
     List<TakeOutInfoBean> mTakeOutInfoBeen;
+
+    public interface OnItemClickListener {
+        void onItemClick(String objectID);
+    }
+
+    OnItemClickListener mOnItemClickListener;
+
+    public OnItemClickListener getOnItemClickListener() {
+        return mOnItemClickListener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
 
     public TakeOutMenuAdapter(Activity activity, List<TakeOutInfoBean> takeOutInfoBeen) {
         mActivity = activity;
@@ -63,8 +78,7 @@ public class TakeOutMenuAdapter extends RecyclerView.Adapter<TakeOutMenuAdapter.
         holder.mCardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = TakeOutDetailMenuActivity.getIntent(mActivity, position);
-                mActivity.startActivityForResult(intent, 206);
+                    mOnItemClickListener.onItemClick(takeOutInfoBean.getObjectId());
             }
         });
 

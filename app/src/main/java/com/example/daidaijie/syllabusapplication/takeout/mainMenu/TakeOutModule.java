@@ -1,18 +1,9 @@
 package com.example.daidaijie.syllabusapplication.takeout.mainMenu;
 
 import com.example.daidaijie.syllabusapplication.PerActivity;
-import com.example.daidaijie.syllabusapplication.qualifier.gson.DefaultGson;
-import com.example.daidaijie.syllabusapplication.qualifier.realm.DefaultRealm;
-import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.BmobRetrofit;
-import com.example.daidaijie.syllabusapplication.service.TakeOutInfoApi;
-import com.example.daidaijie.syllabusapplication.takeout.ITakeOutModel;
-import com.example.daidaijie.syllabusapplication.takeout.TakeOutModel;
-import com.google.gson.Gson;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.Realm;
-import retrofit2.Retrofit;
 
 /**
  * Created by daidaijie on 2016/10/8.
@@ -21,23 +12,17 @@ import retrofit2.Retrofit;
 @Module
 public class TakeOutModule {
 
-    private final TakeOutContract.TakeOutView mTakeOutView;
+    private final TakeOutContract.view mView;
 
-    public TakeOutModule(TakeOutContract.TakeOutView takeOutView) {
-        mTakeOutView = takeOutView;
+    public TakeOutModule(TakeOutContract.view view) {
+        mView = view;
     }
 
     @Provides
     @PerActivity
-    TakeOutContract.TakeOutView provideTakeOutView() {
-        return mTakeOutView;
+    TakeOutContract.view provideTakeOutView() {
+        return mView;
     }
 
-    @Provides
-    @PerActivity
-    ITakeOutModel provideTakeOutModel(@DefaultRealm Realm realm,
-                                      @BmobRetrofit Retrofit retrofit,
-                                      @DefaultGson Gson gson) {
-        return new TakeOutModel(realm, retrofit.create(TakeOutInfoApi.class), gson);
-    }
+
 }

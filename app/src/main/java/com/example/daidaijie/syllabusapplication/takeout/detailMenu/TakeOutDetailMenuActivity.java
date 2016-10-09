@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.takeout;
+package com.example.daidaijie.syllabusapplication.takeout.detailMenu;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -10,7 +10,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,8 +42,9 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutSubMenu;
 import com.example.daidaijie.syllabusapplication.model.BmobModel;
 import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.service.TakeOutMenuDetailService;
-import com.example.daidaijie.syllabusapplication.takeout.mainMenu.TakeOutActivity;
+import com.example.daidaijie.syllabusapplication.service.TakeOutMenuDetailApi;
+import com.example.daidaijie.syllabusapplication.takeout.searchDish.SearchTakeOutActivity;
+import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
@@ -54,12 +54,14 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, DishesAdapter.OnNumChangeListener {
+public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDetailContract.view, SwipeRefreshLayout.OnRefreshListener, DishesAdapter.OnNumChangeListener {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -85,8 +87,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     TextView mLongNumberTextView;
     @BindView(R.id.conditionTextView)
     TextView mConditionTextView;
-    @BindView(R.id.takeoutNameLayout)
-    RelativeLayout mTakeoutNameLayout;
     @BindView(R.id.shortNumberTextView)
     TextView mShortNumberTextView;
     @BindView(R.id.shoppingImg)
@@ -97,10 +97,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     RelativeLayout mShoppingLayout;
     @BindView(R.id.bottomBgLayout)
     LinearLayout mBottomBgLayout;
-    @BindView(R.id.bottomLayout)
-    RelativeLayout mBottomLayout;
-    @BindView(R.id.contentLayout)
-    CoordinatorLayout mContentLayout;
     @BindView(R.id.sumPriceTextView)
     TextView mSumPriceTextView;
     @BindView(R.id.div_line)
@@ -111,9 +107,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
     Button mSubmitButton;
 
     FrameLayout aniLayout;
-
-
-    private int mPosition;
 
     private TakeOutInfoBean mTakeOutInfoBean;
 
@@ -137,19 +130,26 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         INTERNEDIATE
     }
 
+    private int mPosition;
+
     private CollapsingToolbarLayoutState state;
 
-    public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
-            ".TakeOutDetailMenuActivity.mPosition";
+    public static final String EXTRA_OBJECT_ID = "com.example.daidaijie.syllabusapplication.activity" +
+            ".TakeOutDetailMenuActivity.mObjectID";
 
     public static final int REQUEST_SEARCH = 205;
+
+    @Inject
+    TakeOutDetailPresenter mTakeOutDetailPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /**
+         * 添加外层布局，用于动画展示
+         */
         aniLayout = new FrameLayout(this);
-
         final ViewGroup decorView = (ViewGroup) this.getWindow().getDecorView();
         decorView.addView(aniLayout);
 
@@ -158,15 +158,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-
-
-        mTakeOutInfoBean = TakeOutManager.getInstance().getTakeOutInfoBeen().get(mPosition);
-        mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
-
-        setUpTakoutInfo();
-
-        mTitleTextView.setText(mTakeOutInfoBean.getName());
+        /**
+         * 设置AppBar展开的属性
+         */
         mTitleTextView.setVisibility(View.GONE);
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -190,6 +184,17 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             }
         });
 
+        DaggerTakeOutDetailComponent.builder()
+                .takeOutModelComponent(TakeOutModelComponent.getInstance(mAppComponent))
+                .takeOutDetailModule(new TakeOutDetailModule(this, getIntent().getStringExtra(EXTRA_OBJECT_ID)))
+                .build().inject(this);
+
+        mTakeOutDetailPresenter.start();
+
+        /*mTakeOutInfoBean = TakeOutManager.getInstance().getTakeOutInfoBeen().get(mPosition);
+        mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
+
+        setUpTakeOutInfo(mTakeOutInfoBean);
 
         if (mTakeOutInfoBean.getTakeOutSubMenus() == null) {
             mSwipeRefreshLayout.post(new Runnable() {
@@ -203,13 +208,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
             mDishesList = mTakeOutInfoBean.getDishes();
         }
 
-        mSwipeRefreshLayout.setColorSchemeResources(
-                android.R.color.holo_blue_light,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light
-        );
 
+        setupSwipeRefreshLayout(mSwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         setupRecyclerView();
@@ -222,7 +222,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         });
 
         showPrice();
-        setResult(RESULT_OK, TakeOutActivity.getIntent(mPosition));
+        setResult(RESULT_OK, TakeOutActivity.getIntent(mPosition));*/
     }
 
     @Override
@@ -234,11 +234,13 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void setUpTakoutInfo() {
-        mTakeoutNameTextView.setText(mTakeOutInfoBean.getName());
-        mLongNumberTextView.setText("长号 : " + mTakeOutInfoBean.getLong_number());
-        mShortNumberTextView.setText("短号 : " + mTakeOutInfoBean.getShort_number());
-        mConditionTextView.setText("备注 : " + mTakeOutInfoBean.getCondition());
+    @Override
+    public void setUpTakeOutInfo(TakeOutInfoBean takeOutInfoBean) {
+        mTitleTextView.setText(takeOutInfoBean.getName());
+        mTakeoutNameTextView.setText(takeOutInfoBean.getName());
+        mLongNumberTextView.setText("长号 : " + takeOutInfoBean.getLong_number());
+        mShortNumberTextView.setText("短号 : " + takeOutInfoBean.getShort_number());
+        mConditionTextView.setText("备注 : " + takeOutInfoBean.getCondition());
     }
 
     private void setupRecyclerView() {
@@ -438,7 +440,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
 
 
     private void getDetailMenu() {
-        TakeOutMenuDetailService service = BmobModel.getInstance().mRetrofit.create(TakeOutMenuDetailService.class);
+        TakeOutMenuDetailApi service = BmobModel.getInstance().mRetrofit.create(TakeOutMenuDetailApi.class);
         service.getTokenResult(mTakeOutInfoBean.getObjectId())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -454,7 +456,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                         mSubMenuAdapter.setSubMenus(mTakeOutInfoBean.getTakeOutSubMenus());
                         mSubMenuAdapter.notifyDataSetChanged();
 
-                        setUpTakoutInfo();
+                        setUpTakeOutInfo(mTakeOutInfoBean);
                     }
 
                     @Override
@@ -476,18 +478,16 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
                 });
     }
 
-
-    private void showFailMessage(String msg) {
+    @Override
+    public void showFailMessage(String msg) {
         SnackbarUtil.ShortSnackbar(
                 mDishesRecyclerView, msg, SnackbarUtil.Alert
-        ).setAction("再次获取", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeRefreshLayout.setRefreshing(true);
-                getDetailMenu();
-            }
-        }).show();
+        ).show();
+    }
 
+    @Override
+    public void showRefresh(boolean isShow) {
+        mSwipeRefreshLayout.setRefreshing(isShow);
     }
 
     @Override
@@ -495,9 +495,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements SwipeRefr
         return R.layout.activity_take_out_detail_menu;
     }
 
-    public static Intent getIntent(Context context, int position) {
+    public static Intent getIntent(Context context, String objectID) {
         Intent intent = new Intent(context, TakeOutDetailMenuActivity.class);
-        intent.putExtra(EXTRA_POSITION, position);
+        intent.putExtra(EXTRA_OBJECT_ID, objectID);
         return intent;
     }
 

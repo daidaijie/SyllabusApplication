@@ -13,6 +13,8 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.TakeOutMenuAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
+import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
+import com.example.daidaijie.syllabusapplication.takeout.detailMenu.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.List;
@@ -21,7 +23,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class TakeOutActivity extends BaseActivity implements TakeOutContract.TakeOutView, SwipeRefreshLayout.OnRefreshListener {
+public class TakeOutActivity extends BaseActivity implements TakeOutContract.view, SwipeRefreshLayout.OnRefreshListener, TakeOutMenuAdapter.OnItemClickListener {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -41,8 +43,11 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.Tak
     @PerActivity
     TakeOutPresenter mTakeOutPresenter;
 
-    private static final String RESULT_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
+    private static final String RESULT_POSITION
+            = "com.example.daidaijie.syllabusapplication.takeout.mainMenu" +
             ".TakeOutActivity.resultPosition";
+
+    private final int REQUEST_DETAIL_MENU = 206;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,14 +59,15 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.Tak
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         DaggerTakeOutComponent.builder()
-                .appComponent(mAppComponent)
+                .takeOutModelComponent(TakeOutModelComponent.getInstance(mAppComponent))
                 .takeOutModule(new TakeOutModule(this))
                 .build().inject(this);
 
 
-        mTakeOutMenuAdapter = new TakeOutMenuAdapter(this, null);
         mMenuListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mTakeOutMenuAdapter = new TakeOutMenuAdapter(this, null);
         mMenuListRecyclerView.setAdapter(mTakeOutMenuAdapter);
+        mTakeOutMenuAdapter.setOnItemClickListener(this);
 
 
         setupSwipeRefreshLayout(mSwipeRefreshLayout);
@@ -72,7 +78,6 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.Tak
                 mTakeOutPresenter.start();
             }
         });
-
     }
 
     @Override
@@ -93,7 +98,7 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.Tak
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 206 & resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_DETAIL_MENU & resultCode == RESULT_OK) {
             int resultPos = data.getIntExtra(RESULT_POSITION, -1);
             if (resultPos != -1) {
                 mTakeOutMenuAdapter.notifyItemChanged(resultPos);
@@ -111,13 +116,25 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.Tak
     }
 
     @Override
-    public void showData(List<TakeOutInfoBean> mTakeOutInfoBeen) {
-        mTakeOutMenuAdapter.setTakeOutInfoBeen(mTakeOutInfoBeen);
+    public void showData(List<TakeOutInfoBean> takeOutInfoBeen) {
+        mTakeOutMenuAdapter.setTakeOutInfoBeen(takeOutInfoBeen);
         mTakeOutMenuAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void showRefresh(boolean isShow) {
         mSwipeRefreshLayout.setRefreshing(isShow);
+    }
+
+    @Override
+    public void onItemClick(String objectID) {
+        Intent intent = TakeOutDetailMenuActivity.getIntent(this, objectID);
+        startActivityForResult(intent, REQUEST_DETAIL_MENU);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        TakeOutModelComponent.destroy();
     }
 }

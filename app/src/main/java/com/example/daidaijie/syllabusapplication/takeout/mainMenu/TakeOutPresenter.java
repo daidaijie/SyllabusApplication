@@ -12,51 +12,53 @@ import javax.inject.Inject;
  * Created by daidaijie on 2016/10/8.
  */
 
-public class TakeOutPresenter implements TakeOutContract.TakeOutPresenter {
+public class TakeOutPresenter implements TakeOutContract.presenter {
 
-    private TakeOutContract.TakeOutView mTakeOutView;
+    private TakeOutContract.view mView;
 
     private ITakeOutModel mTakeOutModel;
 
     @Inject
     @PerActivity
-    public TakeOutPresenter(TakeOutContract.TakeOutView takeOutView, ITakeOutModel takeOutModel) {
-        mTakeOutView = takeOutView;
+    public TakeOutPresenter(TakeOutContract.view view, ITakeOutModel takeOutModel) {
+        mView = view;
         mTakeOutModel = takeOutModel;
     }
 
     @Override
     public void start() {
+        mView.showFailMessage(mTakeOutModel+"");
         mTakeOutModel.loadDataFromDist(new ITakeOutModel.OnLoadListener() {
             @Override
             public void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen) {
-                mTakeOutView.showData(takeOutInfoBeen);
+                mView.showData(takeOutInfoBeen);
                 if (takeOutInfoBeen.size() == 0) {
                     loadData();
                 }
+                mView.showData(takeOutInfoBeen);
             }
 
             @Override
             public void onLoadFail(String msg) {
-                mTakeOutView.showFailMessage(msg);
+                mView.showFailMessage(msg);
             }
         });
     }
 
     @Override
     public void loadData() {
-        mTakeOutView.showRefresh(true);
+        mView.showRefresh(true);
         mTakeOutModel.loadDataFromNet(new ITakeOutModel.OnLoadListener() {
             @Override
             public void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen) {
-                mTakeOutView.showData(takeOutInfoBeen);
-                mTakeOutView.showRefresh(false);
+                mView.showData(takeOutInfoBeen);
+                mView.showRefresh(false);
             }
 
             @Override
             public void onLoadFail(String msg) {
-                mTakeOutView.showFailMessage("获取失败");
-                mTakeOutView.showRefresh(false);
+                mView.showFailMessage("获取失败");
+                mView.showRefresh(false);
             }
         });
     }

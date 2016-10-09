@@ -1,7 +1,7 @@
 package com.example.daidaijie.syllabusapplication.takeout.mainMenu;
 
-import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.PerActivity;
+import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
 
 import dagger.Component;
 
@@ -10,7 +10,7 @@ import dagger.Component;
  */
 
 @PerActivity
-@Component(dependencies = AppComponent.class, modules = TakeOutModule.class)
+@Component(dependencies = TakeOutModelComponent.class, modules = TakeOutModule.class)
 public interface TakeOutComponent {
 
     void inject(TakeOutActivity takeOutActivity);

@@ -151,12 +151,12 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".takeout.TakeOutDetailMenuActivity"
+            android:name=".takeout.detailMenu.TakeOutDetailMenuActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".takeout.SearchTakeOutActivity"
+            android:name=".takeout.searchDish.SearchTakeOutActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>

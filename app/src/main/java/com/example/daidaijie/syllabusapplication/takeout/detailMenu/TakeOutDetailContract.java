@@ -1,16 +1,14 @@
-package com.example.daidaijie.syllabusapplication.takeout.mainMenu;
+package com.example.daidaijie.syllabusapplication.takeout.detailMenu;
 
 import com.example.daidaijie.syllabusapplication.BasePresenter;
 import com.example.daidaijie.syllabusapplication.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 
-import java.util.List;
-
 /**
  * Created by daidaijie on 2016/10/8.
  */
 
-public interface TakeOutContract {
+public interface TakeOutDetailContract {
 
     interface presenter extends BasePresenter {
         void loadData();
@@ -19,8 +17,8 @@ public interface TakeOutContract {
     interface view extends BaseView<presenter> {
         void showFailMessage(String msg);
 
-        void showData(List<TakeOutInfoBean> mTakeOutInfoBeen);
-
         void showRefresh(boolean isShow);
+
+        void setUpTakeOutInfo(TakeOutInfoBean takeOutInfoBean);
     }
 }

@@ -153,6 +153,7 @@ public class OfficeAutomationFragment extends Fragment implements SwipeRefreshLa
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         mEmptyTextView.setText("暂无办公自动化信息");
                         mRefreshOALayout.setRefreshing(false);
                         SnackbarUtil.LongSnackbar(

@@ -10,6 +10,11 @@ import java.util.List;
 
 public interface ITakeOutModel {
 
+
+
+    /**
+     * 多个的获取
+     */
     interface OnLoadListener {
         void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen);
 
@@ -20,4 +25,18 @@ public interface ITakeOutModel {
 
 
     void loadDataFromDist(OnLoadListener onLoadListener);
+
+    /**
+     * 单个的获取
+     */
+    interface OnLoadItemListener {
+        void onLoadSuccess(TakeOutInfoBean takeOutInfoBeen);
+
+        void onLoadFail(String msg);
+    }
+
+    void loadItemFromNet(String objectID, OnLoadItemListener onLoadItemListener);
+
+
+    void loadItemFromDist(String objectID, OnLoadItemListener onLoadItemListener);
 }

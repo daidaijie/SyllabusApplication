@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.takeout;
+package com.example.daidaijie.syllabusapplication.takeout.searchDish;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
