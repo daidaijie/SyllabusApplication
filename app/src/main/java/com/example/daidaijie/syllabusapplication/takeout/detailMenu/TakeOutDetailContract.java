@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.takeout.detailMenu;
 
+import android.content.Intent;
+
 import com.example.daidaijie.syllabusapplication.BasePresenter;
 import com.example.daidaijie.syllabusapplication.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
@@ -19,6 +21,8 @@ public interface TakeOutDetailContract {
         void reduceDish(int position);
 
         void showPopWindows();
+
+        void toSearch();
     }
 
     interface view extends BaseView<presenter> {
@@ -33,6 +37,8 @@ public interface TakeOutDetailContract {
         void showPrice(TakeOutBuyBean takeOutBuyBean);
 
         void showPopWindows(TakeOutInfoBean takeOutInfoBean);
+
+        void toSearch(String objectID);
 
     }
 }

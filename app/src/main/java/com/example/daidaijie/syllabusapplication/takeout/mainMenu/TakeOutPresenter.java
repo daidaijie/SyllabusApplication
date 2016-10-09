@@ -27,25 +27,37 @@ public class TakeOutPresenter implements TakeOutContract.presenter {
 
     @Override
     public void start() {
-        mTakeOutModel.loadDataFromDist(new ITakeOutModel.OnLoadListener() {
+        mTakeOutModel.loadDataFromMemory(new ITakeOutModel.OnLoadListener() {
             @Override
             public void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen) {
-                mView.showData(takeOutInfoBeen);
-                if (takeOutInfoBeen.size() == 0) {
-                    loadData();
-                }
                 mView.showData(takeOutInfoBeen);
             }
 
             @Override
             public void onLoadFail(String msg) {
-                mView.showFailMessage(msg);
+                mTakeOutModel.loadDataFromDist(new ITakeOutModel.OnLoadListener() {
+                    @Override
+                    public void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen) {
+                        mView.showData(takeOutInfoBeen);
+                        if (takeOutInfoBeen.size() == 0) {
+                            loadDataFromNet();
+                            return;
+                        }
+                        mView.showData(takeOutInfoBeen);
+                    }
+
+                    @Override
+                    public void onLoadFail(String msg) {
+                        mView.showFailMessage(msg);
+                    }
+                });
             }
         });
     }
 
+
     @Override
-    public void loadData() {
+    public void loadDataFromNet() {
         mView.showRefresh(true);
         mTakeOutModel.loadDataFromNet(new ITakeOutModel.OnLoadListener() {
             @Override

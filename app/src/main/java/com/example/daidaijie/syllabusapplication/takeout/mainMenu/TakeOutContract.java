@@ -13,7 +13,7 @@ import java.util.List;
 public interface TakeOutContract {
 
     interface presenter extends BasePresenter {
-        void loadData();
+        void loadDataFromNet();
     }
 
     interface view extends BaseView<presenter> {

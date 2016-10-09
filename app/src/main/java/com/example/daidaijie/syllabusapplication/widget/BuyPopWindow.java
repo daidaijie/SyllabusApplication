@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,8 +24,9 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
+import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
-import com.orhanobut.logger.Logger;
+import com.liaoinstan.springview.utils.DensityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -102,16 +104,19 @@ public class BuyPopWindow extends Dialog {
             @Override
             public void onRemove(Dishes dishes, int position) {
                 boolean isNone = mTakeOutInfoBean.getTakeOutBuyBean().removeDishes(dishes);
-                Logger.t("isNone").e(isNone + "");
+                if (mOnDataChangeListener != null) {
+                    mOnDataChangeListener.onChange(dishes.mPos);
+                }
+                if (mTakeOutInfoBean.getTakeOutBuyBean().getBuyMap().size() == 0) {
+                    BuyPopWindow.this.dismiss();
+                    return;
+                }
                 if (isNone) {
                     mBuyAdatper.notifyDataSetChanged();
                 } else {
                     mBuyAdatper.notifyItemChanged(position);
                 }
 
-                if (mOnDataChangeListener != null) {
-                    mOnDataChangeListener.onChange(dishes.mPos);
-                }
                 showPrice();
             }
         });
@@ -239,14 +244,6 @@ public class BuyPopWindow extends Dialog {
             mTakeOutBuyBean = bean;
         }
 
-        public TakeOutBuyBean getTakeOutBuyBean() {
-            return mTakeOutBuyBean;
-        }
-
-        public void setTakeOutBuyBean(TakeOutBuyBean takeOutBuyBean) {
-            mTakeOutBuyBean = takeOutBuyBean;
-        }
-
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -260,6 +257,15 @@ public class BuyPopWindow extends Dialog {
             final Dishes dishes = mTakeOutBuyBean.getDishesList().get(position);
 
             int num = mTakeOutBuyBean.getBuyMap().get(dishes);
+
+            GradientDrawable addDrawable = (GradientDrawable) mContext.getResources().getDrawable(R.drawable.bg_add_dishes);
+            GradientDrawable minusDrawable = (GradientDrawable) mContext.getResources().getDrawable(R.drawable.bg_minus_dishes);
+
+            addDrawable.setColor(ThemeModel.getInstance().colorPrimary);
+            holder.mAddButton.setBackgroundDrawable(addDrawable);
+
+            minusDrawable.setStroke(DensityUtil.dip2px(mContext, 1), ThemeModel.getInstance().colorPrimary);
+            holder.mMinusButton.setBackgroundDrawable(minusDrawable);
 
             holder.mDishesNameTextView.setText(dishes.getName());
             if (StringUtil.isPrice(dishes.getPrice())) {

@@ -5,7 +5,10 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.service.TakeOutInfoApi;
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -23,11 +26,14 @@ public class TakeOutModel implements ITakeOutModel {
     private TakeOutInfoApi mTakeOutInfoApi;
     private Gson mGson;
 
+    private Map<String, TakeOutInfoBean> mInfoBeanMap;
+
 
     public TakeOutModel(Realm realm, TakeOutInfoApi takeOutInfoApi, Gson gson) {
         mRealm = realm;
         mTakeOutInfoApi = takeOutInfoApi;
         mGson = gson;
+        mInfoBeanMap = new LinkedHashMap<>();
     }
 
     @Override
@@ -56,6 +62,7 @@ public class TakeOutModel implements ITakeOutModel {
                                 }
                             }
                         });
+                        loadToMemory(takeOutInfoBeen);
                         onLoadListener.onLoadSuccess(takeOutInfoBeen);
                     }
 
@@ -76,11 +83,21 @@ public class TakeOutModel implements ITakeOutModel {
         try {
             RealmResults<TakeOutInfoBean> takeOutInfoBeanResults =
                     mRealm.where(TakeOutInfoBean.class).findAll();
-            List<TakeOutInfoBean> mTakeOutInfoBeen = takeOutInfoBeanResults.subList(0,
+            List<TakeOutInfoBean> takeOutInfoBeen = takeOutInfoBeanResults.subList(0,
                     takeOutInfoBeanResults.size());
-            onLoadListener.onLoadSuccess(mTakeOutInfoBeen);
+            loadToMemory(takeOutInfoBeen);
+            onLoadListener.onLoadSuccess(takeOutInfoBeen);
         } catch (Throwable e) {
             onLoadListener.onLoadFail(e.getMessage());
+        }
+    }
+
+    @Override
+    public void loadDataFromMemory(OnLoadListener onLoadListener) {
+        if (mInfoBeanMap == null || mInfoBeanMap.values().size() == 0) {
+            onLoadListener.onLoadFail("NULL");
+        } else {
+            onLoadListener.onLoadSuccess(new ArrayList<>(mInfoBeanMap.values()));
         }
     }
 
@@ -102,6 +119,7 @@ public class TakeOutModel implements ITakeOutModel {
                             }
                         });
                         mTakeOutInfoBean.loadTakeOutSubMenus();
+                        loadToMemory(mTakeOutInfoBean);
                         onLoadItemListener.onLoadSuccess(mTakeOutInfoBean);
                     }
 
@@ -126,13 +144,33 @@ public class TakeOutModel implements ITakeOutModel {
                     .equalTo("objectId", objectID)
                     .findFirst();
             if (bean.loadTakeOutSubMenus()) {
+                loadToMemory(bean);
                 onLoadItemListener.onLoadSuccess(bean);
-            }else {
-                onLoadItemListener.onLoadFail("NULL");
+            } else {
+                loadToMemory(bean);
+                onLoadItemListener.onLoadFail("NULL_MENU");
             }
         } catch (Throwable e) {
             onLoadItemListener.onLoadFail(e.getMessage());
         }
+    }
+
+    @Override
+    public void loadItemFromMemory(String objectID, OnLoadItemListener onLoadItemListener) {
+        if (mInfoBeanMap == null) {
+            onLoadItemListener.onLoadFail("NULL");
+        }
+        TakeOutInfoBean takeOutInfoBean = mInfoBeanMap.get(objectID);
+        if (takeOutInfoBean == null) {
+            onLoadItemListener.onLoadFail("NULL_ITEM");
+        } else {
+            if (takeOutInfoBean.loadTakeOutSubMenus()) {
+                onLoadItemListener.onLoadSuccess(takeOutInfoBean);
+            } else {
+                onLoadItemListener.onLoadFail("NULL_MENU");
+            }
+        }
+
     }
 
     private TakeOutInfoBean getTakeOutInfoBeanById(String objectID) {
@@ -142,4 +180,13 @@ public class TakeOutModel implements ITakeOutModel {
         return bean;
     }
 
+    private void loadToMemory(List<TakeOutInfoBean> takeOutInfoBeen) {
+        for (TakeOutInfoBean takeOutInfoBean : takeOutInfoBeen) {
+            loadToMemory(takeOutInfoBean);
+        }
+    }
+
+    private void loadToMemory(TakeOutInfoBean takeOutInfoBean) {
+        mInfoBeanMap.put(takeOutInfoBean.getObjectId(), takeOutInfoBean);
+    }
 }

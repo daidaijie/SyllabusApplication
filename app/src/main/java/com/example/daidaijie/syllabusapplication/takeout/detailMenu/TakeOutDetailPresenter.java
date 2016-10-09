@@ -1,7 +1,6 @@
 package com.example.daidaijie.syllabusapplication.takeout.detailMenu;
 
 import com.example.daidaijie.syllabusapplication.PerActivity;
-import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.takeout.ITakeOutModel;
 
@@ -19,8 +18,6 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
 
     private ITakeOutModel mTakeOutModel;
 
-    private TakeOutInfoBean mTakeOutInfoBean;
-
     @Inject
     @PerActivity
     public TakeOutDetailPresenter(TakeOutDetailContract.view view, ITakeOutModel takeOutModel, String objectID) {
@@ -35,7 +32,6 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
         mTakeOutModel.loadItemFromNet(objectID, new ITakeOutModel.OnLoadItemListener() {
             @Override
             public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
-                mTakeOutInfoBean = takeOutInfoBean;
                 mView.showRefresh(false);
                 mView.setUpTakeOutInfo(takeOutInfoBean);
                 mView.setMenuList(takeOutInfoBean);
@@ -50,36 +46,105 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
     }
 
     @Override
-    public void addDish(int position) {
-        mTakeOutInfoBean.getTakeOutBuyBean().addDishes(mTakeOutInfoBean.getDishes().get(position));
-        mView.showPrice(mTakeOutInfoBean.getTakeOutBuyBean());
+    public void addDish(final int position) {
+        mTakeOutModel.loadItemFromMemory(objectID, new ITakeOutModel.OnLoadItemListener() {
+            @Override
+            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                takeOutInfoBean.getTakeOutBuyBean().addDishes(takeOutInfoBean.getDishes().get(position));
+                mView.showPrice(takeOutInfoBean.getTakeOutBuyBean());
+            }
+
+            @Override
+            public void onLoadFail(String msg) {
+            }
+        });
+
     }
 
     @Override
-    public void reduceDish(int position) {
-        mTakeOutInfoBean.getTakeOutBuyBean().removeDishes(mTakeOutInfoBean.getDishes().get(position));
-        mView.showPrice(mTakeOutInfoBean.getTakeOutBuyBean());
+    public void reduceDish(final int position) {
+        mTakeOutModel.loadItemFromMemory(objectID, new ITakeOutModel.OnLoadItemListener() {
+            @Override
+            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                takeOutInfoBean.getTakeOutBuyBean().removeDishes(takeOutInfoBean.getDishes().get(position));
+                mView.showPrice(takeOutInfoBean.getTakeOutBuyBean());
+            }
+
+            @Override
+            public void onLoadFail(String msg) {
+            }
+        });
+
     }
 
     @Override
     public void showPopWindows() {
-        mView.showPopWindows(mTakeOutInfoBean);
+        mTakeOutModel.loadItemFromMemory(objectID, new ITakeOutModel.OnLoadItemListener() {
+            @Override
+            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                if (takeOutInfoBean.getTakeOutBuyBean().getBuyMap().size() != 0) {
+                    mView.showPopWindows(takeOutInfoBean);
+                }
+            }
+
+            @Override
+            public void onLoadFail(String msg) {
+            }
+        });
+    }
+
+    @Override
+    public void toSearch() {
+        mTakeOutModel.loadItemFromMemory(objectID, new ITakeOutModel.OnLoadItemListener() {
+            @Override
+            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                if (takeOutInfoBean.getDishes() != null && takeOutInfoBean.getDishes().size() != 0) {
+                    mView.toSearch(objectID);
+                }
+            }
+
+            @Override
+            public void onLoadFail(String msg) {
+            }
+        });
+
     }
 
 
     @Override
     public void start() {
-        mTakeOutModel.loadItemFromDist(objectID, new ITakeOutModel.OnLoadItemListener() {
+        mTakeOutModel.loadItemFromMemory(objectID, new ITakeOutModel.OnLoadItemListener() {
             @Override
             public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
-                mTakeOutInfoBean = takeOutInfoBean;
                 mView.setUpTakeOutInfo(takeOutInfoBean);
                 mView.setMenuList(takeOutInfoBean);
             }
 
             @Override
             public void onLoadFail(String msg) {
-                loadData();
+                mTakeOutModel.loadItemFromDist(objectID, new ITakeOutModel.OnLoadItemListener() {
+                    @Override
+                    public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                        mView.setUpTakeOutInfo(takeOutInfoBean);
+                        mView.setMenuList(takeOutInfoBean);
+                    }
+
+                    @Override
+                    public void onLoadFail(String msg) {
+                        mTakeOutModel.loadItemFromDist(objectID, new ITakeOutModel.OnLoadItemListener() {
+                            @Override
+                            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                                mView.setUpTakeOutInfo(takeOutInfoBean);
+                                mView.setMenuList(takeOutInfoBean);
+                            }
+
+                            @Override
+                            public void onLoadFail(String msg) {
+                                loadData();
+                            }
+                        });
+                    }
+                });
             }
         });
     }

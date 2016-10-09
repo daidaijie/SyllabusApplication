@@ -38,6 +38,8 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
@@ -46,6 +48,8 @@ import com.liaoinstan.springview.utils.DensityUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import rx.Observable;
 import rx.Subscriber;
@@ -53,7 +57,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter.OnNumChangeListener {
+public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter.OnNumChangeListener, SearchTakeOutContract.view {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
@@ -86,28 +90,26 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     private FrameLayout aniLayout;
 
-    private TakeOutInfoBean mTakeOutInfoBean;
-
     private List<Dishes> mSearchDishes;
 
     private TakeOutBuyBean mTakeOutBuyBean;
 
     private DishesAdapter mDishesAdapter;
 
-    private int mPosition;
+    public static final String EXTRA_OBJECT_ID = "com.example.daidaijie.syllabusapplication" +
+            ".takeout.searchDish.SearchTakeOutActivity.objectID";
 
-    private String mKeyWord;
-
-    public static final String EXTRA_POSITION = "com.example.daidaijie.syllabusapplication.activity" +
-            ".SearchTakeOutActivity.mPosition";
-
+    @Inject
+    SearchTakeOutPresenter mSearchTakeOutPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        /**
+         * 添加布局来展示动画
+         */
         aniLayout = new FrameLayout(this);
-
         final ViewGroup decorView = (ViewGroup) this.getWindow().getDecorView();
         decorView.addView(aniLayout);
 
@@ -116,6 +118,11 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        DaggerSearchTakeOutComponent.builder()
+                .takeOutModelComponent(TakeOutModelComponent.getInstance(mAppComponent))
+                .searchTakeOutModule(new SearchTakeOutModule(this, getIntent().getStringExtra(EXTRA_OBJECT_ID)))
+                .build().inject(this);
+/*
         mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
         mTakeOutInfoBean = TakeOutManager.getInstance().getTakeOutInfoBeen().get(mPosition);
         mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
@@ -222,7 +229,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
             }
         });
 
-        setResult(RESULT_OK);
+        setResult(RESULT_OK);*/
     }
 
     @Override
@@ -245,9 +252,9 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
         imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
     }
 
-    public static Intent getIntent(Context context, int position) {
+    public static Intent getIntent(Context context, String objectID) {
         Intent intent = new Intent(context, SearchTakeOutActivity.class);
-        intent.putExtra(EXTRA_POSITION, position);
+        intent.putExtra(EXTRA_OBJECT_ID, objectID);
         return intent;
     }
 
@@ -347,7 +354,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
 
     private void showPopWindows() {
-        hideInput();
+        /*hideInput();
         BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutInfoBean);
         popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
             @Override
@@ -362,6 +369,13 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
                 showPrice();
             }
         });
-        popWindow.show();
+        popWindow.show();*/
+    }
+
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mDishesRecyclerView, msg, SnackbarUtil.Alert
+        ).show();
     }
 }

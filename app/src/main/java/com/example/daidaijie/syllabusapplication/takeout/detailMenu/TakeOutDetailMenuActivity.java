@@ -39,6 +39,7 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
+import com.example.daidaijie.syllabusapplication.takeout.searchDish.SearchTakeOutActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
@@ -452,6 +453,12 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
     }
 
     @Override
+    public void toSearch(String objectID) {
+        Intent intent = SearchTakeOutActivity.getIntent(TakeOutDetailMenuActivity.this, objectID);
+        startActivityForResult(intent, REQUEST_SEARCH);
+    }
+
+    @Override
     public void showPrice(TakeOutBuyBean takeOutBuyBean) {
         mBuyNumTextView.setText(takeOutBuyBean.getNum() + "");
         mSumPriceTextView.setText("¥" + takeOutBuyBean.getSumPrice());
@@ -475,10 +482,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_search_takeout) {
-            /*if (mTakeOutInfoBean.getDishes() != null && mTakeOutInfoBean.getDishes().size() != 0) {
-                Intent intent = SearchTakeOutActivity.getIntent(TakeOutDetailMenuActivity.this, mPosition);
-                startActivityForResult(intent, REQUEST_SEARCH);
-            }*/
+            mTakeOutDetailPresenter.toSearch();
         }
         return super.onOptionsItemSelected(item);
     }

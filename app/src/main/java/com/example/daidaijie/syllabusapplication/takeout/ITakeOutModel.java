@@ -11,7 +11,6 @@ import java.util.List;
 public interface ITakeOutModel {
 
 
-
     /**
      * 多个的获取
      */
@@ -23,20 +22,23 @@ public interface ITakeOutModel {
 
     void loadDataFromNet(OnLoadListener onLoadListener);
 
-
     void loadDataFromDist(OnLoadListener onLoadListener);
+
+    void loadDataFromMemory(OnLoadListener onLoadListener);
 
     /**
      * 单个的获取
      */
     interface OnLoadItemListener {
-        void onLoadSuccess(TakeOutInfoBean takeOutInfoBeen);
+        void onLoadSuccess(TakeOutInfoBean takeOutInfoBean);
 
         void onLoadFail(String msg);
     }
 
     void loadItemFromNet(String objectID, OnLoadItemListener onLoadItemListener);
 
-
     void loadItemFromDist(String objectID, OnLoadItemListener onLoadItemListener);
+
+    void loadItemFromMemory(String objectID, OnLoadItemListener onLoadItemListener);
+
 }

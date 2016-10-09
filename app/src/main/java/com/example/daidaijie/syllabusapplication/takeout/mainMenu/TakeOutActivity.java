@@ -85,7 +85,7 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.vie
 
     @Override
     public void onRefresh() {
-        mTakeOutPresenter.loadData();
+        mTakeOutPresenter.loadDataFromNet();
     }
 
     public static Intent getIntent(int position) {
