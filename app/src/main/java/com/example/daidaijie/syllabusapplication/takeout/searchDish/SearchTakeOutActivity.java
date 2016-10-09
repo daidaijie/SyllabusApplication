@@ -29,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
@@ -39,6 +40,7 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
+import com.example.daidaijie.syllabusapplication.takeout.detailMenu.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
@@ -90,10 +92,6 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     private FrameLayout aniLayout;
 
-    private List<Dishes> mSearchDishes;
-
-    private TakeOutBuyBean mTakeOutBuyBean;
-
     private DishesAdapter mDishesAdapter;
 
     public static final String EXTRA_OBJECT_ID = "com.example.daidaijie.syllabusapplication" +
@@ -122,12 +120,23 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
                 .takeOutModelComponent(TakeOutModelComponent.getInstance(mAppComponent))
                 .searchTakeOutModule(new SearchTakeOutModule(this, getIntent().getStringExtra(EXTRA_OBJECT_ID)))
                 .build().inject(this);
-/*
-        mPosition = getIntent().getIntExtra(EXTRA_POSITION, 0);
-        mTakeOutInfoBean = TakeOutManager.getInstance().getTakeOutInfoBeen().get(mPosition);
-        mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
 
-        mSearchDishes = new ArrayList<>();
+        mSearchTakeOutPresenter.start();
+        mRemoveTextImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSearchEditText.setText("");
+            }
+        });
+
+        mSearchEditText.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showInput();
+            }
+        }, 50);
+
+
         mSearchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -145,91 +154,26 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
             @Override
             public void afterTextChanged(Editable s) {
-                mKeyWord = s.toString();
-                if (mKeyWord.trim().isEmpty()) {
-                    mSearchDishes.clear();
-                    mDishesAdapter.notifyDataSetChanged();
-                    return;
-                }
-                Observable.from(mTakeOutInfoBean.getDishes())
-                        .subscribeOn(Schedulers.computation())
-                        .observeOn(Schedulers.computation())
-                        .filter(new Func1<Dishes, Boolean>() {
-                            @Override
-                            public Boolean call(Dishes dishes) {
-                                return dishes.getName().contains(mKeyWord);
-                            }
-                        })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Dishes>() {
-                            int index = 0;
-
-                            @Override
-                            public void onStart() {
-                                super.onStart();
-                                mSearchDishes.clear();
-                            }
-
-                            @Override
-                            public void onCompleted() {
-                                mDishesAdapter.setKeyword(mKeyWord);
-                                mDishesAdapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                            }
-
-                            @Override
-                            public void onNext(Dishes dishes) {
-                                dishes.mPos = index++;
-                                mSearchDishes.add(dishes);
-                            }
-                        });
-            }
-        });
-        mRemoveTextImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSearchEditText.setText("");
+                mSearchTakeOutPresenter.search(s.toString());
             }
         });
 
-        mSearchEditText.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showInput();
-            }
-        }, 50);
-
-        mKeyWord = "";
-        mDishesAdapter = new DishesAdapter(this, mSearchDishes, mTakeOutBuyBean.getBuyMap(), mKeyWord);
+        mDishesAdapter = new DishesAdapter(this, null, null, "");
         mDishesRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mDishesRecyclerView.setItemAnimator(new MyItemAnimator());
         mDishesRecyclerView.setAdapter(mDishesAdapter);
 
         mDishesAdapter.setOnNumChangeListener(this);
 
+
         mBottomBgLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopWindows();
+                mSearchTakeOutPresenter.showPopWindows();
             }
         });
 
-        showPrice();
-
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTakeOutInfoBean.getPhoneList().length == 0) return;
-                AlertDialog dialog = CallPhoneDialog.
-                        createDialog(SearchTakeOutActivity.this, mTakeOutInfoBean.getPhoneList());
-                dialog.show();
-            }
-        });
-
-        setResult(RESULT_OK);*/
+        setResult(RESULT_OK);
     }
 
     @Override
@@ -237,7 +181,8 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
         return R.layout.activity_search_take_out;
     }
 
-    private void showInput() {
+    @Override
+    public void showInput() {
         mSearchEditText.setFocusable(true);
         mSearchEditText.setFocusableInTouchMode(true);
         mSearchEditText.requestFocus();
@@ -246,10 +191,53 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
         imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_FORCED);
     }
 
-    private void hideInput() {
+    @Override
+    public void hideInput() {
         InputMethodManager imm = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
+    }
+
+    @Override
+    public void setUpTakeOutInfo(final TakeOutInfoBean takeOutInfoBean) {
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (takeOutInfoBean.getPhoneList().length == 0) return;
+                AlertDialog dialog = CallPhoneDialog.
+                        createDialog(SearchTakeOutActivity.this, takeOutInfoBean.getPhoneList());
+                dialog.show();
+            }
+        });
+        showPrice(takeOutInfoBean.getTakeOutBuyBean());
+    }
+
+    @Override
+    public void showSearchResult(TakeOutBuyBean takeOutBuyBean, List<Dishes> dishes, String keyword) {
+        mDishesAdapter.setDishesList(dishes);
+        mDishesAdapter.setBuyMap(takeOutBuyBean.getBuyMap());
+        mDishesAdapter.setKeyword(keyword);
+        mDishesAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showPopWindows(final TakeOutInfoBean takeOutInfoBean) {
+        hideInput();
+        BuyPopWindow popWindow = new BuyPopWindow(this, takeOutInfoBean);
+        popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
+            @Override
+            public void onChange(int position) {
+                mDishesAdapter.notifyDataSetChanged();
+                showPrice(takeOutInfoBean.getTakeOutBuyBean());
+            }
+
+            @Override
+            public void onChangeAll() {
+                mDishesAdapter.notifyDataSetChanged();
+                showPrice(takeOutInfoBean.getTakeOutBuyBean());
+            }
+        });
+        popWindow.show();
     }
 
     public static Intent getIntent(Context context, String objectID) {
@@ -261,11 +249,9 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
     @Override
     public void onAddNum(View v, int position) {
         hideInput();
-        Dishes dishes = mSearchDishes.get(position);
-        mTakeOutBuyBean.addDishes(dishes);
-        showPrice();
-
+        mSearchTakeOutPresenter.addDish(mDishesAdapter.getDishesList().get(position).mPos);
         mDishesAdapter.notifyItemChanged(position);
+
         int[] location = new int[2];
         v.getLocationInWindow(location);
 
@@ -331,46 +317,25 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     @Override
     public void onReduceNum(int position) {
-        hideInput();
-        Dishes dishes = mSearchDishes.get(position);
-        mTakeOutBuyBean.removeDishes(dishes);
-        showPrice();
+        mSearchTakeOutPresenter.reduceDish(mDishesAdapter.getDishesList().get(position).mPos);
 
         mDishesAdapter.notifyItemChanged(position);
     }
 
-    private void showPrice() {
-        mBuyNumTextView.setText(mTakeOutBuyBean.getNum() + "");
-        mSumPriceTextView.setText("¥" + mTakeOutBuyBean.getSumPrice());
-        if (mTakeOutBuyBean.getUnCalcNum() != 0) {
+    @Override
+    public void showPrice(TakeOutBuyBean takeOutBuyBean) {
+        mBuyNumTextView.setText(takeOutBuyBean.getNum() + "");
+        mSumPriceTextView.setText("¥" + takeOutBuyBean.getSumPrice());
+        if (takeOutBuyBean.getUnCalcNum() != 0) {
             mDivLine.setVisibility(View.VISIBLE);
             mUnCalcNumTextView.setVisibility(View.VISIBLE);
-            mUnCalcNumTextView.setText("不可计价份数: " + mTakeOutBuyBean.getUnCalcNum());
+            mUnCalcNumTextView.setText("不可计价份数: " + takeOutBuyBean.getUnCalcNum());
         } else {
             mDivLine.setVisibility(View.GONE);
             mUnCalcNumTextView.setVisibility(View.GONE);
         }
     }
 
-
-    private void showPopWindows() {
-        /*hideInput();
-        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutInfoBean);
-        popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
-            @Override
-            public void onChange(int position) {
-                mDishesAdapter.notifyDataSetChanged();
-                showPrice();
-            }
-
-            @Override
-            public void onChangeAll() {
-                mDishesAdapter.notifyDataSetChanged();
-                showPrice();
-            }
-        });
-        popWindow.show();*/
-    }
 
     @Override
     public void showFailMessage(String msg) {

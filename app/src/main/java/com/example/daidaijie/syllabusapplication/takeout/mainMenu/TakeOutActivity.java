@@ -97,12 +97,7 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.vie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_DETAIL_MENU & resultCode == RESULT_OK) {
-            int resultPos = data.getIntExtra(RESULT_POSITION, -1);
-            if (resultPos != -1) {
-                mTakeOutMenuAdapter.notifyItemChanged(resultPos);
-            } else {
-                mTakeOutMenuAdapter.notifyDataSetChanged();
-            }
+            mTakeOutMenuAdapter.notifyDataSetChanged();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

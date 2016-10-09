@@ -187,11 +187,15 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
                 mTakeOutDetailPresenter.showPopWindows();
             }
         });
+
+        setResult(RESULT_OK);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SEARCH) {
+        if (requestCode == REQUEST_SEARCH && resultCode == RESULT_OK) {
+            mTakeOutMenuAdapter.notifyDataSetChanged();
+            mTakeOutDetailPresenter.showPrice();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -23,6 +23,8 @@ public interface TakeOutDetailContract {
         void showPopWindows();
 
         void toSearch();
+
+        void showPrice();
     }
 
     interface view extends BaseView<presenter> {

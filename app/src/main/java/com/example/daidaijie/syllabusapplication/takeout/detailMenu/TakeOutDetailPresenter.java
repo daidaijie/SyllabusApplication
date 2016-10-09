@@ -74,7 +74,6 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
             public void onLoadFail(String msg) {
             }
         });
-
     }
 
     @Override
@@ -108,6 +107,21 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
             }
         });
 
+    }
+
+    @Override
+    public void showPrice() {
+        mTakeOutModel.loadItemFromMemory(objectID, new ITakeOutModel.OnLoadItemListener() {
+            @Override
+            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                mView.showPrice(takeOutInfoBean.getTakeOutBuyBean());
+            }
+
+            @Override
+            public void onLoadFail(String msg) {
+
+            }
+        });
     }
 
 
