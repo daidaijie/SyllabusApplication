@@ -348,7 +348,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     private void showPopWindows() {
         hideInput();
-        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean, mPosition);
+        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutInfoBean);
         popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
             @Override
             public void onChange(int position) {

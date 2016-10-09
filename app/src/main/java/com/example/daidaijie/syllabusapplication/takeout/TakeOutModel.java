@@ -101,6 +101,7 @@ public class TakeOutModel implements ITakeOutModel {
                                 realm.copyToRealmOrUpdate(mTakeOutInfoBean);
                             }
                         });
+                        mTakeOutInfoBean.loadTakeOutSubMenus();
                         onLoadItemListener.onLoadSuccess(mTakeOutInfoBean);
                     }
 
@@ -124,7 +125,11 @@ public class TakeOutModel implements ITakeOutModel {
             TakeOutInfoBean bean = mRealm.where(TakeOutInfoBean.class)
                     .equalTo("objectId", objectID)
                     .findFirst();
-            onLoadItemListener.onLoadSuccess(bean);
+            if (bean.loadTakeOutSubMenus()) {
+                onLoadItemListener.onLoadSuccess(bean);
+            }else {
+                onLoadItemListener.onLoadFail("NULL");
+            }
         } catch (Throwable e) {
             onLoadItemListener.onLoadFail(e.getMessage());
         }

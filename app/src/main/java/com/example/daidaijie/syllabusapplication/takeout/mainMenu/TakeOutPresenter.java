@@ -27,7 +27,6 @@ public class TakeOutPresenter implements TakeOutContract.presenter {
 
     @Override
     public void start() {
-        mView.showFailMessage(mTakeOutModel+"");
         mTakeOutModel.loadDataFromDist(new ITakeOutModel.OnLoadListener() {
             @Override
             public void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen) {

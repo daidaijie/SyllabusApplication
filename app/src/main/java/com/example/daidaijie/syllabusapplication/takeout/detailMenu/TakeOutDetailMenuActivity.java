@@ -35,31 +35,19 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SubMenuAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
-import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.bean.TakeOutSubMenu;
-import com.example.daidaijie.syllabusapplication.model.BmobModel;
-import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.service.TakeOutMenuDetailApi;
-import com.example.daidaijie.syllabusapplication.takeout.searchDish.SearchTakeOutActivity;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.liaoinstan.springview.utils.DensityUtil;
-import com.orhanobut.logger.Logger;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDetailContract.view, SwipeRefreshLayout.OnRefreshListener, DishesAdapter.OnNumChangeListener {
 
@@ -108,29 +96,20 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
 
     FrameLayout aniLayout;
 
-    private TakeOutInfoBean mTakeOutInfoBean;
-
-    private List<Dishes> mDishesList;
-
     private DishesAdapter mTakeOutMenuAdapter;
 
     private SubMenuAdapter mSubMenuAdapter;
 
-    private boolean move;
-
     private LinearLayoutManager mLinearLayoutManager;
 
     private int mIndex;
-
-    private TakeOutBuyBean mTakeOutBuyBean;
+    private boolean move;
 
     private enum CollapsingToolbarLayoutState {
         EXPANDED,
         COLLAPSED,
         INTERNEDIATE
     }
-
-    private int mPosition;
 
     private CollapsingToolbarLayoutState state;
 
@@ -157,6 +136,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
         mToolbar.setTitle("");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        setupSwipeRefreshLayout(mSwipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         /**
          * 设置AppBar展开的属性
@@ -189,67 +171,65 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
                 .takeOutDetailModule(new TakeOutDetailModule(this, getIntent().getStringExtra(EXTRA_OBJECT_ID)))
                 .build().inject(this);
 
-        mTakeOutDetailPresenter.start();
-
-        /*mTakeOutInfoBean = TakeOutManager.getInstance().getTakeOutInfoBeen().get(mPosition);
-        mTakeOutBuyBean = mTakeOutInfoBean.getTakeOutBuyBean();
-
-        setUpTakeOutInfo(mTakeOutInfoBean);
-
-        if (mTakeOutInfoBean.getTakeOutSubMenus() == null) {
-            mSwipeRefreshLayout.post(new Runnable() {
-                @Override
-                public void run() {
-                    mSwipeRefreshLayout.setRefreshing(true);
-                    getDetailMenu();
-                }
-            });
-        } else {
-            mDishesList = mTakeOutInfoBean.getDishes();
-        }
-
-
-        setupSwipeRefreshLayout(mSwipeRefreshLayout);
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-
         setupRecyclerView();
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mTakeOutDetailPresenter.start();
+            }
+        });
 
         mBottomBgLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopWindows();
+                mTakeOutDetailPresenter.showPopWindows();
             }
         });
-
-        showPrice();
-        setResult(RESULT_OK, TakeOutActivity.getIntent(mPosition));*/
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_SEARCH) {
-            mTakeOutMenuAdapter.notifyDataSetChanged();
-            showPrice();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    public void setUpTakeOutInfo(TakeOutInfoBean takeOutInfoBean) {
+    public void setUpTakeOutInfo(final TakeOutInfoBean takeOutInfoBean) {
         mTitleTextView.setText(takeOutInfoBean.getName());
         mTakeoutNameTextView.setText(takeOutInfoBean.getName());
         mLongNumberTextView.setText("长号 : " + takeOutInfoBean.getLong_number());
         mShortNumberTextView.setText("短号 : " + takeOutInfoBean.getShort_number());
         mConditionTextView.setText("备注 : " + takeOutInfoBean.getCondition());
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (takeOutInfoBean.getPhoneList().length == 0) return;
+                AlertDialog dialog = CallPhoneDialog.
+                        createDialog(TakeOutDetailMenuActivity.this, takeOutInfoBean.getPhoneList());
+                dialog.show();
+            }
+        });
+        showPrice(takeOutInfoBean.getTakeOutBuyBean());
+    }
+
+    @Override
+    public void setMenuList(TakeOutInfoBean takeOutInfoBean) {
+        mSubMenuAdapter.setSubMenus(takeOutInfoBean.getTakeOutSubMenus());
+        mTakeOutMenuAdapter.setDishesList(takeOutInfoBean.getDishes());
+        mTakeOutMenuAdapter.setBuyMap(takeOutInfoBean.getTakeOutBuyBean().getBuyMap());
+        mSubMenuAdapter.notifyDataSetChanged();
+        mTakeOutMenuAdapter.notifyDataSetChanged();
     }
 
     private void setupRecyclerView() {
-        mSubMenuAdapter = new SubMenuAdapter(this, mTakeOutInfoBean.getTakeOutSubMenus());
+        mSubMenuAdapter = new SubMenuAdapter(this, null);
         mSubMenuRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mSubMenuRecyclerView.setAdapter(mSubMenuAdapter);
 
         mLinearLayoutManager = new LinearLayoutManager(this);
-        mTakeOutMenuAdapter = new DishesAdapter(this, mDishesList, mTakeOutBuyBean.getBuyMap());
+        mTakeOutMenuAdapter = new DishesAdapter(this, null, null);
         mDishesRecyclerView.setLayoutManager(mLinearLayoutManager);
         mDishesRecyclerView.setAdapter(mTakeOutMenuAdapter);
         mDishesRecyclerView.setItemAnimator(new MyItemAnimator());
@@ -263,9 +243,10 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
                 View stickyInfoView = recyclerView.findChildViewUnder(
                         mTvStickyHeaderView.getMeasuredWidth() / 2, 5);
 
-                if (stickyInfoView != null && stickyInfoView.getContentDescription() != null) {
+                if (stickyInfoView != null && stickyInfoView.getContentDescription() != null
+                        && mSubMenuAdapter.getSubMenus() != null) {
                     int subPos = Integer.parseInt(String.valueOf(stickyInfoView.getContentDescription()));
-                    mStickyTextView.setText(mTakeOutInfoBean.getTakeOutSubMenus().get(subPos).getName());
+                    mStickyTextView.setText(mSubMenuAdapter.getSubMenus().get(subPos).getName());
                     if (subPos != mSubMenuAdapter.getSelectItem()) {
                         mSubMenuRecyclerView.scrollToPosition(subPos);
                         mSubMenuAdapter.setSelectItem(subPos);
@@ -301,8 +282,9 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
         mSubMenuAdapter.setOnItemClickListener(new SubMenuAdapter.OnItemClickListener() {
             @Override
             public void onClick(int position) {
-                int pos = mTakeOutInfoBean
-                        .getTakeOutSubMenus().get(position).getFirstItemPos();
+                if (mSubMenuAdapter.getSubMenus() == null) return;
+                int pos = mSubMenuAdapter
+                        .getSubMenus().get(position).getFirstItemPos();
                 moveToPosition(pos);
             }
         });
@@ -322,16 +304,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
                         mDishesRecyclerView.scrollBy(0, top);
                     }
                 }
-            }
-        });
-
-        mSubmitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mTakeOutInfoBean.getPhoneList().length == 0) return;
-                AlertDialog dialog = CallPhoneDialog.
-                        createDialog(TakeOutDetailMenuActivity.this, mTakeOutInfoBean.getPhoneList());
-                dialog.show();
             }
         });
     }
@@ -359,11 +331,11 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
 
     @Override
     public void onAddNum(View v, int position) {
-        Dishes dishes = mDishesList.get(position);
-        mTakeOutBuyBean.addDishes(dishes);
-        showPrice();
+
+        mTakeOutDetailPresenter.addDish(position);
 
         mTakeOutMenuAdapter.notifyItemChanged(position);
+
         int[] location = new int[2];
         v.getLocationInWindow(location);
 
@@ -390,7 +362,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
         int[] shoppingLocation = new int[2];
         mShoppingImg.getLocationInWindow(shoppingLocation);
 
-
         ObjectAnimator anix = ObjectAnimator.ofFloat(
                 text, "x", lf, shoppingLocation[0]
         );
@@ -404,7 +375,6 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
         dumpAni.play(anix).with(aniy);
         dumpAni.setDuration(500);
         dumpAni.start();
-
 
         dumpAni.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -424,59 +394,14 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
                 scaleAni.start();
             }
         });
-
-
     }
 
     @Override
     public void onReduceNum(int position) {
-        Dishes dishes = mDishesList.get(position);
-        mTakeOutBuyBean.removeDishes(dishes);
-        showPrice();
-
+        mTakeOutDetailPresenter.reduceDish(position);
         mTakeOutMenuAdapter.notifyItemChanged(position);
-
     }
 
-
-    private void getDetailMenu() {
-        TakeOutMenuDetailApi service = BmobModel.getInstance().mRetrofit.create(TakeOutMenuDetailApi.class);
-        service.getTokenResult(mTakeOutInfoBean.getObjectId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<TakeOutInfoBean>() {
-                    @Override
-                    public void onCompleted() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        mDishesList = mTakeOutInfoBean.getDishes();
-
-                        mTakeOutMenuAdapter.setDishesList(mDishesList);
-                        mTakeOutMenuAdapter.notifyDataSetChanged();
-
-                        mSubMenuAdapter.setSubMenus(mTakeOutInfoBean.getTakeOutSubMenus());
-                        mSubMenuAdapter.notifyDataSetChanged();
-
-                        setUpTakeOutInfo(mTakeOutInfoBean);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        showFailMessage("获取失败");
-                    }
-
-                    @Override
-                    public void onNext(TakeOutInfoBean takeOutInfoBean) {
-                        mTakeOutInfoBean = takeOutInfoBean;
-                        mTakeOutInfoBean.loadTakeOutSubMenus();
-                        for (TakeOutSubMenu subMenu : mTakeOutInfoBean.getTakeOutSubMenus()) {
-                            Logger.t("subMenu").e(subMenu.getName());
-                        }
-                        TakeOutManager.getInstance().getTakeOutInfoBeen().set(mPosition, mTakeOutInfoBean);
-                        TakeOutManager.getInstance().save();
-                    }
-                });
-    }
 
     @Override
     public void showFailMessage(String msg) {
@@ -503,34 +428,37 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
 
     @Override
     public void onRefresh() {
-        getDetailMenu();
+        mTakeOutDetailPresenter.loadData();
     }
 
-    private void showPopWindows() {
-        BuyPopWindow popWindow = new BuyPopWindow(this, mTakeOutBuyBean, mPosition);
+    @Override
+    public void showPopWindows(final TakeOutInfoBean takeOutInfoBean) {
+
+        BuyPopWindow popWindow = new BuyPopWindow(this, takeOutInfoBean);
         popWindow.setOnDataChangeListener(new BuyPopWindow.OnDataChangeListener() {
             @Override
             public void onChange(int position) {
                 mTakeOutMenuAdapter.notifyItemChanged(position);
-                showPrice();
+                showPrice(takeOutInfoBean.getTakeOutBuyBean());
             }
 
             @Override
             public void onChangeAll() {
                 mTakeOutMenuAdapter.notifyDataSetChanged();
-                showPrice();
+                showPrice(takeOutInfoBean.getTakeOutBuyBean());
             }
         });
         popWindow.show();
     }
 
-    private void showPrice() {
-        mBuyNumTextView.setText(mTakeOutBuyBean.getNum() + "");
-        mSumPriceTextView.setText("¥" + mTakeOutBuyBean.getSumPrice());
-        if (mTakeOutBuyBean.getUnCalcNum() != 0) {
+    @Override
+    public void showPrice(TakeOutBuyBean takeOutBuyBean) {
+        mBuyNumTextView.setText(takeOutBuyBean.getNum() + "");
+        mSumPriceTextView.setText("¥" + takeOutBuyBean.getSumPrice());
+        if (takeOutBuyBean.getUnCalcNum() != 0) {
             mDivLine.setVisibility(View.VISIBLE);
             mUnCalcNumTextView.setVisibility(View.VISIBLE);
-            mUnCalcNumTextView.setText("不可计价份数: " + mTakeOutBuyBean.getUnCalcNum());
+            mUnCalcNumTextView.setText("不可计价份数: " + takeOutBuyBean.getUnCalcNum());
         } else {
             mDivLine.setVisibility(View.GONE);
             mUnCalcNumTextView.setVisibility(View.GONE);
@@ -547,10 +475,10 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_search_takeout) {
-            if (mTakeOutInfoBean.getDishes() != null && mTakeOutInfoBean.getDishes().size() != 0) {
+            /*if (mTakeOutInfoBean.getDishes() != null && mTakeOutInfoBean.getDishes().size() != 0) {
                 Intent intent = SearchTakeOutActivity.getIntent(TakeOutDetailMenuActivity.this, mPosition);
                 startActivityForResult(intent, REQUEST_SEARCH);
-            }
+            }*/
         }
         return super.onOptionsItemSelected(item);
     }

@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication.takeout.detailMenu;
 
 import com.example.daidaijie.syllabusapplication.BasePresenter;
 import com.example.daidaijie.syllabusapplication.BaseView;
+import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 
 /**
@@ -12,6 +13,12 @@ public interface TakeOutDetailContract {
 
     interface presenter extends BasePresenter {
         void loadData();
+
+        void addDish(int position);
+
+        void reduceDish(int position);
+
+        void showPopWindows();
     }
 
     interface view extends BaseView<presenter> {
@@ -20,5 +27,12 @@ public interface TakeOutDetailContract {
         void showRefresh(boolean isShow);
 
         void setUpTakeOutInfo(TakeOutInfoBean takeOutInfoBean);
+
+        void setMenuList(TakeOutInfoBean takeOutInfoBean);
+
+        void showPrice(TakeOutBuyBean takeOutBuyBean);
+
+        void showPopWindows(TakeOutInfoBean takeOutInfoBean);
+
     }
 }

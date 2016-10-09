@@ -19,11 +19,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
-import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
+import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
 import com.orhanobut.logger.Logger;
 
@@ -41,7 +40,7 @@ public class BuyPopWindow extends Dialog {
 
     private RecyclerView mBuyRecyclerView;
 
-    private TakeOutBuyBean mTakeOutBuyBean;
+    private TakeOutInfoBean mTakeOutInfoBean;
 
     private BuyAdatper mBuyAdatper;
 
@@ -53,13 +52,11 @@ public class BuyPopWindow extends Dialog {
     private View mDivLine;
     private FrameLayout mRootLayout;
     private Button mSubmitButton;
-    private int mPosition;
 
-    public BuyPopWindow(Activity context, TakeOutBuyBean been, int position) {
+    public BuyPopWindow(Activity context, TakeOutInfoBean takeOutInfoBean) {
         super(context, R.style.dialog);
         mContext = context;
-        mTakeOutBuyBean = been;
-        mPosition = position;
+        mTakeOutInfoBean = takeOutInfoBean;
     }
 
     public interface OnDataChangeListener {
@@ -87,14 +84,14 @@ public class BuyPopWindow extends Dialog {
 
         mBuyRecyclerView = (RecyclerView) findViewById(R.id.buyRecyclerView);
         mBuyRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        mBuyAdatper = new BuyAdatper(mContext, mTakeOutBuyBean);
+        mBuyAdatper = new BuyAdatper(mContext, mTakeOutInfoBean.getTakeOutBuyBean());
         mBuyRecyclerView.setAdapter(mBuyAdatper);
         mBuyRecyclerView.setItemAnimator(new MyItemAnimator());
 
         mBuyAdatper.setOnActionChangeListener(new BuyAdatper.OnActionChangeListener() {
             @Override
             public void onAdd(Dishes dishes, int position) {
-                mTakeOutBuyBean.addDishes(dishes);
+                mTakeOutInfoBean.getTakeOutBuyBean().addDishes(dishes);
                 mBuyAdatper.notifyItemChanged(position);
                 showPrice();
                 if (mOnDataChangeListener != null) {
@@ -104,7 +101,7 @@ public class BuyPopWindow extends Dialog {
 
             @Override
             public void onRemove(Dishes dishes, int position) {
-                boolean isNone = mTakeOutBuyBean.removeDishes(dishes);
+                boolean isNone = mTakeOutInfoBean.getTakeOutBuyBean().removeDishes(dishes);
                 Logger.t("isNone").e(isNone + "");
                 if (isNone) {
                     mBuyAdatper.notifyDataSetChanged();
@@ -124,7 +121,7 @@ public class BuyPopWindow extends Dialog {
                 .setNegativeButton("确定", new OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        mTakeOutBuyBean.clear();
+                        mTakeOutInfoBean.getTakeOutBuyBean().clear();
                         if (mOnDataChangeListener != null) {
                             mOnDataChangeListener.onChangeAll();
                         }
@@ -166,12 +163,10 @@ public class BuyPopWindow extends Dialog {
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (TakeOutManager.getInstance()
-                        .getTakeOutInfoBeen().get(mPosition).getPhoneList().length == 0)
+                if (mTakeOutInfoBean.getPhoneList().length == 0)
                     return;
                 AlertDialog dialog = CallPhoneDialog.
-                        createDialog(mContext, TakeOutManager.getInstance()
-                                .getTakeOutInfoBeen().get(mPosition).getPhoneList());
+                        createDialog(mContext, mTakeOutInfoBean.getPhoneList());
                 dialog.show();
             }
         });
@@ -181,7 +176,6 @@ public class BuyPopWindow extends Dialog {
     private void initWindow() {
         Window win = this.getWindow();
         win.getDecorView().setPadding(0, 0, 0, 0);
-
 
         int devideHeight = mContext.getWindowManager().getDefaultDisplay().getHeight();
         devideHeight -= getStatusBarHeight();
@@ -193,26 +187,25 @@ public class BuyPopWindow extends Dialog {
         win.setAttributes(lp);
 
         this.setCanceledOnTouchOutside(true);
-
     }
 
     protected int getStatusBarHeight() {
         int result = 0;
-        int resourceId = App.getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        int resourceId = mContext.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            result = App.getContext().getResources().getDimensionPixelSize(resourceId);
+            result = mContext.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
     }
 
 
     private void showPrice() {
-        mBuyNumTextView.setText(mTakeOutBuyBean.getNum() + "");
-        mSumPriceTextView.setText("¥" + mTakeOutBuyBean.getSumPrice());
-        if (mTakeOutBuyBean.getUnCalcNum() != 0) {
+        mBuyNumTextView.setText(mTakeOutInfoBean.getTakeOutBuyBean().getNum() + "");
+        mSumPriceTextView.setText("¥" + mTakeOutInfoBean.getTakeOutBuyBean().getSumPrice());
+        if (mTakeOutInfoBean.getTakeOutBuyBean().getUnCalcNum() != 0) {
             mDivLine.setVisibility(View.VISIBLE);
             mUnCalcNumTextView.setVisibility(View.VISIBLE);
-            mUnCalcNumTextView.setText("不可计价份数: " + mTakeOutBuyBean.getUnCalcNum());
+            mUnCalcNumTextView.setText("不可计价份数: " + mTakeOutInfoBean.getTakeOutBuyBean().getUnCalcNum());
         } else {
             mDivLine.setVisibility(View.GONE);
             mUnCalcNumTextView.setVisibility(View.GONE);

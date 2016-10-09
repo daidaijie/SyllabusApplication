@@ -43,6 +43,9 @@ public class TakeOutInfoBean extends RealmObject {
     @Ignore
     private List<TakeOutSubMenu> mTakeOutSubMenus;
 
+    @Ignore
+    private List<Dishes> mDishes;
+
     public String getMenu() {
         return menu;
     }
@@ -107,12 +110,30 @@ public class TakeOutInfoBean extends RealmObject {
         this.updatedAt = updatedAt;
     }
 
-    public void loadTakeOutSubMenus() {
+    /**
+     * 将menu的json数据转化为List
+     *
+     * @return 是否存在menu
+     */
+    public boolean loadTakeOutSubMenus() {
         if (menu == null || menu.trim().isEmpty()) {
-            return;
+            return false;
         }
         mTakeOutSubMenus = GsonUtil.getDefault().fromJson(menu, new TypeToken<List<TakeOutSubMenu>>() {
         }.getType());
+        mDishes = new ArrayList<>();
+        for (int i = 0; i < mTakeOutSubMenus.size(); i++) {
+            TakeOutSubMenu subMenu = mTakeOutSubMenus.get(i);
+            for (int j = 0; j < subMenu.getDishes().size(); j++) {
+                if (j == 0) subMenu.setFirstItemPos(mDishes.size());
+                Dishes dishes = subMenu.getDishes().get(j);
+                dishes.sticky = subMenu.getName();
+                dishes.subMenuPos = i;
+                dishes.mPos = mDishes.size();
+                mDishes.add(dishes);
+            }
+        }
+        return true;
     }
 
     public List<TakeOutSubMenu> getTakeOutSubMenus() {
@@ -124,20 +145,11 @@ public class TakeOutInfoBean extends RealmObject {
     }
 
     public List<Dishes> getDishes() {
-        if (mTakeOutSubMenus == null) return null;
-        List<Dishes> mDishesList = new ArrayList<>();
-        for (int i = 0; i < mTakeOutSubMenus.size(); i++) {
-            TakeOutSubMenu subMenu = mTakeOutSubMenus.get(i);
-            for (int j = 0; j < subMenu.getDishes().size(); j++) {
-                if (j == 0) subMenu.setFirstItemPos(mDishesList.size());
-                Dishes dishes = subMenu.getDishes().get(j);
-                dishes.sticky = subMenu.getName();
-                dishes.subMenuPos = i;
-                dishes.mPos = mDishesList.size();
-                mDishesList.add(dishes);
-            }
-        }
-        return mDishesList;
+        return mDishes;
+    }
+
+    public void setDishes(List<Dishes> dishes) {
+        mDishes = dishes;
     }
 
     public TakeOutBuyBean getTakeOutBuyBean() {

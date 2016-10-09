@@ -63,12 +63,10 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.vie
                 .takeOutModule(new TakeOutModule(this))
                 .build().inject(this);
 
-
         mMenuListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mTakeOutMenuAdapter = new TakeOutMenuAdapter(this, null);
         mMenuListRecyclerView.setAdapter(mTakeOutMenuAdapter);
         mTakeOutMenuAdapter.setOnItemClickListener(this);
-
 
         setupSwipeRefreshLayout(mSwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);

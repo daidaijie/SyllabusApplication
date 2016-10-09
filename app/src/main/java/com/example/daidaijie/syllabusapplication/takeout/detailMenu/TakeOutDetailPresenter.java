@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.takeout.detailMenu;
 
 import com.example.daidaijie.syllabusapplication.PerActivity;
+import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.takeout.ITakeOutModel;
 
@@ -18,6 +19,8 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
 
     private ITakeOutModel mTakeOutModel;
 
+    private TakeOutInfoBean mTakeOutInfoBean;
+
     @Inject
     @PerActivity
     public TakeOutDetailPresenter(TakeOutDetailContract.view view, ITakeOutModel takeOutModel, String objectID) {
@@ -31,9 +34,11 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
         mView.showRefresh(true);
         mTakeOutModel.loadItemFromNet(objectID, new ITakeOutModel.OnLoadItemListener() {
             @Override
-            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBeen) {
+            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                mTakeOutInfoBean = takeOutInfoBean;
                 mView.showRefresh(false);
-                mView.setUpTakeOutInfo(takeOutInfoBeen);
+                mView.setUpTakeOutInfo(takeOutInfoBean);
+                mView.setMenuList(takeOutInfoBean);
             }
 
             @Override
@@ -45,17 +50,36 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
     }
 
     @Override
+    public void addDish(int position) {
+        mTakeOutInfoBean.getTakeOutBuyBean().addDishes(mTakeOutInfoBean.getDishes().get(position));
+        mView.showPrice(mTakeOutInfoBean.getTakeOutBuyBean());
+    }
+
+    @Override
+    public void reduceDish(int position) {
+        mTakeOutInfoBean.getTakeOutBuyBean().removeDishes(mTakeOutInfoBean.getDishes().get(position));
+        mView.showPrice(mTakeOutInfoBean.getTakeOutBuyBean());
+    }
+
+    @Override
+    public void showPopWindows() {
+        mView.showPopWindows(mTakeOutInfoBean);
+    }
+
+
+    @Override
     public void start() {
-        mView.showFailMessage(mTakeOutModel + "");
         mTakeOutModel.loadItemFromDist(objectID, new ITakeOutModel.OnLoadItemListener() {
             @Override
-            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBeen) {
-//                mView.showFailMessage(takeOutInfoBeen.getName());
+            public void onLoadSuccess(TakeOutInfoBean takeOutInfoBean) {
+                mTakeOutInfoBean = takeOutInfoBean;
+                mView.setUpTakeOutInfo(takeOutInfoBean);
+                mView.setMenuList(takeOutInfoBean);
             }
 
             @Override
             public void onLoadFail(String msg) {
-
+                loadData();
             }
         });
     }
