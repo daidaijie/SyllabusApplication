@@ -17,12 +17,6 @@ public interface ITakeOutModel {
     /**
      * 多个的获取
      */
-    interface OnLoadListener {
-        void onLoadSuccess(List<TakeOutInfoBean> takeOutInfoBeen);
-
-        void onLoadFail(String msg);
-    }
-
     Observable<List<TakeOutInfoBean>> getDataFromMemory();
 
     Observable<List<TakeOutInfoBean>> getDataFromDist();
@@ -35,16 +29,14 @@ public interface ITakeOutModel {
     /**
      * 单个的获取
      */
-    interface OnLoadItemListener {
-        void onLoadSuccess(TakeOutInfoBean takeOutInfoBean);
+    Observable<TakeOutInfoBean> getItemFromMemory(String objectID);
 
-        void onLoadFail(String msg);
-    }
+    Observable<TakeOutInfoBean> getItemFromDist(String objectID);
 
-    void loadItemFromNet(String objectID, OnLoadItemListener onLoadItemListener);
+    Observable<TakeOutInfoBean> getItemFromNet(String objectID);
 
-    void loadItemFromDist(String objectID, OnLoadItemListener onLoadItemListener);
+    Observable<TakeOutInfoBean> getItem(String objectID);
 
-    void loadItemFromMemory(String objectID, OnLoadItemListener onLoadItemListener);
+    TakeOutInfoBean getTakeOutInfoBeanById(String objectID);
 
 }
