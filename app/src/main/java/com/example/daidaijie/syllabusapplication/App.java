@@ -22,6 +22,8 @@ import cn.finalteam.galleryfinal.CoreConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.ImageLoader;
 import cn.finalteam.galleryfinal.ThemeConfig;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
@@ -48,6 +50,14 @@ public class App extends Application {
         Fresco.initialize(this);
 
         context = getApplicationContext();
+
+        // TODO: 2016/10/11 暂时在这里进行初始化
+        RealmConfiguration configuration = new RealmConfiguration
+                .Builder(context)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(configuration);
+
 
         mAppComponent = DaggerAppComponent.builder()
                 .applicationModule(new ApplicationModule(this))
