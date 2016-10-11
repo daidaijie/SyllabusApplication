@@ -3,6 +3,9 @@ package com.example.daidaijie.syllabusapplication.takeout;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 
 import java.util.List;
+import java.util.PriorityQueue;
+
+import rx.Observable;
 
 /**
  * Created by daidaijie on 2016/10/8.
@@ -20,11 +23,14 @@ public interface ITakeOutModel {
         void onLoadFail(String msg);
     }
 
-    void loadDataFromNet(OnLoadListener onLoadListener);
+    Observable<List<TakeOutInfoBean>> getDataFromMemory();
 
-    void loadDataFromDist(OnLoadListener onLoadListener);
+    Observable<List<TakeOutInfoBean>> getDataFromDist();
 
-    void loadDataFromMemory(OnLoadListener onLoadListener);
+    Observable<List<TakeOutInfoBean>> getDataFromNet();
+
+    Observable<List<TakeOutInfoBean>> getData();
+
 
     /**
      * 单个的获取

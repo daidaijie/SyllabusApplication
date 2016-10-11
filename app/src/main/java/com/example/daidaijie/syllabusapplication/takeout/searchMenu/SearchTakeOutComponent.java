@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.takeout.searchDish;
+package com.example.daidaijie.syllabusapplication.takeout.searchMenu;
 
 import com.example.daidaijie.syllabusapplication.PerActivity;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;

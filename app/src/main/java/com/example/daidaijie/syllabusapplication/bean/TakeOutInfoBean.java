@@ -186,4 +186,20 @@ public class TakeOutInfoBean extends RealmObject {
 
         return phones;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TakeOutInfoBean that = (TakeOutInfoBean) o;
+
+        return updatedAt != null ? updatedAt.equals(that.updatedAt) : that.updatedAt == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return updatedAt != null ? updatedAt.hashCode() : 0;
+    }
 }

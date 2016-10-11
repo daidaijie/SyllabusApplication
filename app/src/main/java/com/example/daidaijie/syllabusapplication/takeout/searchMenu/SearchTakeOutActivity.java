@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.takeout.searchDish;
+package com.example.daidaijie.syllabusapplication.takeout.searchMenu;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -29,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.DishesAdapter;
@@ -37,27 +36,19 @@ import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.model.TakeOutManager;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
-import com.example.daidaijie.syllabusapplication.takeout.detailMenu.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.liaoinstan.springview.utils.DensityUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter.OnNumChangeListener, SearchTakeOutContract.view {
 
@@ -85,10 +76,6 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
     TextView mBuyNumTextView;
     @BindView(R.id.shoppingLayout)
     RelativeLayout mShoppingLayout;
-    @BindView(R.id.bottomLayout)
-    RelativeLayout mBottomLayout;
-    @BindView(R.id.editLine)
-    View mEditLine;
 
     private FrameLayout aniLayout;
 

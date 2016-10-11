@@ -8,6 +8,8 @@ import java.util.List;
 
 public class BmobResult<T> {
 
+    private int count;
+
     private List<T> results;
 
     public List<T> getResults() {
@@ -16,5 +18,13 @@ public class BmobResult<T> {
 
     public void setResults(List<T> results) {
         this.results = results;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

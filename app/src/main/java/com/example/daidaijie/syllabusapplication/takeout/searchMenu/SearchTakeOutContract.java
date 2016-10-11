@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.takeout.searchDish;
+package com.example.daidaijie.syllabusapplication.takeout.searchMenu;
 
 import com.example.daidaijie.syllabusapplication.BasePresenter;
 import com.example.daidaijie.syllabusapplication.BaseView;

@@ -12,8 +12,10 @@ import java.util.Map;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
+import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -28,81 +30,86 @@ public class TakeOutModel implements ITakeOutModel {
 
     private Map<String, TakeOutInfoBean> mInfoBeanMap;
 
+    private List<TakeOutInfoBean> mTakeOutInfoList;
+
 
     public TakeOutModel(Realm realm, TakeOutInfoApi takeOutInfoApi, Gson gson) {
         mRealm = realm;
         mTakeOutInfoApi = takeOutInfoApi;
         mGson = gson;
+        mTakeOutInfoList = new ArrayList<>();
         mInfoBeanMap = new LinkedHashMap<>();
     }
 
     @Override
-    public void loadDataFromNet(final OnLoadListener onLoadListener) {
-        /**
-         * 获取除了详细菜单之外的信息
-         */
-        mTakeOutInfoApi.getTakeOutInfo("name,long_number,short_number,condition")
+    public Observable<List<TakeOutInfoBean>> getDataFromMemory() {
+        return Observable.create(new Observable.OnSubscribe<List<TakeOutInfoBean>>() {
+            @Override
+            public void call(Subscriber<? super List<TakeOutInfoBean>> subscriber) {
+                subscriber.onNext(mTakeOutInfoList);
+                subscriber.onCompleted();
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<TakeOutInfoBean>> getDataFromDist() {
+        return Observable.create(new Observable.OnSubscribe<List<TakeOutInfoBean>>() {
+            @Override
+            public void call(Subscriber<? super List<TakeOutInfoBean>> subscriber) {
+                RealmResults<TakeOutInfoBean> takeOutInfoBeanResults =
+                        mRealm.where(TakeOutInfoBean.class).findAll();
+                mTakeOutInfoList = takeOutInfoBeanResults.subList(0,
+                        takeOutInfoBeanResults.size());
+                loadToMemory(mTakeOutInfoList);
+                subscriber.onNext(mTakeOutInfoList);
+                subscriber.onCompleted();
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<TakeOutInfoBean>> getDataFromNet() {
+        return mTakeOutInfoApi.getTakeOutInfo("name,long_number,short_number,condition")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BmobResult<TakeOutInfoBean>>() {
-
-                    List<TakeOutInfoBean> takeOutInfoBeen;
-
+                .flatMap(new Func1<BmobResult<TakeOutInfoBean>, Observable<List<TakeOutInfoBean>>>() {
                     @Override
-                    public void onCompleted() {
-                        mRealm.executeTransaction(new Realm.Transaction() {
-                            @Override
-                            public void execute(Realm realm) {
-                                for (TakeOutInfoBean takeOutInfoBean : takeOutInfoBeen) {
-                                    TakeOutInfoBean hasBean = getTakeOutInfoBeanById(takeOutInfoBean.getObjectId());
-                                    if (hasBean != null) {
-                                        takeOutInfoBean.setMenu(hasBean.getMenu());
+                    public Observable<List<TakeOutInfoBean>> call(BmobResult<TakeOutInfoBean> takeOutInfoBeanBmobResult) {
+                        if (takeOutInfoBeanBmobResult.getResults().size() != 0) {
+                            mTakeOutInfoList = takeOutInfoBeanBmobResult.getResults();
+                            loadToMemory(mTakeOutInfoList);
+                            mRealm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    for (TakeOutInfoBean takeOutInfoBean : mTakeOutInfoList) {
+                                        TakeOutInfoBean hasBean = getTakeOutInfoBeanById(takeOutInfoBean.getObjectId());
+                                        if (hasBean != null) {
+                                            takeOutInfoBean.setMenu(hasBean.getMenu());
+                                        }
+                                        realm.copyToRealmOrUpdate(takeOutInfoBean);
                                     }
-                                    realm.copyToRealmOrUpdate(takeOutInfoBean);
                                 }
-                            }
-                        });
-                        loadToMemory(takeOutInfoBeen);
-                        onLoadListener.onLoadSuccess(takeOutInfoBeen);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        onLoadListener.onLoadFail(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(BmobResult<TakeOutInfoBean> bmobResult) {
-                        takeOutInfoBeen = bmobResult.getResults();
+                            });
+                        }
+                        return Observable.just(takeOutInfoBeanBmobResult.getResults());
                     }
                 });
     }
 
     @Override
-    public void loadDataFromDist(final OnLoadListener onLoadListener) {
-        try {
-            RealmResults<TakeOutInfoBean> takeOutInfoBeanResults =
-                    mRealm.where(TakeOutInfoBean.class).findAll();
-            List<TakeOutInfoBean> takeOutInfoBeen = takeOutInfoBeanResults.subList(0,
-                    takeOutInfoBeanResults.size());
-            loadToMemory(takeOutInfoBeen);
-            onLoadListener.onLoadSuccess(takeOutInfoBeen);
-        } catch (Throwable e) {
-            onLoadListener.onLoadFail(e.getMessage());
-        }
+    public Observable<List<TakeOutInfoBean>> getData() {
+        return Observable.concat(getDataFromMemory(), getDataFromDist(), getDataFromNet())
+                .takeFirst(new Func1<List<TakeOutInfoBean>, Boolean>() {
+                    @Override
+                    public Boolean call(List<TakeOutInfoBean> takeOutInfoBeen) {
+                        return (takeOutInfoBeen != null && takeOutInfoBeen.size() != 0);
+                    }
+                });
     }
 
     @Override
-    public void loadDataFromMemory(OnLoadListener onLoadListener) {
-        if (mInfoBeanMap == null || mInfoBeanMap.values().size() == 0) {
-            onLoadListener.onLoadFail("NULL");
-        } else {
-            onLoadListener.onLoadSuccess(new ArrayList<>(mInfoBeanMap.values()));
-        }
-    }
-
-    @Override
-    public void loadItemFromNet(String objectID, final OnLoadItemListener onLoadItemListener) {
+    public void loadItemFromNet(final String objectID, final OnLoadItemListener onLoadItemListener) {
         mTakeOutInfoApi.getTakeOutDetailInfo(objectID)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -112,6 +119,11 @@ public class TakeOutModel implements ITakeOutModel {
 
                     @Override
                     public void onCompleted() {
+                        TakeOutInfoBean hasBean = getTakeOutInfoBeanById(objectID);
+                        if (hasBean != null) {
+                            mTakeOutInfoBean.setTakeOutBuyBean(hasBean.getTakeOutBuyBean());
+                        }
+
                         mRealm.executeTransaction(new Realm.Transaction() {
                             @Override
                             public void execute(Realm realm) {
@@ -174,7 +186,11 @@ public class TakeOutModel implements ITakeOutModel {
     }
 
     private TakeOutInfoBean getTakeOutInfoBeanById(String objectID) {
-        TakeOutInfoBean bean = mRealm.where(TakeOutInfoBean.class)
+        TakeOutInfoBean bean = mInfoBeanMap.get(objectID);
+        if (bean != null) {
+            return bean;
+        }
+        bean = mRealm.where(TakeOutInfoBean.class)
                 .equalTo("objectId", objectID)
                 .findFirst();
         return bean;

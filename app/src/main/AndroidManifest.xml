@@ -42,11 +42,6 @@
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
             android:name=".activity.STUCircleActivity"
@@ -91,6 +86,12 @@
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Launcher.BG">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
         </activity>
 
         <service
@@ -156,7 +157,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".takeout.searchDish.SearchTakeOutActivity"
+            android:name=".takeout.searchMenu.SearchTakeOutActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>

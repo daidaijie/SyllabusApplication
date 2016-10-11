@@ -38,7 +38,7 @@ public class App extends Application {
 
     public static final String TAG = "App";
 
-    public static boolean isDebug = true;
+    public static boolean isDebug = false;
 
     AppComponent mAppComponent;
 

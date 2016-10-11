@@ -42,5 +42,6 @@ public interface TakeOutDetailContract {
 
         void toSearch(String objectID);
 
+
     }
 }

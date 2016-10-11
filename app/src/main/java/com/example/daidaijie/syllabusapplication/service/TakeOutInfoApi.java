@@ -20,7 +20,7 @@ public interface TakeOutInfoApi {
             "X-Bmob-Application-Id: 2e393350bc5c4c265fcc405559503d41",
             "X-Bmob-REST-API-Key: b07c2cc5acb1c8db3d052c5b6212eefb",
     })
-    @GET("classes/TakeOutMenu")
+    @GET("classes/TakeOutMenu??order=-updatedAt")
     Observable<BmobResult<TakeOutInfoBean>> getTakeOutInfo(@Query("keys") String keys);
 
 
