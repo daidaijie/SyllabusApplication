@@ -13,7 +13,7 @@ import com.example.daidaijie.syllabusapplication.adapter.LibItemAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseFragment;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
-import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryModel;
+import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryManager;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -97,7 +97,7 @@ public class LibraryFragment extends BaseFragment implements SwipeRefreshLayout.
         setupSwipeRefreshLayout(mRefreshLibLayout);
         mRefreshLibLayout.setOnRefreshListener(this);
 
-        if (LibraryModel.getInstance().mStoreQueryMap.get(mPosition) == null) {
+        if (LibraryManager.getInstance().mStoreQueryMap.get(mPosition) == null) {
             mRefreshLibLayout.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -106,7 +106,7 @@ public class LibraryFragment extends BaseFragment implements SwipeRefreshLayout.
                 }
             }, 50);
         } else {
-            mLibraryBeen = LibraryModel.getInstance().mStoreQueryMap.get(mPosition);
+            mLibraryBeen = LibraryManager.getInstance().mStoreQueryMap.get(mPosition);
         }
 
         mLibItemAdapter = new LibItemAdapter(mActivity, mLibraryBeen);
@@ -123,7 +123,7 @@ public class LibraryFragment extends BaseFragment implements SwipeRefreshLayout.
     public void getLibInfo() {
         try {
             mEmptyTextView.setText("");
-            LibraryModel.getInstance().getLibraryBy(mTag, mKeyword, mSF, mOB, mPosition + 1)
+            LibraryManager.getInstance().getLibraryBy(mTag, mKeyword, mSF, mOB, mPosition + 1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())
                     .map(new Func1<String, List<LibraryBean>>() {
@@ -133,7 +133,7 @@ public class LibraryFragment extends BaseFragment implements SwipeRefreshLayout.
 
                             Element body = Jsoup.parseBodyFragment(s).body();
 
-                            if (!LibraryModel.getInstance().isGetCount) {
+                            if (!LibraryManager.getInstance().isGetCount) {
                                 Element countString = body.select("span#ctl00_ContentPlaceHolder1_countlbl").first();
 
                                 if (!countString.text().trim().isEmpty()) {
@@ -172,7 +172,7 @@ public class LibraryFragment extends BaseFragment implements SwipeRefreshLayout.
                             mRefreshLibLayout.setRefreshing(false);
                             mLibItemAdapter.setLibraryBeen(mLibraryBeen);
                             mLibItemAdapter.notifyDataSetChanged();
-                            LibraryModel.getInstance().mStoreQueryMap.put(mPosition, mLibraryBeen);
+                            LibraryManager.getInstance().mStoreQueryMap.put(mPosition, mLibraryBeen);
                             if (mLibraryBeen.size() == 0) {
                                 mEmptyTextView.setText("查找不到对应图书");
                             }

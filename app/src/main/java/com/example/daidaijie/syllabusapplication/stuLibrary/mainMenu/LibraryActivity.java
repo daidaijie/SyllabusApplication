@@ -17,7 +17,7 @@ import com.example.daidaijie.syllabusapplication.adapter.LibraryPagerAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryModel;
+import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryManager;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 
 import org.greenrobot.eventbus.EventBus;
@@ -53,7 +53,6 @@ public class LibraryActivity extends BaseActivity {
     LinearLayout mShowQueryLayout;
     @BindView(R.id.libCountTextView)
     TextView mLibCountTextView;
-
 
     AlertDialog mSearchRangeDialog;
     AlertDialog mSearchOBDialog;
@@ -139,14 +138,14 @@ public class LibraryActivity extends BaseActivity {
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LibraryModel.getInstance().mStoreQueryMap.clear();
-                LibraryModel.getInstance().isGetCount = false;
+                LibraryManager.getInstance().mStoreQueryMap.clear();
+                LibraryManager.getInstance().isGetCount = false;
                 mLibCountTextView.setVisibility(View.GONE);
                 mLibraryPagerAdapter = new LibraryPagerAdapter(getSupportFragmentManager(),
-                        LibraryModel.getInstance().searchWords.get(searchWordWhich),
+                        LibraryManager.getInstance().searchWords.get(searchWordWhich),
                         mSearchEditText.getText().toString().trim(),
-                        LibraryModel.getInstance().libSFs.get(searchSFWhich),
-                        LibraryModel.getInstance().libOBs.get(searchOBWhich));
+                        LibraryManager.getInstance().libSFs.get(searchSFWhich),
+                        LibraryManager.getInstance().libOBs.get(searchOBWhich));
                 mLibraryViewPager.setAdapter(mLibraryPagerAdapter);
                 mLibraryViewPager.setCurrentItem(0);
             }
@@ -203,7 +202,7 @@ public class LibraryActivity extends BaseActivity {
         } else {
             mLibraryPagerAdapter.setPageCount((event.count - 1) / 10 + 1);
         }
-        LibraryModel.getInstance().isGetCount = true;
+        LibraryManager.getInstance().isGetCount = true;
         mLibCountTextView.setVisibility(View.VISIBLE);
         mLibCountTextView.setText("共检索到" + event.count + "本图书");
         mLibraryPagerAdapter.notifyDataSetChanged();
@@ -213,7 +212,7 @@ public class LibraryActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LibraryModel.getInstance().mStoreQueryMap.clear();
+        LibraryManager.getInstance().mStoreQueryMap.clear();
         EventBus.getDefault().unregister(this);
     }
 }

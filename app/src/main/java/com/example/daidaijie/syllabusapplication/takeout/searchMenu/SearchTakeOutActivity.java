@@ -81,7 +81,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     private DishesAdapter mDishesAdapter;
 
-    public static final String EXTRA_OBJECT_ID = CLASS_NAME+".objectID";
+    public static final String EXTRA_OBJECT_ID = CLASS_NAME + ".objectID";
 
     @Inject
     SearchTakeOutPresenter mSearchTakeOutPresenter;
@@ -114,13 +114,6 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
                 mSearchEditText.setText("");
             }
         });
-
-        mSearchEditText.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                showInput();
-            }
-        }, 50);
 
 
         mSearchEditText.addTextChangedListener(new TextWatcher() {
@@ -159,6 +152,14 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
             }
         });
 
+        mSearchEditText.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showInput();
+            }
+        }, 50);
+
+
         setResult(RESULT_OK);
     }
 
@@ -169,19 +170,12 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     @Override
     public void showInput() {
-        mSearchEditText.setFocusable(true);
-        mSearchEditText.setFocusableInTouchMode(true);
-        mSearchEditText.requestFocus();
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mSearchEditText, InputMethodManager.SHOW_FORCED);
+        showInput(mSearchEditText);
     }
 
     @Override
     public void hideInput() {
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
+        hideInput(mSearchEditText);
     }
 
     @Override
@@ -329,4 +323,11 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
                 mDishesRecyclerView, msg, SnackbarUtil.Alert
         ).show();
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        hideInput(mSearchEditText);
+    }
+
 }

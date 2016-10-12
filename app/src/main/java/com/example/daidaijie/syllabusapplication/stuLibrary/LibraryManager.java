@@ -21,7 +21,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/9/5.
  */
-public class LibraryModel {
+public class LibraryManager {
 
     public Retrofit mRetrofit;
 
@@ -42,13 +42,13 @@ public class LibraryModel {
 
     public boolean isGetCount;
 
-    private static LibraryModel ourInstance = new LibraryModel();
+    private static LibraryManager ourInstance = new LibraryManager();
 
-    public static LibraryModel getInstance() {
+    public static LibraryManager getInstance() {
         return ourInstance;
     }
 
-    private LibraryModel() {
+    private LibraryManager() {
         mRetrofit = new Retrofit.Builder()
                 .baseUrl("http://opac.lib.stu.edu.cn:83/opac/")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -85,7 +85,7 @@ public class LibraryModel {
 
     public Observable<String> getLibraryBy(String tag, String word, String sf, String ob, int position) throws UnsupportedEncodingException {
 
-        final LibraryService libraryService = LibraryModel.getInstance().mRetrofit.create(LibraryService.class);
+        final LibraryService libraryService = LibraryManager.getInstance().mRetrofit.create(LibraryService.class);
 
         Map<String, String> qureyMap = new HashMap<>();
         qureyMap.put(tag, URLEncoder.encode(word, "gb2312"));
