@@ -26,7 +26,7 @@ import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.LessonDetailInfo;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
-import com.example.daidaijie.syllabusapplication.service.LessonDetailService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.LessonDetailService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;

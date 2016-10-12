@@ -1,10 +1,9 @@
-package com.example.daidaijie.syllabusapplication.service;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import java.util.Map;
 
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import rx.Observable;
 

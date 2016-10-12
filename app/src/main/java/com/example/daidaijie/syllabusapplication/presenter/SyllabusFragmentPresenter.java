@@ -17,8 +17,8 @@ import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
-import com.example.daidaijie.syllabusapplication.service.UserInfoService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 

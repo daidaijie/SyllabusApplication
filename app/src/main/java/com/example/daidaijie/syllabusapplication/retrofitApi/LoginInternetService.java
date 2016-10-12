@@ -1,8 +1,4 @@
-package com.example.daidaijie.syllabusapplication.service;
-
-import android.support.annotation.Nullable;
-
-import com.example.daidaijie.syllabusapplication.bean.LoginInfo;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;

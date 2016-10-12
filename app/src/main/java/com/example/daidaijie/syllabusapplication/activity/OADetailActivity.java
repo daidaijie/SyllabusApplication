@@ -27,7 +27,7 @@ import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.service.OAFileService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.OAFileService;
 import com.example.daidaijie.syllabusapplication.util.AssetUtil;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 

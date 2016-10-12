@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
-import com.example.daidaijie.syllabusapplication.service.InterenetService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.InterenetService;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
@@ -41,6 +41,8 @@ public class App extends Application {
     public static final String TAG = "App";
 
     public static boolean isDebug = false;
+
+    public static boolean isLogger = true;
 
     AppComponent mAppComponent;
 

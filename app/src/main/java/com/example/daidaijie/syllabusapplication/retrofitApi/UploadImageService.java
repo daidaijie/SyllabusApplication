@@ -1,9 +1,8 @@
-package com.example.daidaijie.syllabusapplication.service;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 
 import okhttp3.RequestBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;

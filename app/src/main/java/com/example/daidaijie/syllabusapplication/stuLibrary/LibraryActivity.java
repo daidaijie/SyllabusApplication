@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.stuLibrary;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -16,7 +16,6 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LibraryPagerAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
-import com.example.daidaijie.syllabusapplication.model.LibraryModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 
@@ -39,16 +38,6 @@ public class LibraryActivity extends BaseActivity {
     AlertDialog mLoadingDialog;
     @BindView(R.id.libraryViewPager)
     ViewPager mLibraryViewPager;
-
-    AlertDialog mSearchRangeDialog;
-    AlertDialog mSearchOBDialog;
-    AlertDialog mSearchSFDialog;
-    int searchWordWhich;
-    int searchSFWhich;
-    int searchOBWhich;
-
-
-    LibraryPagerAdapter mLibraryPagerAdapter;
     @BindView(R.id.searchRangeButton)
     Button mSearchRangeButton;
     @BindView(R.id.searchSFButton)
@@ -63,6 +52,17 @@ public class LibraryActivity extends BaseActivity {
     LinearLayout mShowQueryLayout;
     @BindView(R.id.libCountTextView)
     TextView mLibCountTextView;
+
+
+    AlertDialog mSearchRangeDialog;
+    AlertDialog mSearchOBDialog;
+    AlertDialog mSearchSFDialog;
+    int searchWordWhich;
+    int searchSFWhich;
+    int searchOBWhich;
+
+
+    LibraryPagerAdapter mLibraryPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

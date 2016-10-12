@@ -1,28 +1,16 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.ExamActivity;
-import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
-import com.example.daidaijie.syllabusapplication.bean.Lesson;
-import com.example.daidaijie.syllabusapplication.bean.Syllabus;
-import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.ExamInfoService;
-import com.example.daidaijie.syllabusapplication.service.UserInfoService;
-import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
-import com.example.daidaijie.syllabusapplication.util.SharedPreferencesUtil;
 
 import org.joda.time.LocalDate;
 
@@ -31,12 +19,9 @@ import java.util.List;
 
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.ThemeConfig;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import id.zelory.compressor.Compressor;
-import retrofit2.Retrofit;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;

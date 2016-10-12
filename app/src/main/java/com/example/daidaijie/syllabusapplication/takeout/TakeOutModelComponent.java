@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.takeout;
 
 import com.example.daidaijie.syllabusapplication.AppComponent;
+import com.example.daidaijie.syllabusapplication.qualifier.PerModule;
 
 import dagger.Component;
 
@@ -8,7 +9,7 @@ import dagger.Component;
  * Created by daidaijie on 2016/10/9.
  */
 
-@PerTakeOut
+@PerModule
 @Component(dependencies = AppComponent.class, modules = TakeOutModelModule.class)
 public abstract class TakeOutModelComponent {
 

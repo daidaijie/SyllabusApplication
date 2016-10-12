@@ -1,16 +1,12 @@
 package com.example.daidaijie.syllabusapplication.util;
 
-import android.util.Log;
-
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
-import com.example.daidaijie.syllabusapplication.service.UploadImageService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.UploadImageService;
 
 import java.io.File;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;

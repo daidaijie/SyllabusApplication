@@ -16,7 +16,7 @@ import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.ExamInfoService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.ExamInfoService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 

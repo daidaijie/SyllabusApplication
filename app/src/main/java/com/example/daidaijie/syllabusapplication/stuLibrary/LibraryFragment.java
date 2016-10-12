@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.stuLibrary;
 
 
 import android.os.Bundle;
@@ -6,17 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LibItemAdapter;
+import com.example.daidaijie.syllabusapplication.base.BaseFragment;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
-import com.example.daidaijie.syllabusapplication.model.LibraryModel;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -29,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
@@ -38,7 +33,7 @@ import rx.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class LibraryFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.libRecyclerView)
     RecyclerView mLibRecyclerView;
@@ -49,7 +44,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private int mPosition;
 
-    private String mkeyword;
+    private String mKeyword;
 
     private String mTag;
 
@@ -61,20 +56,18 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
     private LibItemAdapter mLibItemAdapter;
 
-    private static final String EXTRA_POS = "com.example.daidaijie.syllabusapplication.activity" +
-            ".LibraryFragment.mPosition";
+    public static final String CLASS_NAME = "com.example.daidaijie.syllabusapplication" +
+            ".stuLibrary.LibraryFragment";
 
-    private static final String EXTRA_TAG = "com.example.daidaijie.syllabusapplication.activity" +
-            ".LibraryFragment.mTag";
+    private static final String EXTRA_POS = CLASS_NAME + ".mPosition";
 
-    private static final String EXTRA_KEYWORD = "com.example.daidaijie.syllabusapplication.activity" +
-            ".LibraryFragment.mkeyword";
+    private static final String EXTRA_TAG = CLASS_NAME + ".mTag";
 
-    private static final String EXTRA_OB = "com.example.daidaijie.syllabusapplication.activity" +
-            ".LibraryFragment.mOB";
+    private static final String EXTRA_KEYWORD = CLASS_NAME + ".mKeyword";
 
-    private static final String EXTRA_SF = "com.example.daidaijie.syllabusapplication.activity" +
-            ".LibraryFragment.mSF";
+    private static final String EXTRA_OB = CLASS_NAME + ".mOB";
+
+    private static final String EXTRA_SF = CLASS_NAME + ".mSF";
 
 
     public static LibraryFragment newInstance(String tag, String keyword, String sf, String ob, int position) {
@@ -95,26 +88,15 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
         mPosition = args.getInt(EXTRA_POS, 0);
-        mkeyword = args.getString(EXTRA_KEYWORD);
+        mKeyword = args.getString(EXTRA_KEYWORD);
         mTag = args.getString(EXTRA_TAG);
         mSF = args.getString(EXTRA_SF);
         mOB = args.getString(EXTRA_OB);
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_library, container, false);
-        ButterKnife.bind(this, view);
-
-
-        mRefreshLibLayout.setColorSchemeResources(
-                android.R.color.holo_blue_light,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light
-        );
+    protected void init(Bundle savedInstanceState) {
+        setupSwipeRefreshLayout(mRefreshLibLayout);
         mRefreshLibLayout.setOnRefreshListener(this);
 
         if (LibraryModel.getInstance().mStoreQueryMap.get(mPosition) == null) {
@@ -129,19 +111,21 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
             mLibraryBeen = LibraryModel.getInstance().mStoreQueryMap.get(mPosition);
         }
 
-        mLibItemAdapter = new LibItemAdapter(getActivity(), mLibraryBeen);
-        mLibRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLibItemAdapter = new LibItemAdapter(mActivity, mLibraryBeen);
+        mLibRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mLibRecyclerView.setAdapter(mLibItemAdapter);
+    }
 
-
-        return view;
+    @Override
+    protected int getContentView() {
+        return R.layout.fragment_library;
     }
 
 
     public void getLibInfo() {
         try {
             mEmptyTextView.setText("");
-            LibraryModel.getInstance().getLibraryBy(mTag, mkeyword, mSF, mOB, mPosition + 1)
+            LibraryModel.getInstance().getLibraryBy(mTag, mKeyword, mSF, mOB, mPosition + 1)
                     .subscribeOn(Schedulers.io())
                     .observeOn(Schedulers.computation())
                     .map(new Func1<String, List<LibraryBean>>() {
@@ -151,7 +135,7 @@ public class LibraryFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
                             Element body = Jsoup.parseBodyFragment(s).body();
 
-                            if (!LibraryModel.getInstance().isGetCount){
+                            if (!LibraryModel.getInstance().isGetCount) {
                                 Element countString = body.select("span#ctl00_ContentPlaceHolder1_countlbl").first();
 
                                 if (!countString.text().trim().isEmpty()) {

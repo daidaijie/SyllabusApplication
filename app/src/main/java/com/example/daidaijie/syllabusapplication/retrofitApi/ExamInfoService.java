@@ -1,11 +1,10 @@
-package com.example.daidaijie.syllabusapplication.service;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
 
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
-import retrofit2.http.Url;
 import rx.Observable;
 
 /**

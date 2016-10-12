@@ -1,25 +1,19 @@
 package com.example.daidaijie.syllabusapplication.presenter;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
-import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
-import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.GetUserBaseService;
-import com.example.daidaijie.syllabusapplication.service.UserInfoService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
-import com.orhanobut.logger.Logger;
 
 import org.joda.time.DateTime;
-
-import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;

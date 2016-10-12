@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.BookDetailActivity;
+import com.example.daidaijie.syllabusapplication.stuLibrary.BookDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 
 import java.util.List;

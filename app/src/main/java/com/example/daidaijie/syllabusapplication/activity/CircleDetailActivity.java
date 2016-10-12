@@ -30,8 +30,8 @@ import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.model.PostListModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.CircleCommentsService;
-import com.example.daidaijie.syllabusapplication.service.SendCommentService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.CircleCommentsService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.SendCommentService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 

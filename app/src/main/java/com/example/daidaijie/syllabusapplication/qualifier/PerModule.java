@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.takeout;
+package com.example.daidaijie.syllabusapplication.qualifier;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -10,5 +10,5 @@ import javax.inject.Scope;
  */
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PerTakeOut {
+public @interface PerModule {
 }

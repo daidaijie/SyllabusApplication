@@ -30,7 +30,7 @@ import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.PushPostService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.PushPostService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.ImageUploader;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
@@ -117,8 +117,9 @@ public class PostContentActivity extends BaseActivity {
     private void setUpFlow() {
         mPostImgFlowLayout.removeAllViews();
 
-        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        ));
         lp.leftMargin = 0;
         lp.rightMargin = 32;
         lp.topMargin = 0;

@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.event.CollectionStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.model.SyllabusCollectionModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.SyllabusCollectionService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.SyllabusCollectionService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
@@ -110,7 +109,6 @@ public class SyllabusCollectionFragment extends Fragment implements SwipeRefresh
     }
 
     public void getCollections() {
-        Log.e(TAG, "getCollections: ");
         SyllabusCollectionService collectionService =
                 RetrofitUtil.getDefault().create(SyllabusCollectionService.class);
         collectionService.getCollectionInfo(User.getInstance().getAccount(),
@@ -127,7 +125,6 @@ public class SyllabusCollectionFragment extends Fragment implements SwipeRefresh
                     public void onError(Throwable e) {
                         mRefreshCollectionLayout.setRefreshing(false);
                         showFailBanner("获取失败");
-                        Log.e(TAG, "onError: " + e.getMessage());
                     }
 
                     @Override

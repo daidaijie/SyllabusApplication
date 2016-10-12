@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.service;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
 

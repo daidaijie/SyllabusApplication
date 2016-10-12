@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.service;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import retrofit2.http.POST;
 import rx.Observable;

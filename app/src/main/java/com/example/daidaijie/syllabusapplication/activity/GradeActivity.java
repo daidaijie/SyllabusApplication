@@ -16,7 +16,7 @@ import com.example.daidaijie.syllabusapplication.adapter.GradeListAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.GradeService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.GradeService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;

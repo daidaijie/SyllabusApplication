@@ -17,7 +17,7 @@ import com.example.daidaijie.syllabusapplication.event.CollectionStateChangeEven
 import com.example.daidaijie.syllabusapplication.model.SyllabusCollectionModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.service.SyllabusCollectionService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.SyllabusCollectionService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;

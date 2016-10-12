@@ -17,7 +17,7 @@ import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OARead;
 import com.example.daidaijie.syllabusapplication.event.OAClearEvent;
 import com.example.daidaijie.syllabusapplication.model.OAModel;
-import com.example.daidaijie.syllabusapplication.service.OAService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.OAService;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import org.greenrobot.eventbus.EventBus;

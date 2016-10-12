@@ -1,9 +1,10 @@
 package com.example.daidaijie.syllabusapplication.takeout;
 
+import com.example.daidaijie.syllabusapplication.qualifier.PerModule;
 import com.example.daidaijie.syllabusapplication.qualifier.gson.DefaultGson;
 import com.example.daidaijie.syllabusapplication.qualifier.realm.DefaultRealm;
 import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.BmobRetrofit;
-import com.example.daidaijie.syllabusapplication.service.TakeOutInfoApi;
+import com.example.daidaijie.syllabusapplication.retrofitApi.TakeOutInfoApi;
 import com.google.gson.Gson;
 
 import dagger.Module;
@@ -19,7 +20,7 @@ import retrofit2.Retrofit;
 public class TakeOutModelModule {
 
     @Provides
-    @PerTakeOut
+    @PerModule
     ITakeOutModel provideTakeOutModel(@DefaultRealm Realm realm,
                                       @BmobRetrofit Retrofit retrofit,
                                       @DefaultGson Gson gson) {

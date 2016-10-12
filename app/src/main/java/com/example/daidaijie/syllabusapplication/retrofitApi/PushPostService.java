@@ -1,8 +1,7 @@
-package com.example.daidaijie.syllabusapplication.service;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import com.example.daidaijie.syllabusapplication.bean.PostContent;
 
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;

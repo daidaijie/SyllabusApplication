@@ -1,10 +1,9 @@
-package com.example.daidaijie.syllabusapplication.service;
+package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import com.example.daidaijie.syllabusapplication.bean.CollectionId;
 import com.example.daidaijie.syllabusapplication.bean.CollectionInfo;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 
-import butterknife.BindView;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;

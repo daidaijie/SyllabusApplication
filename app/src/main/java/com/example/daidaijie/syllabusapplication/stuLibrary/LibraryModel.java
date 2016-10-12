@@ -1,9 +1,9 @@
-package com.example.daidaijie.syllabusapplication.model;
+package com.example.daidaijie.syllabusapplication.stuLibrary;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
-import com.example.daidaijie.syllabusapplication.service.LibraryService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.LibraryService;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

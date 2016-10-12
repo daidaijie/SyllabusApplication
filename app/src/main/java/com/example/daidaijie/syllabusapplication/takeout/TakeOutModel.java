@@ -2,7 +2,7 @@ package com.example.daidaijie.syllabusapplication.takeout;
 
 import com.example.daidaijie.syllabusapplication.bean.BmobResult;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.service.TakeOutInfoApi;
+import com.example.daidaijie.syllabusapplication.retrofitApi.TakeOutInfoApi;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
