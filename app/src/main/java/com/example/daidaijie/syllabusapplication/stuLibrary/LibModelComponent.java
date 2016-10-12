@@ -1,7 +1,7 @@
 package com.example.daidaijie.syllabusapplication.stuLibrary;
 
 import com.example.daidaijie.syllabusapplication.AppComponent;
-import com.example.daidaijie.syllabusapplication.base.PerModule;
+import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
 import com.example.daidaijie.syllabusapplication.bean.LibSearchBean;
 
 import dagger.Component;

@@ -1,11 +1,9 @@
 package com.example.daidaijie.syllabusapplication.takeout;
 
-import com.example.daidaijie.syllabusapplication.base.PerModule;
-import com.example.daidaijie.syllabusapplication.qualifier.gson.DefaultGson;
-import com.example.daidaijie.syllabusapplication.qualifier.realm.DefaultRealm;
-import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.BmobRetrofit;
+import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
+import com.example.daidaijie.syllabusapplication.di.qualifier.realm.DefaultRealm;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.BmobRetrofit;
 import com.example.daidaijie.syllabusapplication.retrofitApi.TakeOutInfoApi;
-import com.google.gson.Gson;
 
 import dagger.Module;
 import dagger.Provides;

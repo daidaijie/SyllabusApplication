@@ -1,9 +1,12 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by daidaijie on 2016/8/16.
  */
-public class UserBaseBean {
+public class UserBaseBean extends RealmObject {
 
     /**
      * level : 2
@@ -16,8 +19,10 @@ public class UserBaseBean {
      * nickname : 余强
      */
 
-    private int level;
+    @PrimaryKey
     private String account;
+
+    private int level;
     private String image;
     private Object birthday;
     private String profile;

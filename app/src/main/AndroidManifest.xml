@@ -65,7 +65,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".login.login.LoginActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -83,7 +83,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".login.splash.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Launcher.BG">
             <intent-filter>

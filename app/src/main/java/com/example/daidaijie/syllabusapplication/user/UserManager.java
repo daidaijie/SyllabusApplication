@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.model;
+package com.example.daidaijie.syllabusapplication.user;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -21,7 +21,7 @@ import io.realm.RealmConfiguration;
 /**
  * Created by daidaijie on 2016/7/24.
  */
-public class User {
+public class UserManager {
 
     private static final String FILE_NAME = "UserManager";
 
@@ -67,7 +67,7 @@ public class User {
     //example *********
     private String mPassword;
 
-    private static User sUser = new User();
+    private static UserManager sUserManager = new UserManager();
 
     private UserInfo mUserInfo;
 
@@ -78,7 +78,7 @@ public class User {
     private Semester mCurrentSemester;
 
 
-    private User() {
+    private UserManager() {
         //从Account文件里面获取当前用户名
         mUserSharedPreferences = App.getContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
         mUserEditor = mUserSharedPreferences.edit();
@@ -100,8 +100,8 @@ public class User {
         }
     }
 
-    public static User getInstance() {
-        return sUser;
+    public static UserManager getInstance() {
+        return sUserManager;
     }
 
     public UserInfo getUserInfo() {

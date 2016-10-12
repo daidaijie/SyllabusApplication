@@ -1,6 +1,6 @@
 package com.example.daidaijie.syllabusapplication.takeout.mainMenu;
 
-import com.example.daidaijie.syllabusapplication.PerActivity;
+import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
 
 import dagger.Component;

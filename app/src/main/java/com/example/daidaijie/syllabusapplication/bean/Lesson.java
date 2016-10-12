@@ -32,6 +32,7 @@ public class Lesson implements Serializable {
     public static final String TAG = "Lesson";
 
     private Days days;
+
     private String room;
     private String credit;
     private String id;

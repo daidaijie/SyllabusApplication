@@ -1,7 +1,7 @@
 package com.example.daidaijie.syllabusapplication;
 
-import com.example.daidaijie.syllabusapplication.qualifier.gson.DefaultGson;
-import com.example.daidaijie.syllabusapplication.qualifier.realm.DefaultRealm;
+import com.example.daidaijie.syllabusapplication.di.qualifier.gson.DefaultGson;
+import com.example.daidaijie.syllabusapplication.di.qualifier.realm.DefaultRealm;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

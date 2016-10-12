@@ -1,6 +1,6 @@
 package com.example.daidaijie.syllabusapplication.takeout.searchMenu;
 
-import com.example.daidaijie.syllabusapplication.PerActivity;
+import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.takeout.ITakeOutModel;
@@ -13,7 +13,6 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 

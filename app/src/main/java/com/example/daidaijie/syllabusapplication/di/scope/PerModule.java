@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.base;
+package com.example.daidaijie.syllabusapplication.di.scope;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

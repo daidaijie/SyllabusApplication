@@ -35,6 +35,7 @@ import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.BannerInfo;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
+import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
 import com.example.daidaijie.syllabusapplication.model.BannerModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
@@ -217,7 +218,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-//        Log.e(TAG, "onCreate: token" + User.getInstance().getUserInfo().getToken());
+//        Log.e(TAG, "onCreate: token" + UserManager.getInstance().getUserInfo().getToken());
     }
 
     @Override

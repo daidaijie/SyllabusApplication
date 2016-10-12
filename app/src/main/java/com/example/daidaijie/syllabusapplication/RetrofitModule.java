@@ -1,9 +1,9 @@
 package com.example.daidaijie.syllabusapplication;
 
-import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.BmobRetrofit;
-import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.LibraryRetrofit;
-import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.OARetrofit;
-import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.SchoolRetrofit;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.BmobRetrofit;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.LibraryRetrofit;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.OARetrofit;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 
 import javax.inject.Singleton;
 

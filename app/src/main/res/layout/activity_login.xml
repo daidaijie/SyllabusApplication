@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.LoginActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.login.login.LoginActivity">
 
     <LinearLayout
         android:id="@+id/titleLayout"

@@ -11,7 +11,7 @@ import rx.Observable;
  * Created by daidaijie on 2016/8/16.
  * 获取用户
  */
-public interface GetUserBaseService {
+public interface GetUserBaseApi {
     @GET("/interaction/api/v2.1/compatible_user/{account}")
     Observable<HttpResult<UserBaseBean>> get_user(@Path("account") String account);
 }

@@ -1,6 +1,6 @@
 package com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu;
 
-import com.example.daidaijie.syllabusapplication.PerFragment;
+import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
 
 import dagger.Module;
 import dagger.Provides;

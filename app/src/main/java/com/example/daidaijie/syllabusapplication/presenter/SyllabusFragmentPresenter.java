@@ -17,7 +17,7 @@ import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
@@ -59,7 +59,7 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
         isSuccessLogin = true;
         mView.setViewPagerEnable(false);
         final UserInfoService userInfoService = RetrofitUtil.getDefault().create(UserInfoService.class);
-        final GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
+        final GetUserBaseApi userBaseService = RetrofitUtil.getDefault().create(GetUserBaseApi.class);
 
         final Semester mCurrentSemester = User.getInstance().getCurrentSemester();
 

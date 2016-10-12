@@ -9,7 +9,7 @@ import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 
@@ -66,7 +66,7 @@ public class LoginPresenter extends ILoginPresenter {
         mView.showLoadingDialog();
 
         final UserInfoService userInfoService = RetrofitUtil.getDefault().create(UserInfoService.class);
-        final GetUserBaseService userBaseService = RetrofitUtil.getDefault().create(GetUserBaseService.class);
+        final GetUserBaseApi userBaseService = RetrofitUtil.getDefault().create(GetUserBaseApi.class);
 
 
         mCurrentSemester = User.getInstance().getCurrentSemester();

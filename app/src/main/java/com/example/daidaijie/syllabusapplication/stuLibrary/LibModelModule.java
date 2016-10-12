@@ -1,8 +1,8 @@
 package com.example.daidaijie.syllabusapplication.stuLibrary;
 
-import com.example.daidaijie.syllabusapplication.base.PerModule;
+import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
 import com.example.daidaijie.syllabusapplication.bean.LibSearchBean;
-import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.LibraryRetrofit;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.LibraryRetrofit;
 import com.example.daidaijie.syllabusapplication.retrofitApi.LibraryApi;
 
 import dagger.Module;
