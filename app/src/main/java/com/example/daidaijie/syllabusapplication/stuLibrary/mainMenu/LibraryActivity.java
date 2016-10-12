@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.stuLibrary;
+package com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import com.example.daidaijie.syllabusapplication.adapter.LibraryPagerAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryModel;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 
 import org.greenrobot.eventbus.EventBus;

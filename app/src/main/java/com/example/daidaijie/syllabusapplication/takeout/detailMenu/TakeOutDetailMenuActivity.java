@@ -94,8 +94,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
     TextView mUnCalcNumTextView;
     @BindView(R.id.submitButton)
     Button mSubmitButton;
-
     FrameLayout aniLayout;
+
 
     private DishesAdapter mTakeOutMenuAdapter;
 
@@ -114,8 +114,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
 
     private CollapsingToolbarLayoutState state;
 
-    public static final String EXTRA_OBJECT_ID = "com.example.daidaijie.syllabusapplication.activity" +
-            ".TakeOutDetailMenuActivity.mObjectID";
+    public static final String EXTRA_OBJECT_ID = CLASS_NAME + ".mObjectID";
 
     public static final int REQUEST_SEARCH = 205;
 

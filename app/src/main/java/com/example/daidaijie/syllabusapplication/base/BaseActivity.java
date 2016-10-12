@@ -16,6 +16,7 @@ import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryFragment;
 
 import butterknife.ButterKnife;
 import cn.nekocode.emojix.Emojix;
@@ -26,9 +27,12 @@ import cn.nekocode.emojix.Emojix;
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected int deviceWidth;
-    protected int devideHeight;
+    protected int deviceHeight;
 
     protected AppComponent mAppComponent;
+
+    protected static final String CLASS_NAME = LibraryFragment.class.getCanonicalName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         deviceWidth = getWindowManager().getDefaultDisplay().getWidth();
-        devideHeight = getWindowManager().getDefaultDisplay().getHeight();
+        deviceHeight = getWindowManager().getDefaultDisplay().getHeight();
 
 
     }
@@ -84,11 +88,11 @@ public abstract class BaseActivity extends AppCompatActivity {
             ViewGroup.LayoutParams layoutParams = toolbar.getLayoutParams();
             layoutParams.height = layoutParams.height + getStatusBarHeight();
         } else {
-            devideHeight -= getStatusBarHeight();
+            deviceHeight -= getStatusBarHeight();
         }
     }
 
-    protected void setupSwipeRefreshLayout(SwipeRefreshLayout mRefreshLayout){
+    protected void setupSwipeRefreshLayout(SwipeRefreshLayout mRefreshLayout) {
         mRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_light,
                 android.R.color.holo_green_light,

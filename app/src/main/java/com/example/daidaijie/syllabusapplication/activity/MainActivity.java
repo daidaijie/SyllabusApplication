@@ -39,7 +39,7 @@ import com.example.daidaijie.syllabusapplication.model.BannerModel;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.retrofitApi.BannerService;
-import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryActivity;
+import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryActivity;
 import com.example.daidaijie.syllabusapplication.takeout.mainMenu.TakeOutActivity;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;

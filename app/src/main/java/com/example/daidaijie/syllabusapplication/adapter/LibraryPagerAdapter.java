@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryFragment;
+import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryFragment;
 
 /**
  * Created by daidaijie on 2016/8/23.

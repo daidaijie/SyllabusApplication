@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryFragment;
+
 import butterknife.ButterKnife;
 
 /**
@@ -17,6 +19,8 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseFragment extends Fragment {
+
+    protected static final String CLASS_NAME = LibraryFragment.class.getCanonicalName();
 
     protected Activity mActivity;
 

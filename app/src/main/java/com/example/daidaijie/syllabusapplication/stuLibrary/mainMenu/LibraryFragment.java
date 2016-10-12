@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.stuLibrary;
+package com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu;
 
 
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import com.example.daidaijie.syllabusapplication.adapter.LibItemAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseFragment;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
+import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryModel;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,9 +56,6 @@ public class LibraryFragment extends BaseFragment implements SwipeRefreshLayout.
     private List<LibraryBean> mLibraryBeen;
 
     private LibItemAdapter mLibItemAdapter;
-
-    public static final String CLASS_NAME = "com.example.daidaijie.syllabusapplication" +
-            ".stuLibrary.LibraryFragment";
 
     private static final String EXTRA_POS = CLASS_NAME + ".mPosition";
 

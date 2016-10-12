@@ -3,7 +3,7 @@ package com.example.daidaijie.syllabusapplication.takeout;
 import com.example.daidaijie.syllabusapplication.bean.BmobResult;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.retrofitApi.TakeOutInfoApi;
-import com.google.gson.Gson;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -26,17 +26,15 @@ public class TakeOutModel implements ITakeOutModel {
 
     private Realm mRealm;
     private TakeOutInfoApi mTakeOutInfoApi;
-    private Gson mGson;
 
     private Map<String, TakeOutInfoBean> mInfoBeanMap;
 
     private List<TakeOutInfoBean> mTakeOutInfoList;
 
 
-    public TakeOutModel(Realm realm, TakeOutInfoApi takeOutInfoApi, Gson gson) {
+    public TakeOutModel(Realm realm, TakeOutInfoApi takeOutInfoApi) {
         mRealm = realm;
         mTakeOutInfoApi = takeOutInfoApi;
-        mGson = gson;
         mTakeOutInfoList = new ArrayList<>();
         mInfoBeanMap = new LinkedHashMap<>();
     }

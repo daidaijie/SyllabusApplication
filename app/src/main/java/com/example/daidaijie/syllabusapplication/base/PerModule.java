@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.qualifier;
+package com.example.daidaijie.syllabusapplication.base;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

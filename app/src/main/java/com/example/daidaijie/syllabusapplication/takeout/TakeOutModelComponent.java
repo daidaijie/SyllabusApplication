@@ -1,7 +1,7 @@
 package com.example.daidaijie.syllabusapplication.takeout;
 
 import com.example.daidaijie.syllabusapplication.AppComponent;
-import com.example.daidaijie.syllabusapplication.qualifier.PerModule;
+import com.example.daidaijie.syllabusapplication.base.PerModule;
 
 import dagger.Component;
 

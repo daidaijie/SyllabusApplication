@@ -81,8 +81,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
 
     private DishesAdapter mDishesAdapter;
 
-    public static final String EXTRA_OBJECT_ID = "com.example.daidaijie.syllabusapplication" +
-            ".takeout.searchDish.SearchTakeOutActivity.objectID";
+    public static final String EXTRA_OBJECT_ID = CLASS_NAME+".objectID";
 
     @Inject
     SearchTakeOutPresenter mSearchTakeOutPresenter;

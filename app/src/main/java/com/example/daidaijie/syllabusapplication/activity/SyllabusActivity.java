@@ -337,7 +337,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     @Override
     public int getDevideHeight() {
-        return devideHeight;
+        return deviceHeight;
     }
 
     @Override
