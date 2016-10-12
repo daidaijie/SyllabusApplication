@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.stuLibrary;
+package com.example.daidaijie.syllabusapplication.stuLibrary.bookDetail;
 
 import android.content.Context;
 import android.content.Intent;

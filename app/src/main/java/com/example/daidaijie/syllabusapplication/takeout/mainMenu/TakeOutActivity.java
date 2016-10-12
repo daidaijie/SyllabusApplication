@@ -43,6 +43,9 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.vie
     @PerActivity
     TakeOutPresenter mTakeOutPresenter;
 
+
+    private static final String CLASS_NAME = TakeOutActivity.class.getCanonicalName();
+
     private static final String RESULT_POSITION = CLASS_NAME + ".resultPosition";
 
     private final int REQUEST_DETAIL_MENU = 206;

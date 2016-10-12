@@ -38,6 +38,7 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
+import com.example.daidaijie.syllabusapplication.takeout.detailMenu.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
@@ -80,6 +81,9 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
     private FrameLayout aniLayout;
 
     private DishesAdapter mDishesAdapter;
+
+    private static final String CLASS_NAME = SearchTakeOutActivity.class.getCanonicalName();
+
 
     public static final String EXTRA_OBJECT_ID = CLASS_NAME + ".objectID";
 

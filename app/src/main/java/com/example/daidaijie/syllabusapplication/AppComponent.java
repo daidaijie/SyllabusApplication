@@ -5,7 +5,9 @@ import android.content.Context;
 import com.example.daidaijie.syllabusapplication.qualifier.gson.DefaultGson;
 import com.example.daidaijie.syllabusapplication.qualifier.realm.DefaultRealm;
 import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.BmobRetrofit;
+import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.LibraryRetrofit;
 import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.OARetrofit;
+import com.example.daidaijie.syllabusapplication.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.google.gson.Gson;
 
 import javax.inject.Singleton;
@@ -29,6 +31,13 @@ public interface AppComponent {
 
     @OARetrofit
     Retrofit getOARetrofit();
+
+    @LibraryRetrofit
+    Retrofit getLibRetrofit();
+
+    @SchoolRetrofit
+    Retrofit getSchoolRetrofit();
+
 
     @DefaultRealm
     Realm getDefaultRealm();

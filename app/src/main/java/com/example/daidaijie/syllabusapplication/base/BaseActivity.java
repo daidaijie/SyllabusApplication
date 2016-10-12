@@ -31,9 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected int deviceWidth;
     protected int deviceHeight;
 
-    protected AppComponent mAppComponent;
-
-    protected static final String CLASS_NAME = LibraryFragment.class.getCanonicalName();
+    public AppComponent mAppComponent;
 
 
     @Override
@@ -142,4 +140,5 @@ public abstract class BaseActivity extends AppCompatActivity {
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
+
 }

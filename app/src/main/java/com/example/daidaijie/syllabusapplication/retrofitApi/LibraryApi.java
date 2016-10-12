@@ -10,7 +10,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/9/5.
  */
-public interface LibraryService {
+public interface LibraryApi {
 
         @Headers({
                 "Accept" + ": " + "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",

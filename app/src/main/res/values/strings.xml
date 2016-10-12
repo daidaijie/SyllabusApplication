@@ -9,7 +9,20 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-
+    <string-array name="query_lib">
+        <item>anywords</item>
+        <item>title_f</item>
+        <item>title</item>
+        <item>author_f</item>
+        <item>author</item>
+        <item>keyword_f</item>
+        <item>publisher_f</item>
+        <item>clc_f</item>
+        <item>isbn_f</item>
+        <item>issn_f</item>
+        <item>callno_f</item>
+    </string-array>
+    
     <string-array name="query_lib_string">
         <item>任意字段关键词</item>
         <item>题名前方一致</item>

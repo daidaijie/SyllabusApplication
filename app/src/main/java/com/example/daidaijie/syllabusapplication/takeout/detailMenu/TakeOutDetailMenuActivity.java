@@ -114,6 +114,8 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
 
     private CollapsingToolbarLayoutState state;
 
+    private static final String CLASS_NAME = TakeOutDetailMenuActivity.class.getCanonicalName();
+
     public static final String EXTRA_OBJECT_ID = CLASS_NAME + ".mObjectID";
 
     public static final int REQUEST_SEARCH = 205;

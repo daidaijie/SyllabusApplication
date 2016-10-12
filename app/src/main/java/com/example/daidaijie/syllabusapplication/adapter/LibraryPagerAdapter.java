@@ -11,29 +11,18 @@ import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryFrag
  */
 public class LibraryPagerAdapter extends FragmentStatePagerAdapter {
 
-    private String mTag;
-
-    private String mKeyword;
-
-    private String mSF;
-
-    private String mOB;
 
     private int pageCount;
 
 
-    public LibraryPagerAdapter(FragmentManager fm, String tag, String keyword, String SF, String OB) {
+    public LibraryPagerAdapter(FragmentManager fm) {
         super(fm);
-        mTag = tag;
-        mKeyword = keyword;
-        mSF = SF;
-        mOB = OB;
         pageCount = 1;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return LibraryFragment.newInstance(mTag, mKeyword, mSF, mOB, position);
+        return LibraryFragment.newInstance(position + 1);
     }
 
     @Override
