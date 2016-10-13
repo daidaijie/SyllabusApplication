@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.MainActivity;
+import com.example.daidaijie.syllabusapplication.main.MainActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;

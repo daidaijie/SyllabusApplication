@@ -19,12 +19,12 @@ public class UserInfo extends RealmObject {
      * user_id : 9
      */
 
-    @PrimaryKey
     private String username;
-
     private String nickname;
     private String avatar;
     private String token;
+
+    @PrimaryKey
     private int user_id;
     /**
      * days : {"w1":"None","w4":"None","w6":"None","w0":"None","w3":"None","w2":"None","w5":"89"}
@@ -40,6 +40,9 @@ public class UserInfo extends RealmObject {
     private List<Lesson> classes;
 
     public String getNickname() {
+        if (nickname == null || nickname.isEmpty()) {
+            return username;
+        }
         return nickname;
     }
 

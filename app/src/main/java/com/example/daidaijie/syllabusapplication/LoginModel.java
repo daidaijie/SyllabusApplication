@@ -95,6 +95,18 @@ public class LoginModel implements ILoginModel {
     }
 
     @Override
+    public void setCurrentSemester(Semester currentSemester) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(Semester.class).findAll().deleteAllFromRealm();
+                realm.copyToRealm(mCurrentSemester);
+            }
+        });
+        mCurrentSemester = currentSemester;
+    }
+
+    @Override
     public Semester getCurrentSemester() {
         if (mCurrentSemester != null) return mCurrentSemester;
         mRealm.executeTransaction(new Realm.Transaction() {

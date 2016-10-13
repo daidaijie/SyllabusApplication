@@ -41,7 +41,7 @@ import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
-import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuiler;
+import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
 import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -408,7 +408,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     private void showSelectSemeber() {
 
-        LinkagePicker picker = SelectSemesterBuiler.getSelectSemesterPicker(this);
+        LinkagePicker picker = SelectSemesterBuilder.getSelectSemesterPicker(this);
         picker.show();
 
         picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {

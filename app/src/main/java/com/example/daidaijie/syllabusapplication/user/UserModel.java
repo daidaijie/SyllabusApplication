@@ -178,6 +178,7 @@ public class UserModel implements IUserModel {
                     public Observable<UserInfo> call(HttpResult<UserInfo> userInfoHttpResult) {
                         if (RetrofitUtil.isSuccessful(userInfoHttpResult)) {
                             mUserInfo = userInfoHttpResult.getData();
+                            mUserInfo.setUsername(mILoginModel.getUserLogin().getUsername());
                             Realm realm = getRealm();
                             realm.executeTransaction(new Realm.Transaction() {
                                 @Override

@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.model;
+package com.example.daidaijie.syllabusapplication.main;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,11 +14,11 @@ import java.util.List;
 /**
  * Created by daidaijie on 2016/8/8.
  */
-public class BannerModel {
+public class BannerManager {
 
     private Context mContext;
 
-    public static final String sSaveName = "BannerModel";
+    public static final String sSaveName = "BannerManager";
 
     public static final String sSaveBanners = "mBanners";
 
@@ -28,15 +28,15 @@ public class BannerModel {
 
     public int mTimestamp;
 
-    private static BannerModel ourInstance = new BannerModel();
+    private static BannerManager ourInstance = new BannerManager();
 
-    public static BannerModel getInstance() {
+    public static BannerManager getInstance() {
         return ourInstance;
     }
 
-    private BannerModel() {
+    private BannerManager() {
         mContext = App.getContext();
-        SharedPreferences preferences = mContext.getSharedPreferences("BannerModel"
+        SharedPreferences preferences = mContext.getSharedPreferences("BannerManager"
                 , Context.MODE_PRIVATE);
         String bannersString = preferences.getString(sSaveBanners, "");
         if (bannersString.isEmpty()) {
@@ -55,7 +55,7 @@ public class BannerModel {
     }
 
     public void setBanners(List<Banner> banners) {
-        SharedPreferences preferences = mContext.getSharedPreferences("BannerModel"
+        SharedPreferences preferences = mContext.getSharedPreferences("BannerManager"
                 , Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         String bannerString = GsonUtil.getDefault().toJson(banners);
@@ -69,7 +69,7 @@ public class BannerModel {
     }
 
     public void setTimestamp(int timestamp) {
-        SharedPreferences preferences = mContext.getSharedPreferences("BannerModel"
+        SharedPreferences preferences = mContext.getSharedPreferences("BannerManager"
                 , Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putInt(sSaveTimestamp, timestamp);

@@ -23,5 +23,7 @@ public interface ILoginModel {
 
     void saveUserLoginToDisk();
 
+    void setCurrentSemester(Semester currentSemester);
+
     Semester getCurrentSemester();
 }

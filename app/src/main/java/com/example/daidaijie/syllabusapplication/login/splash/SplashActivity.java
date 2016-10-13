@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.MainActivity;
+import com.example.daidaijie.syllabusapplication.main.MainActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
@@ -45,6 +45,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.view 
         final Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
         if (nowTime - mStartTime >= SHOW_TIME_MIN) {
             startActivity(intent);
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             SplashActivity.this.finish();
         } else {
             new Handler().postDelayed(new Runnable() {
@@ -52,6 +53,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.view 
                 public void run() {
                     startActivity(intent);
                     SplashActivity.this.finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             }, nowTime - mStartTime);
         }
@@ -66,12 +68,14 @@ public class SplashActivity extends BaseActivity implements SplashContract.view 
         if (nowTime - mStartTime >= SHOW_TIME_MIN) {
             startActivity(intent);
             SplashActivity.this.finish();
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     startActivity(intent);
                     SplashActivity.this.finish();
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             }, nowTime - mStartTime);
         }

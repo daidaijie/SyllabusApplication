@@ -1,9 +1,11 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import io.realm.RealmObject;
+
 /**
  * Created by daidaijie on 2016/8/7.
  */
-public class Banner {
+public class Banner extends RealmObject {
     private int id;
     private String link;
     private String description;

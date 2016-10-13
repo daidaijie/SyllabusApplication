@@ -21,7 +21,7 @@ import com.example.daidaijie.syllabusapplication.retrofitApi.SyllabusCollectionS
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
-import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuiler;
+import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
 import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,7 +58,7 @@ public class AddCollectionActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
-        mLinkagePicker = SelectSemesterBuiler.getSelectSemesterPicker(this);
+        mLinkagePicker = SelectSemesterBuilder.getSelectSemesterPicker(this);
         mSelectSemester = User.getInstance().getCurrentSemester();
         setSelectButtonText();
 

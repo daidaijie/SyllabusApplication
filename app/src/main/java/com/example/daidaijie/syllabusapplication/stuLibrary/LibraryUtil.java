@@ -20,8 +20,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/9/5.
  */
-public class LibraryManager {
-
+public class LibraryUtil {
 
     public List<String> searchWords;
 
@@ -29,12 +28,10 @@ public class LibraryManager {
 
     public List<String> libOBs;
 
-
-    public LibraryManager() {
+    public LibraryUtil() {
         searchWords = Arrays.asList(App.getContext().getResources().getStringArray(R.array.query_lib));
         libSFs = Arrays.asList(App.getContext().getResources().getStringArray(R.array.query_lib_sf));
         libOBs = Arrays.asList(App.getContext().getResources().getStringArray(R.array.query_lib_ob));
     }
-
 
 }

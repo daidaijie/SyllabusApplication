@@ -15,11 +15,11 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LibraryPagerAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
+import com.example.daidaijie.syllabusapplication.bean.LibSearchBean;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.stuLibrary.LibModelComponent;
-import com.example.daidaijie.syllabusapplication.bean.LibSearchBean;
-import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryManager;
+import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 
 import org.greenrobot.eventbus.EventBus;
@@ -69,7 +69,7 @@ public class LibraryActivity extends BaseActivity {
 
     LibSearchBean mLibSearchBean;
 
-    private LibraryManager mLibraryManager;
+    private LibraryUtil mLibraryUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class LibraryActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mLibraryManager = new LibraryManager();
+        mLibraryUtil = new LibraryUtil();
 
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
 
@@ -149,10 +149,10 @@ public class LibraryActivity extends BaseActivity {
             public void onClick(View v) {
                 mLibCountTextView.setVisibility(View.GONE);
                 mLibSearchBean = new LibSearchBean();
-                mLibSearchBean.setTag(mLibraryManager.searchWords.get(searchWordWhich));
+                mLibSearchBean.setTag(mLibraryUtil.searchWords.get(searchWordWhich));
                 mLibSearchBean.setWord(mSearchEditText.getText().toString().trim());
-                mLibSearchBean.setOb(mLibraryManager.libOBs.get(searchOBWhich));
-                mLibSearchBean.setSf(mLibraryManager.libSFs.get(searchSFWhich));
+                mLibSearchBean.setOb(mLibraryUtil.libOBs.get(searchOBWhich));
+                mLibSearchBean.setSf(mLibraryUtil.libSFs.get(searchSFWhich));
 
                 LibModelComponent.destroy();
                 mLibModelComponent = LibModelComponent.getInstance(mAppComponent, mLibSearchBean);
@@ -226,6 +226,4 @@ public class LibraryActivity extends BaseActivity {
         LibModelComponent.destroy();
         EventBus.getDefault().unregister(this);
     }
-
-
 }
