@@ -10,7 +10,7 @@ import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseApi;
-import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoApi;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 
 import org.joda.time.DateTime;
@@ -65,7 +65,7 @@ public class LoginPresenter extends ILoginPresenter {
 
         mView.showLoadingDialog();
 
-        final UserInfoService userInfoService = RetrofitUtil.getDefault().create(UserInfoService.class);
+        final UserInfoApi userInfoApi = RetrofitUtil.getDefault().create(UserInfoApi.class);
         final GetUserBaseApi userBaseService = RetrofitUtil.getDefault().create(GetUserBaseApi.class);
 
 
@@ -98,7 +98,7 @@ public class LoginPresenter extends ILoginPresenter {
 
         isSuccessLogin = true;
 
-        userInfoService.getUserInfo(
+        userInfoApi.getUserInfo(
                 username,
                 password,
                 "query",

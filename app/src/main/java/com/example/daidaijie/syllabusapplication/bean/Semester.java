@@ -1,9 +1,11 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import io.realm.RealmObject;
+
 /**
  * Created by daidaijie on 2016/9/11.
  */
-public class Semester {
+public class Semester extends RealmObject{
 
     private long startWeekTime;
 
@@ -49,6 +51,9 @@ public class Semester {
 
     public String getYearString() {
         return startYear + "-" + (startYear + 1);
+    }
+
+    public Semester() {
     }
 
     public Semester(int startYear, int season) {

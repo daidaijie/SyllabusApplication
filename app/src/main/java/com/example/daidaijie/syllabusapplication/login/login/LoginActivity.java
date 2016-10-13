@@ -14,7 +14,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.MainActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.UserLogin;
-import com.example.daidaijie.syllabusapplication.user.DaggerUserComponent;
+import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 
@@ -99,7 +99,7 @@ public class LoginActivity extends BaseActivity implements LoginContract.view, V
 
     @Override
     public void toMainView() {
-        DaggerUserComponent.buildInstance(mAppComponent);
+        UserComponent.buildInstance(mAppComponent);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         this.finish();

@@ -8,7 +8,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.MainActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
-import com.example.daidaijie.syllabusapplication.user.DaggerUserComponent;
+import com.example.daidaijie.syllabusapplication.user.UserComponent;
 
 import javax.inject.Inject;
 
@@ -60,7 +60,7 @@ public class SplashActivity extends BaseActivity implements SplashContract.view 
 
     @Override
     public void toMainView() {
-        DaggerUserComponent.buildInstance(mAppComponent);
+        UserComponent.buildInstance(mAppComponent);
         long nowTime = System.currentTimeMillis();
         final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         if (nowTime - mStartTime >= SHOW_TIME_MIN) {

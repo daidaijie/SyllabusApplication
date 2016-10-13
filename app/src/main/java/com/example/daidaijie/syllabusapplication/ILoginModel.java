@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication;
 
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 
 import rx.Observable;
@@ -21,4 +22,6 @@ public interface ILoginModel {
     Observable<UserLogin> getUserLoginFromCache();
 
     void saveUserLoginToDisk();
+
+    Semester getCurrentSemester();
 }

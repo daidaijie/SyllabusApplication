@@ -3,10 +3,11 @@ package com.example.daidaijie.syllabusapplication.user;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
-import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseApi;
+import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoApi;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 
 import io.realm.Realm;
@@ -35,20 +36,22 @@ public class UserModel implements IUserModel {
 
     private GetUserBaseApi mGetUserBaseApi;
 
+    private UserInfoApi mUserInfoApi;
+
     private boolean isLogin;
 
     public UserModel(ILoginModel loginModel, Retrofit retrofit) {
         isLogin = false;
         mILoginModel = loginModel;
         mGetUserBaseApi = retrofit.create(GetUserBaseApi.class);
+        mUserInfoApi = retrofit.create(UserInfoApi.class);
     }
 
 
     public UserModel(ILoginModel loginModel, Realm realm, Retrofit retrofit) {
-        isLogin = true;
-        mILoginModel = loginModel;
+        this(loginModel, retrofit);
         mRealm = realm;
-        mGetUserBaseApi = retrofit.create(GetUserBaseApi.class);
+        isLogin = true;
     }
 
     @Override
@@ -103,7 +106,7 @@ public class UserModel implements IUserModel {
                             if (!isLogin) {
                                 realm.close();
                             }
-                            return Observable.just(userBaseBeanHttpResult.getData());
+                            return Observable.just(mUserBaseBean);
                         } else {
                             return Observable.error(new Throwable(userBaseBeanHttpResult.getMessage()));
                         }
@@ -162,7 +165,35 @@ public class UserModel implements IUserModel {
 
     @Override
     public Observable<UserInfo> getUserInfoFromNet() {
-        return null;
+        return mUserInfoApi.getUserInfo(
+                mILoginModel.getUserLogin().getUsername(),
+                mILoginModel.getUserLogin().getPassword(),
+                "query",
+                mILoginModel.getCurrentSemester().getYearString(),
+                mILoginModel.getCurrentSemester().getSeason() + ""
+        ).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(new Func1<HttpResult<UserInfo>, Observable<UserInfo>>() {
+                    @Override
+                    public Observable<UserInfo> call(HttpResult<UserInfo> userInfoHttpResult) {
+                        if (RetrofitUtil.isSuccessful(userInfoHttpResult)) {
+                            mUserInfo = userInfoHttpResult.getData();
+                            Realm realm = getRealm();
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    realm.copyToRealmOrUpdate(mUserInfo);
+                                }
+                            });
+                            if (!isLogin) {
+                                realm.close();
+                            }
+                            return Observable.just(mUserInfo);
+                        } else {
+                            return Observable.error(new Throwable(userInfoHttpResult.getMessage()));
+                        }
+                    }
+                });
     }
 
     @Override

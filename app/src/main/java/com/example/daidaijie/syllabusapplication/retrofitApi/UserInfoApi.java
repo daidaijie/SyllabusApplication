@@ -11,7 +11,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/7/18.
  */
-public interface UserInfoService {
+public interface UserInfoApi {
     @FormUrlEncoded
     @POST("/credit/api/v2.1/syllabus")
     Observable<HttpResult<UserInfo>> getUserInfo(
