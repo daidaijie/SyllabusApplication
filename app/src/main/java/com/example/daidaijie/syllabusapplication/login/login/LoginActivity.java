@@ -13,15 +13,16 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.MainActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
-import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.presenter.LoginPresenter;
+import com.example.daidaijie.syllabusapplication.bean.UserLogin;
+import com.example.daidaijie.syllabusapplication.user.DaggerUserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
-import com.example.daidaijie.syllabusapplication.view.ILoginView;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class LoginActivity extends BaseActivity implements ILoginView, View.OnClickListener {
+public class LoginActivity extends BaseActivity implements LoginContract.view, View.OnClickListener {
 
     @BindView(R.id.titleLayout)
     LinearLayout mTitleLayout;
@@ -38,26 +39,25 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
 
     AlertDialog mAlertDialog;
 
+    @Inject
     LoginPresenter mLoginPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mLoginPresenter = new LoginPresenter();
-        mLoginPresenter.attach(this);
+        DaggerLoginComponent.builder()
+                .appComponent(mAppComponent)
+                .loginModule(new LoginModule(this))
+                .build().inject(this);
 
         mTipTextView.setText(Html.fromHtml("<u>注意事项</u>"));
-
-        mUsernameEditText.setText(User.getInstance().getAccount());
-        mPasswordEditText.setText(User.getInstance().getPassword());
 
         mAlertDialog = LoadingDialogBuiler.getLoadingDialog(this,
                 getResources().getColor(R.color.colorPrimary));
 
         mLoginButton.setOnClickListener(this);
-
-
+        mLoginPresenter.start();
     }
 
     @Override
@@ -65,11 +65,6 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
         return R.layout.activity_login;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mLoginPresenter.detach();
-    }
 
     @Override
     public void onClick(View v) {
@@ -83,33 +78,35 @@ public class LoginActivity extends BaseActivity implements ILoginView, View.OnCl
             return;
         }
 
-        mLoginPresenter.login(
-                mUsernameEditText.getText().toString(),
-                mPasswordEditText.getText().toString(),
-                true
-        );
+        mLoginPresenter.login(mUsernameEditText.getText().toString(),
+                mPasswordEditText.getText().toString());
     }
 
     @Override
-    public void showLoginSuccess() {
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+    public void showLoading(boolean isShow) {
+        if (isShow) {
+            mAlertDialog.show();
+        } else {
+            mAlertDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void setLogin(UserLogin userLogin) {
+        mUsernameEditText.setText(userLogin.getUsername());
+        mPasswordEditText.setText(userLogin.getPassword());
+    }
+
+    @Override
+    public void toMainView() {
+        DaggerUserComponent.buildInstance(mAppComponent);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         this.finish();
     }
 
     @Override
-    public void showLoginFail(String msg) {
-        SnackbarUtil.ShortSnackbar(mPasswordEditText, msg.toUpperCase(), SnackbarUtil.Alert).show();
-    }
-
-
-    @Override
-    public void showLoadingDialog() {
-        mAlertDialog.show();
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-        mAlertDialog.dismiss();
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mPasswordEditText, msg, SnackbarUtil.Alert).show();
     }
 }

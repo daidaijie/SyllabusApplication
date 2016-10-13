@@ -2,9 +2,11 @@ package com.example.daidaijie.syllabusapplication.user;
 
 import android.content.Context;
 
+import com.example.daidaijie.syllabusapplication.ILoginModel;
+import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
-import com.example.daidaijie.syllabusapplication.di.qualifier.string.Username;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerUser;
 
 import dagger.Module;
@@ -20,26 +22,15 @@ import retrofit2.Retrofit;
 @Module
 public class UserModule {
 
-    private String username;
-
-    public UserModule(String username) {
-        this.username = username;
-    }
-
-    @Provides
-    @PerUser
-    @Username
-    String provideUsername() {
-        return username;
-    }
 
     @Provides
     @UserRealm
     @PerUser
-    Realm provideUserRealm(Context context, @Username String username) {
+    Realm provideUserRealm(Context context, ILoginModel loginModel) {
         RealmConfiguration configuration = new RealmConfiguration
                 .Builder(context)
-                .name(username + ".realm")
+                .schemaVersion(1)
+                .name(loginModel.getUserLogin().getUsername() + ".realm")
                 .deleteRealmIfMigrationNeeded()
                 .build();
         return Realm.getInstance(configuration);
@@ -47,9 +38,10 @@ public class UserModule {
 
     @Provides
     @PerUser
-    IUserModel provideUserModel(@Username String username,
+    @LoginUser
+    IUserModel provideUserModel(ILoginModel loginModel,
                                 @UserRealm Realm realm,
                                 @SchoolRetrofit Retrofit retrofit) {
-        return new UserModel(username, realm, retrofit);
+        return new UserModel(loginModel, realm, retrofit);
     }
 }

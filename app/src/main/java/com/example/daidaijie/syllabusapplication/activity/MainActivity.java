@@ -218,7 +218,7 @@ public class MainActivity extends BaseActivity implements NavigationView.OnNavig
             }
         });
 
-//        Log.e(TAG, "onCreate: token" + UserManager.getInstance().getUserInfo().getToken());
+//        Log.e(TAG, "onCreate: token" + UserManager.buildInstance().getUserInfo().getToken());
     }
 
     @Override

@@ -24,7 +24,7 @@ public class UserBaseBean extends RealmObject {
 
     private int level;
     private String image;
-    private Object birthday;
+    private String birthday;
     private String profile;
     private int gender;
     private int id;
@@ -54,11 +54,11 @@ public class UserBaseBean extends RealmObject {
         this.image = image;
     }
 
-    public Object getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Object birthday) {
+    public void setBirthday(String birthday) {
         this.birthday = birthday;
     }
 

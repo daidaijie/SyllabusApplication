@@ -26,6 +26,8 @@ public interface AppComponent {
 
     Context getApplicationContext();
 
+    ILoginModel getLoginModel();
+
     @BmobRetrofit
     Retrofit getBombRetrofit();
 

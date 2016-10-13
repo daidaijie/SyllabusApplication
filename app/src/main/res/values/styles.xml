@@ -26,8 +26,10 @@
         <item name="color">@android:color/white</item>
     </style>
 
+
     <style name="AppTheme.Launcher.BG" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/app_bg</item>
+        <item name="android:background">@drawable/app_bg</item>
         <item name="android:windowAnimationStyle">@android:anim/fade_out</item>
     </style>
 
