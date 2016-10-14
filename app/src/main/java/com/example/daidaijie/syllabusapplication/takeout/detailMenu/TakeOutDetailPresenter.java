@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.takeout.detailMenu;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.takeout.ITakeOutModel;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
 import javax.inject.Inject;
 
@@ -40,7 +41,6 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
                         mView.showRefresh(false);
                         mView.showFailMessage("获取失败");
                     }
@@ -103,6 +103,7 @@ public class TakeOutDetailPresenter implements TakeOutDetailContract.presenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        LoggerUtil.e("detailTakeOut", e.getMessage());
                         mView.showRefresh(false);
                         mView.showFailMessage("获取失败");
                     }

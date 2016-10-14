@@ -96,6 +96,7 @@ public class LoginModel implements ILoginModel {
 
     @Override
     public void setCurrentSemester(Semester currentSemester) {
+        mCurrentSemester = currentSemester;
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -103,7 +104,6 @@ public class LoginModel implements ILoginModel {
                 realm.copyToRealm(mCurrentSemester);
             }
         });
-        mCurrentSemester = currentSemester;
     }
 
     @Override

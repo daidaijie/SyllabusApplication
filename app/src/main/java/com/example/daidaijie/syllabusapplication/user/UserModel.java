@@ -212,13 +212,13 @@ public class UserModel implements IUserModel {
         if (isLogin) {
             return mRealm;
         } else {
-            RealmConfiguration configuration = new RealmConfiguration
-                    .Builder(App.getContext())
-                    .schemaVersion(1)
-                    .name(mILoginModel.getUserLogin().getUsername() + ".realm")
-                    .deleteRealmIfMigrationNeeded()
-                    .build();
-            return Realm.getInstance(configuration);
+            RealmConfiguration.Builder builder = new RealmConfiguration.Builder(App.getContext())
+                    .schemaVersion(App.userVersion)
+                    .name(mILoginModel.getUserLogin().getUsername() + ".realm");
+            if (App.isDebug) {
+                builder.deleteRealmIfMigrationNeeded();
+            }
+            return Realm.getInstance(builder.build());
         }
 
     }

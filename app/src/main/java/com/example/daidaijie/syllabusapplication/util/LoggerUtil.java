@@ -21,6 +21,7 @@ public class LoggerUtil {
         }
     }
 
+
     public static void printStack(Throwable e) {
         if (App.isLogger) {
             e.printStackTrace();

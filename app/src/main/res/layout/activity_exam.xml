@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.ExamActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

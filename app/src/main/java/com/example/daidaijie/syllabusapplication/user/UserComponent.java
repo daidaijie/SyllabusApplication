@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.user;
 import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.DefaultRealm;
+import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerUser;
@@ -42,6 +43,9 @@ public abstract class UserComponent {
 
     @DefaultRealm
     public abstract Realm getDefaultRealm();
+
+    @UserRealm
+    public abstract Realm getUserRealm();
 
     public abstract ILoginModel getLoginModel();
 

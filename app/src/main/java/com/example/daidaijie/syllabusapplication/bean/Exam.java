@@ -8,10 +8,13 @@ import java.io.Serializable;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by daidaijie on 2016/8/3.
  */
-public class Exam implements Serializable {
+public class Exam extends RealmObject implements Serializable {
 
     /**
      * exam_stu_position : 48
@@ -25,9 +28,21 @@ public class Exam implements Serializable {
      * exam_comment :
      */
 
+    private Semester mSemester;
+
+    public Semester getSemester() {
+        return mSemester;
+    }
+
+    public void setSemester(Semester semester) {
+        mSemester = semester;
+    }
+
+    @PrimaryKey
+    private String exam_class_number;
+
     private String exam_stu_position;
     private String exam_time;
-    private String exam_class_number;
     private String exam_invigilator;
     private String exam_class;
     private String exam_stu_numbers;

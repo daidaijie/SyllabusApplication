@@ -2,8 +2,8 @@ package com.example.daidaijie.syllabusapplication.user;
 
 import android.content.Context;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
-import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
@@ -27,13 +27,14 @@ public class UserModule {
     @UserRealm
     @PerUser
     Realm provideUserRealm(Context context, ILoginModel loginModel) {
-        RealmConfiguration configuration = new RealmConfiguration
-                .Builder(context)
-                .schemaVersion(1)
-                .name(loginModel.getUserLogin().getUsername() + ".realm")
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        return Realm.getInstance(configuration);
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder(context)
+                .schemaVersion(App.userVersion)
+                .name(loginModel.getUserLogin().getUsername() + ".realm");
+        if (App.isDebug) {
+            builder.deleteRealmIfMigrationNeeded();
+        }
+
+        return Realm.getInstance(builder.build());
     }
 
     @Provides

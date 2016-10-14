@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -7,14 +9,14 @@ import java.util.List;
  */
 public class ExamInfo {
 
-    private List<Exam> EXAMS;
+    @SerializedName("EXAMS")
+    private List<Exam> mExams;
 
-    public List<Exam> getEXAMS() {
-        return EXAMS;
+    public List<Exam> getExams() {
+        return mExams;
     }
 
-    public void setEXAMS(List<Exam> EXAMS) {
-        this.EXAMS = EXAMS;
+    public void setExams(List<Exam> exams) {
+        mExams = exams;
     }
-
 }

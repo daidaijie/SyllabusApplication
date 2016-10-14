@@ -36,7 +36,7 @@
             android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
-            android:name=".activity.ExamActivity"
+            android:name=".exam.mainMenu.ExamActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -57,7 +57,7 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity
-            android:name=".activity.ExamDetailActivity"
+            android:name=".exam.detail.ExamDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity

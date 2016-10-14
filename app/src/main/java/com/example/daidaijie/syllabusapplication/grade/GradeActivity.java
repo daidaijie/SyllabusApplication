@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.grade;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -97,8 +97,7 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
     }
 
     private void getGrade() {
-/*
-        GradeApi gradeApi = RetrofitUtil.getDefault().create(GradeApi.class);
+        /*GradeApi gradeApi = RetrofitUtil.getDefault().create(GradeApi.class);
         gradeApi.getGrade(User.getInstance().getAccount(), User.getInstance().getPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -125,8 +124,7 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
                     public void onNext(GradeInfo gradeInfo) {
                         mGradeInfo = gradeInfo;
                     }
-                });
-*/
+                });*/
     }
 
     private void setHeader() {

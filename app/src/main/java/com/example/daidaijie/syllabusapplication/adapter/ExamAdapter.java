@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,25 +13,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.ExamDetailActivity;
+import com.example.daidaijie.syllabusapplication.exam.detail.ExamDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeComparator;
-import org.joda.time.DateTimeUtils;
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalTime;
 import org.joda.time.Period;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
-import java.util.Date;
 import java.util.List;
-import java.util.SimpleTimeZone;
-import java.util.TimeZone;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -102,11 +91,11 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
                     0, 4, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             style.setSpan(new ForegroundColorSpan(
-                            mActivity.getResources().getColor(ThemeModel.getInstance().colorPrimary)),
+                            ThemeModel.getInstance().colorPrimary),
                     4, sb.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             holder.mExamStateTextView.setText(style);
-        }else{
+        } else {
             holder.mExamStateTextView.setTextColor(
                     mActivity.getResources().getColor(R.color.defaultShowColor));
             holder.mExamStateTextView.setText("已结束");

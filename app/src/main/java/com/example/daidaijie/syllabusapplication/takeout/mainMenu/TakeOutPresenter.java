@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.takeout.mainMenu;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.takeout.ITakeOutModel;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class TakeOutPresenter implements TakeOutContract.presenter {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        LoggerUtil.e("mainTakeOut", e.getMessage());
                         mView.showFailMessage("获取失败!");
                         mView.showRefresh(false);
                     }

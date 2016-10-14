@@ -27,7 +27,7 @@ import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.EmailWebActivity;
-import com.example.daidaijie.syllabusapplication.activity.ExamActivity;
+import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.activity.GradeActivity;
 import com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity;
 import com.example.daidaijie.syllabusapplication.activity.OfficeAutomationActivity;
