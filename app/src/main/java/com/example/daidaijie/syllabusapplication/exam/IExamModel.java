@@ -20,4 +20,6 @@ public interface IExamModel {
 
     Observable<List<Exam>> getExamFromCache();
 
+    Exam getExamInList(int position);
+
 }

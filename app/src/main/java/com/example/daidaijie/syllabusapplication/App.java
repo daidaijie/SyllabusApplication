@@ -56,11 +56,12 @@ public class App extends Application {
         context = getApplicationContext();
 
         // TODO: 2016/10/11 暂时在这里进行初始化
-        RealmConfiguration configuration = new RealmConfiguration
-                .Builder(context)
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        Realm.setDefaultConfiguration(configuration);
+        RealmConfiguration.Builder builder = new RealmConfiguration.Builder(this)
+                .schemaVersion(userVersion);
+        if (isDebug){
+            builder.deleteRealmIfMigrationNeeded();
+        }
+        Realm.setDefaultConfiguration(builder.build());
 
 
         mAppComponent = DaggerAppComponent.builder()

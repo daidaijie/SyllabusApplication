@@ -13,8 +13,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.exam.detail.ExamDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
+import com.example.daidaijie.syllabusapplication.exam.detail.ExamDetailActivity;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
 import org.joda.time.DateTime;
@@ -54,7 +54,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Exam exam = mExams.get(position);
         holder.mExamNameTextView.setText(exam.getTrueName());
         holder.mExamPositionTextView.setText("座位号 : " + exam.getExam_stu_position());
@@ -104,7 +104,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         holder.mExamLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = ExamDetailActivity.getIntent(mActivity, exam);
+                Intent intent = ExamDetailActivity.getIntent(mActivity, position);
                 mActivity.startActivity(intent);
             }
         });

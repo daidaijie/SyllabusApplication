@@ -106,6 +106,11 @@ public class ExamModel implements IExamModel {
                 }).observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public Exam getExamInList(int position) {
+        return mExams.get(position);
+    }
+
     private void saveToDisk() {
         if (mExams == null) return;
         mRealm.executeTransaction(new Realm.Transaction() {
@@ -113,7 +118,7 @@ public class ExamModel implements IExamModel {
             public void execute(Realm realm) {
                 realm.where(Exam.class).equalTo("mSemester.startYear", mILoginModel.getCurrentSemester().getStartYear())
                         .equalTo("mSemester.season", mILoginModel.getCurrentSemester().getSeason())
-                        .findAll();
+                        .findAll().deleteAllFromRealm();
                 for (Exam exam : mExams) {
                     exam.setSemester(mILoginModel.getCurrentSemester());
                     realm.copyToRealm(exam);
