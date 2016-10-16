@@ -72,6 +72,7 @@ public class ExamModel implements IExamModel {
 
     @Override
     public Observable<List<Exam>> getExamFromNet() {
+
         return mExamInfoApi.getExamInfo(
                 mILoginModel.getUserLogin().getUsername(),
                 mILoginModel.getUserLogin().getPassword(),
@@ -97,7 +98,7 @@ public class ExamModel implements IExamModel {
 
     @Override
     public Observable<List<Exam>> getExamFromCache() {
-        return Observable.concat(getExamFromMemory(), getExamFromDisk(), getExamFromNet())
+        return Observable.concat(getExamFromMemory(), getExamFromDisk())
                 .takeFirst(new Func1<List<Exam>, Boolean>() {
                     @Override
                     public Boolean call(List<Exam> exams) {

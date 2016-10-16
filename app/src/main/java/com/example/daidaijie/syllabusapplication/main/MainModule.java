@@ -53,9 +53,4 @@ public class MainModule {
         return new BannerModel(realm, retrofit.create(BannerApi.class));
     }
 
-    @Provides
-    @PerActivity
-    LinkagePicker provideSemesterPicker(Activity activity, ILoginModel mLoginModel) {
-        return SelectSemesterBuilder.newSelectSemesterPicker(activity, mLoginModel.getCurrentSemester());
-    }
 }

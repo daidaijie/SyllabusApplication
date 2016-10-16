@@ -5,10 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.main.MainActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
-import com.example.daidaijie.syllabusapplication.user.UserComponent;
+import com.example.daidaijie.syllabusapplication.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -62,7 +61,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.view 
 
     @Override
     public void toMainView() {
-        UserComponent.buildInstance(mAppComponent);
         long nowTime = System.currentTimeMillis();
         final Intent intent = new Intent(SplashActivity.this, MainActivity.class);
         if (nowTime - mStartTime >= SHOW_TIME_MIN) {

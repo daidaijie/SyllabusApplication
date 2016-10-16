@@ -8,6 +8,8 @@ import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerUser;
 
+import javax.inject.Singleton;
+
 import dagger.Component;
 import io.realm.Realm;
 import retrofit2.Retrofit;
@@ -30,16 +32,13 @@ public abstract class UserComponent {
         return INSTANCE;
     }
 
-    public static void destroy() {
-        INSTANCE = null;
-    }
 
     public static UserComponent getINSTANCE() {
         return INSTANCE;
     }
 
     @SchoolRetrofit
-    public abstract Retrofit agetSchoolRetrofit();
+    public abstract Retrofit getSchoolRetrofit();
 
     @DefaultRealm
     public abstract Realm getDefaultRealm();

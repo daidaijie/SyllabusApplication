@@ -16,6 +16,7 @@ public interface ExamContract {
     interface presenter extends BasePresenter {
         void loadData();
 
+        void setIsLoaded(boolean isLoaded);
     }
 
     interface view extends BaseView<presenter> {
@@ -28,6 +29,9 @@ public interface ExamContract {
 
         void showFailMessage(String msg);
 
-        void showLoading(boolean isShow);
+        void showFresh(boolean isShow);
+
+        void setIsLoaded(boolean isLoaded);
+
     }
 }

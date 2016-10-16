@@ -73,4 +73,8 @@ public class SelectSemesterBuilder {
 
         return picker;
     }
+
+    public static void setSemester(LinkagePicker picker, Semester semester) {
+        picker.setSelectedItem(semester.getYearString(), semester.getSeasonString());
+    }
 }

@@ -20,27 +20,38 @@ public class ExamPresenter implements ExamContract.presenter {
     IExamModel mExamModel;
     ExamContract.view mView;
 
+    boolean isLoaded;
+
     @Inject
     @PerActivity
     public ExamPresenter(IExamModel examModel, ExamContract.view view) {
         mExamModel = examModel;
         mView = view;
+        isLoaded = false;
     }
 
     @Override
     public void loadData() {
-        mView.showLoading(true);
+        mView.showFresh(true);
         mExamModel.getExamFromNet()
                 .subscribe(new Subscriber<List<Exam>>() {
                     @Override
                     public void onCompleted() {
-                        mView.showLoading(false);
+                        mView.showFresh(false);
+                        isLoaded = true;
+                        mView.setIsLoaded(isLoaded);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.showLoading(false);
-                        mView.showFailMessage(e.getMessage().toUpperCase());
+                        mView.showFresh(false);
+                        isLoaded = true;
+                        mView.setIsLoaded(isLoaded);
+                        if (e.getMessage() == null) {
+                            mView.showFailMessage("获取失败");
+                        } else {
+                            mView.showFailMessage(e.getMessage().toUpperCase());
+                        }
                     }
 
                     @Override
@@ -53,33 +64,33 @@ public class ExamPresenter implements ExamContract.presenter {
                         mView.showSuccessMessage("更新成功");
                     }
                 });
+
+    }
+
+    @Override
+    public void setIsLoaded(boolean isLoaded) {
+        this.isLoaded = isLoaded;
     }
 
     @Override
     public void start() {
-        mView.showLoading(true);
         mExamModel.getExamFromCache()
                 .subscribe(new Subscriber<List<Exam>>() {
                     @Override
                     public void onCompleted() {
-                        mView.showLoading(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        mView.showLoading(false);
-                        LoggerUtil.printStack(e);
-                        mView.showFailMessage("获取失败");
                     }
 
                     @Override
                     public void onNext(List<Exam> exams) {
-                        if (exams == null || exams.size() == 0) {
-                            mView.showInfoMessage("本学期暂无考试");
-                            return;
-                        }
                         mView.showData(exams);
                     }
                 });
+        if (!isLoaded) {
+            loadData();
+        }
     }
 }

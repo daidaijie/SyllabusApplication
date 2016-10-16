@@ -16,6 +16,8 @@ public interface MainContract {
 
     interface presenter extends BasePresenter {
         void setCurrentSemester(Semester semester);
+
+        void showSemesterSelect();
     }
 
     interface view extends BaseView<presenter> {
@@ -26,6 +28,8 @@ public interface MainContract {
         void showSemester(Semester semester);
 
         void showInfoMessage(String msg);
+
+        void setCurrentSemester(Semester semester);
     }
 
 }

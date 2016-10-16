@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.grade;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,18 +16,17 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.GradeListAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
-import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.retrofitApi.GradeApi;
-import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.bean.SemesterGrade;
+import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
-import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
+
+import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class GradeActivity extends BaseActivity implements GradeContract.view, SwipeRefreshLayout.OnRefreshListener {
 
     public static final String TAG = "GradeActivity";
 
@@ -35,9 +35,7 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.gradeListRecycleList)
-    RecyclerViewEmptySupport mGradeListRecycleList;
-    @BindView(R.id.emptyTextView)
-    TextView mEmptyTextView;
+    RecyclerView mGradeListRecycleList;
     @BindView(R.id.refreshGradeLayout)
     SwipeRefreshLayout mRefreshGradeLayout;
     @BindView(R.id.header)
@@ -57,6 +55,9 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     private boolean isAllExpand;
 
+    @Inject
+    GradePresenter mGradePresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,33 +67,30 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mGradeListRecycleList.setEmptyView(mEmptyTextView);
+        DaggerGradeComponent.builder()
+                .userComponent(UserComponent.getINSTANCE())
+                .gradeModule(new GradeModule(this))
+                .build().inject(this);
 
-        isAllExpand = false;
+        mGradeListAdapter = new GradeListAdapter(this, null);
 
-        mGradeInfo = null;
-        mGradeListAdapter = new GradeListAdapter(this, mGradeInfo);
         mGradeListRecycleList.setLayoutManager(new LinearLayoutManager(this));
         mGradeListRecycleList.setAdapter(mGradeListAdapter);
+
+        mRefreshGradeLayout.setOnRefreshListener(this);
+        setupSwipeRefreshLayout(mRefreshGradeLayout);
 
         mHeader.attachTo(mGradeListRecycleList);
         setHeader();
 
-        mRefreshGradeLayout.setOnRefreshListener(this);
-        mRefreshGradeLayout.setColorSchemeResources(
-                android.R.color.holo_blue_light,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light
-        );
-
-        mRefreshGradeLayout.postDelayed(new Runnable() {
+        mRefreshGradeLayout.post(new Runnable() {
             @Override
             public void run() {
-                mRefreshGradeLayout.setRefreshing(true);
-                getGrade();
+                mGradePresenter.start();
             }
-        }, 50);
+        });
+
+        isAllExpand = false;
 
     }
 
@@ -146,14 +144,14 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mGradeInfo == null) {
+        /*if (mGradeInfo == null) {
             return true;
         }
 
         isAllExpand = !isAllExpand;
         setExpandMenu(isAllExpand);
         mGradeInfo.setIsExpands(isAllExpand);
-        mGradeListAdapter.notifyDataSetChanged();
+        mGradeListAdapter.notifyDataSetChanged();*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -169,28 +167,49 @@ public class GradeActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     @Override
     public void onRefresh() {
-        getGrade();
+        mGradePresenter.loadData();
     }
 
-    public void showSuccessBanner() {
+
+    @Override
+    public void showSuccessMessage(String msg) {
         SnackbarUtil.ShortSnackbar(
                 mGradeListRecycleList,
-                "获取成绩成功",
+                msg,
                 SnackbarUtil.Confirm
         ).show();
     }
 
-    public void showFailBannner() {
+    @Override
+    public void showInfoMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mGradeListRecycleList,
+                msg,
+                SnackbarUtil.Info
+        ).show();
+    }
+
+    @Override
+    public void showFailMessage(String msg) {
         SnackbarUtil.LongSnackbar(
                 mGradeListRecycleList,
-                "获取成绩失败",
+                msg,
                 SnackbarUtil.Alert
         ).setAction("再次获取", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRefreshGradeLayout.setRefreshing(true);
-                getGrade();
             }
         }).show();
+    }
+
+    @Override
+    public void showFresh(boolean isShow) {
+        mRefreshGradeLayout.setRefreshing(isShow);
+    }
+
+    @Override
+    public void setData(List<SemesterGrade> semesterGrades) {
+        mGradeListAdapter.setSemesterGrades(semesterGrades);
+        mGradeListAdapter.notifyDataSetChanged();
     }
 }

@@ -5,7 +5,7 @@ import io.realm.RealmObject;
 /**
  * Created by daidaijie on 2016/9/11.
  */
-public class Semester extends RealmObject{
+public class    Semester extends RealmObject{
 
     private long startWeekTime;
 

@@ -45,11 +45,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/gradeListRecycleList"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
+            </android.support.v7.widget.RecyclerView>
 
             <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
                 android:id="@+id/header"
@@ -193,17 +193,6 @@
 
                 </android.support.v7.widget.CardView>
             </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
-
-            <TextView
-                android:id="@+id/emptyTextView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingTop="32dp"
-                android:text="暂无成绩信息"
-                android:textColor="@color/defaultTextColor"
-                android:textSize="20sp"
-                android:visibility="visible"/>
         </FrameLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 

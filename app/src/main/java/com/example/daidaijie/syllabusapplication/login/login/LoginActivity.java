@@ -11,10 +11,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.main.MainActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.UserLogin;
-import com.example.daidaijie.syllabusapplication.user.UserComponent;
+import com.example.daidaijie.syllabusapplication.main.MainActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 
@@ -99,7 +98,6 @@ public class LoginActivity extends BaseActivity implements LoginContract.view, V
 
     @Override
     public void toMainView() {
-        UserComponent.buildInstance(mAppComponent);
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         this.finish();

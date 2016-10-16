@@ -28,7 +28,6 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.EmailWebActivity;
 import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
-import com.example.daidaijie.syllabusapplication.activity.GradeActivity;
 import com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity;
 import com.example.daidaijie.syllabusapplication.activity.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.activity.STUCircleActivity;
@@ -38,6 +37,7 @@ import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.grade.GradeActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryActivity;
@@ -45,6 +45,7 @@ import com.example.daidaijie.syllabusapplication.takeout.mainMenu.TakeOutActivit
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;
+import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
 import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
@@ -103,9 +104,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     @Inject
     MainPresenter mMainPresenter;
 
-    @Inject
     LinkagePicker picker;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +142,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
         setOnItemClick();
 
         DaggerMainComponent.builder()
-                .userComponent(UserComponent.getINSTANCE())
+                .userComponent(UserComponent.buildInstance(mAppComponent))
                 .mainModule(new MainModule(this, this))
                 .build().inject(this);
 
@@ -240,13 +239,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
             startActivity(intent);
             this.finish();
         } else if (id == R.id.nav_change_semester) {
-            picker.show();
-            picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
-                @Override
-                public void onPicked(String first, String second, String third) {
-                    mMainPresenter.setCurrentSemester(new Semester(first, second));
-                }
-            });
+            mMainPresenter.showSemesterSelect();
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -286,7 +279,19 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
 
     @Override
     public void showInfoMessage(String msg) {
-        SnackbarUtil.ShortSnackbar(mCoordinatorLayout,msg,SnackbarUtil.Info).show();
+        SnackbarUtil.ShortSnackbar(mCoordinatorLayout, msg, SnackbarUtil.Info).show();
+    }
+
+    @Override
+    public void setCurrentSemester(Semester semester) {
+        picker = SelectSemesterBuilder.newSelectSemesterPicker(this, semester);
+        picker.show();
+        picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
+            @Override
+            public void onPicked(String first, String second, String third) {
+                mMainPresenter.setCurrentSemester(new Semester(first, second));
+            }
+        });
     }
 
     private void setOnItemClick() {

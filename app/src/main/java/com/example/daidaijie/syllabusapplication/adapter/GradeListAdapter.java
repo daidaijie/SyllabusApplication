@@ -11,12 +11,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
+import com.example.daidaijie.syllabusapplication.bean.GradeBean;
+import com.example.daidaijie.syllabusapplication.bean.SemesterGrade;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.RealmList;
 
 /**
  * Created by daidaijie on 2016/8/20.
@@ -25,19 +27,19 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
 
     private Activity mActivity;
 
-    private GradeInfo mGradeInfo;
+    private List<SemesterGrade> mSemesterGrades;
 
-    public GradeListAdapter(Activity activity, GradeInfo gradeInfo) {
+    public GradeListAdapter(Activity activity, List<SemesterGrade> semesterGrades) {
         mActivity = activity;
-        mGradeInfo = gradeInfo;
+        mSemesterGrades = semesterGrades;
     }
 
-    public GradeInfo getGradeInfo() {
-        return mGradeInfo;
+    public List<SemesterGrade> getSemesterGrades() {
+        return mSemesterGrades;
     }
 
-    public void setGradeInfo(GradeInfo gradeInfo) {
-        mGradeInfo = gradeInfo;
+    public void setSemesterGrades(List<SemesterGrade> semesterGrades) {
+        mSemesterGrades = semesterGrades;
     }
 
     @Override
@@ -50,17 +52,17 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        position = getItemCount() - position - 1;
-        List<GradeInfo.GradeBean> gradeBeen = mGradeInfo.getGRADES().get(position);
-        final boolean[] isExtend = {mGradeInfo.isExpands.get(position)};
+        SemesterGrade semesterGrade = mSemesterGrades.get(position);
+        RealmList<GradeBean> gradeBeen = semesterGrade.getGradeBeen();
+//        final boolean[] isExtend = {mGradeInfo.isExpands.get(position)};
         if (gradeBeen.size() != 0) {
-            GradeInfo.GradeBean firstGradeBean = gradeBeen.get(0);
+            GradeBean firstGradeBean = gradeBeen.get(0);
             holder.mSemesterTextView.setText(
                     firstGradeBean.getYears() + " " + firstGradeBean.getSemester());
 
             holder.mSumNumTextView.setText(gradeBeen.size() + "");
-            holder.mSumCreditTextView.setText(String.format("%.1f", mGradeInfo.getSumCredit(position)));
-            holder.mSumGpaTextView.setText(String.format("%.2f", mGradeInfo.getSumGpa(position)));
+            holder.mSumCreditTextView.setText(String.format("%.1f", semesterGrade.getCredit()));
+            holder.mSumGpaTextView.setText(String.format("%.2f", semesterGrade.getGpa()));
 
 
             holder.mGradeLinearLayout.removeAllViews();
@@ -79,7 +81,7 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                     mGradeTextView.setText(Html.fromHtml("<b>成绩</b>"));
                     mCreditTextView.setText(Html.fromHtml("<b>学分</b>"));
                 } else {
-                    GradeInfo.GradeBean gradeBean = gradeBeen.get(i - 1);
+                    GradeBean gradeBean = gradeBeen.get(i - 1);
                     mGradeNameTextView.setText(gradeBean.getTrueName());
                     mGradeTextView.setText(gradeBean.getClass_grade());
                     mCreditTextView.setText(gradeBean.getClass_credit());
@@ -88,15 +90,15 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                 holder.mGradeLinearLayout.addView(view);
             }
 
-            if (isExtend[0]) {
+            /*if (isExtend[0]) {
                 holder.mExtendCardView.setRotation(0.0f);
                 holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
             } else {
                 holder.mExtendCardView.setRotation(180.0f);
                 holder.mGradeLinearLayout.setVisibility(View.GONE);
-            }
+            }*/
 
-            final int finalPosition = position;
+           /* final int finalPosition = position;
             holder.mExtendCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -110,17 +112,17 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                     isExtend[0] = !isExtend[0];
                     mGradeInfo.isExpands.set(finalPosition, isExtend[0]);
                 }
-            });
+            });*/
         }
 
     }
 
     @Override
     public int getItemCount() {
-        if (mGradeInfo == null || mGradeInfo.getGRADES() == null) {
+        if (mSemesterGrades == null) {
             return 0;
         }
-        return mGradeInfo.getGRADES().size();
+        return mSemesterGrades.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

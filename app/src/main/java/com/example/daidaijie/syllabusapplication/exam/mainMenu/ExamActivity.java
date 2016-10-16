@@ -40,8 +40,12 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
     @Inject
     ExamPresenter mExamPresenter;
 
+    public static final String EXTRA_IS_LOADED = ExamActivity.class.getCanonicalName() + ".isLoaded";
+
+    boolean isLoaded;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         mToolbar.setTitle("");
@@ -65,6 +69,10 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
         mRefreshExamLayout.post(new Runnable() {
             @Override
             public void run() {
+                if (savedInstanceState != null) {
+                    isLoaded = savedInstanceState.getBoolean(EXTRA_IS_LOADED, false);
+                    mExamPresenter.setIsLoaded(isLoaded);
+                }
                 mExamPresenter.start();
             }
         });
@@ -81,6 +89,12 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
                 });
             }
         }, 0, 1000 * 30);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(EXTRA_IS_LOADED, isLoaded);
     }
 
     @Override
@@ -102,7 +116,7 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
     @Override
     public void showSuccessMessage(String msg) {
         SnackbarUtil.ShortSnackbar(
-                mExamListRecycleList,
+                mTitleTextView,
                 msg,
                 SnackbarUtil.Confirm
         ).show();
@@ -111,7 +125,7 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
     @Override
     public void showInfoMessage(String msg) {
         SnackbarUtil.ShortSnackbar(
-                mExamListRecycleList,
+                mTitleTextView,
                 msg,
                 SnackbarUtil.Info
         ).show();
@@ -120,7 +134,7 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
     @Override
     public void showFailMessage(String msg) {
         SnackbarUtil.LongSnackbar(
-                mExamListRecycleList, msg, SnackbarUtil.Alert
+                mTitleTextView, msg, SnackbarUtil.Alert
         ).setAction("再次获取", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,8 +144,13 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
     }
 
     @Override
-    public void showLoading(boolean isShow) {
+    public void showFresh(boolean isShow) {
         mRefreshExamLayout.setRefreshing(isShow);
+    }
+
+    @Override
+    public void setIsLoaded(boolean isLoaded) {
+        this.isLoaded = isLoaded;
     }
 
     @Override

@@ -52,7 +52,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         ThemeModel.getInstance().colorPrimaryDark = typedValue.data;
         setContentView(getContentView());
 
-
         ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

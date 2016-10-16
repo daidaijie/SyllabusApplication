@@ -76,4 +76,9 @@ public class MainPresenter implements MainContract.presenter {
         mView.showSemester(semester);
         mView.showInfoMessage("已切换到" + semester.getYearString() + " " + semester.getSeasonString());
     }
+
+    @Override
+    public void showSemesterSelect() {
+        mView.setCurrentSemester(mILoginModel.getCurrentSemester());
+    }
 }
