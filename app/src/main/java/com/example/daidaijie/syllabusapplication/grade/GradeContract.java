@@ -2,6 +2,7 @@ package com.example.daidaijie.syllabusapplication.grade;
 
 import com.example.daidaijie.syllabusapplication.BasePresenter;
 import com.example.daidaijie.syllabusapplication.BaseView;
+import com.example.daidaijie.syllabusapplication.bean.GradeStore;
 import com.example.daidaijie.syllabusapplication.bean.SemesterGrade;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface GradeContract {
         void showFresh(boolean isShow);
 
         void setData(List<SemesterGrade> semesterGrades);
+
+        void setHeader(GradeStore gradeStore);
     }
 
 }

@@ -29,6 +29,28 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
 
     private List<SemesterGrade> mSemesterGrades;
 
+    public interface OnExpandChangeListener {
+        void onExpandChange(int position, boolean isExpand);
+    }
+
+    OnExpandChangeListener mChangeListener;
+
+    public Activity getActivity() {
+        return mActivity;
+    }
+
+    public void setActivity(Activity activity) {
+        mActivity = activity;
+    }
+
+    public OnExpandChangeListener getChangeListener() {
+        return mChangeListener;
+    }
+
+    public void setChangeListener(OnExpandChangeListener changeListener) {
+        mChangeListener = changeListener;
+    }
+
     public GradeListAdapter(Activity activity, List<SemesterGrade> semesterGrades) {
         mActivity = activity;
         mSemesterGrades = semesterGrades;
@@ -50,9 +72,39 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
         return new ViewHolder(view);
     }
 
+    public void setAllIsExpand(boolean isExpand) {
+        for (SemesterGrade grades : mSemesterGrades) {
+            grades.setExpand(isExpand);
+        }
+        this.notifyDataSetChanged();
+    }
+
+    public boolean getAllIsExpand() {
+        boolean isExpand = true;
+        for (SemesterGrade grades : mSemesterGrades) {
+            if (!grades.getExpand()) {
+                isExpand = false;
+                break;
+            }
+        }
+        return isExpand;
+    }
+
+    public boolean getAllNotExpand() {
+        boolean isNotExpand = true;
+        for (SemesterGrade grades : mSemesterGrades) {
+            if (grades.getExpand()) {
+                isNotExpand = false;
+                break;
+            }
+        }
+        return isNotExpand;
+    }
+
+
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
-        SemesterGrade semesterGrade = mSemesterGrades.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final SemesterGrade semesterGrade = mSemesterGrades.get(position);
         RealmList<GradeBean> gradeBeen = semesterGrade.getGradeBeen();
 //        final boolean[] isExtend = {mGradeInfo.isExpands.get(position)};
         if (gradeBeen.size() != 0) {
@@ -90,29 +142,31 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                 holder.mGradeLinearLayout.addView(view);
             }
 
-            /*if (isExtend[0]) {
+            if (semesterGrade.getExpand()) {
                 holder.mExtendCardView.setRotation(0.0f);
                 holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
             } else {
                 holder.mExtendCardView.setRotation(180.0f);
                 holder.mGradeLinearLayout.setVisibility(View.GONE);
-            }*/
+            }
 
-           /* final int finalPosition = position;
+            final int finalPosition = position;
             holder.mExtendCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isExtend[0]) {
+                    if (semesterGrade.getExpand()) {
                         holder.mExtendCardView.setRotation(180.0f);
                         holder.mGradeLinearLayout.setVisibility(View.GONE);
                     } else {
                         holder.mExtendCardView.setRotation(0.0f);
                         holder.mGradeLinearLayout.setVisibility(View.VISIBLE);
                     }
-                    isExtend[0] = !isExtend[0];
-                    mGradeInfo.isExpands.set(finalPosition, isExtend[0]);
+                    semesterGrade.setExpand(!semesterGrade.getExpand());
+                    if (mChangeListener != null) {
+                        mChangeListener.onExpandChange(position, semesterGrade.getExpand());
+                    }
                 }
-            });*/
+            });
         }
 
     }

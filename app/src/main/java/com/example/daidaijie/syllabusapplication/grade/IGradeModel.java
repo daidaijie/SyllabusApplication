@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.grade;
 
+import com.example.daidaijie.syllabusapplication.bean.GradeStore;
 import com.example.daidaijie.syllabusapplication.bean.SemesterGrade;
 
 import java.util.List;
@@ -12,11 +13,11 @@ import rx.Observable;
 
 public interface IGradeModel {
 
-    Observable<List<SemesterGrade>> getGradeStoreListFromMemory();
+    Observable<GradeStore> getGradeStoreListFromMemory();
 
-    Observable<List<SemesterGrade>> getGradeStoreListFromDisk();
+    Observable<GradeStore> getGradeStoreListFromDisk();
 
-    Observable<List<SemesterGrade>> getGradeStoreListFromNet();
+    Observable<GradeStore> getGradeStoreListFromNet();
 
-    Observable<List<SemesterGrade>> getGradeStoreListFromCache();
+    Observable<GradeStore> getGradeStoreListFromCache();
 }

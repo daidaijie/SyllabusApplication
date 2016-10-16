@@ -15,7 +15,7 @@ import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.GradeListAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
-import com.example.daidaijie.syllabusapplication.bean.GradeInfo;
+import com.example.daidaijie.syllabusapplication.bean.GradeStore;
 import com.example.daidaijie.syllabusapplication.bean.SemesterGrade;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class GradeActivity extends BaseActivity implements GradeContract.view, SwipeRefreshLayout.OnRefreshListener {
+public class GradeActivity extends BaseActivity implements GradeContract.view, SwipeRefreshLayout.OnRefreshListener, GradeListAdapter.OnExpandChangeListener {
 
     public static final String TAG = "GradeActivity";
 
@@ -47,13 +47,9 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
     @BindView(R.id.sumGpaTextView)
     TextView mSumGpaTextView;
 
-    private GradeInfo mGradeInfo;
-
     private GradeListAdapter mGradeListAdapter;
 
     private MenuItem mExpandMenuItem;
-
-    private boolean isAllExpand;
 
     @Inject
     GradePresenter mGradePresenter;
@@ -73,7 +69,7 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
                 .build().inject(this);
 
         mGradeListAdapter = new GradeListAdapter(this, null);
-
+        mGradeListAdapter.setChangeListener(this);
         mGradeListRecycleList.setLayoutManager(new LinearLayoutManager(this));
         mGradeListRecycleList.setAdapter(mGradeListAdapter);
 
@@ -81,7 +77,6 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
         setupSwipeRefreshLayout(mRefreshGradeLayout);
 
         mHeader.attachTo(mGradeListRecycleList);
-        setHeader();
 
         mRefreshGradeLayout.post(new Runnable() {
             @Override
@@ -90,47 +85,19 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
             }
         });
 
-        isAllExpand = false;
-
     }
 
-    private void getGrade() {
-        /*GradeApi gradeApi = RetrofitUtil.getDefault().create(GradeApi.class);
-        gradeApi.getGrade(User.getInstance().getAccount(), User.getInstance().getPassword())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<GradeInfo>() {
-                    @Override
-                    public void onCompleted() {
-                        showSuccessBanner();
-                        mRefreshGradeLayout.setRefreshing(false);
-                        mGradeInfo.trimList();
-                        setExpandMenu(isAllExpand);
-                        mGradeInfo.setIsExpands(isAllExpand);
-                        mGradeListAdapter.setGradeInfo(mGradeInfo);
-                        mGradeListAdapter.notifyDataSetChanged();
-                        setHeader();
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        showFailBannner();
-                        mRefreshGradeLayout.setRefreshing(false);
-                    }
-
-                    @Override
-                    public void onNext(GradeInfo gradeInfo) {
-                        mGradeInfo = gradeInfo;
-                    }
-                });*/
-    }
-
-    private void setHeader() {
-        if (mGradeInfo != null) {
-            mSumCreditTextView.setText(String.format("%.1f", mGradeInfo.getAllCredit()));
-            mSumNumTextView.setText(mGradeInfo.getAllSize() + "");
-            mSumGpaTextView.setText(String.format("%.2f", mGradeInfo.getAllGpa()));
-
+    @Override
+    public void setHeader(GradeStore gradeStore) {
+        if (gradeStore != null) {
+            mSumCreditTextView.setText(String.format("%.1f", gradeStore.getCredit()));
+            mSumNumTextView.setText(gradeStore.getSize() + "");
+            mSumGpaTextView.setText(String.format("%.2f", gradeStore.getGpa()));
+        } else {
+            mSumCreditTextView.setText(String.format("%.1f", 0f));
+            mSumNumTextView.setText("0");
+            mSumGpaTextView.setText(String.format("%.2f", 0f));
         }
     }
 
@@ -144,14 +111,19 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*if (mGradeInfo == null) {
-            return true;
+        int id = item.getItemId();
+        if (id == R.id.action_expand) {
+            if (mGradeListAdapter.getSemesterGrades() == null ||
+                    mGradeListAdapter.getSemesterGrades().size() == 0) {
+                return true;
+            }
+
+            boolean isAllNotExpand = mGradeListAdapter.getAllNotExpand();
+            mGradeListAdapter.setAllIsExpand(isAllNotExpand);
+            setExpandMenu(isAllNotExpand);
+            mGradeListAdapter.notifyDataSetChanged();
         }
 
-        isAllExpand = !isAllExpand;
-        setExpandMenu(isAllExpand);
-        mGradeInfo.setIsExpands(isAllExpand);
-        mGradeListAdapter.notifyDataSetChanged();*/
 
         return super.onOptionsItemSelected(item);
     }
@@ -198,6 +170,7 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
         ).setAction("再次获取", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mGradePresenter.loadData();
             }
         }).show();
     }
@@ -211,5 +184,13 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
     public void setData(List<SemesterGrade> semesterGrades) {
         mGradeListAdapter.setSemesterGrades(semesterGrades);
         mGradeListAdapter.notifyDataSetChanged();
+        boolean isAllNotExpand = mGradeListAdapter.getAllNotExpand();
+        setExpandMenu(!isAllNotExpand);
+    }
+
+    @Override
+    public void onExpandChange(int position, boolean isExpand) {
+        boolean isAllNotExpanded = mGradeListAdapter.getAllNotExpand();
+        setExpandMenu(!isAllNotExpanded);
     }
 }

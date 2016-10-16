@@ -42,26 +42,21 @@ public class GradeModel implements IGradeModel {
     }
 
     @Override
-    public Observable<List<SemesterGrade>> getGradeStoreListFromMemory() {
-        return Observable.create(new Observable.OnSubscribe<List<SemesterGrade>>() {
+    public Observable<GradeStore> getGradeStoreListFromMemory() {
+        return Observable.create(new Observable.OnSubscribe<GradeStore>() {
             @Override
-            public void call(Subscriber<? super List<SemesterGrade>> subscriber) {
-                if (mGradeStore == null) {
-                    subscriber.onNext(null);
-                } else {
-                    subscriber.onNext(mGradeStore.getSemesterGrades().subList(0,
-                            mGradeStore.getSemesterGrades().size()));
-                }
+            public void call(Subscriber<? super GradeStore> subscriber) {
+                subscriber.onNext(mGradeStore);
                 subscriber.onCompleted();
             }
         });
     }
 
     @Override
-    public Observable<List<SemesterGrade>> getGradeStoreListFromDisk() {
-        return Observable.create(new Observable.OnSubscribe<List<SemesterGrade>>() {
+    public Observable<GradeStore> getGradeStoreListFromDisk() {
+        return Observable.create(new Observable.OnSubscribe<GradeStore>() {
             @Override
-            public void call(Subscriber<? super List<SemesterGrade>> subscriber) {
+            public void call(Subscriber<? super GradeStore> subscriber) {
                 mRealm.executeTransaction(new Realm.Transaction() {
                     @Override
                     public void execute(Realm realm) {
@@ -71,30 +66,24 @@ public class GradeModel implements IGradeModel {
                         }
                     }
                 });
-                if (mGradeStore == null) {
-                    subscriber.onNext(null);
-                } else {
-                    subscriber.onNext(mGradeStore.getSemesterGrades().subList(0,
-                            mGradeStore.getSemesterGrades().size()));
-                }
+                subscriber.onNext(mGradeStore);
                 subscriber.onCompleted();
             }
         }).subscribeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Observable<List<SemesterGrade>> getGradeStoreListFromNet() {
+    public Observable<GradeStore> getGradeStoreListFromNet() {
         return mGradeApi.getGrade(mILoginModel.getUserLogin().getUsername(),
                 mILoginModel.getUserLogin().getPassword())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .flatMap(new Func1<HttpResult<GradeInfo>, Observable<List<SemesterGrade>>>() {
+                .flatMap(new Func1<HttpResult<GradeInfo>, Observable<GradeStore>>() {
                     @Override
-                    public Observable<List<SemesterGrade>> call(HttpResult<GradeInfo> gradeInfoHttpResult) {
+                    public Observable<GradeStore> call(HttpResult<GradeInfo> gradeInfoHttpResult) {
                         if (RetrofitUtil.isSuccessful(gradeInfoHttpResult)) {
                             convertGradeInfo(gradeInfoHttpResult.getData());
-                            return Observable.just(mGradeStore.getSemesterGrades().subList(0,
-                                    mGradeStore.getSemesterGrades().size()));
+                            return Observable.just(mGradeStore);
                         } else if (gradeInfoHttpResult.getCode() == 200) {
                             return Observable.just(null);
                         }
@@ -104,17 +93,22 @@ public class GradeModel implements IGradeModel {
     }
 
     @Override
-    public Observable<List<SemesterGrade>> getGradeStoreListFromCache() {
+    public Observable<GradeStore> getGradeStoreListFromCache() {
         return Observable.concat(getGradeStoreListFromMemory(), getGradeStoreListFromDisk())
-                .takeFirst(new Func1<List<SemesterGrade>, Boolean>() {
+                .takeFirst(new Func1<GradeStore, Boolean>() {
                     @Override
-                    public Boolean call(List<SemesterGrade> semesterGrades) {
-                        return semesterGrades != null;
+                    public Boolean call(GradeStore gradeStore) {
+                        if (gradeStore != null) {
+                            setExpand(gradeStore);
+                            gradeStore.converMap();
+                        }
+                        return gradeStore != null;
                     }
                 }).observeOn(AndroidSchedulers.mainThread());
     }
 
     private void convertGradeInfo(GradeInfo gradeInfo) {
+        GradeStore cacheGradeStore = mGradeStore;
         mGradeStore = new GradeStore();
         List<List<GradeBean>> gLists = gradeInfo.getGRADES();
         RealmList<SemesterGrade> mSemesterGrades = new RealmList<>();
@@ -135,6 +129,18 @@ public class GradeModel implements IGradeModel {
         mGradeStore.setSize(gradeInfo.getAllSize());
         mGradeStore.setGpa(gradeInfo.getGPA());
         mGradeStore.setCredit(gradeInfo.getAllCredit());
+
+        if (cacheGradeStore != null && cacheGradeStore.getSemesterGradeMap() != null) {
+            for (SemesterGrade grades : mGradeStore.getSemesterGrades()) {
+                SemesterGrade cacheGrade = cacheGradeStore.getSemesterGradeMap().get(grades.getSemester());
+                if (cacheGrade != null) {
+                    grades.setExpand(cacheGrade.getExpand());
+                }
+            }
+        }
+        setExpand(mGradeStore);
+        mGradeStore.converMap();
+
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -142,5 +148,13 @@ public class GradeModel implements IGradeModel {
                 realm.copyToRealm(mGradeStore);
             }
         });
+    }
+
+    private void setExpand(GradeStore gradeStore) {
+        for (SemesterGrade grades : gradeStore.getSemesterGrades()) {
+            if (grades.getExpand() == null) {
+                grades.setExpand(false);
+            }
+        }
     }
 }

@@ -1,10 +1,7 @@
 package com.example.daidaijie.syllabusapplication.grade;
 
-import com.example.daidaijie.syllabusapplication.bean.SemesterGrade;
+import com.example.daidaijie.syllabusapplication.bean.GradeStore;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,20 +27,23 @@ public class GradePresenter implements GradeContract.presenter {
     @Override
     public void start() {
         mIGradeModel.getGradeStoreListFromCache()
-                .subscribe(new Subscriber<List<SemesterGrade>>() {
+                .subscribe(new Subscriber<GradeStore>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
+
                     }
 
                     @Override
-                    public void onNext(List<SemesterGrade> semesterGrades) {
-                        if (semesterGrades != null) {
-                            mView.setData(semesterGrades);
+                    public void onNext(GradeStore gradeStore) {
+                        if (gradeStore != null) {
+                            mView.setData(gradeStore.getSemesterGrades());
                         }
+                        mView.setHeader(gradeStore);
                     }
                 });
         loadData();
@@ -51,37 +51,37 @@ public class GradePresenter implements GradeContract.presenter {
 
     @Override
     public void loadData() {
-        try {
-            mView.showFresh(true);
-            mIGradeModel.getGradeStoreListFromNet()
-                    .subscribe(new Subscriber<List<SemesterGrade>>() {
-                        @Override
-                        public void onCompleted() {
-                            mView.showFresh(false);
-                        }
+        mView.showFresh(true);
+        mIGradeModel.getGradeStoreListFromNet()
+                .subscribe(new Subscriber<GradeStore>() {
+                    @Override
+                    public void onCompleted() {
+                        mView.showFresh(false);
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            mView.showFresh(false);
-                            if (e.getMessage() == null) {
-                                mView.showFailMessage("获取失败");
-                            } else {
-                                mView.showFailMessage(e.getMessage().toUpperCase());
-                            }
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.showFresh(false);
+                        if (e.getMessage() == null) {
+                            mView.showFailMessage("获取失败");
+                        } else {
+                            mView.showFailMessage(e.getMessage().toUpperCase());
                         }
+                    }
 
-                        @Override
-                        public void onNext(List<SemesterGrade> semesterGrades) {
-                            if (semesterGrades != null) {
-                                mView.setData(semesterGrades);
-                                mView.showSuccessMessage("更新成功");
-                            } else {
+                    @Override
+                    public void onNext(GradeStore gradeStore) {
+                        if (gradeStore != null) {
+                            if (gradeStore.getSemesterGrades().size() == 0) {
                                 mView.showInfoMessage("暂无成绩");
+                            } else {
+                                mView.setData(gradeStore.getSemesterGrades());
+                                mView.showSuccessMessage("更新成功");
                             }
                         }
-                    });
-        } catch (Exception e) {
-            LoggerUtil.e("crash", e.getMessage());
-        }
+                        mView.setHeader(gradeStore);
+                    }
+                });
+
     }
 }
