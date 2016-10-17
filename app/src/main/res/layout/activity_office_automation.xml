@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.OfficeAutomationActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
             android:paddingTop="8dp">
 
             <EditText
-                android:id="@+id/pageEditext"
+                android:id="@+id/pageEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/sendLayout"
@@ -123,7 +123,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="48dp"
         android:layout_marginRight="24dp"
         android:src="@drawable/ic_search"
         app:backgroundTint="@color/colorAccent"

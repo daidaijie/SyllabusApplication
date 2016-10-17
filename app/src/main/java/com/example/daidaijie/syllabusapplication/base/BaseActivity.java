@@ -140,4 +140,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
+    public void setupTitleBar(Toolbar toolbar) {
+        toolbar.setTitle("");
+        setupToolbar(toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 }

@@ -12,7 +12,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/8/23.
  */
-public interface OAService {
+public interface OAApi {
 
     @FormUrlEncoded
     @POST("GetDoc")

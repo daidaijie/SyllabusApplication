@@ -5,4 +5,5 @@ package com.example.daidaijie.syllabusapplication.event;
  */
 public class OAClearEvent {
 
+
 }

@@ -65,9 +65,12 @@ public class LoginPresenter implements LoginContract.presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        LoggerUtil.printStack(e);
                         mView.showLoading(false);
-                        mView.showFailMessage(e.getMessage().toUpperCase());
+                        if (e.getMessage() == null) {
+                            mView.showFailMessage("获取失败");
+                        } else {
+                            mView.showFailMessage(e.getMessage().toUpperCase());
+                        }
                     }
 
                     @Override

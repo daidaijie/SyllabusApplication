@@ -79,17 +79,6 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
         this.notifyDataSetChanged();
     }
 
-    public boolean getAllIsExpand() {
-        boolean isExpand = true;
-        for (SemesterGrade grades : mSemesterGrades) {
-            if (!grades.getExpand()) {
-                isExpand = false;
-                break;
-            }
-        }
-        return isExpand;
-    }
-
     public boolean getAllNotExpand() {
         boolean isNotExpand = true;
         for (SemesterGrade grades : mSemesterGrades) {
@@ -106,7 +95,6 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final SemesterGrade semesterGrade = mSemesterGrades.get(position);
         RealmList<GradeBean> gradeBeen = semesterGrade.getGradeBeen();
-//        final boolean[] isExtend = {mGradeInfo.isExpands.get(position)};
         if (gradeBeen.size() != 0) {
             GradeBean firstGradeBean = gradeBeen.get(0);
             holder.mSemesterTextView.setText(
@@ -150,7 +138,6 @@ public class GradeListAdapter extends RecyclerView.Adapter<GradeListAdapter.View
                 holder.mGradeLinearLayout.setVisibility(View.GONE);
             }
 
-            final int finalPosition = position;
             holder.mExtendCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

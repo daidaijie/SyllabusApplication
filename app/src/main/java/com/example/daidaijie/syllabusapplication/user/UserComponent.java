@@ -4,6 +4,7 @@ import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.DefaultRealm;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.OARetrofit;
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerUser;
@@ -39,6 +40,10 @@ public abstract class UserComponent {
 
     @SchoolRetrofit
     public abstract Retrofit getSchoolRetrofit();
+
+    @OARetrofit
+    public abstract Retrofit getOARetrofit();
+
 
     @DefaultRealm
     public abstract Realm getDefaultRealm();

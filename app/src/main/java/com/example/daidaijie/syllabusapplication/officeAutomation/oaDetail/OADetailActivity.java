@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.officeAutomation.oaDetail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
-import com.example.daidaijie.syllabusapplication.model.OAModel;
+import com.example.daidaijie.syllabusapplication.officeAutomation.OAUtil;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.retrofitApi.OAFileService;
 import com.example.daidaijie.syllabusapplication.util.AssetUtil;
@@ -185,7 +185,8 @@ public class OADetailActivity extends BaseActivity {
     }
 
     private void getOAFile() {
-        OAFileService oaFileService = OAModel.getInstance().mRetrofit.create(OAFileService.class);
+/*
+        OAFileService oaFileService = OAUtil.getInstance().mRetrofit.create(OAFileService.class);
         oaFileService.getOAFileList("undefined", mOABean.getID())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -205,6 +206,7 @@ public class OADetailActivity extends BaseActivity {
                         mOAFileBeen = oaFileBeen;
                     }
                 });
+*/
     }
 
     private void showOAFile() {

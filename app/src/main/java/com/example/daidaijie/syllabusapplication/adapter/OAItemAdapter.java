@@ -9,10 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.OADetailActivity;
+import com.example.daidaijie.syllabusapplication.officeAutomation.oaDetail.OADetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OARead;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
@@ -21,8 +20,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 /**
  * Created by daidaijie on 2016/8/23.
@@ -33,6 +30,19 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
 
     List<OABean> mOABeen;
 
+    public interface OnOAReadListener {
+        void onOARead(OABean oaBean, int position);
+    }
+
+    OnOAReadListener mOnOAReadListener;
+
+    public OnOAReadListener getOnOAReadListener() {
+        return mOnOAReadListener;
+    }
+
+    public void setOnOAReadListener(OnOAReadListener onOAReadListener) {
+        mOnOAReadListener = onOAReadListener;
+    }
 
     public OAItemAdapter(Activity activity, List<OABean> OABeen) {
         mActivity = activity;
@@ -56,7 +66,7 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final OABean oaBean = mOABeen.get(position);
 
         if (oaBean.isRead()) {
@@ -76,18 +86,20 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
         holder.mOaCardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
-                mActivity.startActivity(intent);
-                if (oaBean.isRead()) {
-                    return;
+                if (mOnOAReadListener != null) {
+                    mOnOAReadListener.onOARead(oaBean, position);
                 }
+                /*Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
+                mActivity.startActivity(intent);*/
+                /*if (oaBean.isRead()) {
+                    return;
+                }*/
 
-                OARead.save(oaBean);
+               /* OARead.save(oaBean);
                 oaBean.setRead(true);
                 holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
                 holder.mOASubTextView.setTextColor(ColorUtils.setAlphaComponent(
-                        mActivity.getResources().getColor(R.color.defaultTextColor), 136));
+                        mActivity.getResources().getColor(R.color.defaultTextColor), 136));*/
             }
         });
     }

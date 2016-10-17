@@ -84,7 +84,6 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
                 mGradePresenter.start();
             }
         });
-
     }
 
 

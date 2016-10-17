@@ -9,27 +9,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/libRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
-
-            <TextView
-                android:id="@+id/emptyTextView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:paddingTop="32dp"
-                android:textColor="@color/defaultTextColor"
-                android:textSize="20sp"
-                android:visibility="visible"/>
-        </FrameLayout>
+            </android.support.v7.widget.RecyclerView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

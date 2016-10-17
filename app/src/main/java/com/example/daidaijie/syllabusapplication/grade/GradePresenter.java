@@ -78,6 +78,8 @@ public class GradePresenter implements GradeContract.presenter {
                                 mView.setData(gradeStore.getSemesterGrades());
                                 mView.showSuccessMessage("更新成功");
                             }
+                        }else {
+                            mView.showInfoMessage("暂无成绩");
                         }
                         mView.setHeader(gradeStore);
                     }

@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -21,9 +21,11 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAPagerAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
-import com.example.daidaijie.syllabusapplication.bean.OARead;
+import com.example.daidaijie.syllabusapplication.bean.OASearchBean;
 import com.example.daidaijie.syllabusapplication.event.OAClearEvent;
-import com.example.daidaijie.syllabusapplication.model.OAModel;
+import com.example.daidaijie.syllabusapplication.officeAutomation.OAModelComponent;
+import com.example.daidaijie.syllabusapplication.officeAutomation.OAUtil;
+import com.example.daidaijie.syllabusapplication.user.UserComponent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,8 +33,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import info.hoang8f.widget.FButton;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class OfficeAutomationActivity extends BaseActivity {
 
@@ -51,9 +51,6 @@ public class OfficeAutomationActivity extends BaseActivity {
     Button selectSubButton;
     EditText keywordEditText;
 
-    int selectID;
-
-    String inputKeyword;
     @BindView(R.id.showPageSelectImageView)
     ImageView mShowPageSelectImageView;
     @BindView(R.id.pageTitleLayout)
@@ -62,23 +59,34 @@ public class OfficeAutomationActivity extends BaseActivity {
     FloatingActionButton mSearchButton;
     @BindView(R.id.titleLayout)
     LinearLayout mTitleLayout;
-    @BindView(R.id.pageEditext)
-    EditText mPageEditext;
+    @BindView(R.id.pageEditText)
+    EditText mPageEditText;
     @BindView(R.id.gotoPageButton)
     FButton mGotoPageButton;
+
+    OASearchBean mOASearchBean;
+
+    OAUtil mOAUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
+        /**
+         * 初始化
+         */
+        mOAUtil = new OAUtil();
+        mOASearchBean = new OASearchBean();
+        OAModelComponent.destory();
+        OAModelComponent.newInstance(UserComponent.getINSTANCE(), mOASearchBean);
         mOAPagerAdapter = new OAPagerAdapter(getSupportFragmentManager());
         mContentViewPager.setAdapter(mOAPagerAdapter);
+        mContentViewPager.setCurrentItem(0);
+
+
         mContentViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -89,26 +97,22 @@ public class OfficeAutomationActivity extends BaseActivity {
         });
         mTitleTextView.setText("第 " + (mContentViewPager.getCurrentItem() + 1) + " 页");
 
-        OAModel.getInstance().subID = 0;
-        selectID = 0;
-        OAModel.getInstance().keyword = "";
-        inputKeyword = "";
 
         mSubDialog = new AlertDialog.Builder(this)
                 .setTitle("选择部门")
-                .setItems(OAModel.getInstance().getSubCompanysString(), new DialogInterface.OnClickListener() {
+                .setItems(mOAUtil.getSubCompanysString(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         selectSubButton.setText(
-                                OAModel.getInstance().mSubCompanies.get(which).getSUBCOMPANYNAME());
-                        selectID = OAModel.getInstance().mSubCompanies.get(which).getID();
+                                mOAUtil.mSubCompanies.get(which).getSUBCOMPANYNAME());
+                        mOASearchBean.setSubcompanyId(mOAUtil.mSubCompanies.get(which).getID());
                     }
                 })
                 .create();
 
         View view = getLayoutInflater().inflate(R.layout.dialog_search_oa, null, false);
         selectSubButton = (Button) view.findViewById(R.id.subButtonCard);
-        selectSubButton.setText(OAModel.getInstance().mSubCompanies.get(0).getSUBCOMPANYNAME());
+        selectSubButton.setText(mOAUtil.mSubCompanies.get(mOASearchBean.getSubcompanyId()).getSUBCOMPANYNAME());
         selectSubButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,14 +127,14 @@ public class OfficeAutomationActivity extends BaseActivity {
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        selectID = OAModel.getInstance().subID;
-                        keywordEditText.setText(OAModel.getInstance().keyword);
+                        keywordEditText.setText(mOASearchBean.getKeyword());
                     }
                 }).setPositiveButton("搜索", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        OAModel.getInstance().subID = selectID;
-                        OAModel.getInstance().keyword = keywordEditText.getText().toString().trim();
+                        mOASearchBean.setKeyword(keywordEditText.getText().toString().trim());
+                        OAModelComponent.destory();
+                        OAModelComponent.newInstance(UserComponent.getINSTANCE(), mOASearchBean);
                         mOAPagerAdapter = new OAPagerAdapter(getSupportFragmentManager());
                         mContentViewPager.setAdapter(mOAPagerAdapter);
                         mContentViewPager.setCurrentItem(0);
@@ -153,11 +157,11 @@ public class OfficeAutomationActivity extends BaseActivity {
         mGotoPageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mPageEditext.getText().toString().isEmpty()) {
-                    mPageEditext.setError("输入不能为空");
+                if (mPageEditText.getText().toString().isEmpty()) {
+                    mPageEditText.setError("输入不能为空");
                     return;
                 }
-                mContentViewPager.setCurrentItem(Integer.parseInt(mPageEditext.getText().toString()) - 1);
+                mContentViewPager.setCurrentItem(Integer.parseInt(mPageEditText.getText().toString()) - 1);
             }
         });
     }
@@ -190,13 +194,8 @@ public class OfficeAutomationActivity extends BaseActivity {
                     .setNegativeButton("确定", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            Realm realm = Realm.getDefaultInstance();
-                            realm.beginTransaction();
-                            RealmResults<OARead> results = realm.where(OARead.class).findAll();
-                            results.deleteAllFromRealm();
-                            realm.commitTransaction();
+                            OAModelComponent.getINSTANCE().getOAModel().clearRead();
                             EventBus.getDefault().post(new OAClearEvent());
-                            realm.close();
                         }
                     })
                     .create();
@@ -213,7 +212,7 @@ public class OfficeAutomationActivity extends BaseActivity {
 
     private void showPage(boolean isShow) {
         if (isShow) {
-            mPageEditext.setText("");
+            mPageEditText.setText("");
             mPageTitleLayout.setVisibility(View.VISIBLE);
             mShowPageSelectImageView.setRotation(180.0f);
         } else {
@@ -222,12 +221,16 @@ public class OfficeAutomationActivity extends BaseActivity {
         }
     }
 
-
     private void animateIn(FloatingActionButton button) {
         button.setVisibility(View.VISIBLE);
         ViewCompat.animate(button).translationY(0)
                 .setInterpolator(new FastOutSlowInInterpolator()).withLayer().setListener(null)
                 .start();
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OAModelComponent.destory();
     }
 }
