@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.util;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -23,21 +24,29 @@ import rx.Subscriber;
  * Created by daidaijie on 2016/9/13.
  */
 public class BitmapSaveUtil {
-    public static void saveFile(final Bitmap bm, final String fileName, final String path, final int quality) {
+
+    public interface OnSaveFileCallBack {
+        void onSuccess();
+
+        void onFail(String msg);
+    }
+
+
+    public static void saveFile(final Bitmap bm, final String fileName, final String path, final int quality, final OnSaveFileCallBack onSaveFileCallBack) {
 
         RxPermissions.getInstance(App.getContext())
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
-                        Toast.makeText(App.getContext(), "保存成功", Toast.LENGTH_SHORT).show();
+                        onSaveFileCallBack.onSuccess();
                         bm.recycle();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        e.printStackTrace();
-                        Toast.makeText(App.getContext(), "授权失败", Toast.LENGTH_SHORT).show();
+                        onSaveFileCallBack.onFail("授权失败");
+
                     }
 
                     @Override
@@ -67,7 +76,7 @@ public class BitmapSaveUtil {
                             intent.setData(uri);
                             App.getContext().sendBroadcast(intent);
                         } else {
-                            Toast.makeText(App.getContext(), "授权失败", Toast.LENGTH_SHORT).show();
+                            onSaveFileCallBack.onFail("截图失败");
                         }
                     }
                 });

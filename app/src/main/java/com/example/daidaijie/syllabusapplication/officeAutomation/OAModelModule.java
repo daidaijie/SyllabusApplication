@@ -4,6 +4,7 @@ import com.example.daidaijie.syllabusapplication.bean.OASearchBean;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.OARetrofit;
 import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
+import com.example.daidaijie.syllabusapplication.retrofitApi.OAApi;
 
 import dagger.Module;
 import dagger.Provides;
@@ -34,6 +35,6 @@ public class OAModelModule {
     IOAModel provideOAModel(@OARetrofit Retrofit retrofit,
                             OASearchBean searchBean,
                             @UserRealm Realm realm) {
-        return new OAModel(retrofit, searchBean, realm);
+        return new OAModel(retrofit.create(OAApi.class), searchBean, realm);
     }
 }

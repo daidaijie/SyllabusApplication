@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
 
 import java.util.List;
 
@@ -22,6 +23,11 @@ public interface OAApi {
                                        @Field("row_start") int start,
                                        @Field("row_end") int end
     );
+
+    @FormUrlEncoded
+    @POST("GetDOCAccessory")
+    Observable<List<OAFileBean>> getOAFileList(@Field("token") String token,
+                                               @Field("docid") int docid);
 
 
 }

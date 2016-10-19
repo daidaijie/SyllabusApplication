@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.officeAutomation;
 
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
 import com.example.daidaijie.syllabusapplication.bean.OARead;
 import com.example.daidaijie.syllabusapplication.bean.OASearchBean;
 import com.example.daidaijie.syllabusapplication.retrofitApi.OAApi;
@@ -33,8 +34,8 @@ public class OAModel implements IOAModel {
 
     Realm mRealm;
 
-    public OAModel(Retrofit retrofit, OASearchBean OASearchBean, Realm realm) {
-        mOAApi = retrofit.create(OAApi.class);
+    public OAModel(OAApi OAApi, OASearchBean OASearchBean, Realm realm) {
+        mOAApi = OAApi;
         mOASearchBean = OASearchBean;
         mRealm = realm;
         mOAListMap = new HashMap<>();
@@ -133,5 +134,17 @@ public class OAModel implements IOAModel {
                 mRealm.where(OARead.class).findAll().deleteAllFromRealm();
             }
         });
+    }
+
+    @Override
+    public OABean getOABean(int position, int subPosition) {
+        return mOAListMap.get(position).get(subPosition);
+    }
+
+    @Override
+    public Observable<List<OAFileBean>> getOAFileListFromNet(int id) {
+        return mOAApi.getOAFileList("undefined", id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

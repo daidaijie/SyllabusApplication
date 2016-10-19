@@ -41,6 +41,7 @@ public class OfficeAutomationFragment extends BaseFragment implements OAContract
     @Inject
     OAPresenter mOAPresenter;
 
+    int mPosition;
 
     private static final String EXTRA_POS = OfficeAutomationFragment.class.getCanonicalName()
             + ".Position";
@@ -60,9 +61,10 @@ public class OfficeAutomationFragment extends BaseFragment implements OAContract
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
         Bundle args = getArguments();
+        mPosition = args.getInt(EXTRA_POS, 0);
         DaggerOAComponent.builder()
                 .oAModelComponent(OAModelComponent.getINSTANCE())
-                .oAModule(new OAModule(this, args.getInt(EXTRA_POS, 0)))
+                .oAModule(new OAModule(this, mPosition))
                 .build().inject(this);
     }
 
@@ -103,7 +105,6 @@ public class OfficeAutomationFragment extends BaseFragment implements OAContract
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void clear(OAClearEvent oaClearEvent) {
-
         mOAItemAdapter.notifyDataSetChanged();
     }
 
@@ -131,7 +132,7 @@ public class OfficeAutomationFragment extends BaseFragment implements OAContract
         mOAItemAdapter.setOnOAReadListener(new OAItemAdapter.OnOAReadListener() {
             @Override
             public void onOARead(OABean oaBean, int position) {
-                Intent intent = OADetailActivity.getIntent(mActivity, oaBean);
+                Intent intent = OADetailActivity.getIntent(mActivity, mPosition, position);
                 startActivity(intent);
                 mOAPresenter.setRead(oaBean, true);
                 mOAItemAdapter.notifyItemChanged(position);

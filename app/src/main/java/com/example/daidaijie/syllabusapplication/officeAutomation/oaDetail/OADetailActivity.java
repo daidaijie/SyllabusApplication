@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Picture;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.view.Menu;
@@ -19,31 +18,22 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
-import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
-import com.example.daidaijie.syllabusapplication.officeAutomation.OAUtil;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.retrofitApi.OAFileService;
-import com.example.daidaijie.syllabusapplication.util.AssetUtil;
-import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.example.daidaijie.syllabusapplication.officeAutomation.OAModelComponent;
+import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OAModule;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.List;
 
-import butterknife.BindView;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import javax.inject.Inject;
 
-public class OADetailActivity extends BaseActivity {
+import butterknife.BindView;
+
+public class OADetailActivity extends BaseActivity implements OADetailContract.view {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -54,82 +44,32 @@ public class OADetailActivity extends BaseActivity {
     @BindView(R.id.oaFileLinearLayout)
     LinearLayout mOaFileLinearLayout;
 
-    OABean mOABean;
+    public static final String EXTRA_OA_POSITION = OADetailActivity.class.getCanonicalName() + ".position";
+    public static final String EXTRA_OA_SUB_POSITION = OADetailActivity.class.getCanonicalName() + ".subPosition";
 
-    List<OAFileBean> mOAFileBeen;
-
-    String oaContent = "";
-
-    String label = "!@#$%^&*";
-
-    public static final String EXTRA_OABEAN = "com.example.daidaijie.syllabusapplication.activity" +
-            ".OADetailActivity.OABean";
-
+    @Inject
+    OADetailPresenter mOADetailPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
         mOAWebView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mOAWebView.getSettings().setLoadWithOverviewMode(true);
         mOAWebView.getSettings().setUseWideViewPort(true);
         mOAWebView.getSettings().setJavaScriptEnabled(true);
-
-        mOABean = (OABean) getIntent().getSerializableExtra(EXTRA_OABEAN);
-        oaContent = mOABean.getDOCCONTENT();
-        int index = oaContent.indexOf(label) + label.length();
-        oaContent = oaContent.substring(index);
-
-        Document contentDoc = Jsoup.parse(oaContent);
-
-        Elements imgs = contentDoc.select("img");
-        for (Element img : imgs) {
-            imgs.attr("style", "width: 100%;");
-        }
-
-        Elements tables = contentDoc.getElementsByTag("table");
-        for (Element table : tables) {
-            table.attr("width", "100%");
-            table.attr("style", "width: 100%;");
-            Elements trs = table.select("tr");
-            for (Element tr : trs) {
-                Elements tds = tr.select("td");
-                double witdh = 100.0 / tds.size();
-                for (Element td : tds) {
-                    String colspan = td.attr("colspan");
-                    if (colspan.trim().isEmpty()) {
-                        td.attr("style", "width:" + witdh + "%");
-                    } else {
-                        td.attr("style", "width:" + witdh * Integer.parseInt(colspan) + "%");
-                    }
-                    td.removeAttr("nowrap");
-//                    Toast.makeText(OADetailActivity.this, td.attr("style"), Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-
-
-        Document doc = Jsoup.parse(AssetUtil.getStringFromPath("index.html"));
-        Element div = doc.select("div#div_doc").first();
-        div.append(contentDoc.toString());
-        div = doc.select("div#div_accessory").first();
-
-        if (mOABean.getACCESSORYCOUNT() == 0) {
-            div.remove();
-        } else {
-        }
-
         mOAWebView.setDrawingCacheEnabled(true);
-        mOAWebView.loadData(doc.toString(), "text/html; charset=UTF-8", null);
 
-        if (mOABean.getACCESSORYCOUNT() != 0) {
-            getOAFile();
-        }
+        DaggerOADetailComponent.builder()
+                .oAModelComponent(OAModelComponent.getINSTANCE())
+                .oADetailModule(new OADetailModule(this,
+                        getIntent().getIntExtra(EXTRA_OA_POSITION, 0),
+                        getIntent().getIntExtra(EXTRA_OA_SUB_POSITION, 0)))
+                .build().inject(this);
+
+        mOADetailPresenter.start();
     }
 
     @Override
@@ -137,9 +77,10 @@ public class OADetailActivity extends BaseActivity {
         return R.layout.activity_oadetail;
     }
 
-    public static Intent getIntent(Context context, OABean oaBean) {
+    public static Intent getIntent(Context context, int position, int subPosition) {
         Intent intent = new Intent(context, OADetailActivity.class);
-        intent.putExtra(EXTRA_OABEAN, oaBean);
+        intent.putExtra(EXTRA_OA_POSITION, position);
+        intent.putExtra(EXTRA_OA_SUB_POSITION, subPosition);
         return intent;
     }
 
@@ -154,29 +95,19 @@ public class OADetailActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_screenshot) {
-            screenShot();
+            mOADetailPresenter.screenShot();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void screenShot() {
-        Bitmap webViewScreen = captureScreen();
-        if (webViewScreen != null) {
-            BitmapSaveUtil.saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", "STUOA", 80);
-        } else {
-            Toast.makeText(OADetailActivity.this, "图片太大，无法截取", Toast.LENGTH_SHORT).show();
-        }
-    }
 
-
-    private Bitmap captureScreen() {
+    @Override
+    public Bitmap captureScreen() {
         Picture picture = mOAWebView.capturePicture();
-
         try {
             Bitmap b = Bitmap.createBitmap(picture.getWidth(),
                     picture.getHeight(), Bitmap.Config.ARGB_4444);
             Canvas c = new Canvas(b);
-
             picture.draw(c);
             return b;
         } catch (OutOfMemoryError error) {
@@ -184,32 +115,13 @@ public class OADetailActivity extends BaseActivity {
         }
     }
 
-    private void getOAFile() {
-/*
-        OAFileService oaFileService = OAUtil.getInstance().mRetrofit.create(OAFileService.class);
-        oaFileService.getOAFileList("undefined", mOABean.getID())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<OAFileBean>>() {
-                    @Override
-                    public void onCompleted() {
-                        showOAFile();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onNext(List<OAFileBean> oaFileBeen) {
-                        mOAFileBeen = oaFileBeen;
-                    }
-                });
-*/
+    @Override
+    public void showView(String webViewString) {
+        mOAWebView.loadData(webViewString, "text/html; charset=UTF-8", null);
     }
 
-    private void showOAFile() {
+    @Override
+    public void showOAFile(List<OAFileBean> oaFileBeen) {
         mOaFileLinearLayout.removeAllViews();
 
         View tipView = getLayoutInflater().inflate(R.layout.item_oa_file, null, false);
@@ -221,8 +133,8 @@ public class OADetailActivity extends BaseActivity {
         mTipTextView.setTextColor(ThemeModel.getInstance().colorPrimary);
         mOaFileLinearLayout.addView(tipView);
 
-        for (int i = 0; i < mOAFileBeen.size(); i++) {
-            final OAFileBean oaFileBean = mOAFileBeen.get(i);
+        for (int i = 0; i < oaFileBeen.size(); i++) {
+            final OAFileBean oaFileBean = oaFileBeen.get(i);
             View view = getLayoutInflater().inflate(R.layout.item_oa_file, null, false);
             TextView mFileNameTextView = (TextView) view.findViewById(R.id.fileNameTextView);
             Button mDownFileButton = (Button) view.findViewById(R.id.downFileButton);
@@ -235,13 +147,39 @@ public class OADetailActivity extends BaseActivity {
                     String url = "http://notes.stu.edu.cn/weaver/weaver.file.FileDownload?fileid="
                             + oaFileBean.getIMAGEFILEID() + "&download=1&requestid=0";
                     Intent intent = new Intent(Intent.ACTION_VIEW);
-
                     intent.setData(Uri.parse(url));
-
                     startActivity(intent);
                 }
             });
             mOaFileLinearLayout.addView(view);
         }
     }
+
+    @Override
+    public void showFileLoadFailMessage(String msg) {
+        SnackbarUtil.LongSnackbar(
+                mOAWebView, msg, SnackbarUtil.Alert
+        ).setAction("再次获取", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mOADetailPresenter.loadData();
+            }
+        }).show();
+    }
+
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mOAWebView, msg, SnackbarUtil.Alert
+        ).show();
+    }
+
+    @Override
+    public void showSuccessMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mOAWebView, msg, SnackbarUtil.Confirm
+        ).show();
+
+    }
+
 }

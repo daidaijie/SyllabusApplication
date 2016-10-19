@@ -28,8 +28,6 @@ public class LibraryFragment extends BaseFragment implements LibraryContract.vie
 
     @BindView(R.id.libRecyclerView)
     RecyclerView mLibRecyclerView;
-    @BindView(R.id.emptyTextView)
-    TextView mEmptyTextView;
     @BindView(R.id.refreshLibLayout)
     SwipeRefreshLayout mRefreshLibLayout;
 
@@ -99,9 +97,6 @@ public class LibraryFragment extends BaseFragment implements LibraryContract.vie
 
     @Override
     public void showFailMessage(String msg) {
-        if (mLibItemAdapter.getItemCount() == 0) {
-            mEmptyTextView.setText("查找不到对应图书");
-        }
         SnackbarUtil.ShortSnackbar(
                 mLibRecyclerView, "获取失败", SnackbarUtil.Alert
         ).show();

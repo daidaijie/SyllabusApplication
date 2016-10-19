@@ -1,5 +1,12 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.example.daidaijie.syllabusapplication.util.AssetUtil;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.Serializable;
 
 /**
@@ -149,5 +156,54 @@ public class OABean implements Serializable {
 
     public void setRead(boolean read) {
         isRead = read;
+    }
+
+    public String getContent() {
+
+        String oaContent = "";
+        String label = "!@#$%^&*";
+
+        oaContent = getDOCCONTENT();
+        int index = oaContent.indexOf(label) + label.length();
+        oaContent = oaContent.substring(index);
+
+        Document contentDoc = Jsoup.parse(oaContent);
+
+        Elements imgs = contentDoc.select("img");
+        for (Element img : imgs) {
+            imgs.attr("style", "width: 100%;");
+        }
+
+        Elements tables = contentDoc.getElementsByTag("table");
+        for (Element table : tables) {
+            table.attr("width", "100%");
+            table.attr("style", "width: 100%;");
+            Elements trs = table.select("tr");
+            for (Element tr : trs) {
+                Elements tds = tr.select("td");
+                double witdh = 100.0 / tds.size();
+                for (Element td : tds) {
+                    String colspan = td.attr("colspan");
+                    if (colspan.trim().isEmpty()) {
+                        td.attr("style", "width:" + witdh + "%");
+                    } else {
+                        td.attr("style", "width:" + witdh * Integer.parseInt(colspan) + "%");
+                    }
+                    td.removeAttr("nowrap");
+                }
+            }
+        }
+
+        Document doc = Jsoup.parse(AssetUtil.getStringFromPath("index.html"));
+        Element div = doc.select("div#div_doc").first();
+        div.append(contentDoc.toString());
+        div = doc.select("div#div_accessory").first();
+
+        if (getACCESSORYCOUNT() == 0) {
+            div.remove();
+        } else {
+        }
+
+        return doc.toString();
     }
 }

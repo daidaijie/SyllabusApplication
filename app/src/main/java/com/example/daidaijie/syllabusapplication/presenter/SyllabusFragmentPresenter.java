@@ -206,7 +206,17 @@ public class SyllabusFragmentPresenter extends ISyllabusFragmentPresenter {
 
 
         BitmapSaveUtil.saveFile(
-                result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100);
+                result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100, new BitmapSaveUtil.OnSaveFileCallBack() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onFail(String msg) {
+
+                    }
+                });
 
         wallPaperBitmap.recycle();
         syllabusBitmap.recycle();

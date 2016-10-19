@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.officeAutomation;
 
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
 
 import java.util.List;
 
@@ -18,7 +19,11 @@ public interface IOAModel {
 
     Observable<List<OABean>> getLibraryFromNet(int position);
 
-    void setRead(OABean oaBean,boolean isRead);
+    void setRead(OABean oaBean, boolean isRead);
 
     void clearRead();
+
+    OABean getOABean(int position, int subPosition);
+
+    Observable<List<OAFileBean>> getOAFileListFromNet(int id);
 }
