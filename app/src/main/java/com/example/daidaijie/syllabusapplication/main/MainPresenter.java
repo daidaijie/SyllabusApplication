@@ -47,13 +47,7 @@ public class MainPresenter implements MainContract.presenter {
         mView.showSemester(mILoginModel.getCurrentSemester());
 
         //先使用缓存的
-        mBannerModel.getBannerFromCache()
-                .subscribe(new Action1<BannerBeen>() {
-                    @Override
-                    public void call(BannerBeen bannerBeen) {
-                        mView.setBannerPage(bannerBeen.getBanners());
-                    }
-                });
+        mView.setBannerPage(mBannerModel.getBannerNormal().getBanners());
 
         //再获取网络的
         mBannerModel.getBannerFromNet()

@@ -100,4 +100,20 @@ public class BannerModel implements IBannerModel {
                     }
                 }).observeOn(AndroidSchedulers.mainThread());
     }
+
+    @Override
+    public BannerBeen getBannerNormal() {
+        if (mBannerBeen != null) return mBannerBeen;
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<BannerBeen> results = realm.where(BannerBeen.class).findAll();
+                if (results.size() != 0) {
+                    mBannerBeen = realm.copyFromRealm(results.first());
+                    mBannerBeen.convertBanners();
+                }
+            }
+        });
+        return mBannerBeen;
+    }
 }

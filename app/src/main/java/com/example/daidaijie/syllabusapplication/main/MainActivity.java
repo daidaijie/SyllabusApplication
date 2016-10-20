@@ -248,8 +248,8 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
 
     @Override
     public void setBannerPage(List<Banner> banners) {
-        if (banners.size() == 0) {
-            return;
+        if (banners == null || banners.size() == 0) {
+            return ;
         }
         mConvenientBanner.setPages(new CBViewHolderCreator() {
             @Override

@@ -17,4 +17,6 @@ public interface IBannerModel {
     Observable<BannerBeen> getBannerFromNet();
 
     Observable<BannerBeen> getBannerFromCache();
+
+    BannerBeen getBannerNormal();
 }
