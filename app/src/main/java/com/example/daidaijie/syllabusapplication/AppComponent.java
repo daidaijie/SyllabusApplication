@@ -46,4 +46,6 @@ public interface AppComponent {
 
     @DefaultGson
     Gson getDefaultGson();
+
+    IConfigModel getConfigModel();
 }

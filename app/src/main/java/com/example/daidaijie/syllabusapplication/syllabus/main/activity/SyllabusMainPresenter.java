@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.IConfigModel;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
@@ -40,15 +41,19 @@ public class SyllabusMainPresenter implements SyllabusContract.presenter {
 
     private ILoginModel mILoginModel;
 
+    private IConfigModel mIConfigModel;
+
     private SyllabusContract.view mView;
 
     @Inject
     @PerActivity
     public SyllabusMainPresenter(@LoginUser IUserModel IUserModel,
                                  ILoginModel ILoginModel,
+                                 IConfigModel configModel,
                                  SyllabusContract.view view) {
         mIUserModel = IUserModel;
         mILoginModel = ILoginModel;
+        mIConfigModel = configModel;
         mView = view;
     }
 
@@ -65,7 +70,7 @@ public class SyllabusMainPresenter implements SyllabusContract.presenter {
 
     @Override
     public void loadWallpaper() {
-        String wallPaperName = mILoginModel.getWallPaper();
+        String wallPaperName = mIConfigModel.getWallPaper();
         Bitmap wallPaperBitmap;
         if (!wallPaperName.isEmpty() && new File(wallPaperName).exists()) {
             wallPaperBitmap = BitmapFactory.decodeFile(wallPaperName);
@@ -109,7 +114,7 @@ public class SyllabusMainPresenter implements SyllabusContract.presenter {
                         .subscribe(new Action1<File>() {
                             @Override
                             public void call(File file) {
-                                mILoginModel.setWallPaper(file.toString());
+                                mIConfigModel.setWallPaper(file.toString());
                                 mView.setBackground(BitmapFactory.decodeFile(file.toString()));
                                 mView.showSuccessMessage("设置壁纸成功");
                             }

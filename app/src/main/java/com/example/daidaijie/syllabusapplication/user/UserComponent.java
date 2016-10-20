@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.user;
 
 import com.example.daidaijie.syllabusapplication.AppComponent;
+import com.example.daidaijie.syllabusapplication.IConfigModel;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.DefaultRealm;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
@@ -55,5 +56,7 @@ public abstract class UserComponent {
 
     @LoginUser
     public abstract IUserModel getLoginUserModel();
+
+    public abstract IConfigModel getConfigModel();
 
 }

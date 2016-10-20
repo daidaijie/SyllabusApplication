@@ -207,6 +207,53 @@ public class ClassmateListActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        mClassmateRecyclerView.removeAllViews();//防止滑动太快，组件还没来得及出来无法显示
     }
+
+    /*public void getStudentList() {
+        Retrofit retrofit = RetrofitUtil.getDefault();
+        LessonDetailService lessonDetailService = retrofit.create(LessonDetailService.class);
+        lessonDetailService.getLessonDetail(lesson.getId())
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<LessonDetailInfo, Observable<StudentInfo>>() {
+                    @Override
+                    public Observable<StudentInfo> call(LessonDetailInfo lessonDetailInfo) {
+                        return Observable.from(lessonDetailInfo.getClass_info().getStudent());
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<StudentInfo>() {
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        mStudentInfos = new ArrayList<>();
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        mLoadingDialog.dismiss();
+                        Intent intent = ClassmateListActivity.getIntent(
+                                LessonInfoActivity.this, mStudentInfos, lesson.getBgColor()
+                        );
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LessonInfoActivity.this,
+                                    mToolbarLayout, "tool_bar");
+                            startActivity(intent, options.toBundle());
+                        } else {
+                            startActivity(intent);
+                        }
+                        singleLock = false;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mLoadingDialog.dismiss();
+                        singleLock = false;
+                    }
+
+                    @Override
+                    public void onNext(StudentInfo studentInfo) {
+                        mStudentInfos.add(studentInfo);
+                    }
+                });
+    }*/
 }

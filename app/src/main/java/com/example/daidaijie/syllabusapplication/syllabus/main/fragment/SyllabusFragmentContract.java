@@ -2,13 +2,9 @@ package com.example.daidaijie.syllabusapplication.syllabus.main.fragment;
 
 import android.graphics.Bitmap;
 
-import com.example.daidaijie.syllabusapplication.BasePresenter;
-import com.example.daidaijie.syllabusapplication.BaseView;
-import com.example.daidaijie.syllabusapplication.bean.Semester;
+import com.example.daidaijie.syllabusapplication.base.BasePresenter;
+import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
-import com.example.daidaijie.syllabusapplication.bean.UserInfo;
-
-import org.joda.time.LocalDate;
 
 /**
  * Created by daidaijie on 2016/10/8.
@@ -31,6 +27,8 @@ public interface SyllabusFragmentContract {
         void showFailMessage(String msg);
 
         void showSuccessMessage(String msg);
+
+        void loadData();
     }
 
     interface OnSyllabusFragmentCallBack {

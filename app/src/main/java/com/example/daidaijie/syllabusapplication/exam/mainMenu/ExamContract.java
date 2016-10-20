@@ -1,9 +1,8 @@
 package com.example.daidaijie.syllabusapplication.exam.mainMenu;
 
-import com.example.daidaijie.syllabusapplication.BasePresenter;
-import com.example.daidaijie.syllabusapplication.BaseView;
+import com.example.daidaijie.syllabusapplication.base.BasePresenter;
+import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
-import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 
 import java.util.List;
 

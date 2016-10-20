@@ -18,4 +18,6 @@ public interface ISyllabusModel {
 
     Observable<Syllabus> getSyllabusFromCache();
 
+    Syllabus getSyllabusNormal();
+
 }

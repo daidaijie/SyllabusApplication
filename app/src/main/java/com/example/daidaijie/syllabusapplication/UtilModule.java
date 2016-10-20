@@ -34,4 +34,10 @@ public class UtilModule {
                 .enableComplexMapKeySerialization()
                 .create();
     }
+
+    @Provides
+    @Singleton
+    IConfigModel provideConfigModel() {
+        return new ConfigModel();
+    }
 }

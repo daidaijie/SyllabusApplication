@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import java.io.Serializable;
+
 import io.realm.RealmObject;
 
 /**

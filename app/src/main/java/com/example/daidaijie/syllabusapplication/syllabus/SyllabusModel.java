@@ -41,7 +41,7 @@ public class SyllabusModel implements ISyllabusModel {
                 subscriber.onNext(mSyllabus);
                 subscriber.onCompleted();
             }
-        });
+        }).subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -69,7 +69,7 @@ public class SyllabusModel implements ISyllabusModel {
                 subscriber.onNext(mSyllabus);
                 subscriber.onCompleted();
             }
-        });
+        }).subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
@@ -98,8 +98,34 @@ public class SyllabusModel implements ISyllabusModel {
                     public Boolean call(Syllabus syllabus) {
                         return syllabus != null;
                     }
-                }).observeOn(AndroidSchedulers.mainThread());
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public Syllabus getSyllabusNormal() {
+        if (mSyllabus != null) {
+            return mSyllabus;
+        }
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Syllabus> results =
+                        realm.where(Syllabus.class)
+                                .equalTo("mSemester.season", mILoginModel.getCurrentSemester().getSeason())
+                                .equalTo("mSemester.startYear", mILoginModel.getCurrentSemester().getStartYear())
+                                .findAll();
+                if (results.size() > 0) {
+                    mSyllabus = realm.copyFromRealm(results.first());
+                }
+
+            }
+        });
+        if (mSyllabus != null) {
+            mSyllabus.loadLessonFromDisk(mRealm);
+        }
+        return mSyllabus;
+    }
 
 }

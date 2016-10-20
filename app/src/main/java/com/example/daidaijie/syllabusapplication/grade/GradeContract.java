@@ -1,7 +1,7 @@
 package com.example.daidaijie.syllabusapplication.grade;
 
-import com.example.daidaijie.syllabusapplication.BasePresenter;
-import com.example.daidaijie.syllabusapplication.BaseView;
+import com.example.daidaijie.syllabusapplication.base.BasePresenter;
+import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.GradeStore;
 import com.example.daidaijie.syllabusapplication.bean.SemesterGrade;
 

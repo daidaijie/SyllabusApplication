@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.daidaijie.syllabusapplication;
+package com.example.daidaijie.syllabusapplication.base;
 
 public interface BaseView<T> {
 

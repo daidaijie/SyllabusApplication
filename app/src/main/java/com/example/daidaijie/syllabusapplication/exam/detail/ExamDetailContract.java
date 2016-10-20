@@ -2,8 +2,8 @@ package com.example.daidaijie.syllabusapplication.exam.detail;
 
 import android.text.SpannableStringBuilder;
 
-import com.example.daidaijie.syllabusapplication.BasePresenter;
-import com.example.daidaijie.syllabusapplication.BaseView;
+import com.example.daidaijie.syllabusapplication.base.BasePresenter;
+import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 
 /**

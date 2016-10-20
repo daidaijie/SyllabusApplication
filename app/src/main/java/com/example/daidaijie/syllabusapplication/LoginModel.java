@@ -1,8 +1,5 @@
 package com.example.daidaijie.syllabusapplication;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
@@ -28,7 +25,6 @@ public class LoginModel implements ILoginModel {
 
     Semester mCurrentSemester;
 
-    private String EXTRA_WALL_PAPER = LoginModel.class.getCanonicalName() + ".wallPaper";
 
     public LoginModel(Realm realm) {
         mRealm = realm;
@@ -191,18 +187,5 @@ public class LoginModel implements ILoginModel {
         });
     }
 
-    @Override
-    public String getWallPaper() {
-        SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("wallPaper", Context.MODE_PRIVATE);
-        return sharedPreferences.getString(EXTRA_WALL_PAPER, "");
 
-    }
-
-    @Override
-    public void setWallPaper(String filePath) {
-        SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("wallPaper", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(EXTRA_WALL_PAPER, filePath);
-        editor.commit();
-    }
 }

@@ -29,7 +29,5 @@ public interface ILoginModel {
 
     void updateSemester(Semester semester);
 
-    String getWallPaper();
 
-    void setWallPaper(String filePath);
 }

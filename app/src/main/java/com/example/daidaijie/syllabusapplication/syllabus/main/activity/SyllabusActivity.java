@@ -39,6 +39,7 @@ import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
 import com.example.daidaijie.syllabusapplication.syllabus.addlesson.AddLessonActivity;
+import com.example.daidaijie.syllabusapplication.syllabus.main.fragment.SyllabusFragment;
 import com.example.daidaijie.syllabusapplication.syllabus.main.fragment.SyllabusFragmentContract;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -55,7 +56,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 
 public class SyllabusActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
-        SyllabusContract.view, SyllabusFragmentContract.OnSyllabusFragmentCallBack {
+        SyllabusContract.view, SyllabusFragmentContract.OnSyllabusFragmentCallBack, SyllabusFragment.OnLessonClickListener {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -95,6 +96,8 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
     SyllabusMainPresenter mSyllabusMainPresenter;
 
     private boolean singleLock = false;
+
+    public static final int REQUEST_LESSON_DETAIL = 200;
 
     @Override
     protected int getContentView() {
@@ -148,6 +151,7 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
                 .userComponent(UserComponent.getINSTANCE())
                 .syllabusMainModule(new SyllabusMainModule(this))
                 .build().inject(this);
+
         mSyllabusMainPresenter.start();
 
     }
@@ -302,18 +306,10 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
         semesterTextView.setText(semester.getYearString() + " " + semester.getSeasonString());
     }
 
-    public boolean isSingleLock() {
-        return singleLock;
-    }
-
-    public void setSingleLock(boolean singleLock) {
-        this.singleLock = singleLock;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 200) {
+        if (requestCode == REQUEST_LESSON_DETAIL) {
             singleLock = false;
         }
     }
@@ -378,6 +374,17 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
         if (success) {
             mSyllabusMainPresenter.loadUserInfo();
             EventBus.getDefault().post(new SyllabusEvent(mSyllabusViewPager.getCurrentItem()));
+        }
+    }
+
+    @Override
+    public boolean onLessonClick() {
+        if (singleLock) {
+            return false;
+        } else {
+            singleLock = true;
+            showSelectWeekLayout(false);
+            return true;
         }
     }
 }

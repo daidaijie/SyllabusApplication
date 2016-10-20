@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.syllabus.main.fragment;
 
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.daidaijie.syllabusapplication.R;
@@ -26,7 +26,10 @@ import com.example.daidaijie.syllabusapplication.bean.TimeGrid;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
+import com.example.daidaijie.syllabusapplication.syllabus.lessonDetail.LessonInfoActivity;
+import com.example.daidaijie.syllabusapplication.syllabus.main.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView;
 
@@ -58,6 +61,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
 
     private static final String IS_SWIPE_ENABLE = SyllabusFragment.class.getCanonicalName() + ".isSwipeEnable";
 
+    private static final String IS_LOADED = SyllabusFragment.class.getCanonicalName() + ".isLoaded";
 
     @Inject
     SyllabusFragmentPresenter mSyllabusFragmentPresenter;
@@ -69,7 +73,11 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     private int gridWidth;
     private int gridHeight;
 
+    private boolean isLoaded;
+
     private SyllabusFragmentContract.OnSyllabusFragmentCallBack mOnSyllabusFragmentCallBack;
+
+    private OnLessonClickListener mOnLessonClickListener;
 
     public static SyllabusFragment newInstance(int week) {
         SyllabusFragment fragment = new SyllabusFragment();
@@ -84,6 +92,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         super.onCreate(savedInstanceState);
         mWeek = getArguments().getInt(WEEK_DAY);
         mOnSyllabusFragmentCallBack = (SyllabusFragmentContract.OnSyllabusFragmentCallBack) mActivity;
+        mOnLessonClickListener = (OnLessonClickListener) mActivity;
     }
 
 
@@ -105,10 +114,17 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         setupSwipeRefreshLayout(mSyllabusRefreshLayout);
         mSyllabusRefreshLayout.setOnRefreshListener(this);
 
-        showDate();
         showTime();
+        showDate();
+
+        if (savedInstanceState != null) {
+            isLoaded = savedInstanceState.getBoolean(IS_LOADED);
+        } else {
+            isLoaded = false;
+        }
 
         mSyllabusFragmentPresenter.start();
+
     }
 
     @Override
@@ -126,6 +142,11 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(IS_SWIPE_ENABLE, mSyllabusRefreshLayout.isEnabled());
+        outState.putBoolean(IS_LOADED, isLoaded);
+
+        if (mWeek == 0) {
+            LoggerUtil.e("load", "" + isLoaded);
+        }
     }
 
     @Override
@@ -189,6 +210,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         }
 
     }
+
 
     @Override
     public void onLoadStart() {
@@ -273,10 +295,16 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                     final int finalSpan = span;
                     final int finalI = i;
                     final int finalJ = j;
-                    /*lessonRippleLayout.setOnClickListener(new View.OnClickListener() {
+                    lessonRippleLayout.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            final SyllabusActivity activity = (SyllabusActivity) getActivity();
+                            if (mOnLessonClickListener.onLessonClick()) {
+                                Intent intent = LessonInfoActivity.getIntent(mActivity, finalLesson.getLongID());
+                                mActivity.startActivityForResult(intent, SyllabusActivity.REQUEST_LESSON_DETAIL);
+                            }
+
+
+                            /*final SyllabusActivity activity = (SyllabusActivity) getActivity();
                             if (!activity.isSingleLock()) {
                                 activity.setSingleLock(true);
                                 activity.showSelectWeekLayout(false);
@@ -324,10 +352,10 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                                     }
                                 }
 
-                            }
+                            }*/
 
                         }
-                    });*/
+                    });
 
                 } else {
                     lessonLinearLayout.setVisibility(View.INVISIBLE);
@@ -357,6 +385,19 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                 msg,
                 SnackbarUtil.Confirm
         ).show();
+    }
+
+    @Override
+    public void loadData() {
+        if (mWeek == 0 && !isLoaded) {
+            mSyllabusRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    mSyllabusFragmentPresenter.loadData();
+                    isLoaded = true;
+                }
+            });
+        }
     }
 
     @Override
@@ -391,6 +432,10 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                     syllabusBitmap, timeBitmap, dayBitmap);
 
         }
+    }
+
+    public interface OnLessonClickListener {
+        boolean onLessonClick();
     }
 
 

@@ -6,13 +6,13 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 
 import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.IConfigModel;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
 import com.example.daidaijie.syllabusapplication.syllabus.ISyllabusModel;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
 import java.io.File;
 
@@ -31,11 +31,17 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
     SyllabusFragmentContract.view mView;
 
+    IConfigModel mIConfigModel;
+
     @Inject
     @PerFragment
-    public SyllabusFragmentPresenter(ILoginModel loginModel, ISyllabusModel ISyllabusModel, SyllabusFragmentContract.view view) {
+    public SyllabusFragmentPresenter(ILoginModel loginModel,
+                                     ISyllabusModel ISyllabusModel,
+                                     IConfigModel IConfigModel,
+                                     SyllabusFragmentContract.view view) {
         mILoginModel = loginModel;
         mISyllabusModel = ISyllabusModel;
+        mIConfigModel = IConfigModel;
         mView = view;
     }
 
@@ -50,7 +56,7 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
     @Override
     public void saveSyllabus(Bitmap syllabusBitmap, Bitmap timeBitmap, Bitmap dayBitmap) {
-        String wallPaperName = mILoginModel.getWallPaper();
+        String wallPaperName = mIConfigModel.getWallPaper();
         Bitmap wallPaperBitmap;
 
         if (!wallPaperName.isEmpty() && new File(wallPaperName).exists()) {
@@ -106,8 +112,12 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
     @Override
     public void start() {
-        mISyllabusModel.getSyllabusFromCache()
-                .subscribe(new SyllabusSubscriber(false));
+        Syllabus syllabus = mISyllabusModel.getSyllabusNormal();
+        if (syllabus != null) {
+            mView.showSyllabus(syllabus);
+        } else {
+            mView.loadData();
+        }
     }
 
     private class SyllabusSubscriber extends Subscriber<Syllabus> {
@@ -129,7 +139,6 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
         @Override
         public void onError(Throwable e) {
-            LoggerUtil.printStack(e);
             if (isShowMsg) {
                 mView.showLoading(false);
                 mView.onLoadEnd(false);
