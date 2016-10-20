@@ -31,6 +31,7 @@ import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.activity.STUCircleActivity;
+import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
 import com.example.daidaijie.syllabusapplication.syllabus.main.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.activity.ThemePickerFragment;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
@@ -240,6 +241,9 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
             this.finish();
         } else if (id == R.id.nav_change_semester) {
             mMainPresenter.showSemesterSelect();
+        } else if (id == R.id.nav_about_us) {
+            Intent intent = new Intent(this, AboutUsActivity.class);
+            startActivity(intent);
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -249,7 +253,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     @Override
     public void setBannerPage(List<Banner> banners) {
         if (banners == null || banners.size() == 0) {
-            return ;
+            return;
         }
         mConvenientBanner.setPages(new CBViewHolderCreator() {
             @Override

@@ -22,7 +22,7 @@
         <item>issn_f</item>
         <item>callno_f</item>
     </string-array>
-    
+
     <string-array name="query_lib_string">
         <item>任意字段关键词</item>
         <item>题名前方一致</item>

@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_about_us"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultLightBackground"
+    android:orientation="vertical"
+
+    tools:context="com.example.daidaijie.syllabusapplication.other.AboutUsActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="?attr/colorPrimary"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:gravity="center_vertical"
+        android:theme="@style/AppTheme.PopupOverlay"
+        app:titleTextColor="@android:color/white">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:text="关于我们"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/syllabusIconView"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                app:placeholderImage="@drawable/ic_syllabus_icon"
+                app:roundedCornerRadius="4dp"/>
+
+            <TextView
+                android:id="@+id/versionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/syllabusIconView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:text="汕大课程表 v2.0 beta"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/descTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/versionTextView"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="13dp"
+                android:background="@color/defaultDarkBackground"
+                android:gravity="left"
+                android:paddingBottom="8dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="8dp"
+                android:text="　　汕大课程表是由汕头大学三个计算机系学生共同开发的一个校园App，功能主要有查询课表、成绩、考试，OA，校园动态，图书查询，校园外卖等功能。"
+                android:textColor="@color/defaultTextColor"/>
+
+            <TextView
+                android:id="@+id/developerTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/descTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="24dp"
+                android:text="开发人员"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <LinearLayout
+                android:id="@+id/backendDeveloper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/developerTextView"
+                android:layout_marginTop="8dp"
+                android:background="@color/greyF6Color"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/backendDeveloperHeadImageView"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    app:roundedCornerRadius="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="邓晓拂(后台)"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="14sp"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="right"
+                    android:text="14xfdeng@stu.edu.cn"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/iOSDeveloper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/backendDeveloper"
+                android:background="@color/greyF6Color"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/iOSDeveloperHeadImageView"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    app:roundedCornerRadius="4dp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="王俊皓(iOS)"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="right"
+                    android:text="14jhwang@stu.edu.cn"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/androidDeveloper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iOSDeveloper"
+                android:background="@color/greyF6Color"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/androidDeveloperHeadImageView"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    app:roundedCornerRadius="4dp"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="李宇杰(Android)"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="right"
+                    android:text="13yjli3@stu.edu.cn"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/findUsTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/androidDeveloper"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="24dp"
+                android:text="合作联系"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/callTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/findUsTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:background="@color/greyF6Color"
+                android:gravity="center"
+                android:paddingBottom="8dp"
+                android:paddingLeft="24dp"
+                android:paddingRight="24dp"
+                android:paddingTop="8dp"
+                android:text="林峻峰\n电话：13411978842 / 66842\n邮箱：14jflin@stu.edu..cn"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+</LinearLayout>
