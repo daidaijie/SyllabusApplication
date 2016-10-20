@@ -22,7 +22,7 @@ public interface SyllabusFragmentContract {
         void saveSyllabus(Bitmap syllabusBitmap, Bitmap timeBitmap, Bitmap dayBitmap);
     }
 
-    interface view extends BaseView<presenter> {
+    interface view extends BaseView<presenter>, OnSyllabusFragmentCallBack {
 
         void showSyllabus(Syllabus syllabus);
 
@@ -31,5 +31,11 @@ public interface SyllabusFragmentContract {
         void showFailMessage(String msg);
 
         void showSuccessMessage(String msg);
+    }
+
+    interface OnSyllabusFragmentCallBack {
+        void onLoadStart();
+
+        void onLoadEnd(boolean success);
     }
 }

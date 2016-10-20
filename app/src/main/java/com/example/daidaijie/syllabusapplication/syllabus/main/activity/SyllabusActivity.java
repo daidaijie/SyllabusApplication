@@ -35,9 +35,11 @@ import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
+import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
 import com.example.daidaijie.syllabusapplication.syllabus.addlesson.AddLessonActivity;
+import com.example.daidaijie.syllabusapplication.syllabus.main.fragment.SyllabusFragmentContract;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
@@ -52,7 +54,8 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class SyllabusActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, SyllabusContract.view {
+public class SyllabusActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener,
+        SyllabusContract.view, SyllabusFragmentContract.OnSyllabusFragmentCallBack {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -268,13 +271,6 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
         });
     }
 
-    public void setViewPagerEnable(boolean enable) {
-        mSyllabusViewPager.setScrollable(enable);
-        if (!enable) {
-            showSelectWeekLayout(false);
-        }
-    }
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -368,5 +364,20 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
                 msg,
                 SnackbarUtil.Confirm
         ).show();
+    }
+
+    @Override
+    public void onLoadStart() {
+        mSyllabusViewPager.setScrollable(false);
+        showSelectWeekLayout(false);
+    }
+
+    @Override
+    public void onLoadEnd(boolean success) {
+        mSyllabusViewPager.setScrollable(true);
+        if (success) {
+            mSyllabusMainPresenter.loadUserInfo();
+            EventBus.getDefault().post(new SyllabusEvent(mSyllabusViewPager.getCurrentItem()));
+        }
     }
 }

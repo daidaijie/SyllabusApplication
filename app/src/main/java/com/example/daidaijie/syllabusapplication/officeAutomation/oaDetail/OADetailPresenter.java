@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
 import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
 import com.example.daidaijie.syllabusapplication.di.qualifier.position.SubPosition;
+import com.example.daidaijie.syllabusapplication.di.qualifier.position.SuperPosition;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.officeAutomation.IOAModel;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
@@ -33,7 +34,7 @@ public class OADetailPresenter implements OADetailContract.presenter {
     @Inject
     @PerActivity
     public OADetailPresenter(IOAModel IOAModel, OADetailContract.view view,
-                             @SubPosition int position, @SubPosition int subPosition) {
+                             @SuperPosition int position, @SubPosition int subPosition) {
         mIOAModel = IOAModel;
         mView = view;
         mPosition = position;

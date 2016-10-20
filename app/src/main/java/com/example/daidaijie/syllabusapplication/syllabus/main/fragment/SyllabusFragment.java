@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.example.daidaijie.syllabusapplication.R;
@@ -68,7 +69,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     private int gridWidth;
     private int gridHeight;
 
-    private OnSyllabusFragmentCallBack mOnSyllabusFragmentCallBack;
+    private SyllabusFragmentContract.OnSyllabusFragmentCallBack mOnSyllabusFragmentCallBack;
 
     public static SyllabusFragment newInstance(int week) {
         SyllabusFragment fragment = new SyllabusFragment();
@@ -82,6 +83,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mWeek = getArguments().getInt(WEEK_DAY);
+        mOnSyllabusFragmentCallBack = (SyllabusFragmentContract.OnSyllabusFragmentCallBack) mActivity;
     }
 
 
@@ -137,7 +139,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void handleUpdateSyllabus(SyllabusEvent event) {
         if (event.messageWeek != mWeek) {
-
+            mSyllabusFragmentPresenter.start();
         }
     }
 
@@ -186,6 +188,16 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
             mTimeLinearLayout.addView(timeTextView, layoutParams);
         }
 
+    }
+
+    @Override
+    public void onLoadStart() {
+        mOnSyllabusFragmentCallBack.onLoadStart();
+    }
+
+    @Override
+    public void onLoadEnd(boolean success) {
+        mOnSyllabusFragmentCallBack.onLoadEnd(success);
     }
 
     @Override
@@ -342,7 +354,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     public void showSuccessMessage(String msg) {
         SnackbarUtil.ShortSnackbar(
                 mSyllabusRootLayout,
-                "课表同步成功",
+                msg,
                 SnackbarUtil.Confirm
         ).show();
     }
@@ -371,7 +383,6 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     @Subscribe
     public void saveSyllaus(SaveSyllabusEvent saveSyllabusEvent) {
         if (saveSyllabusEvent.position == mWeek) {
-
             Bitmap syllabusBitmap = BitmapSaveUtil.getViewBitmap(mSyllabusGridLayout);
             Bitmap timeBitmap = BitmapSaveUtil.getViewBitmap(mTimeLinearLayout);
             Bitmap dayBitmap = BitmapSaveUtil.getViewBitmap(mDateLinearLayout);
@@ -382,9 +393,5 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         }
     }
 
-    public interface OnSyllabusFragmentCallBack {
-        void onLoadStart();
 
-        void onLoadEnd();
-    }
 }

@@ -10,10 +10,8 @@ import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
-import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
 
-import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -52,6 +50,17 @@ public class SyllabusMainPresenter implements SyllabusContract.presenter {
         mIUserModel = IUserModel;
         mILoginModel = ILoginModel;
         mView = view;
+    }
+
+    @Override
+    public void loadUserInfo() {
+        mIUserModel.getUserInfo()
+                .subscribe(new Action1<UserInfo>() {
+                    @Override
+                    public void call(UserInfo userInfo) {
+                        mView.showUserInfo(userInfo);
+                    }
+                });
     }
 
     @Override
@@ -102,7 +111,7 @@ public class SyllabusMainPresenter implements SyllabusContract.presenter {
                             public void call(File file) {
                                 mILoginModel.setWallPaper(file.toString());
                                 mView.setBackground(BitmapFactory.decodeFile(file.toString()));
-                                mView.showFailMessage("设置壁纸成功");
+                                mView.showSuccessMessage("设置壁纸成功");
                             }
                         });
             }
@@ -140,14 +149,7 @@ public class SyllabusMainPresenter implements SyllabusContract.presenter {
 
     @Override
     public void start() {
-        mIUserModel.getUserInfo()
-                .subscribe(new Action1<UserInfo>() {
-                    @Override
-                    public void call(UserInfo userInfo) {
-                        mView.showUserInfo(userInfo);
-                    }
-                });
-
+        loadUserInfo();
         Semester semester = mILoginModel.getCurrentSemester();
         mView.showSemester(semester);
         loadWallpaper();

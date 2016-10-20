@@ -16,6 +16,9 @@ import org.joda.time.LocalDate;
 public interface SyllabusContract {
 
     interface presenter extends BasePresenter {
+
+        void loadUserInfo();
+
         void loadWallpaper();
 
         void setWallpaper(int deviceWidth, int deviceHeight);

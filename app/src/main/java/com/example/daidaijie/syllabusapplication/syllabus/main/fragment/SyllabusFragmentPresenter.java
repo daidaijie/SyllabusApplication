@@ -6,10 +6,10 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 
 import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
-import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.syllabus.ISyllabusModel;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
@@ -27,11 +27,14 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
     ISyllabusModel mISyllabusModel;
 
+    ILoginModel mILoginModel;
+
     SyllabusFragmentContract.view mView;
 
     @Inject
     @PerFragment
-    public SyllabusFragmentPresenter(ISyllabusModel ISyllabusModel, SyllabusFragmentContract.view view) {
+    public SyllabusFragmentPresenter(ILoginModel loginModel, ISyllabusModel ISyllabusModel, SyllabusFragmentContract.view view) {
+        mILoginModel = loginModel;
         mISyllabusModel = ISyllabusModel;
         mView = view;
     }
@@ -39,6 +42,7 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
     @Override
     public void loadData() {
         mView.showLoading(true);
+        mView.onLoadStart();
         mISyllabusModel.getSyllabusFromNet()
                 .subscribe(new SyllabusSubscriber(true));
 
@@ -46,7 +50,7 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
     @Override
     public void saveSyllabus(Bitmap syllabusBitmap, Bitmap timeBitmap, Bitmap dayBitmap) {
-        String wallPaperName = User.getInstance().getWallPaperFileName();
+        String wallPaperName = mILoginModel.getWallPaper();
         Bitmap wallPaperBitmap;
 
         if (!wallPaperName.isEmpty() && new File(wallPaperName).exists()) {
@@ -84,14 +88,15 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
                 result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100, new BitmapSaveUtil.OnSaveFileCallBack() {
                     @Override
                     public void onSuccess() {
-
+                        mView.showSuccessMessage("已保存课表到图库");
                     }
 
                     @Override
                     public void onFail(String msg) {
-
+                        mView.showFailMessage(msg);
                     }
                 });
+
 
         wallPaperBitmap.recycle();
         syllabusBitmap.recycle();
@@ -116,6 +121,7 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
         @Override
         public void onCompleted() {
             if (isShowMsg) {
+                mView.onLoadEnd(true);
                 mView.showLoading(false);
                 mView.showSuccessMessage("同步成功");
             }
@@ -126,6 +132,7 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
             LoggerUtil.printStack(e);
             if (isShowMsg) {
                 mView.showLoading(false);
+                mView.onLoadEnd(false);
                 if (e.getMessage() == null) {
                     mView.showFailMessage("同步失败");
                 } else {

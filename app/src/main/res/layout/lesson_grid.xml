@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:transitionName="lesson_grid"
-        app:mrl_rippleAlpha="0.1"
-        app:mrl_rippleColor="#000000"
-        app:mrl_rippleDuration="500"
+        app:mrl_rippleAlpha="0.2"
+        app:mrl_rippleColor="#2B2B2B"
+        app:mrl_rippleDuration="200"
         app:mrl_rippleOverlay="true"
         app:mrl_rippleRoundedCorners="4dp"
         tools:targetApi="lollipop">

@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.syllabus;
 
+import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 
@@ -34,5 +35,7 @@ public abstract class SyllabusComponent {
     }
 
     public abstract ISyllabusModel getSyllabusModel();
+
+    public abstract ILoginModel getLoginModel();
 
 }

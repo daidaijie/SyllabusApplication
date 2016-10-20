@@ -200,7 +200,7 @@ public class LoginModel implements ILoginModel {
 
     @Override
     public void setWallPaper(String filePath) {
-        SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("config", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = App.getContext().getSharedPreferences("wallPaper", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(EXTRA_WALL_PAPER, filePath);
         editor.commit();
