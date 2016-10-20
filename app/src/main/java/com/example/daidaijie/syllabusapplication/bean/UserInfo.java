@@ -1,5 +1,8 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
+
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -51,6 +54,10 @@ public class UserInfo extends RealmObject {
     }
 
     public String getAvatar() {
+        if (avatar == null || avatar.isEmpty()) {
+            return "res://" + App.getContext().getPackageName()
+                    + "/" + R.drawable.ic_syllabus_icon;
+        }
         return avatar;
     }
 

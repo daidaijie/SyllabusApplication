@@ -1,8 +1,6 @@
 package com.example.daidaijie.syllabusapplication.widget;
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
@@ -106,7 +104,7 @@ public class SelectLessonPopWindow extends PopupWindow {
                 @Override
                 public void onClick(View v) {
                     if (mOnItemClickListener != null) {
-                        mOnItemClickListener.onClick(lesson.getIntID());
+                        mOnItemClickListener.onClick(lesson.getLongID());
                     }
                 }
             });

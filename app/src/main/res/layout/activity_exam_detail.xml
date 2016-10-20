@@ -6,7 +6,7 @@
     android:id="@+id/examDetailRootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.LessonInfoActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.syllabus.lessonDetail.LessonInfoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"

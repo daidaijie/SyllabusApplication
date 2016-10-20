@@ -10,8 +10,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 public interface ISyllabusFragmentView extends MvpView, IUserInfoView, ISwipeLoadingView {
 
 
-    //展示课表
-    void showSyllabus(Syllabus syllabus);
+
 
 
     //设置成功获取数据显示后的Bannner

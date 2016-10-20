@@ -65,6 +65,7 @@ public class LoginPresenter implements LoginContract.presenter {
 
                     @Override
                     public void onError(Throwable e) {
+                        LoggerUtil.printStack(e);
                         mView.showLoading(false);
                         if (e.getMessage() == null) {
                             mView.showFailMessage("获取失败");
@@ -77,9 +78,6 @@ public class LoginPresenter implements LoginContract.presenter {
                     public void onNext(RealmObject realmObject) {
                         if (realmObject instanceof UserInfo) {
                             mILoginModel.saveUserLoginToDisk();
-                            LoggerUtil.e("UserLogin", "userInfo");
-                        } else {
-                            LoggerUtil.e("UserLogin", "userBase");
                         }
                     }
                 });

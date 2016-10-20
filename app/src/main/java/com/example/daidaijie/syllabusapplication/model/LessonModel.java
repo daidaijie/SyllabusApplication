@@ -59,7 +59,7 @@ public class LessonModel {
 
 
     public void addLesson(Lesson lesson) {
-        mLessonHashMap.put(lesson.getIntID(), lesson);
+        mLessonHashMap.put(lesson.getLongID(), lesson);
     }
 
     public Lesson getLesson(long id) {

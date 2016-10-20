@@ -1,21 +1,27 @@
-package com.example.daidaijie.syllabusapplication.presenter;
+package com.example.daidaijie.syllabusapplication.syllabus.main.activity;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
-import com.example.daidaijie.syllabusapplication.model.User;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
+import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
+import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
+import com.example.daidaijie.syllabusapplication.user.IUserModel;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
+import org.joda.time.Period;
+import org.joda.time.PeriodType;
 
 import java.io.File;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import cn.finalteam.galleryfinal.FunctionConfig;
 import cn.finalteam.galleryfinal.GalleryFinal;
@@ -30,58 +36,47 @@ import rx.schedulers.Schedulers;
 /**
  * Created by daidaijie on 2016/7/25.
  */
-public class SyllabusMainPresenter extends ISyllabusMainPresenter {
+public class SyllabusMainPresenter implements SyllabusContract.presenter {
 
-    public static final String TAG = "SyllabusMainPresenter";
+    private IUserModel mIUserModel;
 
-    private UserInfo mUserInfo;
+    private ILoginModel mILoginModel;
 
-    @Override
-    public void setUserInfo() {
-        mUserInfo = User.getInstance().getUserInfo();
+    private SyllabusContract.view mView;
 
-        if (mUserInfo != null) {
-            if (mUserInfo.getAvatar() != null) {
-                mView.setHeadImageView(Uri.parse(mUserInfo.getAvatar()));
-            } else {
-                mView.setHeadImageView(Uri.parse("res://" + App.getContext().getPackageName()
-                        + "/" + R.drawable.ic_syllabus_icon));
-            }
-            if (mUserInfo.getNickname() != null) {
-                mView.setNickName(mUserInfo.getNickname());
-            } else {
-                mView.setNickName("未登陆用户");
-            }
-        }
+    @Inject
+    @PerActivity
+    public SyllabusMainPresenter(@LoginUser IUserModel IUserModel,
+                                 ILoginModel ILoginModel,
+                                 SyllabusContract.view view) {
+        mIUserModel = IUserModel;
+        mILoginModel = ILoginModel;
+        mView = view;
     }
 
     @Override
-    public void loadWallpaper(Context context) {
-
-        String wallPaperName = User.getInstance().getWallPaperFileName();
+    public void loadWallpaper() {
+        String wallPaperName = mILoginModel.getWallPaper();
         Bitmap wallPaperBitmap;
-
         if (!wallPaperName.isEmpty() && new File(wallPaperName).exists()) {
             wallPaperBitmap = BitmapFactory.decodeFile(wallPaperName);
         } else {
-            wallPaperBitmap = BitmapFactory.decodeResource(context.getResources()
+            wallPaperBitmap = BitmapFactory.decodeResource(App.getContext().getResources()
                     , R.drawable.background);
         }
-
-
         mView.setBackground(wallPaperBitmap);
     }
 
     @Override
-    public void setWallpaper(final Context context) {
+    public void setWallpaper(int deviceWidth, int deviceHeight) {
         //配置功能
         FunctionConfig functionConfig = new FunctionConfig.Builder()
                 .setEnableCamera(false)
                 .setEnableEdit(true)
                 .setEnableCrop(true)
                 .setEnableRotate(true)
-                .setCropHeight(mView.getDevideHeight())
-                .setCropWidth(mView.getDeviceWidth())
+                .setCropHeight(deviceHeight)
+                .setCropWidth(deviceWidth)
                 .setEnablePreview(false)
                 .setCropReplaceSource(false)//配置裁剪图片时是否替换原始图片，默认不替换
                 .setForceCrop(true)//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
@@ -95,7 +90,7 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
                         .flatMap(new Func1<String, Observable<File>>() {
                             @Override
                             public Observable<File> call(String s) {
-                                Compressor compressor = new Compressor.Builder(context)
+                                Compressor compressor = new Compressor.Builder(App.getContext())
                                         .setQuality(80)
                                         .setCompressFormat(Bitmap.CompressFormat.JPEG)
                                         .build();
@@ -105,28 +100,63 @@ public class SyllabusMainPresenter extends ISyllabusMainPresenter {
                         .subscribe(new Action1<File>() {
                             @Override
                             public void call(File file) {
-                                User.getInstance().setWallPaperFileName(file.toString());
+                                mILoginModel.setWallPaper(file.toString());
                                 mView.setBackground(BitmapFactory.decodeFile(file.toString()));
+                                mView.showFailMessage("设置壁纸成功");
                             }
                         });
             }
 
             @Override
             public void onHanlderFailure(int requestCode, String errorMsg) {
-                Toast.makeText(context, "设置失败", Toast.LENGTH_SHORT).show();
+                mView.showFailMessage("设置失败");
             }
         });
+    }
+
+    @Override
+    public void moveToNowWeek(long startTime) {
+        LocalDate date = new LocalDate(startTime);
+        Period period = new Period(date, LocalDate.now(), PeriodType.weeks());
+        int week = period.getWeeks() + 1;
+        if (week < 1) {
+            week = 1;
+        } else if (week > 16) {
+            week = 16;
+        }
+
+        mView.moveToWeek(week);
     }
 
     @Override
     public void settingWeek(LocalDate date, int week) {
         date = date.plusDays(-(date.getDayOfWeek() % 7));
         date = date.plusWeeks(-(week - 1));
-        Log.e(TAG, "onSettingWeek: " + date);
-        User.getInstance().getCurrentSemester().setStartWeekTime(date.toDate().getTime());
-        User.getInstance().saveSyllabus();
-        User.getInstance().setCurrentSemester(User.getInstance().getCurrentSemester());
-        mView.moveToNowWeek();
+        Semester semester = mILoginModel.getCurrentSemester();
+        semester.setStartWeekTime(date.toDate().getTime());
+        mILoginModel.updateSemester(semester);
+        moveToNowWeek(semester.getStartWeekTime());
+    }
+
+    @Override
+    public void start() {
+        mIUserModel.getUserInfo()
+                .subscribe(new Action1<UserInfo>() {
+                    @Override
+                    public void call(UserInfo userInfo) {
+                        mView.showUserInfo(userInfo);
+                    }
+                });
+
+        Semester semester = mILoginModel.getCurrentSemester();
+        mView.showSemester(semester);
+        loadWallpaper();
+
+       /* if (semester.getStartWeekTime() == 0) {
+            EventBus.getDefault().post(new SettingWeekEvent());
+        } else {
+            moveToNowWeek(semester.getStartWeekTime());
+        }*/
     }
 
 }

@@ -1,17 +1,21 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
+
 import io.realm.RealmObject;
 
 /**
  * Created by daidaijie on 2016/9/11.
  */
-public class    Semester extends RealmObject{
+public class Semester extends RealmObject {
 
     private long startWeekTime;
 
     private int startYear;
 
     private int season;
+
+    private boolean isCurrent;
 
     public long getStartWeekTime() {
         return startWeekTime;
@@ -37,6 +41,14 @@ public class    Semester extends RealmObject{
         this.season = season;
     }
 
+    public boolean isCurrent() {
+        return isCurrent;
+    }
+
+    public void setCurrent(boolean current) {
+        isCurrent = current;
+    }
+
     public String getSeasonString() {
         switch (season) {
             case 1:
@@ -54,14 +66,17 @@ public class    Semester extends RealmObject{
     }
 
     public Semester() {
+        startWeekTime = 0;
     }
 
     public Semester(int startYear, int season) {
+        this();
         this.startYear = startYear;
         this.season = season;
     }
 
     public Semester(String yearString, String seasonString) {
+        this();
         int index = yearString.indexOf("-");
         startYear = Integer.parseInt(yearString.substring(0, index));
         if (seasonString.equals("秋季学期")) {
@@ -76,13 +91,21 @@ public class    Semester extends RealmObject{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || getClass() != o.getClass()) {
+            LoggerUtil.e("equals", getClass() + "," + o.getClass());
+            return false;
+        }
 
         Semester semester = (Semester) o;
 
         if (startYear != semester.startYear) return false;
         return season == semester.season;
 
+    }
+
+    public boolean isSame(Semester semester) {
+        if (startYear != semester.startYear) return false;
+        return season == semester.season;
     }
 
     @Override

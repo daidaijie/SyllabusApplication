@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.syllabus.addlesson;
 
 
 import android.content.Intent;
@@ -21,16 +21,12 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.LessonTimeAdapter;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
+import com.example.daidaijie.syllabusapplication.bean.TimeGrid;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.orhanobut.logger.Logger;
-
-import org.joda.time.format.FormatUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -129,7 +125,7 @@ public class AddLessonFragment extends Fragment {
         lesson.setName(mLessonNameEditText.getText().toString().trim());
         lesson.setRoom(mClassroomEditText.getText().toString().trim());
         lesson.setTeacher(mTeacherEditText.getText().toString().trim());
-        List<Lesson.TimeGird> timeGirds = new ArrayList<>();
+        List<TimeGrid> timeGirds = new ArrayList<>();
         for (AddLessonModel.SelectTime selectTime : mAddLessonModel.mTimes) {
             long selectWeekInt = 0;
             for (int i = 0; i < 16; i++) {
@@ -148,7 +144,7 @@ public class AddLessonFragment extends Fragment {
                     }
                 }
                 if (flag) {
-                    Lesson.TimeGird timeGird = new Lesson.TimeGird();
+                    TimeGrid timeGird = new TimeGrid();
                     timeGird.setWeekDate(i);
                     timeGird.setWeekOfTime(selectWeekInt);
                     timeGird.setTimeList(sb.toString());
@@ -157,7 +153,7 @@ public class AddLessonFragment extends Fragment {
             }
 
         }
-        lesson.setTimeGirds(timeGirds);
+//        lesson.setTimeGirds(timeGirds);
         lesson.mergeTimeGrid();
         User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()).addLessonToSyllabus(
                 lesson, User.getInstance().getCurrentSemester(), R.color.colorPrimary

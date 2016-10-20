@@ -3,7 +3,7 @@ package com.example.daidaijie.syllabusapplication.user;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
-import com.example.daidaijie.syllabusapplication.bean.Semester;
+import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseApi;
@@ -186,6 +186,20 @@ public class UserModel implements IUserModel {
                                     realm.copyToRealmOrUpdate(mUserInfo);
                                 }
                             });
+
+                            RealmResults<Syllabus> results = realm.where(Syllabus.class)
+                                    .equalTo("mSemester.season", mILoginModel.getCurrentSemester().getSeason())
+                                    .equalTo("mSemester.startYear", mILoginModel.getCurrentSemester().getStartYear())
+                                    .findAll();
+                            Syllabus syllabus;
+                            if (results.size() > 0) {
+                                syllabus = realm.copyFromRealm(results.first());
+                            } else {
+                                syllabus = new Syllabus();
+                            }
+
+                            syllabus.convertSyllabus(realm, mUserInfo.getClasses(), mILoginModel.getCurrentSemester());
+
                             if (!isLogin) {
                                 realm.close();
                             }

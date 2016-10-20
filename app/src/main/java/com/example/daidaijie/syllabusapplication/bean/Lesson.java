@@ -5,18 +5,26 @@ import android.util.Log;
 import com.orhanobut.logger.Logger;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.Ignore;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by daidaijie on 2016/7/17.
  */
-public class Lesson implements Serializable {
+public class Lesson extends RealmObject implements Serializable {
+
+    @PrimaryKey
+    private String id;
 
     private int TYPE;
     private Semester mSemester;
 
     public final static int TYPE_SYSTEM = 0;
+    public final static int TYPE_SYSTEM_OTHER = 1;
     public final static int TYPE_DIY = 2;
 
     /**
@@ -31,21 +39,21 @@ public class Lesson implements Serializable {
 
     public static final String TAG = "Lesson";
 
+    @Ignore
     private Days days;
 
     private String room;
     private String credit;
-    private String id;
     private String teacher;
     private String duration;
     private String name;
 
     private int bgColor;
 
-    private List<TimeGird> mTimeGirds;
+    private RealmList<TimeGrid> mTimeGrids;
 
     public Lesson() {
-        mTimeGirds = new ArrayList<>();
+        mTimeGrids = new RealmList<>();
     }
 
     public Days getDays() {
@@ -104,22 +112,22 @@ public class Lesson implements Serializable {
         this.name = name;
     }
 
-    public List<TimeGird> getTimeGirds() {
-        return mTimeGirds;
+    public List<TimeGrid> getTimeGrids() {
+        return mTimeGrids;
     }
 
-    public void setTimeGirds(List<TimeGird> timeGirds) {
-        mTimeGirds = timeGirds;
+    public void setTimeGrids(RealmList<TimeGrid> timeGrids) {
+        mTimeGrids = timeGrids;
     }
 
     public void mergeTimeGrid() {
-        for (int i = 0; i < mTimeGirds.size(); i++) {
+        for (int i = 0; i < mTimeGrids.size(); i++) {
 
-            TimeGird thisTimeGrid = mTimeGirds.get(i);
+            TimeGrid thisTimeGrid = mTimeGrids.get(i);
 
             boolean deleteFlag = false;
-            for (int j = i + 1; j < mTimeGirds.size(); j++) {
-                TimeGird thatTimeGrid = mTimeGirds.get(j);
+            for (int j = i + 1; j < mTimeGrids.size(); j++) {
+                TimeGrid thatTimeGrid = mTimeGrids.get(j);
 
                 if (thisTimeGrid.getWeekDate() == thatTimeGrid.getWeekDate()) {
                     //找出共有部分
@@ -148,19 +156,19 @@ public class Lesson implements Serializable {
                     thatTimeGrid.setTimeList(thatTimeSB.toString());
 
                     //将共有部分创建一个新的格子
-                    TimeGird mergeTimeGird = new TimeGird();
-                    mergeTimeGird.setTimeList(mergeTimeList);
-                    mergeTimeGird.setWeekDate(thisTimeGrid.getWeekDate());
-                    mergeTimeGird.setWeekOfTime(thisTimeGrid.getWeekOfTime() | thatTimeGrid.getWeekOfTime());
-                    mTimeGirds.add(mergeTimeGird);
+                    TimeGrid mergeTimeGrid = new TimeGrid();
+                    mergeTimeGrid.setTimeList(mergeTimeList);
+                    mergeTimeGrid.setWeekDate(thisTimeGrid.getWeekDate());
+                    mergeTimeGrid.setWeekOfTime(thisTimeGrid.getWeekOfTime() | thatTimeGrid.getWeekOfTime());
+                    mTimeGrids.add(mergeTimeGrid);
 
                     if (thisTimeSB.length() == 0 && thatTimeSB.length() == 0) {
-                        mTimeGirds.remove(thatTimeGrid);
+                        mTimeGrids.remove(thatTimeGrid);
                         deleteFlag = true;
                         break;
                     } else {
                         if (thatTimeSB.length() == 0) {
-                            mTimeGirds.remove(thatTimeGrid);
+                            mTimeGrids.remove(thatTimeGrid);
                             j--;
                             continue;
                         }
@@ -173,12 +181,12 @@ public class Lesson implements Serializable {
                 }
             }
             if (deleteFlag) {
-                mTimeGirds.remove(thisTimeGrid);
+                mTimeGrids.remove(thisTimeGrid);
                 i--;
             }
         }
-        for (TimeGird timeGird : mTimeGirds) {
-            Logger.t("mTimeGirds").e(timeGird.getWeekDate() + "\n" + timeGird.getTimeList() + "\n" + timeGird.getWeekOfTime());
+        for (TimeGrid timeGrid : mTimeGrids) {
+            Logger.t("mTimeGrids").e(timeGrid.getWeekDate() + "\n" + timeGrid.getTimeList() + "\n" + timeGrid.getWeekOfTime());
         }
     }
 
@@ -190,7 +198,7 @@ public class Lesson implements Serializable {
         this.bgColor = bgColor;
     }
 
-    public long getIntID() {
+    public long getLongID() {
         return Long.parseLong(id);
     }
 
@@ -211,9 +219,9 @@ public class Lesson implements Serializable {
 
     public String getTimeGridListString(String split) {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < mTimeGirds.size(); i++) {
+        for (int i = 0; i < mTimeGrids.size(); i++) {
             if (i != 0) sb.append(split);
-            sb.append(mTimeGirds.get(i).getTimeString());
+            sb.append(mTimeGrids.get(i).getTimeString());
         }
         return sb.toString();
     }
@@ -227,11 +235,11 @@ public class Lesson implements Serializable {
     }
 
     /**
-     * 将获取的w0,w1,w2,w3等转化成TimeGird类型
+     * 将获取的w0,w1,w2,w3等转化成TimeGrid类型
      * 以便于使用
      */
     public void convertDays() {
-        TimeGird timeGrid;
+        TimeGrid timeGrid;
 
         int index = duration.indexOf("-");
         int startWeek = Integer.parseInt(duration.substring(0, index).trim());
@@ -239,187 +247,55 @@ public class Lesson implements Serializable {
 
 
         timeGrid = convertForWn(this.getDays().getW0(), 0, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
+        if (timeGrid != null) mTimeGrids.add(timeGrid);
 
         timeGrid = convertForWn(this.getDays().getW1(), 1, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
+        if (timeGrid != null) mTimeGrids.add(timeGrid);
 
         timeGrid = convertForWn(this.getDays().getW2(), 2, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
+        if (timeGrid != null) mTimeGrids.add(timeGrid);
 
         timeGrid = convertForWn(this.getDays().getW3(), 3, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
+        if (timeGrid != null) mTimeGrids.add(timeGrid);
 
         timeGrid = convertForWn(this.getDays().getW4(), 4, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
+        if (timeGrid != null) mTimeGrids.add(timeGrid);
 
         timeGrid = convertForWn(this.getDays().getW5(), 5, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
+        if (timeGrid != null) mTimeGrids.add(timeGrid);
 
         timeGrid = convertForWn(this.getDays().getW6(), 6, startWeek, endWeek);
-        if (timeGrid != null) mTimeGirds.add(timeGrid);
-        if (mTimeGirds.size() != 0) {
-            Log.e(TAG, "convertDays: " + Long.toBinaryString(mTimeGirds.get(0).getWeekOfTime()));
+        if (timeGrid != null) mTimeGrids.add(timeGrid);
+        if (mTimeGrids.size() != 0) {
+            Log.e(TAG, "convertDays: " + Long.toBinaryString(mTimeGrids.get(0).getWeekOfTime()));
         }
     }
 
     /**
      *
      */
-    private TimeGird convertForWn(String timeOfWeek, int week, int startWeek, int endWeek) {
-        TimeGird timeGird = new TimeGird();
-        timeGird.startWeek = startWeek;
-        timeGird.endWeek = endWeek;
+    private TimeGrid convertForWn(String timeOfWeek, int week, int startWeek, int endWeek) {
+        TimeGrid timeGrid = new TimeGrid();
+        timeGrid.startWeek = startWeek;
+        timeGrid.endWeek = endWeek;
         if (!timeOfWeek.trim().equals("None")) {
-            timeGird.setWeekDate(week);
+            timeGrid.setWeekDate(week);
             if (timeOfWeek.charAt(0) == '单') {
-                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.SINGLE);
-                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
+                timeGrid.setWeekOfTime(startWeek, endWeek, TimeGrid.WeekEum.SINGLE);
+                timeGrid.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
             } else if (timeOfWeek.charAt(0) == '双') {
-                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.DOUBLE);
-                timeGird.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
+                timeGrid.setWeekOfTime(startWeek, endWeek, TimeGrid.WeekEum.DOUBLE);
+                timeGrid.setTimeList(timeOfWeek.substring(1, timeOfWeek.length()));
             } else {
-                timeGird.setWeekOfTime(startWeek, endWeek, TimeGird.WeekEum.FULL);
-                timeGird.setTimeList(timeOfWeek);
+                timeGrid.setWeekOfTime(startWeek, endWeek, TimeGrid.WeekEum.FULL);
+                timeGrid.setTimeList(timeOfWeek);
             }
-            return timeGird;
+            return timeGrid;
         }
 
         return null;
     }
 
-
-    public static class TimeGird implements Serializable {
-
-        public int startWeek;
-        public int endWeek;
-
-        public static enum WeekEum {
-            FULL,
-            SINGLE,
-            DOUBLE,
-        }
-
-        /**
-         * 总周数16
-         * 单周 周一 34
-         * mWeekOfTime 0b0101_0101_0101_0101
-         * mWeekDate 1
-         * mTimeList "34"
-         */
-
-        //所在周数
-        private long mWeekOfTime;
-
-        //所在星期
-        private int mWeekDate;
-
-        //所在时间
-        private String mTimeList;
-
-        public long getWeekOfTime() {
-            return mWeekOfTime;
-        }
-
-        public void setWeekOfTime(long weekOfTime) {
-            mWeekOfTime = weekOfTime;
-        }
-
-        public int getWeekDate() {
-            return mWeekDate;
-        }
-
-        public void setWeekDate(int weekDate) {
-            mWeekDate = weekDate;
-        }
-
-        public String getTimeList() {
-            return mTimeList;
-        }
-
-        public void setTimeList(String timeList) {
-            mTimeList = timeList;
-        }
-
-        /**
-         * 通用的设置
-         *
-         * @param startWeek 该课程开始周数
-         * @param endWeek   该课程结束周数
-         * @param weekEum   默认的周数类型，单周还是双周还是全部
-         */
-        public void setWeekOfTime(int startWeek, int endWeek, WeekEum weekEum) {
-            mWeekOfTime = 0;
-            Log.e(TAG, "setWeekOfTime startWeek: " + startWeek);
-            Log.e(TAG, "setWeekOfTime endWeek: " + endWeek);
-            switch (weekEum) {
-                case FULL:
-                    for (long i = startWeek - 1; i < endWeek; i++) {
-                        mWeekOfTime += (1 << i);
-                    }
-                    break;
-                case SINGLE:
-                    for (long i = startWeek - 1 + ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                        mWeekOfTime += (1 << i);
-                    }
-                    break;
-                case DOUBLE:
-                    for (long i = startWeek - ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                        mWeekOfTime += (1 << i);
-                    }
-                    break;
-            }
-        }
-
-        public String getTimeString() {
-            StringBuilder sb = new StringBuilder();
-            sb.append(startWeek + " - " + endWeek + "周　");
-
-            String[] weeks = {
-                    "周日", "周一", "周二", "周三", "周四", "周五", "周六",
-            };
-
-            sb.append(weeks[mWeekDate]);
-
-            boolean flag = true;
-            for (int i = startWeek - 1 + ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                if (((mWeekOfTime >> i) & 1) != 1) {
-                    flag = false;
-                    break;
-                }
-            }
-            for (int i = startWeek - ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                if (((mWeekOfTime >> i) & 1) == 1) {
-                    flag = false;
-                    break;
-                }
-            }
-
-            if (flag) {
-                sb.append("单");
-            }
-
-            flag = true;
-            for (int i = startWeek - 1 + ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                if (((mWeekOfTime >> i) & 1) == 1) {
-                    flag = false;
-                    break;
-                }
-            }
-            for (int i = startWeek - ((startWeek - 1) & 1); i < endWeek; i += 2) {
-                if (((mWeekOfTime >> i) & 1) != 1) {
-                    flag = false;
-                    break;
-                }
-            }
-
-            if (flag) {
-                sb.append("双");
-            }
-            sb.append(mTimeList);
-            return sb.toString();
-        }
-    }
 
     /**
      * w1 : None

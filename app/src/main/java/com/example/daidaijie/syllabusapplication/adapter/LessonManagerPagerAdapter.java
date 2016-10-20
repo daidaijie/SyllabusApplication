@@ -4,9 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.daidaijie.syllabusapplication.activity.AddLessonFragment;
-import com.example.daidaijie.syllabusapplication.activity.SchoolDymamicFragment;
-import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.syllabus.addlesson.AddLessonFragment;
 
 /**
  * Created by daidaijie on 2016/7/17.

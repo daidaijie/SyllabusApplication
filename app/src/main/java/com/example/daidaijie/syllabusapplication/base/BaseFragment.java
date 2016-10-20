@@ -21,6 +21,8 @@ public abstract class BaseFragment extends Fragment {
     protected BaseActivity mActivity;
 
     protected AppComponent mAppComponent;
+    protected int deviceWidth;
+    protected int deviceHeight;
 
 
     @Override
@@ -28,6 +30,9 @@ public abstract class BaseFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mActivity = (BaseActivity) getActivity();
         mAppComponent = mActivity.mAppComponent;
+
+        deviceWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
+        deviceHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();
 
     }
 

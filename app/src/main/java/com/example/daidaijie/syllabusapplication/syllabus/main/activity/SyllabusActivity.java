@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.syllabus.main.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,50 +14,45 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.activity.SyllabusCollectionActivity;
+import com.example.daidaijie.syllabusapplication.activity.WeekPickerFragment;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
+import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.presenter.SyllabusMainPresenter;
+import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
+import com.example.daidaijie.syllabusapplication.syllabus.addlesson.AddLessonActivity;
+import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
-import com.example.daidaijie.syllabusapplication.view.ISyllabusMainView;
-import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
-import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
-import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.orhanobut.logger.Logger;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.joda.time.LocalDate;
-import org.joda.time.Period;
-import org.joda.time.PeriodType;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class SyllabusActivity extends BaseActivity implements ISyllabusMainView, NavigationView.OnNavigationItemSelectedListener {
-
+public class SyllabusActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, SyllabusContract.view {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -81,9 +76,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     ImageView mShowWeekSelectImageView;
     @BindView(R.id.settingWeekLayout)
     LinearLayout mSettingWeekLayout;
-
-    private AlertDialog mLoadingDialog;
-
     private RelativeLayout navHeadRelativeLayout;
     private SimpleDraweeView headImageDraweeView;
     private TextView nicknameTextView;
@@ -94,14 +86,12 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
 
     private int pageIndex;
 
-    private final static String TAG = "SyllabusActivity";
+    private final static String SAVED_PAGE_POSITION = SyllabusActivity.class.getCanonicalName() + ".pagePosition";
 
-    private final static String SAVED_PAGE_POSITION = "pagePosition";
-
-    private SyllabusMainPresenter mSyllabusMainPresenter = new SyllabusMainPresenter();
+    @Inject
+    SyllabusMainPresenter mSyllabusMainPresenter;
 
     private boolean singleLock = false;
-
 
     @Override
     protected int getContentView() {
@@ -112,16 +102,12 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        mSyllabusMainPresenter.attach(this);
 
         //获取NavavNavigationView中的控件
         navHeadRelativeLayout = (RelativeLayout) mNavView.getHeaderView(0);
         headImageDraweeView = (SimpleDraweeView) navHeadRelativeLayout.findViewById(R.id.headImageDraweeView);
         nicknameTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.nicknameTextView);
         semesterTextView = (TextView) navHeadRelativeLayout.findViewById(R.id.semesterTextView);
-
-        Semester semester = User.getInstance().getCurrentSemester();
-        semesterTextView.setText(semester.getYearString() + " " + semester.getSeasonString());
 
         if (savedInstanceState != null) {
             pageIndex = savedInstanceState.getInt(SAVED_PAGE_POSITION, 0);
@@ -130,18 +116,11 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         setupToolbar();
         setupViewPager();
 
-        //加载信息
-        mSyllabusMainPresenter.setUserInfo();
-        mSyllabusMainPresenter.loadWallpaper(this);
+        mNavView.setNavigationItemSelectedListener(this);
 
-        //      设置点击navigationView菜单事件
-        if (mNavView != null) {
-            mNavView.setNavigationItemSelectedListener(this);
-        }
-        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this,
-                ThemeModel.getInstance().colorPrimary);
-
-
+        /**
+         * 周数设定
+         */
         mWeekAdapter = new WeekAdapter(this);
         mSelectWeeksRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         mSelectWeeksRecyclerView.setAdapter(mWeekAdapter);
@@ -152,21 +131,21 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
             }
         });
 
-        if (User.getInstance().getCurrentSemester().getStartWeekTime() != 0) {
-            moveToNowWeek();
-        } else {
-            if (User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()) != null) {
-                showSelectWeek(new SettingWeekEvent());
-            }
-        }
 
         mSettingWeekLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mSyllabusMainPresenter.settingWeek(LocalDate.now(), mWeekAdapter.getSelectItem() + 1);
-                showMessage("已设定当前为第" + (mWeekAdapter.getSelectItem() + 1) + "周");
+                showInfoMessage("已设定当前为第" + (mWeekAdapter.getSelectItem() + 1) + "周");
             }
         });
+
+        SyllabusComponent.newInstance();
+        DaggerSyllabusMainComponent.builder()
+                .userComponent(UserComponent.getINSTANCE())
+                .syllabusMainModule(new SyllabusMainModule(this))
+                .build().inject(this);
+        mSyllabusMainPresenter.start();
 
     }
 
@@ -227,8 +206,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mSyllabusMainPresenter.detach();
         EventBus.getDefault().unregister(this);
+        SyllabusComponent.destroy();
     }
 
     @Override
@@ -238,18 +217,7 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     }
 
 
-    @Override
-    public void setHeadImageView(Uri uri) {
-        headImageDraweeView.setImageURI(uri);
-    }
-
-    @Override
-    public void setNickName(String nickName) {
-        nicknameTextView.setText(nickName);
-    }
-
-    @Override
-    public void setToolBarTitle(String title) {
+    private void setToolBarTitle(String title) {
         mTitleTextView.setText(title);
     }
 
@@ -260,7 +228,8 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         setMainColor(bitmap, true);
     }
 
-    private void showMessage(String msg) {
+    @Override
+    public void showInfoMessage(String msg) {
         SnackbarUtil.ShortSnackbar(mSyllabusViewPager, msg, SnackbarUtil.Info).show();
     }
 
@@ -306,16 +275,12 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         }
     }
 
-    public SyllabusMainPresenter getSyllabusMainPresenter() {
-        return mSyllabusMainPresenter;
-    }
-
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.nav_gallery) {
-            mSyllabusMainPresenter.setWallpaper(this);
+            mSyllabusMainPresenter.setWallpaper(deviceWidth, deviceHeight);
         } else if (id == R.id.nav_save_syllabus) {
             EventBus.getDefault().post(new SaveSyllabusEvent(pageIndex));
         } else if (id == R.id.nav_syllabus_collection) {
@@ -331,38 +296,14 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     }
 
     @Override
-    public int getDeviceWidth() {
-        return deviceWidth;
-    }
-
-    @Override
-    public int getDevideHeight() {
-        return deviceHeight;
-    }
-
-    @Override
-    public void showSuccessSnackbar(String info) {
-        SnackbarUtil.ShortSnackbar(
-                mMainRootLayout,
-                info,
-                SnackbarUtil.Confirm
-        ).show();
-    }
-
-    @Override
-    public void showFailSnackbar(String info, String again, View.OnClickListener listener) {
-        SnackbarUtil.LongSnackbar(
-                mMainRootLayout,
-                info,
-                SnackbarUtil.Alert
-        ).setAction(again, listener).show();
-
-    }
-
-    @Override
     public void showSelectWeekLayout(boolean isShow) {
         mSelectWeeksLinearLayout.setVisibility(isShow ? View.VISIBLE : View.GONE);
         mShowWeekSelectImageView.setRotation(isShow ? 180.0f : 0.0f);
+    }
+
+    @Override
+    public void showSemester(Semester semester) {
+        semesterTextView.setText(semester.getYearString() + " " + semester.getSeasonString());
     }
 
     public boolean isSingleLock() {
@@ -376,7 +317,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        Log.d(TAG, "onActivityResult: " + requestCode);
         if (requestCode == 200) {
             singleLock = false;
         }
@@ -388,37 +328,6 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
         super.onBackPressed();
     }
 
-    @Override
-    public void showLoadingDialog() {
-        if (mLoadingDialog != null) {
-            mLoadingDialog.show();
-            //要在show之后加，不然没效果
-            WindowManager.LayoutParams params = mLoadingDialog.getWindow().getAttributes();
-            params.width = deviceWidth * 7 / 8;
-            mLoadingDialog.getWindow().setAttributes(params);
-        }
-    }
-
-    @Override
-    public void dismissLoadingDialog() {
-        if (mLoadingDialog != null) {
-            mLoadingDialog.dismiss();
-        }
-    }
-
-    private void showSelectSemeber() {
-
-        LinkagePicker picker = SelectSemesterBuilder.getSelectSemesterPicker(this);
-        picker.show();
-
-        picker.setOnLinkageListener(new LinkagePicker.OnLinkageListener() {
-            @Override
-            public void onPicked(String first, String second, String third) {
-                Toast.makeText(SyllabusActivity.this, first + second, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void showSelectWeek(SettingWeekEvent event) {
         WeekPickerFragment weekPickerFragment = new WeekPickerFragment();
@@ -428,23 +337,36 @@ public class SyllabusActivity extends BaseActivity implements ISyllabusMainView,
                 mSyllabusMainPresenter.settingWeek(date, week);
             }
         });
-
         weekPickerFragment.show(getSupportFragmentManager(),
                 WeekPickerFragment.DIALOG_WEEK_PICKER);
     }
 
+    @Override
+    public void moveToWeek(int week) {
+        mSyllabusViewPager.setCurrentItem(week - 1);
+    }
 
     @Override
-    public void moveToNowWeek() {
-        LocalDate date = new LocalDate(User.getInstance().getCurrentSemester().getStartWeekTime());
-        Period period = new Period(date, LocalDate.now(), PeriodType.weeks());
-        int week = period.getWeeks() + 1;
-        Logger.t("Week" + week);
-        if (week < 1) {
-            week = 1;
-        } else if (week > 16) {
-            week = 16;
-        }
-        mSyllabusViewPager.setCurrentItem(week - 1);
+    public void showUserInfo(UserInfo userInfo) {
+        headImageDraweeView.setImageURI(Uri.parse(userInfo.getAvatar()));
+        nicknameTextView.setText(userInfo.getNickname());
+    }
+
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mMainRootLayout,
+                msg,
+                SnackbarUtil.Alert
+        ).show();
+    }
+
+    @Override
+    public void showSuccessMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mMainRootLayout,
+                msg,
+                SnackbarUtil.Confirm
+        ).show();
     }
 }

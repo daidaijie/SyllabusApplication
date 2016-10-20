@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:context=".activity.SyllabusActivity">
+    tools:context=".syllabus.main.activity.SyllabusActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

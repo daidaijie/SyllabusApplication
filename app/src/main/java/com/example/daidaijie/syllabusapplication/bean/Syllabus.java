@@ -1,101 +1,52 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
-import android.util.Log;
+import com.example.daidaijie.syllabusapplication.util.ColorUtil;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
-import com.example.daidaijie.syllabusapplication.App;
-import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.model.LessonModel;
-import com.example.daidaijie.syllabusapplication.model.User;
-import com.orhanobut.logger.Logger;
-
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.RealmResults;
+import io.realm.annotations.Ignore;
 
 /**
  * Created by daidaijie on 2016/7/19.
  * 课表类，储存一个课表
  */
-public class Syllabus {
+public class Syllabus extends RealmObject {
 
+    private RealmList<SyllabusGrid> mSyllabusGrids;
 
-    public static int countOfDay = 7;
-    public static int countOfTime = 13;
+    @Ignore
+    private Map<LessonID, Lesson> mLessonMap;
 
-    private List<List<SyllabusGrid>> mSyllabusGrids;
+    private Semester mSemester;
 
     private static final String timeLists = "1234567890ABC";
 
-    public static int[] bgColors = {
-//            R.color.material_amber_300,
-
-/*            R.color.material_blue_300,
-            R.color.material_blue_400,
-            R.color.material_blue_300,
-            R.color.material_blue_600,
-            R.color.material_blue_A200,
-            R.color.material_blue_A400,
-            R.color.material_indigo_300,
-            R.color.material_indigo_400,
-            R.color.material_indigo_300,
-            R.color.material_indigo_600,
-            R.color.material_indigo_A200,
-            R.color.material_indigo_A400,*/
-
-            //橙色系列
-            /*R.color.material_orange_200,
-            R.color.material_orange_300,
-            R.color.material_orange_400,
-            R.color.material_orange_300,
-            R.color.material_orange_600,
-            R.color.material_orange_A100,
-            R.color.material_orange_A200,
-            R.color.material_orange_A400,
-            R.color.material_deepOrange_200,
-            R.color.material_deepOrange_300,
-            R.color.material_deepOrange_400,
-            R.color.material_deepOrange_300,
-            R.color.material_deepOrange_600,
-            R.color.material_deepOrange_A100,
-            R.color.material_deepOrange_A200,
-            R.color.material_deepOrange_A400,*/
-            R.color.material_cyan_500,
-            R.color.material_deepOrange_300,
-            R.color.material_blueGrey_400,
-            R.color.material_orange_500,
-            R.color.material_teal_300,
-            R.color.material_deepPurple_300,
-            R.color.material_red_300,
-//            R.color.material_indigo_300,
-            R.color.material_brown_300,
-            R.color.material_pink_400,
-            R.color.material_lightBlue_500,
-            R.color.material_lightGreen_300,
-//            R.color.material_primaryIndigo_300,
-//            R.color.material_grey_300,
-            R.color.material_Lime_500,
-            R.color.material_yellow_500,
-    };
-
-
     public Syllabus() {
-        mSyllabusGrids = new ArrayList<>(new ArrayList());
-        for (int i = 0; i < 7; i++) {
-            List<SyllabusGrid> daySyllabusGrids = new ArrayList<>();
-            for (int j = 0; j < 13; j++) {
-                daySyllabusGrids.add(new SyllabusGrid());
-            }
-            mSyllabusGrids.add(daySyllabusGrids);
+        mLessonMap = new HashMap<>();
+        mSyllabusGrids = new RealmList<>();
+        for (int i = 0; i < 7 * 13; i++) {
+            mSyllabusGrids.add(new SyllabusGrid());
         }
     }
 
-    public List<List<SyllabusGrid>> getSyllabusGrids() {
-        return mSyllabusGrids;
+    public void setSyllabusGrids(int i, int j, SyllabusGrid syllabusGrid) {
+        int index = i * 13 + j;
+        mSyllabusGrids.set(index, syllabusGrid);
     }
 
-    public void setSyllabusGrids(List<List<SyllabusGrid>> syllabusGrids) {
-        mSyllabusGrids = syllabusGrids;
+    public SyllabusGrid getSyllabusGrids(int i, int j) {
+        int index = i * 13 + j;
+        return mSyllabusGrids.get(index);
     }
+
 
     /**
      * 将0 1 2 3 转化为课程表上的对应时间
@@ -117,61 +68,97 @@ public class Syllabus {
         }
     }
 
-    public void removeSystemLesson(Semester semester) {
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 13; j++) {
-                SyllabusGrid syllabusGrid = getSyllabusGrids().get(i).get(j);
-                Iterator<Long> iterator = syllabusGrid.getLessons().iterator();
-                while (iterator.hasNext()) {
-                    long id = iterator.next();
-                    Lesson lesson = LessonModel.getInstance().getLesson(id);
-                    if (lesson.getTYPE() == Lesson.TYPE_SYSTEM && lesson.getSemester().equals(semester)) {
-                        iterator.remove();
+    public void removeSystemLesson(Realm realm, final Semester semester) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Syllabus> results = realm.where(Syllabus.class)
+                        .equalTo("mSemester.season", semester.getSeason())
+                        .equalTo("mSemester.startYear", semester.getStartYear())
+                        .findAll();
+
+                if (results.size() != 0) {
+                    Syllabus syllabus = results.first();
+                    for (int i = 0; i < 7; i++) {
+                        for (int j = 0; j < 13; j++) {
+                            SyllabusGrid syllabusGrid = syllabus.getSyllabusGrids(i, j);
+                            Iterator<LessonID> iterator = syllabusGrid.getLessons().iterator();
+                            while (iterator.hasNext()) {
+                                LessonID lessonID = iterator.next();
+                                Lesson lesson = realm.where(Lesson.class)
+                                        .equalTo("id", lessonID.getId() + "").findFirst();
+
+                                if (lesson != null && lesson.getTYPE() == Lesson.TYPE_SYSTEM
+                                        && lesson.getSemester().isSame(semester)) {
+                                    lesson.deleteFromRealm();
+                                    iterator.remove();
+                                    mLessonMap.remove(lessonID);
+                                }
+                            }
+                        }
                     }
                 }
             }
-        }
+        });
     }
 
-    public void convertSyllabus(List<Lesson> lessons, Semester semester) {
+    public void convertSyllabus(Realm realm, final List<Lesson> lessons, final Semester semester) {
         int colorIndex = 0;
-        removeSystemLesson(semester);
-        LessonModel.getInstance().removeSystemLesson(semester);
-        for (Lesson lesson : lessons) {
+        this.setSemester(new Semester(semester.getStartYear(), semester.getSeason()));
+        removeSystemLesson(realm, semester);
+        for (final Lesson lesson : lessons) {
             //将lesson的时间格式化
             lesson.convertDays();
             lesson.setTYPE(Lesson.TYPE_SYSTEM);
-            lesson.setBgColor(Syllabus.bgColors[colorIndex++ % Syllabus.bgColors.length]);
+            lesson.setBgColor(ColorUtil.bgColors[colorIndex++ % ColorUtil.bgColors.length]);
             Semester lessonSemester = new Semester(semester.getStartYear(), semester.getSeason());
             lesson.setSemester(lessonSemester);
 
             //获取该课程上的节点上的时间列表
-            List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
-                        /*if (timeGirds.size() != 0) {
-                            Log.d(TAG, "onNext: " + timeGirds.get(0).getTimeList());
-                        }*/
-            //把该课程添加到课程管理去
-            LessonModel.getInstance().addLesson(lesson);
+            final List<TimeGrid> timeGrids = lesson.getTimeGrids();
 
-            Log.d("Syllabus", "onNext: " + lesson.getName());
-            for (int i = 0; i < timeGirds.size(); i++) {
-                Lesson.TimeGird timeGrid = timeGirds.get(i);
+            /**
+             * 将课程添加到时间节点上
+             */
+            for (int i = 0; i < timeGrids.size(); i++) {
+                TimeGrid timeGrid = timeGrids.get(i);
                 for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
                     char x = timeGrid.getTimeList().charAt(j);
                     int time = Syllabus.chat2time(x);
-
-                    SyllabusGrid syllabusGrid = this.getSyllabusGrids()
-                            .get(timeGrid.getWeekDate())
-                            .get(time);
-
+                    SyllabusGrid syllabusGrid = this.getSyllabusGrids(timeGrid.getWeekDate(), time);
                     //将该课程添加到时间节点上去
-                    syllabusGrid.getLessons().add(lesson.getIntID());
+                    syllabusGrid.getLessons().add(new LessonID(lesson.getLongID()));
                 }
             }
-            LessonModel.getInstance().save();
+            mLessonMap.put(new LessonID(lesson.getLongID()), lesson);
         }
-        User.getInstance().setSyllabus(User.getInstance().getCurrentSemester(), this);
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.where(Syllabus.class)
+                        .equalTo("mSemester.season", semester.getSeason())
+                        .equalTo("mSemester.startYear", semester.getStartYear())
+                        .findAll().deleteAllFromRealm();
+                realm.copyToRealm(Syllabus.this);
+                realm.copyToRealm(lessons);
+            }
+        });
 
+    }
+
+    public void loadLessonFromDisk(Realm realm) {
+        mLessonMap.clear();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Lesson> results = realm.where(Lesson.class)
+                        .equalTo("mSemester.season", mSemester.getSeason())
+                        .equalTo("mSemester.startYear", mSemester.getStartYear()).findAll();
+                for (Lesson lesson : results) {
+                    mLessonMap.put(new LessonID(lesson.getLongID()), lesson);
+                }
+            }
+        });
     }
 
     public void addLessonToSyllabus(Lesson lesson, Semester semester, int color) {
@@ -180,20 +167,20 @@ public class Syllabus {
 
     public void addLessonToSyllabus(Lesson lesson, Semester semester, int color, boolean isConverDay) {
         //将lesson的时间格式化
-        if (isConverDay) {
+        /*if (isConverDay) {
             lesson.convertDays();
         }
         lesson.setBgColor(color);
         Semester lessonSemester = new Semester(semester.getStartYear(), semester.getSeason());
         lesson.setSemester(lessonSemester);
         //获取该课程上的节点上的时间列表
-        List<Lesson.TimeGird> timeGirds = lesson.getTimeGirds();
+        List<Lesson.TimeGrid> timeGrids = lesson.getTimeGrids();
 
         //把该课程添加到课程管理去
         LessonModel.getInstance().addLesson(lesson);
 
-        for (int i = 0; i < timeGirds.size(); i++) {
-            Lesson.TimeGird timeGrid = timeGirds.get(i);
+        for (int i = 0; i < timeGrids.size(); i++) {
+            Lesson.TimeGrid timeGrid = timeGrids.get(i);
             for (int j = 0; j < timeGrid.getTimeList().length(); j++) {
                 char x = timeGrid.getTimeList().charAt(j);
                 int time = Syllabus.chat2time(x);
@@ -202,12 +189,27 @@ public class Syllabus {
                         .get(timeGrid.getWeekDate())
                         .get(time);
                 //如果该位置没有重复的就添加上去
-                if (syllabusGrid.getLessons().indexOf(lesson.getIntID()) == -1) {
-                    syllabusGrid.getLessons().add(lesson.getIntID());
+                if (syllabusGrid.getLessons().indexOf(lesson.getLongID()) == -1) {
+                    syllabusGrid.getLessons().add(lesson.getLongID());
                     Logger.t("LessonAdd").e("here");
                 }
             }
-        }
-        LessonModel.getInstance().save();
+        }*/
+    }
+
+    public Semester getSemester() {
+        return mSemester;
+    }
+
+    public void setSemester(Semester semester) {
+        mSemester = semester;
+    }
+
+    public Lesson getLessonByID(LessonID lessonID) {
+        return mLessonMap.get(lessonID);
+    }
+
+    public Lesson getLessonByID(long id) {
+        return mLessonMap.get(new LessonID(id));
     }
 }

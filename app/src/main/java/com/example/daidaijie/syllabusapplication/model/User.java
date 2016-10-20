@@ -109,8 +109,6 @@ public class User {
     }
 
     public void setUserInfo(UserInfo userInfo) {
-        Log.e("LoginPresenter", "setUserInfo: " + userInfo.getUser_id());
-        Log.e("LoginPresenter", "setUserInfo: " + (userInfo.getToken() == null));
         mEditor.putString(EXTRA_USER_INFO, GsonUtil.getDefault().toJson(userInfo));
         mEditor.commit();
         mUserInfo = userInfo;

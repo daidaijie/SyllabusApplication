@@ -31,7 +31,7 @@ import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.activity.STUCircleActivity;
-import com.example.daidaijie.syllabusapplication.activity.SyllabusActivity;
+import com.example.daidaijie.syllabusapplication.syllabus.main.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.activity.ThemePickerFragment;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Banner;

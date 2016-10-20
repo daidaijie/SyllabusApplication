@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.syllabus.addlesson;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import com.example.daidaijie.syllabusapplication.adapter.LessonTimeAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
+import com.example.daidaijie.syllabusapplication.bean.TimeGrid;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.liaoinstan.springview.utils.DensityUtil;
@@ -117,7 +118,7 @@ public class AddLessonActivity extends BaseActivity {
         lesson.setName(mLessonNameEditText.getText().toString().trim());
         lesson.setRoom(mClassroomEditText.getText().toString().trim());
         lesson.setTeacher(mTeacherEditText.getText().toString().trim());
-        List<Lesson.TimeGird> timeGirds = new ArrayList<>();
+        List<TimeGrid> timeGirds = new ArrayList<>();
         for (AddLessonModel.SelectTime selectTime : mAddLessonModel.mTimes) {
             long selectWeekInt = 0;
             for (int i = 0; i < 16; i++) {
@@ -136,7 +137,7 @@ public class AddLessonActivity extends BaseActivity {
                     }
                 }
                 if (flag) {
-                    Lesson.TimeGird timeGird = new Lesson.TimeGird();
+                    TimeGrid timeGird = new TimeGrid();
                     timeGird.setWeekDate(i);
                     timeGird.setWeekOfTime(selectWeekInt);
                     timeGird.setTimeList(sb.toString());
@@ -145,7 +146,7 @@ public class AddLessonActivity extends BaseActivity {
             }
 
         }
-        lesson.setTimeGirds(timeGirds);
+//        lesson.setTimeGrids(timeGirds);
         lesson.mergeTimeGrid();
         User.getInstance().getSyllabus(User.getInstance().getCurrentSemester()).addLessonToSyllabus(
                 lesson, User.getInstance().getCurrentSemester(), R.color.colorPrimary
