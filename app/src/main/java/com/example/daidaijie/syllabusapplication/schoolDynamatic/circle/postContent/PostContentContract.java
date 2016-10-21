@@ -13,10 +13,25 @@ import java.util.List;
 public interface PostContentContract {
 
     interface presenter extends BasePresenter {
+        void selectPhoto();
+
+        void unSelectPhoto(int position);
+
+        boolean isNonePhoto();
+
+        void postContent(String msg, String source);
 
     }
 
     interface view extends BaseView<presenter> {
+        void showLoading(boolean isShow);
 
+        void setUpFlow(List<String> PhotoImgs);
+
+        void showFailMessage(String msg);
+
+        void showWarningMessage(String msg);
+
+        void onPostFinishCallBack();
     }
 }

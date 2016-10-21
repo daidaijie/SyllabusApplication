@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
@@ -17,21 +16,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
-import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
-import com.example.daidaijie.syllabusapplication.bean.PostContent;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
-import com.example.daidaijie.syllabusapplication.retrofitApi.PushPostService;
-import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.example.daidaijie.syllabusapplication.util.ImageUploader;
-import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.StuCircleModelComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
@@ -42,30 +34,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import cn.finalteam.galleryfinal.FunctionConfig;
-import cn.finalteam.galleryfinal.GalleryFinal;
-import cn.finalteam.galleryfinal.model.PhotoInfo;
-import id.zelory.compressor.Compressor;
-import okhttp3.MediaType;
-import retrofit2.Retrofit;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
+import javax.inject.Inject;
 
-public class PostContentActivity extends BaseActivity {
+import butterknife.BindView;
+
+public class PostContentActivity extends BaseActivity implements PostContentContract.view {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
-
-    private final int MAX_IMG_NUM = 3;
-
     @BindView(R.id.postImgFlowLayout)
     FlowLabelLayout mPostImgFlowLayout;
     @BindView(R.id.contentEditText)
@@ -77,9 +55,12 @@ public class PostContentActivity extends BaseActivity {
     @BindView(R.id.postAsOtherButton)
     AppCompatRadioButton mPostAsOtherButton;
 
-    private List<String> mPhotoImgs;
-
     AlertDialog mLoadingDialog;
+
+    @Inject
+    PostContentPresenter mPostContentPresenter;
+
+    public static final int MAX_IMG_NUM = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,11 +71,14 @@ public class PostContentActivity extends BaseActivity {
 
         mPostAsPhoneButton.setText(Build.MODEL);
 
-        mPhotoImgs = new ArrayList<>();
-
-        setUpFlow();
-
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
+
+        DaggerPostContentComponent.builder()
+                .stuCircleModelComponent(StuCircleModelComponent.getInstance())
+                .postConentModule(new PostConentModule(this))
+                .build().inject(this);
+
+        mPostContentPresenter.start();
     }
 
     @Override
@@ -108,7 +92,8 @@ public class PostContentActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    private void setUpFlow() {
+    @Override
+    public void setUpFlow(final List<String> PhotoImgs) {
         mPostImgFlowLayout.removeAllViews();
 
         ViewGroup.MarginLayoutParams lp = new ViewGroup.MarginLayoutParams(new ViewGroup.LayoutParams(
@@ -118,16 +103,16 @@ public class PostContentActivity extends BaseActivity {
         lp.rightMargin = 32;
         lp.topMargin = 0;
         lp.bottomMargin = 0;
-        for (int i = 0; i < mPhotoImgs.size(); i++) {
+        for (int i = 0; i < PhotoImgs.size(); i++) {
             View view = getLayoutInflater().inflate(R.layout.item_edit_img, null, false);
             SimpleDraweeView imgDraweeView = (SimpleDraweeView) view.findViewById(R.id.imgDraweeView);
-            imgDraweeView.setImageURI(Uri.parse(mPhotoImgs.get(i)));
+            imgDraweeView.setImageURI(Uri.parse(PhotoImgs.get(i)));
             final int finalI = i;
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = PhotoDetailActivity.getIntent(PostContentActivity.this,
-                            mPhotoImgs, finalI, 1);
+                            PhotoImgs, finalI, 1);
                     startActivity(intent);
                 }
             });
@@ -135,7 +120,7 @@ public class PostContentActivity extends BaseActivity {
             mPostImgFlowLayout.addView(view, lp);
 
         }
-        if (mPhotoImgs.size() < MAX_IMG_NUM) {
+        if (PhotoImgs.size() < MAX_IMG_NUM) {
             View view = getLayoutInflater().inflate(R.layout.item_edit_img, null, false);
             SimpleDraweeView imgDraweeView = (SimpleDraweeView) view.findViewById(R.id.imgDraweeView);
             imgDraweeView.setImageURI(Uri.parse(
@@ -145,40 +130,29 @@ public class PostContentActivity extends BaseActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    seletePhoto();
+                    mPostContentPresenter.selectPhoto();
                 }
             });
             mPostImgFlowLayout.addView(view, lp);
         }
     }
 
-    private void seletePhoto() {
-        //配置功能
-        FunctionConfig functionConfig = new FunctionConfig.Builder()
-                .setMutiSelectMaxSize(MAX_IMG_NUM - mPhotoImgs.size())
-                .setEnableCamera(false)
-                .setEnableEdit(false)
-                .setEnableCrop(false)
-                .setEnableRotate(true)
-                .setEnablePreview(false)
-                .setCropReplaceSource(false)//配置裁剪图片时是否替换原始图片，默认不替换
-                .setForceCrop(false)//启动强制裁剪功能,一进入编辑页面就开启图片裁剪，不需要用户手动点击裁剪，此功能只针对单选操作
-                .build();
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mContentEditText, msg, SnackbarUtil.Alert).show();
+    }
 
-        GalleryFinal.openGalleryMuti(200, functionConfig, new GalleryFinal.OnHanlderResultCallback() {
-            @Override
-            public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
-                for (PhotoInfo photoInfo : resultList) {
-                    mPhotoImgs.add("file://" + photoInfo.getPhotoPath());
-                    setUpFlow();
-                }
-            }
+    @Override
+    public void showWarningMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mContentEditText, msg, SnackbarUtil.Warning
+        ).show();
+    }
 
-            @Override
-            public void onHanlderFailure(int requestCode, String errorMsg) {
-
-            }
-        });
+    @Override
+    public void onPostFinishCallBack() {
+        EventBus.getDefault().post(new ToTopEvent(true, "发送成功"));
+        this.finish();
     }
 
 
@@ -194,129 +168,30 @@ public class PostContentActivity extends BaseActivity {
         int id = item.getItemId();
         if (id == R.id.action_finish) {
 
-            if (mContentEditText.getText().toString().trim().isEmpty() && mPhotoImgs.size() == 0) {
-                SnackbarUtil.ShortSnackbar(
-                        mContentEditText, "请输入文字或添加图片", SnackbarUtil.Warning
-                ).show();
-            }
+            hideInput(mContentEditText);
 
-            if (mPhotoImgs.size() != 0) {
-                final MediaType mediaType = MediaType.parse("image/*");
-                Observable.from(mPhotoImgs)
-                        .subscribeOn(Schedulers.io())
-                        .map(new Func1<String, File>() {
-                            @Override
-                            public File call(String s) {
-                                return new File(s.substring("file://".length(), s.length()));
-                            }
-                        })
-                        .flatMap(new Func1<File, Observable<File>>() {
-                            @Override
-                            public Observable<File> call(File file) {
-//                            Log.d(TAG, "call: " + file.exists());
-                                return Compressor.getDefault(PostContentActivity.this)
-                                        .compressToFileAsObservable(file);
-                            }
-                        })
-                        .flatMap(new Func1<File, Observable<BmobPhoto>>() {
-                            @Override
-                            public Observable<BmobPhoto> call(File file) {
-                                return ImageUploader.getObservableAsBombPhoto(mediaType,
-                                        file.toString(), file);
-                            }
-                        })
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<BmobPhoto>() {
-                            com.example.daidaijie.syllabusapplication.bean.PhotoInfo photoInfo =
-                                    new com.example.daidaijie.syllabusapplication.bean.PhotoInfo();
-
-                            @Override
-                            public void onStart() {
-                                super.onStart();
-                                photoInfo.setPhoto_list(new ArrayList<com.example.daidaijie
-                                        .syllabusapplication.bean.PhotoInfo.PhotoListBean>());
-                            }
-
-                            @Override
-                            public void onCompleted() {
-                                String photoListJsonString = GsonUtil.getDefault()
-                                        .toJson(photoInfo, com.example.daidaijie
-                                                .syllabusapplication.bean.PhotoInfo.class);
-                                pushContent(photoListJsonString);
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-                                Toast.makeText(PostContentActivity.this,
-                                        "图片上传失败", Toast.LENGTH_SHORT).show();
-                            }
-
-                            @Override
-                            public void onNext(BmobPhoto bmobPhoto) {
-                                com.example.daidaijie.syllabusapplication.bean.PhotoInfo
-                                        .PhotoListBean photoListBean = new com.example.daidaijie
-                                        .syllabusapplication.bean.PhotoInfo.PhotoListBean();
-                                photoListBean.setSize_big(bmobPhoto.getUrl());
-                                photoListBean.setSize_small(bmobPhoto.getUrl());
-                                photoInfo.getPhoto_list().add(photoListBean);
-                            }
-                        });
+            String source;
+            if (mPostAsAndroidButton.isChecked()) {
+                source = mPostAsAndroidButton.getText().toString();
+            } else if (mPostAsPhoneButton.isChecked()) {
+                source = mPostAsPhoneButton.getText().toString();
+            } else if (mPostAsOtherButton.isChecked()) {
+                source = mPostAsOtherButton.getText().toString();
             } else {
-                pushContent(null);
+                source = "火星";
             }
+
+            mPostContentPresenter.postContent(mContentEditText.getText().toString().trim(), source);
 
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void pushContent(@Nullable String photoListJson) {
-        mLoadingDialog.show();
-        PostContent postContent = new PostContent();
-        postContent.content = mContentEditText.getText().toString();
-        postContent.token = User.getInstance().getUserInfo().getToken();
-        postContent.description = "None";
-        postContent.post_type = PushPostService.POST_TYPE_TOPIC;
-        postContent.photo_list_json = photoListJson;
-        if (mPostAsAndroidButton.isChecked()) {
-            postContent.source = mPostAsAndroidButton.getText().toString();
-        } else if (mPostAsPhoneButton.isChecked()) {
-            postContent.source = mPostAsPhoneButton.getText().toString();
-        } else if (mPostAsOtherButton.isChecked()) {
-            postContent.source = mPostAsOtherButton.getText().toString();
-        }
-        postContent.uid = User.getInstance().getUserBaseBean().getId();
-
-        Retrofit retrofit = RetrofitUtil.getDefault();
-        PushPostService pushPostService = retrofit.create(PushPostService.class);
-        pushPostService.post(postContent)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-                    @Override
-                    public void onCompleted() {
-                        EventBus.getDefault().post(new ToTopEvent(true, true));
-                        mLoadingDialog.dismiss();
-                        PostContentActivity.this.finish();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        SnackbarUtil.LongSnackbar(mContentEditText, "发送失败", SnackbarUtil.Alert)
-                                .show();
-                        mLoadingDialog.dismiss();
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-
-                    }
-                });
-
-    }
 
     @Override
     public void onBackPressed() {
-        if (mPhotoImgs.size() != 0 || !mContentEditText.getText().toString().trim().isEmpty()) {
+        hideInput(mContentEditText);
+        if (mPostContentPresenter.isNonePhoto() || !mContentEditText.getText().toString().trim().isEmpty()) {
             TextView textView = new TextView(this);
             textView.setTextSize(16);
             textView.setTextColor(getResources().getColor(R.color.defaultTextColor));
@@ -351,7 +226,15 @@ public class PostContentActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void deletePhoto(DeletePhotoEvent event) {
-        mPhotoImgs.remove(event.position);
-        setUpFlow();
+        mPostContentPresenter.unSelectPhoto(event.position);
+    }
+
+    @Override
+    public void showLoading(boolean isShow) {
+        if (isShow) {
+            mLoadingDialog.show();
+        } else {
+            mLoadingDialog.dismiss();
+        }
     }
 }

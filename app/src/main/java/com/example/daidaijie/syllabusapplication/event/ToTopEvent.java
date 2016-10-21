@@ -9,8 +9,16 @@ public class ToTopEvent {
 
     public boolean isRefresh;
 
-    public ToTopEvent(boolean isShowSuccuess, boolean isRefresh) {
-        this.isShowSuccuess = isShowSuccuess;
+    public String msg;
+
+    public ToTopEvent(boolean isRefresh) {
         this.isRefresh = isRefresh;
+        this.isShowSuccuess = false;
+    }
+
+    public ToTopEvent(boolean isRefresh, String msg) {
+        this.isShowSuccuess = true;
+        this.isRefresh = isRefresh;
+        this.msg = msg;
     }
 }

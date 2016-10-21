@@ -1,7 +1,7 @@
 package com.example.daidaijie.syllabusapplication.util;
 
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
-import com.example.daidaijie.syllabusapplication.retrofitApi.UploadImageService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.UploadImageApi;
 
 import java.io.File;
 
@@ -35,14 +35,13 @@ public class ImageUploader {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
-    private static UploadImageService uploadImageApi = retrofit.create(UploadImageService.class);
+    private static UploadImageApi uploadImageApi = retrofit.create(UploadImageApi.class);
 
 
     public static Observable<BmobPhoto> getObservableAsBombPhoto
             (MediaType mediaType, String filename, File image_file) {
         RequestBody requestBody = RequestBody.create(mediaType, image_file);
-        Observable<BmobPhoto> bombPhotoObserable = uploadImageApi.upload(requestBody, filename);
-        return bombPhotoObserable;
+        return uploadImageApi.upload(requestBody, filename);
     }
 
 }

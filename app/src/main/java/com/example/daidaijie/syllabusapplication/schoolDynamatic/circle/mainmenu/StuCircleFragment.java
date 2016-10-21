@@ -119,18 +119,18 @@ public class StuCircleFragment extends BaseFragment implements StuCircleContract
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void toTop(ToTopEvent toTopEvent) {
-        /*mCircleRecyclerView.smoothScrollToPosition(0);
+        mCircleRecyclerView.smoothScrollToPosition(0);
         if (toTopEvent.isRefresh) {
-            mSpringView.postDelayed(new Runnable() {
+            mCircleRecyclerView.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mSpringView.callFresh();
+                    mStuCirclePresenter.refresh();
                 }
-            }, 50);
+            }, 100);
         }
         if (toTopEvent.isShowSuccuess) {
             SnackbarUtil.ShortSnackbar(mCircleRecyclerView, "发送成功", SnackbarUtil.Confirm).show();
-        }*/
+        }
 
     }
 

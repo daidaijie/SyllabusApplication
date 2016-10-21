@@ -13,7 +13,7 @@ import rx.Observable;
  * Created by smallfly on 16-3-27.
  * 用于上传文件的restful请求
  */
-public interface UploadImageService {
+public interface UploadImageApi {
     // headers
     String APPLICATION_ID_FIELD = "X-Bmob-Application-Id";
     String API_KEY_FIELD = "X-Bmob-REST-API-Key";
