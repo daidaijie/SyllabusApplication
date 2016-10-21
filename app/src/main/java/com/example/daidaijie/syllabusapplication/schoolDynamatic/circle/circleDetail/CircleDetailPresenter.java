@@ -152,7 +152,7 @@ public class CircleDetailPresenter implements CircleDetailContract.presenter {
     @Override
     public void onLike(int position, boolean isLike, final CirclesAdapter.OnLikeStateChangeListener onLikeStateChangeListener) {
         if (isLike) {
-            mISchoolCircleModel.like(position)
+            mISchoolCircleModel.like(mPosition)
                     .subscribe(new Subscriber<ThumbUpReturn>() {
                         @Override
                         public void onCompleted() {
@@ -176,7 +176,7 @@ public class CircleDetailPresenter implements CircleDetailContract.presenter {
                         }
                     });
         } else {
-            mISchoolCircleModel.unlike(position)
+            mISchoolCircleModel.unlike(mPosition)
                     .subscribe(new Subscriber<Void>() {
                         @Override
                         public void onCompleted() {
