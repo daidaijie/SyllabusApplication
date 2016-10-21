@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/defaultDarkBackground"
+    android:background="@color/defaultLightBackground"
+    android:orientation="vertical"
     tools:context="com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity">
 
     <android.support.v7.widget.Toolbar
@@ -32,77 +31,39 @@
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>
 
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/commentRecyclerView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:layout_marginTop="8dp">
-    </android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
 
-
-    <LinearLayout
-        android:id="@+id/commentInputLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/defaultDarkBackground"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
-        <View
-            android:id="@+id/div_line"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/defaultShowColor">
-        </View>
+            android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/commentEditext"
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/commentRecyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/div_line"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_toLeftOf="@+id/sendLayout"
-                android:layout_weight="1"
-                android:maxHeight="160dp"
-                android:textColor="@color/defaultTextColor"
-                android:textSize="16sp"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp">
+            </android.support.v7.widget.RecyclerView>
 
-            <FrameLayout
-                android:id="@+id/sendLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp">
+            <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
+                android:id="@+id/header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <info.hoang8f.widget.FButton
-                    android:id="@+id/sendCommentButton"
-                    android:layout_width="56dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="bottom"
-                    android:text="发送"
-                    android:textColor="@color/material_white"
-                    android:textSize="14sp"
-                    fbutton:buttonColor="?attr/colorPrimary"
-                    fbutton:cornerRadius="4dp"
-                    fbutton:shadowColor="@color/defaultShowColor"
-                    fbutton:shadowEnabled="true"
-                    fbutton:shadowHeight="1dp"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/contentRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </FrameLayout>
-        </LinearLayout>
+                </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
+            </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
+
+        </FrameLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

@@ -19,7 +19,7 @@ public interface IUserModel {
 
     Observable<UserBaseBean> getUserBaseBeanFromCache();
 
-    UserBaseBean getUserBaseBean();
+    UserBaseBean getUserBaseBeanNormal();
 
     Observable<UserInfo> getUserInfoFromMemory();
 
@@ -29,5 +29,5 @@ public interface IUserModel {
 
     Observable<UserInfo> getUserInfo();
 
-
+    UserInfo getUserInfoNormal();
 }

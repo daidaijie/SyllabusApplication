@@ -81,7 +81,6 @@ public class StuCircleFragment extends BaseFragment implements StuCircleContract
         mRefreshStuCircleLayout.setOnRefreshListener(this);
         setupSwipeRefreshLayout(mRefreshStuCircleLayout);
 
-
         mLoadMoreView = mActivity.getLayoutInflater().inflate(R.layout.bottom_load_more, null);
         mLoadMoreView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -110,7 +109,7 @@ public class StuCircleFragment extends BaseFragment implements StuCircleContract
 
     @OnClick(R.id.postContentButton)
     public void onClick() {
-        Intent intent = PostContentActivity.getIntent(getActivity());
+        Intent intent = PostContentActivity.getIntent(mActivity);
         mActivity.startActivity(intent);
     }
 

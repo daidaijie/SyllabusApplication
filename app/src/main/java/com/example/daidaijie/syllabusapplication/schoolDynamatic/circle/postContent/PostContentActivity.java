@@ -65,6 +65,7 @@ public class PostContentActivity extends BaseActivity {
     Toolbar mToolbar;
 
     private final int MAX_IMG_NUM = 3;
+
     @BindView(R.id.postImgFlowLayout)
     FlowLabelLayout mPostImgFlowLayout;
     @BindView(R.id.contentEditText)

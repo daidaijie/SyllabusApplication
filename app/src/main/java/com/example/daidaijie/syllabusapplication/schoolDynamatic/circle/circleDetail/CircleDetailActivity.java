@@ -2,216 +2,103 @@ package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleD
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.CommentAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
-import com.example.daidaijie.syllabusapplication.bean.CommentsBean;
-import com.example.daidaijie.syllabusapplication.bean.PostCommentBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
-import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
-import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.retrofitApi.CircleCommentsService;
-import com.example.daidaijie.syllabusapplication.retrofitApi.SendCommentService;
-import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.StuCircleModelComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
-
-import org.greenrobot.eventbus.EventBus;
+import com.example.daidaijie.syllabusapplication.widget.EditTextDialog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.OnClick;
-import retrofit2.Retrofit;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
-public class CircleDetailActivity extends BaseActivity {
+public class CircleDetailActivity extends BaseActivity implements CircleDetailContract.view, SwipeRefreshLayout.OnRefreshListener, CommentAdapter.onCommentListener, CirclesAdapter.OnCommentListener, EditTextDialog.OnPostCommentCallBack {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+    @BindView(R.id.contentRecyclerView)
+    RecyclerView mContentRecyclerView;
     @BindView(R.id.commentRecyclerView)
     RecyclerView mCommentRecyclerView;
+    @BindView(R.id.header)
+    RecyclerViewHeader mHeader;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
-    RecyclerView mContentRecyclerView;
-    @BindView(R.id.commentEditext)
-    EditText mCommentEditext;
-    @BindView(R.id.rootView)
-    RelativeLayout mRootView;
-    @BindView(R.id.sendCommentButton)
-    Button mSendCommentButton;
-    @BindView(R.id.commentInputLayout)
-    LinearLayout mCommentInputLayout;
     private CirclesAdapter mCirclesAdapter;
 
     private CommentAdapter mCommentAdapter;
 
-    private List<PostListBean> mPostListBeen;
+    private static final String EXTRA_POST_BEAN_POS = CircleDetailActivity.class.getCanonicalName()
+            + ".PostBeanPos";
 
-    private CommentInfo mCommentInfo;
+    private static final String EXTRA_PHOTO_WIDTH = CircleDetailActivity.class.getCanonicalName()
+            + ".PhotoWidth";
 
-    private PostListBean mPostListBean;
+    private static final String EXTRA_IS_COMMENT = CircleDetailActivity.class.getCanonicalName()
+            + ".isComment";
 
-    private static final String EXTRA_POST_BEAN_POS =
-            "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.PostBeanPos";
+    Map<Integer, EditTextDialog> mEditTextDialogMap;
 
-    private static final String EXTRA_PHOTO_WIDTH =
-            "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.PhotoWidth";
-
-    private static final String EXTRA_IS_COMMENT =
-            "com.example.daidaijie.syllabusapplication.activity/CircleDetailActivity.isComment";
-
-
-    private int mVisibleHeight;
-    private boolean mIsKeyboardShow;
-
-    private boolean mIsComment;
-
-    //上一条评论
-    private int lastPostion;
-    private int mPosition;
-
+    @Inject
+    CircleDetailPresenter mCircleDetailPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Explode().setDuration(300));
-        }
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mRootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                getKeyboardHeight();
-            }
-        });
+        setupTitleBar(mToolbar);
 
-        mPosition = getIntent().getIntExtra(EXTRA_POST_BEAN_POS, 0);
-//        mPostListBean = PostListModel.getInstance().mPostListBeen.get(mPosition);
-
-        mPostListBeen = new ArrayList<>();
-        mPostListBeen.add(mPostListBean);
-
-        lastPostion = 0;
-        mCirclesAdapter = new CirclesAdapter(this, mPostListBeen,
-                getIntent().getIntExtra(EXTRA_PHOTO_WIDTH, 0));
-        mCirclesAdapter.setCommentListener(new CirclesAdapter.OnCommentListener() {
-            @Override
-            public void onComment() {
-                showInput();
-                mCommentEditext.setHint("评论该动态");
-                if (lastPostion != 0) {
-                    mCommentEditext.setText("");
-                }
-                lastPostion = 0;
-            }
-        });
-        //以后一定要记住这句话
-        mContentRecyclerView = new RecyclerView(this);
+        mCirclesAdapter = new CirclesAdapter(this, null, getIntent().getIntExtra(EXTRA_PHOTO_WIDTH, 0));
         mContentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mContentRecyclerView.setAdapter(mCirclesAdapter);
-        mCirclesAdapter.setOnLikeStateChangeListener(new CirclesAdapter.OnLikeStateChangeListener() {
-            @Override
-            public void onLike(boolean isLike, int position) {
-                EventBus.getDefault().post(new CircleStateChangeEvent(mPosition));
-            }
-        });
+        mCirclesAdapter.setCommentListener(this);
 
-        mCommentInfo = null;
-        mCommentAdapter = new CommentAdapter(this, mCommentInfo);
+        mCommentAdapter = new CommentAdapter(this, null);
         mCommentRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mCommentAdapter.setHeaderView(mContentRecyclerView);
-        mCommentAdapter.setCommentListener(new CommentAdapter.onCommentListener() {
+        mCommentRecyclerView.setAdapter(mCommentAdapter);
+        mCommentAdapter.setCommentListener(this);
+        mHeader.attachTo(mCommentRecyclerView);
+
+        DaggerCircleDetailComponent.builder()
+                .stuCircleModelComponent(StuCircleModelComponent.getInstance())
+                .circleDetailModule(new CircleDetailModule(getIntent().getIntExtra(EXTRA_POST_BEAN_POS, 0), this))
+                .build().inject(this);
+
+        mCircleDetailPresenter.start();
+
+        setupSwipeRefreshLayout(mSwipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.post(new Runnable() {
             @Override
-            public void onComment(int position) {
-                showInput();
-                CommentInfo.CommentsBean.UserBean user = mCommentInfo.getComments().get(position).getUser();
-                String userName = user.getNickname().trim().isEmpty() ? user.getAccount() : user.getNickname();
-                mCommentEditext.setHint("回复" + userName + ":");
-                if (lastPostion != position + 1) {
-                    mCommentEditext.setText("");
-                }
-                lastPostion = position + 1;
+            public void run() {
+                mCircleDetailPresenter.loadData();
             }
         });
 
-        mCommentRecyclerView.setAdapter(mCommentAdapter);
+        mEditTextDialogMap = new HashMap<>();
 
-        getComment();
-
-        mIsComment = getIntent().getBooleanExtra(EXTRA_IS_COMMENT, false);
-        if (mIsComment) {
-            showInput();
-            mCommentEditext.setHint("评论该动态");
-            if (lastPostion != 0) {
-                mCommentEditext.setText("");
-            }
-            lastPostion = 0;
-        }
-
-    }
-
-    private void getKeyboardHeight() {
-        Rect r = new Rect();
-        mRootView.getWindowVisibleDisplayFrame(r);
-
-        int visibleHeight = r.height();
-
-        if (mVisibleHeight == 0) {
-            mVisibleHeight = visibleHeight;
-            return;
-        }
-
-        if (mVisibleHeight == visibleHeight) {
-            return;
-        }
-
-        mVisibleHeight = visibleHeight;
-
-        int mRootHeight = mRootView.getHeight();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mRootHeight -= getStatusBarHeight();
-        }
-
-//        Toast.makeText(CircleDetailActivity.this, "height" + mVisibleHeight + " " + mRootHeight, Toast.LENGTH_SHORT).show();
-        // Magic is here
-        if (mVisibleHeight != mRootHeight) {
-            mIsKeyboardShow = true;
-        } else {
-            mIsKeyboardShow = false;
-        }
-        RelativeLayout.LayoutParams layoutParams =
-                (RelativeLayout.LayoutParams) mCommentInputLayout.getLayoutParams();
-        layoutParams.bottomMargin = mRootHeight - mVisibleHeight;
-        mRootView.requestLayout();
-        if (mIsKeyboardShow == false) {
-            hideInput();
+        if (getIntent().getBooleanExtra(EXTRA_IS_COMMENT, false)) {
+            mCircleDetailPresenter.showComment(-1);
         }
     }
 
@@ -233,116 +120,73 @@ public class CircleDetailActivity extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed() {
-
-        super.onBackPressed();
-    }
-
-    private void showInput() {
-        mCommentInputLayout.setVisibility(View.VISIBLE);
-        mCommentEditext.setFocusable(true);
-        mCommentEditext.setFocusableInTouchMode(true);
-        mCommentEditext.requestFocus();
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(mCommentEditext, InputMethodManager.SHOW_FORCED);
-    }
-
-    private void hideInput() {
-        InputMethodManager imm = (InputMethodManager)
-                getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mCommentEditext.getWindowToken(), 0);
-        mCommentInputLayout.setVisibility(View.GONE);
-    }
-
-    private void getComment() {
-        Retrofit retrofit = RetrofitUtil.getDefault();
-        CircleCommentsService commentsService = retrofit.create(CircleCommentsService.class);
-        commentsService.get_comments(mPostListBean.getId())
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<CommentInfo>() {
-                    @Override
-                    public void onCompleted() {
-
-                        mCommentAdapter.setCommentInfo(mCommentInfo);
-                        mCommentAdapter.notifyDataSetChanged();
-
-                        //更新数据
-                        List<CommentsBean> commentsBeen = new ArrayList<>();
-                        for (CommentInfo.CommentsBean commentsBean : mCommentInfo.getComments()) {
-                            CommentsBean commentsBeanID = new CommentsBean();
-                            commentsBeanID.setId(commentsBean.getId());
-                            commentsBeanID.setUid(commentsBean.getUid());
-                            commentsBeen.add(commentsBeanID);
-                        }
-                        mPostListBean.setComments(commentsBeen);
-                        mCirclesAdapter.notifyDataSetChanged();
-                        EventBus.getDefault().post(new CircleStateChangeEvent(mPosition));
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(CommentInfo commentInfo) {
-                        mCommentInfo = commentInfo;
-                    }
-                });
-    }
-
-    private void sendComment() {
-        if (mCommentEditext.getText().toString().trim().isEmpty()) {
-            SnackbarUtil.ShortSnackbar(
-                    mCommentEditext, "消息不能为空", SnackbarUtil.Warning
-            ).show();
-            return;
+    public void showCommentDialog(int position, String msg) {
+        EditTextDialog dialog = mEditTextDialogMap.get(position);
+        if (dialog == null) {
+            dialog = new EditTextDialog();
+            dialog.setPostUser(msg);
+            dialog.setPostID(position);
+            dialog.setOnPostCommentCallBack(this);
+            mEditTextDialogMap.put(position, dialog);
         }
-        String postContent = mCommentEditext.getText().toString();
-        if (lastPostion != 0) {
-            postContent = "@" + mCommentInfo.getComments().get(lastPostion - 1).getUser().getName()
-                    + ": " + postContent;
-        }
-
-
-        // TODO: 2016/9/2 别的设备登录这里怎么破.....
-        PostCommentBean postCommentBean = new PostCommentBean(
-                mPostListBeen.get(0).getId(),
-                User.getInstance().getUserBaseBean().getId(),
-                postContent,
-                User.getInstance().getUserInfo().getToken()
-        );
-        SendCommentService sendCommentService
-                = RetrofitUtil.getDefault().create(SendCommentService.class);
-        sendCommentService.sendComment(postCommentBean)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<Void>() {
-                    @Override
-                    public void onCompleted() {
-                        mCommentEditext.setText("");
-                        getComment();
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        SnackbarUtil.ShortSnackbar(
-                                mCommentEditext, "发送失败", SnackbarUtil.Alert
-                        ).show();
-                        Log.d("发送失败", "发送失败: " + e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(Void aVoid) {
-                    }
-                });
+        dialog.show(getSupportFragmentManager());
     }
 
-    @OnClick(R.id.sendCommentButton)
-    public void onClick() {
-        sendComment();
-        hideInput();
+    @Override
+    public void clearDialog(int position) {
+        mEditTextDialogMap.remove(position);
+    }
+
+    @Override
+    public void showHeaderInfo(PostListBean postListBean) {
+        List<PostListBean> postListBeen = new ArrayList<>();
+        postListBeen.add(postListBean);
+        mCirclesAdapter.setPostListBeen(postListBeen);
+        mCirclesAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showRefresh(boolean isShow) {
+        mSwipeRefreshLayout.setRefreshing(isShow);
+    }
+
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mCommentRecyclerView, msg, SnackbarUtil.Alert
+        ).show();
+    }
+
+    @Override
+    public void showSuccessMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mCommentRecyclerView, msg, SnackbarUtil.Confirm
+        ).show();
+    }
+
+    @Override
+    public void showData(List<CommentInfo.CommentsBean> commentsBeen) {
+        mCommentAdapter.setCommentsBeen(commentsBeen);
+        mCommentAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefresh() {
+        mCircleDetailPresenter.loadData();
+    }
+
+    @Override
+    public void onComment(int position) {
+        mCircleDetailPresenter.showComment(position);
+    }
+
+    @Override
+    public void onComment() {
+        mCircleDetailPresenter.showComment(-1);
+    }
+
+    @Override
+    public void onPostComment(int postID, String toAccount, String msg) {
+        mCircleDetailPresenter.postComment(postID, toAccount, msg);
     }
 }

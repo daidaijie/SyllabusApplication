@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/material_white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/greyF6Color"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/commentEditText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="top"
+            android:maxLength="140"
+            android:maxLines="10"
+            android:padding="8dp"
+            android:textColor="@color/grey66Color"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/infoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"
+            tools:text="回复课程表的评论"/>
+
+        <FrameLayout
+            android:id="@+id/sendLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_weight="0">
+
+            <info.hoang8f.widget.FButton
+                android:id="@+id/sendCommentButton"
+                android:layout_width="56dp"
+                android:layout_height="32dp"
+                android:layout_gravity="bottom"
+                android:text="发送"
+                android:textColor="@color/material_white"
+                android:textSize="14sp"
+                fbutton:buttonColor="?attr/colorPrimary"
+                fbutton:cornerRadius="4dp"
+                fbutton:shadowColor="@color/defaultShowColor"
+                fbutton:shadowEnabled="true"
+                fbutton:shadowHeight="1dp"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

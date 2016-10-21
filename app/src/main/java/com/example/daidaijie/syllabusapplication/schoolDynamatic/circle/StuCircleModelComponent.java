@@ -1,9 +1,13 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle;
 
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
+import com.example.daidaijie.syllabusapplication.user.IUserModel;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 
 import dagger.Component;
+import retrofit2.Retrofit;
 
 /**
  * Created by daidaijie on 2016/10/21.
@@ -30,4 +34,10 @@ public abstract class StuCircleModelComponent {
     }
 
     public abstract ISchoolCircleModel getSchoolCircleModel();
+
+    @SchoolRetrofit
+    public abstract Retrofit getSchoolRetrofit();
+
+    @LoginUser
+    public abstract IUserModel getUserModel();
 }

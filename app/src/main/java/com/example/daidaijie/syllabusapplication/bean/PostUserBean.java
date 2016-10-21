@@ -20,6 +20,9 @@ public class PostUserBean implements Serializable {
     }
 
     public String getNickname() {
+        if (nickname == null || nickname.isEmpty()) {
+            return account;
+        }
         return nickname;
     }
 

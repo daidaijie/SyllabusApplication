@@ -80,7 +80,7 @@
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:paddingTop="8dp"
-                android:text="　　汕大课程表是由汕头大学三个计算机系学生共同开发的一个校园App，功能主要有查询课表、成绩、考试，OA，校园动态，图书查询，校园外卖等功能。"
+                android:text="　　汕大课程表是由汕头大学三个计算机系学生共同开发的一个校园App，主要有查询课表、成绩、考试，OA，校园动态，图书查询，校园外卖等功能。"
                 android:textColor="@color/defaultTextColor"/>
 
             <TextView
@@ -232,7 +232,7 @@
                 android:paddingLeft="24dp"
                 android:paddingRight="24dp"
                 android:paddingTop="8dp"
-                android:text="林峻峰\n电话：13411978842 / 66842\n邮箱：14jflin@stu.edu..cn"
+                android:text="林峻峰\n电话：13411978842 / 66842\n邮箱：14jflin@stu.edu.cn"
                 android:textColor="@color/defaultTextColor"
                 android:textSize="14sp"/>
 

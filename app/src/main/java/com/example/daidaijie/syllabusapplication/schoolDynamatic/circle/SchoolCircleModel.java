@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle;
 
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.CircleBean;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
@@ -37,7 +38,6 @@ public class SchoolCircleModel implements ISchoolCircleModel {
         mPostListBeen = new ArrayList<>();
     }
 
-
     @Override
     public Observable<List<PostListBean>> getCircleListFromNet() {
         return mCirclesApi.getCircles(10, lowID)
@@ -59,7 +59,7 @@ public class SchoolCircleModel implements ISchoolCircleModel {
                         List<PostListBean> post_list = circleBean.getPost_list();
                         for (PostListBean bean : post_list) {
                             for (ThumbUpsBean thumbUpsBean : bean.getThumb_ups()) {
-                                if (thumbUpsBean.getUid() == mIUserModel.getUserBaseBean().getId()) {
+                                if (thumbUpsBean.getUid() == mIUserModel.getUserBaseBeanNormal().getId()) {
                                     bean.isMyLove = true;
                                     break;
                                 }
@@ -81,5 +81,10 @@ public class SchoolCircleModel implements ISchoolCircleModel {
     public Observable<List<PostListBean>> loadCircleListFromNet() {
         lowID = Integer.MAX_VALUE;
         return getCircleListFromNet();
+    }
+
+    @Override
+    public void getCircleByPosition(int position, IBaseModel.OnGetSuccessCallBack<PostListBean> onGetSuccessCallBack) {
+        onGetSuccessCallBack.onGetSuccess(mPostListBeen.get(position));
     }
 }

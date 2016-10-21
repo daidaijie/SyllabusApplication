@@ -126,7 +126,7 @@ public class UserModel implements IUserModel {
     }
 
     @Override
-    public UserBaseBean getUserBaseBean() {
+    public UserBaseBean getUserBaseBeanNormal() {
         if (mUserBaseBean != null) {
             return mUserBaseBean;
         }
@@ -235,6 +235,25 @@ public class UserModel implements IUserModel {
                         return userInfo != null;
                     }
                 });
+    }
+
+    @Override
+    public UserInfo getUserInfoNormal() {
+        if (mUserInfo != null) {
+            return mUserInfo;
+        }
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<UserInfo> results = realm.where(UserInfo.class)
+                        .equalTo("username", mILoginModel.getUserLogin().getUsername())
+                        .findAll();
+                if (results.size() != 0) {
+                    mUserInfo = mRealm.copyFromRealm(results.first());
+                }
+            }
+        });
+        return mUserInfo;
     }
 
     private Realm getRealm() {
