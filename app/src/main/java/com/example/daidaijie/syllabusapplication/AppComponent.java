@@ -40,7 +40,6 @@ public interface AppComponent {
     @SchoolRetrofit
     Retrofit getSchoolRetrofit();
 
-
     @DefaultRealm
     Realm getDefaultRealm();
 

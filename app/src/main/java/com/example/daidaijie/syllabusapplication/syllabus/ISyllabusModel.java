@@ -1,5 +1,8 @@
 package com.example.daidaijie.syllabusapplication.syllabus;
 
+import android.support.annotation.Nullable;
+
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 
 import rx.Observable;
@@ -8,7 +11,7 @@ import rx.Observable;
  * Created by daidaijie on 2016/10/19.
  */
 
-public interface ISyllabusModel {
+public interface ISyllabusModel extends IBaseModel {
 
     Observable<Syllabus> getSyllabusFromMemory();
 
@@ -18,6 +21,7 @@ public interface ISyllabusModel {
 
     Observable<Syllabus> getSyllabusFromCache();
 
-    Syllabus getSyllabusNormal();
+    void getSyllabusNormal(OnGetSuccessCallBack<Syllabus> onGetSuccessCallBack,
+                           @Nullable OnGetFailCallBack onGetFailCallBack);
 
 }

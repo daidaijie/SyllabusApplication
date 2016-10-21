@@ -101,10 +101,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
         final ViewGroup decorView = (ViewGroup) this.getWindow().getDecorView();
         decorView.addView(aniLayout);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
         DaggerSearchTakeOutComponent.builder()
                 .takeOutModelComponent(TakeOutModelComponent.getInstance(mAppComponent))

@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.other;
 
 import android.content.Context;
 import android.content.DialogInterface;

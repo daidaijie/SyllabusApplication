@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/material_black"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.PhotoDetailActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -39,8 +39,7 @@
         android:layout_below="@+id/toolbar"
         android:id="@+id/photoViewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/pointLinearLayout">
+        android:layout_height="match_parent">
     </com.example.daidaijie.syllabusapplication.widget.MultiTouchViewPager>
 
 

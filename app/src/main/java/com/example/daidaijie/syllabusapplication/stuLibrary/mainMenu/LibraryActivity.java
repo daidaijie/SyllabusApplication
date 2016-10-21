@@ -77,10 +77,7 @@ public class LibraryActivity extends BaseActivity {
 
         EventBus.getDefault().register(this);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
         mLibraryUtil = new LibraryUtil();
 

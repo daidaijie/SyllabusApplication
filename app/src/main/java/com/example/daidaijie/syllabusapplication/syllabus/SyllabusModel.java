@@ -1,6 +1,9 @@
 package com.example.daidaijie.syllabusapplication.syllabus;
 
+import android.support.annotation.Nullable;
+
 import com.example.daidaijie.syllabusapplication.ILoginModel;
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
@@ -104,9 +107,10 @@ public class SyllabusModel implements ISyllabusModel {
     }
 
     @Override
-    public Syllabus getSyllabusNormal() {
+    public void getSyllabusNormal(OnGetSuccessCallBack<Syllabus> onGetSuccessCallBack, @Nullable OnGetFailCallBack onGetFailCallBack) {
         if (mSyllabus != null) {
-            return mSyllabus;
+            onGetSuccessCallBack.onGetSuccess(mSyllabus);
+            return;
         }
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -124,8 +128,11 @@ public class SyllabusModel implements ISyllabusModel {
         });
         if (mSyllabus != null) {
             mSyllabus.loadLessonFromDisk(mRealm);
+            onGetSuccessCallBack.onGetSuccess(mSyllabus);
         }
-        return mSyllabus;
+        if (onGetFailCallBack != null) {
+            onGetFailCallBack.onGetFail();
+        }
     }
 
 }

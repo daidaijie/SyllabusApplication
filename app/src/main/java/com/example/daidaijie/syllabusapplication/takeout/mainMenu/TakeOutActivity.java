@@ -54,10 +54,7 @@ public class TakeOutActivity extends BaseActivity implements TakeOutContract.vie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
         DaggerTakeOutComponent.builder()
                 .takeOutModelComponent(TakeOutModelComponent.getInstance(mAppComponent))

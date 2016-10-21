@@ -1,15 +1,20 @@
 package com.example.daidaijie.syllabusapplication.main;
 
 import com.example.daidaijie.syllabusapplication.ILoginModel;
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.BannerBeen;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
+import com.orhanobut.logger.Logger;
 
 import javax.inject.Inject;
 
+import rx.Subscriber;
 import rx.functions.Action1;
 
 /**
@@ -47,7 +52,12 @@ public class MainPresenter implements MainContract.presenter {
         mView.showSemester(mILoginModel.getCurrentSemester());
 
         //先使用缓存的
-        mView.setBannerPage(mBannerModel.getBannerNormal().getBanners());
+        mBannerModel.getBannerNormal(new IBaseModel.OnGetSuccessCallBack<BannerBeen>() {
+            @Override
+            public void onGetSuccess(BannerBeen bannerBeen) {
+                mView.setBannerPage(bannerBeen.getBanners());
+            }
+        });
 
         //再获取网络的
         mBannerModel.getBannerFromNet()

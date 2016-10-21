@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +28,6 @@ import com.example.daidaijie.syllabusapplication.bean.CommentsBean;
 import com.example.daidaijie.syllabusapplication.bean.PostCommentBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
-import com.example.daidaijie.syllabusapplication.model.PostListModel;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.retrofitApi.CircleCommentsService;
 import com.example.daidaijie.syllabusapplication.retrofitApi.SendCommentService;
@@ -114,7 +113,7 @@ public class CircleDetailActivity extends BaseActivity {
         });
 
         mPosition = getIntent().getIntExtra(EXTRA_POST_BEAN_POS, 0);
-        mPostListBean = PostListModel.getInstance().mPostListBeen.get(mPosition);
+//        mPostListBean = PostListModel.getInstance().mPostListBeen.get(mPosition);
 
         mPostListBeen = new ArrayList<>();
         mPostListBeen.add(mPostListBean);

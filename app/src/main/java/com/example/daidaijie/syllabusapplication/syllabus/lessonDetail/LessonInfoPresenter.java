@@ -1,13 +1,11 @@
 package com.example.daidaijie.syllabusapplication.syllabus.lessonDetail;
 
-import com.example.daidaijie.syllabusapplication.bean.Lesson;
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.syllabus.ISyllabusModel;
 
 import javax.inject.Inject;
-
-import rx.functions.Action1;
 
 /**
  * Created by daidaijie on 2016/10/20.
@@ -31,6 +29,11 @@ public class LessonInfoPresenter implements LessonInfoContract.presenter {
 
     @Override
     public void start() {
-        mView.showData(mISyllabusModel.getSyllabusNormal().getLessonByID(mLessonId));
+        mISyllabusModel.getSyllabusNormal(new IBaseModel.OnGetSuccessCallBack<Syllabus>() {
+            @Override
+            public void onGetSuccess(Syllabus syllabus) {
+                mView.showData(syllabus.getLessonByID(mLessonId));
+            }
+        }, null);
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
  * Created by daidaijie on 2016/8/9.
  */
 public class PostListBean implements Serializable {
+
     private String content;
 
     public boolean isMyLove;

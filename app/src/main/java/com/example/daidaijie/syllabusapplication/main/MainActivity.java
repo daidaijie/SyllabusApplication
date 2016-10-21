@@ -30,7 +30,7 @@ import com.example.daidaijie.syllabusapplication.activity.EmailWebActivity;
 import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
-import com.example.daidaijie.syllabusapplication.activity.STUCircleActivity;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.STUCircleActivity;
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
 import com.example.daidaijie.syllabusapplication.syllabus.main.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.activity.ThemePickerFragment;

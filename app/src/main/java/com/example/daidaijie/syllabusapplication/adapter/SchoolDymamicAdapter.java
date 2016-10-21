@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.mainmenu.StuCircleFragment;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDynamic;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
@@ -106,7 +106,6 @@ public class SchoolDymamicAdapter extends RecyclerView.Adapter<SchoolDymamicAdap
         mWidth = mWidth > holder.mContentTextView.getWidth() ? mWidth : holder.mContentTextView.getWidth();
 
         if (schoolDynamic.getPhoto_list_json() != null && !schoolDynamic.getPhoto_list_json().isEmpty()) {
-            Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + "photoList");
             holder.mPhotoRecyclerView.setVisibility(View.VISIBLE);
             PhotoInfo photoInfo = GsonUtil.getDefault()
                     .fromJson(schoolDynamic.getPhoto_list_json(), PhotoInfo.class);

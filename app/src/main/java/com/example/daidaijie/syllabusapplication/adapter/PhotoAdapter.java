@@ -2,16 +2,13 @@ package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.PhotoDetailActivity;
-import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.liaoinstan.springview.utils.DensityUtil;
@@ -55,7 +52,6 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
 
         ViewGroup.LayoutParams layoutParams = holder.mPhotoSimpleDraweeView.getLayoutParams();
         layoutParams.width = width;
-        Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + width);
 
         holder.mPhotoSimpleDraweeView.setImageURI(photoBean.getSize_small());
 

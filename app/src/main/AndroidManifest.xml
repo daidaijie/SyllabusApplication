@@ -48,15 +48,15 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.STUCircleActivity"
+            android:name=".schoolDynamatic.STUCircleActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.PhotoDetailActivity"
+            android:name=".other.PhotoDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.CircleDetailActivity"
+            android:name=".schoolDynamatic.circle.circleDetail.CircleDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
         </activity>
@@ -65,7 +65,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".activity.PostContentActivity"
+            android:name=".schoolDynamatic.circle.postContent.PostContentActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity

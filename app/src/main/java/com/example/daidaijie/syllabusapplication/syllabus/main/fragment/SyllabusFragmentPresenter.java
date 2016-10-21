@@ -9,6 +9,7 @@ import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.IConfigModel;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
 import com.example.daidaijie.syllabusapplication.syllabus.ISyllabusModel;
@@ -112,12 +113,17 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
     @Override
     public void start() {
-        Syllabus syllabus = mISyllabusModel.getSyllabusNormal();
-        if (syllabus != null) {
-            mView.showSyllabus(syllabus);
-        } else {
-            mView.loadData();
-        }
+        mISyllabusModel.getSyllabusNormal(new IBaseModel.OnGetSuccessCallBack<Syllabus>() {
+            @Override
+            public void onGetSuccess(Syllabus syllabus) {
+                mView.showSyllabus(syllabus);
+            }
+        }, new IBaseModel.OnGetFailCallBack() {
+            @Override
+            public void onGetFail() {
+                mView.loadData();
+            }
+        });
     }
 
     private class SyllabusSubscriber extends Subscriber<Syllabus> {

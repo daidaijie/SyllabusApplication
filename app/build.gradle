@@ -60,6 +60,7 @@ dependencies {
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.7.0@aar'
     compile 'com.orhanobut:logger:1.15'
     testCompile 'junit:junit:4.12'
+    compile 'com.github.ybq:Endless-RecyclerView:1.0.3'
     apt 'com.jakewharton:butterknife-compiler:8.2.1'
 
 //  dagger

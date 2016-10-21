@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.schoolDynamatic;
 
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -26,7 +26,6 @@ public class STUCircleActivity extends BaseActivity {
     AppBarLayout mAppBar;
     @BindView(R.id.containerViewPager)
     ViewPager mContainerViewPager;
-
     StuCirclePagerAdapter mPagerAdapter;
     @BindView(R.id.tabLayout)
     TabLayout mTabLayout;
@@ -45,12 +44,12 @@ public class STUCircleActivity extends BaseActivity {
         mToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (SystemClock.currentThreadTimeMillis() - touchSecond < 200) {
+                /*if (SystemClock.currentThreadTimeMillis() - touchSecond < 200) {
                     EventBus.getDefault().post(new ToTopEvent(false, false));
                 } else {
                     Toast.makeText(STUCircleActivity.this, "再次点击回到顶部", Toast.LENGTH_SHORT).show();
                 }
-                touchSecond = SystemClock.currentThreadTimeMillis();
+                touchSecond = SystemClock.currentThreadTimeMillis();*/
 
             }
         });

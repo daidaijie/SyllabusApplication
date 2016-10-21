@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/defaultDarkBackground"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.StuCircleFragment">
+    tools:context="com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.mainmenu.StuCircleFragment">
 
     <com.liaoinstan.springview.widget.SpringView
         android:id="@+id/springView"

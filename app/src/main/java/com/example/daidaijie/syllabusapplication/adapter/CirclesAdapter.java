@@ -21,8 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.CircleDetailActivity;
-import com.example.daidaijie.syllabusapplication.activity.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
@@ -164,7 +163,6 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         mWidth = mWidth > holder.mContentTextView.getWidth() ? mWidth : holder.mContentTextView.getWidth();
 
         if (postBean.getPhoto_list_json() != null && !postBean.getPhoto_list_json().isEmpty()) {
-            Log.d(StuCircleFragment.TAG, "onBindViewHolder: " + "photoList");
             holder.mPhotoRecyclerView.setVisibility(View.VISIBLE);
             PhotoInfo photoInfo = GsonUtil.getDefault()
                     .fromJson(postBean.getPhoto_list_json(), PhotoInfo.class);
@@ -341,6 +339,9 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
 
     @Override
     public int getItemCount() {
+        if (mPostListBeen == null) {
+            return 0;
+        }
         return mPostListBeen.size();
     }
 

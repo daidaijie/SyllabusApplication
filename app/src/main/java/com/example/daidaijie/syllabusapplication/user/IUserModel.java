@@ -21,7 +21,6 @@ public interface IUserModel {
 
     UserBaseBean getUserBaseBean();
 
-
     Observable<UserInfo> getUserInfoFromMemory();
 
     Observable<UserInfo> getUserInfoFromDisk();

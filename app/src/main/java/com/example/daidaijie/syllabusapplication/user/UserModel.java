@@ -127,6 +127,21 @@ public class UserModel implements IUserModel {
 
     @Override
     public UserBaseBean getUserBaseBean() {
+        if (mUserBaseBean != null) {
+            return mUserBaseBean;
+        }
+
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<UserBaseBean> results = realm.where(UserBaseBean.class)
+                        .equalTo("account", mILoginModel.getUserLogin().getUsername()).findAll();
+                if (results.size() != 0) {
+                    mUserBaseBean = realm.copyFromRealm(results.first());
+                }
+            }
+        });
+
         return mUserBaseBean;
     }
 

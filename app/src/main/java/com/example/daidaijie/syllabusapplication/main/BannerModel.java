@@ -102,8 +102,11 @@ public class BannerModel implements IBannerModel {
     }
 
     @Override
-    public BannerBeen getBannerNormal() {
-        if (mBannerBeen != null) return mBannerBeen;
+    public void getBannerNormal(OnGetSuccessCallBack<BannerBeen> onGetCallBack) {
+        if (mBannerBeen != null) {
+            onGetCallBack.onGetSuccess(mBannerBeen);
+            return;
+        }
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -114,6 +117,6 @@ public class BannerModel implements IBannerModel {
                 }
             }
         });
-        return mBannerBeen;
+        onGetCallBack.onGetSuccess(mBannerBeen);
     }
 }

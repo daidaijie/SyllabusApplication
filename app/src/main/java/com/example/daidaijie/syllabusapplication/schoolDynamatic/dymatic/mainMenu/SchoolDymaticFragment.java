@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.mainMenu;
 
 
 import android.os.Bundle;
@@ -33,9 +33,9 @@ import rx.schedulers.Schedulers;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SchoolDymamicFragment extends Fragment implements SpringView.OnFreshListener {
+public class SchoolDymaticFragment extends Fragment implements SpringView.OnFreshListener {
 
-    public static final String TAG = "SchoolDymamicFragment";
+    public static final String TAG = "SchoolDymaticFragment";
 
     //已经加载的页数
     private int loadPage;
@@ -56,8 +56,8 @@ public class SchoolDymamicFragment extends Fragment implements SpringView.OnFres
     FloatingActionButton mPostContentButton;
 
 
-    public static SchoolDymamicFragment newInstance() {
-        SchoolDymamicFragment fragment = new SchoolDymamicFragment();
+    public static SchoolDymaticFragment newInstance() {
+        SchoolDymaticFragment fragment = new SchoolDymaticFragment();
 
         return fragment;
     }

@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.postContent;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,15 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.support.v7.widget.Toolbar;
-import android.text.format.Formatter;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +27,7 @@ import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.model.User;
+import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.retrofitApi.PushPostService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.ImageUploader;
@@ -63,8 +61,6 @@ import rx.schedulers.Schedulers;
 
 public class PostContentActivity extends BaseActivity {
 
-    @BindView(R.id.titleTextView)
-    TextView mTitleTextView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -82,8 +78,6 @@ public class PostContentActivity extends BaseActivity {
 
     private List<String> mPhotoImgs;
 
-    public static final String TAG = "PostContentActivity";
-
     AlertDialog mLoadingDialog;
 
     @Override
@@ -91,15 +85,14 @@ public class PostContentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
         mPostAsPhoneButton.setText(Build.MODEL);
 
         mPhotoImgs = new ArrayList<>();
+
         setUpFlow();
+
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
     }
 
@@ -176,7 +169,6 @@ public class PostContentActivity extends BaseActivity {
             public void onHanlderSuccess(int reqeustCode, List<PhotoInfo> resultList) {
                 for (PhotoInfo photoInfo : resultList) {
                     mPhotoImgs.add("file://" + photoInfo.getPhotoPath());
-                    Log.d(TAG, "onHanlderSuccess: " + photoInfo.getPhotoPath());
                     setUpFlow();
                 }
             }
@@ -221,7 +213,6 @@ public class PostContentActivity extends BaseActivity {
                             @Override
                             public Observable<File> call(File file) {
 //                            Log.d(TAG, "call: " + file.exists());
-                                Log.d(TAG, "压缩前: " + Formatter.formatFileSize(PostContentActivity.this, file.length()));
                                 return Compressor.getDefault(PostContentActivity.this)
                                         .compressToFileAsObservable(file);
                             }
@@ -229,7 +220,6 @@ public class PostContentActivity extends BaseActivity {
                         .flatMap(new Func1<File, Observable<BmobPhoto>>() {
                             @Override
                             public Observable<BmobPhoto> call(File file) {
-                                Log.d(TAG, "压缩后: " + Formatter.formatFileSize(PostContentActivity.this, file.length()));
                                 return ImageUploader.getObservableAsBombPhoto(mediaType,
                                         file.toString(), file);
                             }
@@ -251,20 +241,17 @@ public class PostContentActivity extends BaseActivity {
                                 String photoListJsonString = GsonUtil.getDefault()
                                         .toJson(photoInfo, com.example.daidaijie
                                                 .syllabusapplication.bean.PhotoInfo.class);
-                                Log.d(TAG, "onCompleted: " + photoListJsonString);
                                 pushContent(photoListJsonString);
                             }
 
                             @Override
                             public void onError(Throwable e) {
-                                Log.d(TAG, "onError: " + e.getMessage());
                                 Toast.makeText(PostContentActivity.this,
                                         "图片上传失败", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onNext(BmobPhoto bmobPhoto) {
-                                Log.d(TAG, "onNext: " + bmobPhoto.getUrl());
                                 com.example.daidaijie.syllabusapplication.bean.PhotoInfo
                                         .PhotoListBean photoListBean = new com.example.daidaijie
                                         .syllabusapplication.bean.PhotoInfo.PhotoListBean();
@@ -313,7 +300,6 @@ public class PostContentActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d(TAG, "onError: Push" + e.getMessage());
                         SnackbarUtil.LongSnackbar(mContentEditText, "发送失败", SnackbarUtil.Alert)
                                 .show();
                         mLoadingDialog.dismiss();
