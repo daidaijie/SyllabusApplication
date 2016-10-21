@@ -29,7 +29,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class CircleDetailActivity extends BaseActivity implements CircleDetailContract.view, SwipeRefreshLayout.OnRefreshListener, CommentAdapter.onCommentListener, CirclesAdapter.OnCommentListener, EditTextDialog.OnPostCommentCallBack {
+public class CircleDetailActivity extends BaseActivity implements CircleDetailContract.view, SwipeRefreshLayout.OnRefreshListener, CommentAdapter.onCommentListener, CirclesAdapter.OnCommentListener, EditTextDialog.OnPostCommentCallBack{
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -85,6 +85,7 @@ public class CircleDetailActivity extends BaseActivity implements CircleDetailCo
                 .build().inject(this);
 
         mCircleDetailPresenter.start();
+        mCirclesAdapter.setOnLikeCallBack(mCircleDetailPresenter);
 
         setupSwipeRefreshLayout(mSwipeRefreshLayout);
         mSwipeRefreshLayout.setOnRefreshListener(this);

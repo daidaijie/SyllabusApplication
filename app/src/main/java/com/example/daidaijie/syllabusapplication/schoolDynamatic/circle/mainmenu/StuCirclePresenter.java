@@ -1,6 +1,8 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.mainmenu;
 
+import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
 import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.ISchoolCircleModel;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
@@ -80,6 +82,57 @@ public class StuCirclePresenter implements StuCircleContract.presenter {
                         mView.showData(postListBeen);
                     }
                 });
+    }
+
+    @Override
+    public void onLike(int position, boolean isLike, final CirclesAdapter.OnLikeStateChangeListener onLikeStateChangeListener) {
+        if (isLike) {
+            mISchoolCircleModel.like(position)
+                    .subscribe(new Subscriber<ThumbUpReturn>() {
+                        @Override
+                        public void onCompleted() {
+                            onLikeStateChangeListener.onFinish();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if (e.getMessage() == null) {
+                                mView.showFailMessage("点赞失败");
+                            } else {
+                                mView.showFailMessage(e.getMessage().toUpperCase());
+                            }
+                            onLikeStateChangeListener.onFinish();
+                        }
+
+                        @Override
+                        public void onNext(ThumbUpReturn thumbUpReturn) {
+                            onLikeStateChangeListener.onLike(true);
+                        }
+                    });
+        } else {
+            mISchoolCircleModel.unlike(position)
+                    .subscribe(new Subscriber<Void>() {
+                        @Override
+                        public void onCompleted() {
+                            onLikeStateChangeListener.onFinish();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            if (e.getMessage() == null) {
+                                mView.showFailMessage("取消点赞失败");
+                            } else {
+                                mView.showFailMessage(e.getMessage().toUpperCase());
+                            }
+                            onLikeStateChangeListener.onFinish();
+                        }
+
+                        @Override
+                        public void onNext(Void aVoid) {
+                            onLikeStateChangeListener.onLike(false);
+                        }
+                    });
+        }
     }
 
     @Override

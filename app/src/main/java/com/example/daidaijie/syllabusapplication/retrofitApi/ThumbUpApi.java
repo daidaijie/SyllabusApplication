@@ -14,7 +14,7 @@ import rx.Observable;
  * Created by smallfly on 16-3-28.
  * 用于点赞的Api
  */
-public interface ThumbUpService {
+public interface ThumbUpApi {
 
     @POST("/interaction/api/v2.1/like")
     Observable<HttpResult<ThumbUpReturn>> like(@Body ThumbUp thumbUp);

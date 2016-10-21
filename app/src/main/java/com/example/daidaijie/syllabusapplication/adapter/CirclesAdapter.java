@@ -5,15 +5,14 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +20,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity;
-import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.PostUserBean;
-import com.example.daidaijie.syllabusapplication.bean.ThumbUp;
-import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
-import com.example.daidaijie.syllabusapplication.bean.ThumbUpsBean;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.model.User;
-import com.example.daidaijie.syllabusapplication.retrofitApi.ThumbUpService;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.liaoinstan.springview.utils.DensityUtil;
@@ -42,9 +34,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by daidaijie on 2016/8/9.
@@ -77,17 +66,23 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     OnCommentListener mCommentListener;
 
     public interface OnLikeStateChangeListener {
-        void onLike(boolean isLike, int position);
+        void onLike(boolean isLike);
+
+        void onFinish();
     }
 
-    OnLikeStateChangeListener mOnLikeStateChangeListener;
-
-    public OnLikeStateChangeListener getOnLikeStateChangeListener() {
-        return mOnLikeStateChangeListener;
+    public interface OnLikeCallBack {
+        void onLike(int position, boolean isLike, OnLikeStateChangeListener onLikeStateChangeListener);
     }
 
-    public void setOnLikeStateChangeListener(OnLikeStateChangeListener onLikeStateChangeListener) {
-        mOnLikeStateChangeListener = onLikeStateChangeListener;
+    OnLikeCallBack mOnLikeCallBack;
+
+    public OnLikeCallBack getOnLikeCallBack() {
+        return mOnLikeCallBack;
+    }
+
+    public void setOnLikeCallBack(OnLikeCallBack onLikeCallBack) {
+        mOnLikeCallBack = onLikeCallBack;
     }
 
     public CirclesAdapter(Activity activity, List<PostListBean> postListBeen) {
@@ -131,18 +126,8 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
 
         PostUserBean user = postBean.getUser();
 
-        if (user.getImage() != null) {
-            holder.mHeadImageDraweeView.setImageURI(user.getImage());
-        } else {
-            holder.mHeadImageDraweeView.setImageURI(
-                    Uri.parse("res://" + mActivity.getPackageName()
-                            + "/" + R.drawable.ic_syllabus_icon)
-            );
-        }
-
-        holder.mNicknameTextView.setText(
-                user.getNickname().trim().isEmpty() ? user.getAccount() : user.getNickname()
-        );
+        holder.mHeadImageDraweeView.setImageURI(user.getImage());
+        holder.mNicknameTextView.setText(user.getNickname());
 
         holder.mPostInfoTextView.setText(postBean.getPost_time());
         if (postBean.getSource() != null) {
@@ -179,93 +164,36 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
          * 点赞
          */
         holder.mThumbUpView.setEnabled(false);
+
         if (postBean.isMyLove) {
             holder.mThumbUpView.setLike();
         } else {
             holder.mThumbUpView.setUnLike();
         }
+
         holder.mThumbUpLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ThumbUpService service = RetrofitUtil.getDefault().create(ThumbUpService.class);
-                holder.mThumbUpLinearLayout.setEnabled(false);
-                Log.e(TAG, "onClick: " + postBean.isMyLove);
-                if (!postBean.isMyLove) {
-                    service.like(new ThumbUp(postBean.getId(),
-                            User.getInstance().getUserInfo().getUser_id(),
-                            User.getInstance().getUserInfo().getToken()))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<HttpResult<ThumbUpReturn>>() {
-                                @Override
-                                public void onCompleted() {
-                                    Log.e(TAG, "onCompleted: ");
-                                    postBean.isMyLove = true;
-                                    holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
-                                    holder.mThumbUpView.Like();
-                                    holder.mThumbUpLinearLayout.setEnabled(true);
-                                    if (mOnLikeStateChangeListener != null) {
-                                        mOnLikeStateChangeListener.onLike(true, position);
-                                    }
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    holder.mThumbUpLinearLayout.setEnabled(true);
-                                    Log.e(TAG, "onError: " + e.getMessage());
-                                }
-
-                                @Override
-                                public void onNext(HttpResult<ThumbUpReturn> thumbUpReturnHttpResult) {
-                                    if (thumbUpReturnHttpResult.getData() != null) {
-                                        ThumbUpsBean bean = new ThumbUpsBean();
-                                        bean.setUid(User.getInstance().getUserInfo().getUser_id());
-                                        bean.setId(bean.getId());
-                                        postBean.getThumb_ups().add(bean);
-                                        Log.e(TAG, "onNext: ");
-                                    }
-                                }
-                            });
-                } else {
-                    ThumbUpsBean myThumbUpsBean = null;
-                    for (ThumbUpsBean bean : postBean.getThumb_ups()) {
-                        if (bean.getUid() == User.getInstance().getUserInfo().getUser_id()) {
-                            myThumbUpsBean = bean;
-                            break;
+                if (mOnLikeCallBack != null) {
+                    holder.mZanTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultDarkBackgroundSelect));
+                    holder.mThumbUpLinearLayout.setEnabled(false);
+                    mOnLikeCallBack.onLike(position, !postBean.isMyLove, new OnLikeStateChangeListener() {
+                        @Override
+                        public void onLike(boolean isLike) {
+                            if (isLike) {
+                                holder.mThumbUpView.Like();
+                            } else {
+                                holder.mThumbUpView.UnLike();
+                            }
                         }
-                    }
-                    if (myThumbUpsBean == null) return;
-                    final ThumbUpsBean finalMyThumbUpsBean = myThumbUpsBean;
-                    service.unlike(myThumbUpsBean.getId(),
-                            User.getInstance().getUserInfo().getUser_id(),
-                            User.getInstance().getUserInfo().getToken())
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new Subscriber<HttpResult<Void>>() {
-                                @Override
-                                public void onCompleted() {
-                                    Log.e(TAG, "onCompleted: ");
-                                    postBean.isMyLove = false;
-                                    postBean.getThumb_ups().remove(finalMyThumbUpsBean);
 
-                                    holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
-                                    holder.mThumbUpLinearLayout.setEnabled(true);
-                                    holder.mThumbUpView.UnLike();
-                                    if (mOnLikeStateChangeListener != null) {
-                                        mOnLikeStateChangeListener.onLike(false, position);
-                                    }
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    holder.mThumbUpLinearLayout.setEnabled(true);
-                                    Log.e(TAG, "onError: " + e.getMessage());
-                                }
-
-                                @Override
-                                public void onNext(HttpResult<Void> thumbUpReturnHttpResult) {
-                                }
-                            });
+                        @Override
+                        public void onFinish() {
+                            holder.mZanTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
+                            holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
+                            holder.mThumbUpLinearLayout.setEnabled(true);
+                        }
+                    });
                 }
             }
         });
@@ -295,7 +223,6 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             });
 
         } else {
-            //不知道为什么不加这句就不会显示selector
             holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -337,6 +264,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
 
     }
 
+
     @Override
     public int getItemCount() {
         if (mPostListBeen == null) {
@@ -375,6 +303,5 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-
     }
 }

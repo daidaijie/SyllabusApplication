@@ -63,6 +63,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.ViewHolder> 
                 mActivity.startActivity(intent);
             }
         });
+
     }
 
     @Override

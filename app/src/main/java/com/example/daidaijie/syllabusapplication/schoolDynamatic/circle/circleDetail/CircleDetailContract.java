@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail;
 
+import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.base.BasePresenter;
 import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public interface CircleDetailContract {
 
-    interface presenter extends BasePresenter {
+    interface presenter extends BasePresenter, CirclesAdapter.OnLikeCallBack {
         void loadData();
 
         void showComment(int position);

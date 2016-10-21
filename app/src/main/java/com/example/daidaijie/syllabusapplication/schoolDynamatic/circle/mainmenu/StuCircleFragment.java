@@ -20,6 +20,7 @@ import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.StuCircleModelComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.github.ybq.endless.Endless;
 
 import org.greenrobot.eventbus.EventBus;
@@ -77,6 +78,9 @@ public class StuCircleFragment extends BaseFragment implements StuCircleContract
         //以后一定要记住这句话
         mCircleRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mCircleRecyclerView.setAdapter(mCirclesAdapter);
+        mCirclesAdapter.setOnLikeCallBack(mStuCirclePresenter);
+        mCircleRecyclerView.setItemAnimator(new MyItemAnimator());
+
 
         mRefreshStuCircleLayout.setOnRefreshListener(this);
         setupSwipeRefreshLayout(mRefreshStuCircleLayout);
@@ -170,4 +174,5 @@ public class StuCircleFragment extends BaseFragment implements StuCircleContract
     public void onLoadMore(int i) {
         mStuCirclePresenter.loadData();
     }
+
 }

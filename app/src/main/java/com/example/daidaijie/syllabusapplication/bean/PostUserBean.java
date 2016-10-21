@@ -1,5 +1,9 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
+import com.example.daidaijie.syllabusapplication.model.User;
+
 import java.io.Serializable;
 
 /**
@@ -31,6 +35,10 @@ public class PostUserBean implements Serializable {
     }
 
     public String getImage() {
+        if (image == null || image.isEmpty()) {
+            return "res://" + App.getContext().getPackageName()
+                    + "/" + R.drawable.ic_syllabus_icon;
+        }
         return image;
     }
 
