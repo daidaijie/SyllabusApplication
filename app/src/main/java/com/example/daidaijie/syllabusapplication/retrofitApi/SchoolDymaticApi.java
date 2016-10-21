@@ -1,7 +1,7 @@
 package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
-import com.example.daidaijie.syllabusapplication.bean.SchoolDynamic;
+import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/9/14.
  */
-public interface SchoolDynamicService {
+public interface SchoolDymaticApi {
 
     /**
      * @param type              0(默认值) 表示结果按照活动开始时间排序返回
@@ -27,7 +27,7 @@ public interface SchoolDynamicService {
      * @return
      */
     @GET("interaction/api/v2.1/activity")
-    Observable<HttpResult<List<SchoolDynamic>>> getSchoolDynamic(
+    Observable<HttpResult<List<SchoolDymatic>>> getSchoolDymatic(
             @Query("type") int type,
             @Query("page_index") int pageIndex,
             @Query("page_size") int pageSize

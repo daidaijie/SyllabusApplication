@@ -1,10 +1,10 @@
-package com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail;
+package com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.schoolDymaticDetail;
 
-import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
+import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
 import com.example.daidaijie.syllabusapplication.base.BasePresenter;
 import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
-import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import java.util.List;
  * Created by daidaijie on 2016/10/8.
  */
 
-public interface CircleDetailContract {
+public interface SchoolDymaticDetailContract {
 
-    interface presenter extends BasePresenter, CirclesAdapter.OnLikeCallBack {
+    interface presenter extends BasePresenter, SchoolDymaticAdapter.OnLikeCallBack {
         void loadData();
 
         void showComment(int position);
@@ -24,7 +24,7 @@ public interface CircleDetailContract {
 
     interface view extends BaseView<presenter> {
 
-        void showHeaderInfo(PostListBean postListBean);
+        void showHeaderInfo(SchoolDymatic schoolDymatic);
 
         void showRefresh(boolean isShow);
 

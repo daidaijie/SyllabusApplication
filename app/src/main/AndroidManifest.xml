@@ -167,6 +167,8 @@
         </activity>
         <activity android:name=".other.AboutUsActivity">
         </activity>
+        <activity android:name=".schoolDynamatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity">
+        </activity>
     </application>
 
 </manifest>

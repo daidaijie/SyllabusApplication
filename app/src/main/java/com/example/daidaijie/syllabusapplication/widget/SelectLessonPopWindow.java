@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.model.LessonModel;
-import com.liaoinstan.springview.utils.DensityUtil;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 
 import java.util.List;
 

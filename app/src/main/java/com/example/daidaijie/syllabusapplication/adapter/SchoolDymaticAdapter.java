@@ -1,17 +1,10 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,14 +13,11 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
-import com.example.daidaijie.syllabusapplication.bean.PostListBean;
-import com.example.daidaijie.syllabusapplication.bean.PostUserBean;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity;
+import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 
@@ -35,20 +25,30 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by daidaijie on 2016/8/9.
+ * Created by daidaijie on 2016/9/15.
  */
-public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHolder> {
+public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdapter.ViewHolder> {
 
-    public static final String TAG = "CirclesAdapter";
-
-    Activity mActivity;
-
-    private List<PostListBean> mPostListBeen;
+    private Activity mActivity;
+    private List<SchoolDymatic> mSchoolDymatics;
 
     private int mWidth;
 
     //判断是列表还是详情，列表是false，详情是true
     private boolean isOnlyOne;
+
+    public SchoolDymaticAdapter(Activity activity, List<SchoolDymatic> schoolDymatics) {
+        mActivity = activity;
+        mSchoolDymatics = schoolDymatics;
+        isOnlyOne = false;
+    }
+
+    public SchoolDymaticAdapter(Activity activity, List<SchoolDymatic> schoolDymatics, int width) {
+        mActivity = activity;
+        mSchoolDymatics = schoolDymatics;
+        this.mWidth = width;
+        isOnlyOne = true;
+    }
 
     public interface OnCommentListener {
         void onComment();
@@ -63,6 +63,14 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
     }
 
     OnCommentListener mCommentListener;
+
+    public List<SchoolDymatic> getSchoolDymatics() {
+        return mSchoolDymatics;
+    }
+
+    public void setSchoolDymatics(List<SchoolDymatic> schoolDymatics) {
+        mSchoolDymatics = schoolDymatics;
+    }
 
     public interface OnLikeStateChangeListener {
         void onLike(boolean isLike);
@@ -84,32 +92,11 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         mOnLikeCallBack = onLikeCallBack;
     }
 
-    public CirclesAdapter(Activity activity, List<PostListBean> postListBeen) {
-        mActivity = activity;
-        mPostListBeen = postListBeen;
-        isOnlyOne = false;
-    }
-
-    public CirclesAdapter(Activity activity, List<PostListBean> postListBeen, int width) {
-        mActivity = activity;
-        mPostListBeen = postListBeen;
-        mWidth = width;
-        isOnlyOne = true;
-    }
-
-    public void setPostListBeen(List<PostListBean> postListBeen) {
-        mPostListBeen = postListBeen;
-    }
-
-
-    public List<PostListBean> getPostListBeen() {
-        return mPostListBeen;
-    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mActivity);
-        View view = inflater.inflate(R.layout.item_circle, parent, false);
+        View view = inflater.inflate(R.layout.item_school_dymamic, parent, false);
 
         //没传入就直接计算
         if (mWidth == 0) {
@@ -121,35 +108,27 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final PostListBean postBean = mPostListBeen.get(position);
+        final SchoolDymatic schoolDymatic = mSchoolDymatics.get(position);
 
-        PostUserBean user = postBean.getUser();
+        holder.mNicknameTextView.setText(schoolDymatic.getSource());
 
-        holder.mHeadImageDraweeView.setImageURI(user.getImage());
-        holder.mNicknameTextView.setText(user.getNickname());
-
-        holder.mPostInfoTextView.setText(postBean.getPost_time());
-        if (postBean.getSource() != null) {
-            String str = "来自 " + postBean.getSource();
-            SpannableStringBuilder style = new SpannableStringBuilder(str);
-            style.setSpan(new ForegroundColorSpan(ThemeModel.getInstance().colorPrimary),
-                    3, str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
-            );
-            holder.mPostDeviceTextView.setText(style);
-        } else {
-            holder.mPostDeviceTextView.setText("来自 火星");
+        StringBuilder sb = new StringBuilder();
+        sb.append(schoolDymatic.getActivity_start_time().substring(0, schoolDymatic.getActivity_start_time().length() - 3));
+        if (schoolDymatic.getActivity_end_time() != null && !schoolDymatic.getActivity_end_time().trim().isEmpty()) {
+            sb.append("　——>　");
+            sb.append(schoolDymatic.getActivity_end_time().substring(0, schoolDymatic.getActivity_end_time().length() - 3));
         }
 
-        holder.mContentTextView.setText(postBean.getContent());
-        holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
-        holder.mCommentTextView.setText("评论 [" + postBean.getComments().size() + "]");
+        holder.mPostInfoTextView.setText(sb.toString());
+
+        holder.mContentTextView.setText(schoolDymatic.getDescription());
 
         mWidth = mWidth > holder.mContentTextView.getWidth() ? mWidth : holder.mContentTextView.getWidth();
 
-        if (postBean.getPhoto_list_json() != null && !postBean.getPhoto_list_json().isEmpty()) {
+        if (schoolDymatic.getPhoto_list_json() != null && !schoolDymatic.getPhoto_list_json().isEmpty()) {
             holder.mPhotoRecyclerView.setVisibility(View.VISIBLE);
             PhotoInfo photoInfo = GsonUtil.getDefault()
-                    .fromJson(postBean.getPhoto_list_json(), PhotoInfo.class);
+                    .fromJson(schoolDymatic.getPhoto_list_json(), PhotoInfo.class);
             PhotoAdapter photoAdapter = new PhotoAdapter(mActivity, photoInfo,
                     mWidth);
             holder.mPhotoRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity,
@@ -164,7 +143,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
          */
         holder.mThumbUpView.setEnabled(false);
 
-        if (postBean.isMyLove) {
+        if (schoolDymatic.isMyLove) {
             holder.mThumbUpView.setLike();
         } else {
             holder.mThumbUpView.setUnLike();
@@ -176,7 +155,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                 if (mOnLikeCallBack != null) {
                     holder.mZanTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultDarkBackgroundSelect));
                     holder.mThumbUpLinearLayout.setEnabled(false);
-                    mOnLikeCallBack.onLike(position, !postBean.isMyLove, new OnLikeStateChangeListener() {
+                    mOnLikeCallBack.onLike(position, !schoolDymatic.isMyLove, new OnLikeStateChangeListener() {
                         @Override
                         public void onLike(boolean isLike) {
                             if (isLike) {
@@ -189,7 +168,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                         @Override
                         public void onFinish() {
                             holder.mZanTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultShowColor));
-                            holder.mZanTextView.setText("赞 [" + postBean.getThumb_ups().size() + "]");
+                            holder.mZanTextView.setText("赞 [" + schoolDymatic.getThumb_ups().size() + "]");
                             holder.mThumbUpLinearLayout.setEnabled(true);
                         }
                     });
@@ -202,21 +181,21 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             holder.mItemCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth);
+                    Intent intent = SchoolDymaticDetailActivity.getIntent(mActivity, position, mWidth);
                     mActivity.startActivity(intent);
                 }
             });
             holder.mCommentLinearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth, true);
+                    Intent intent = SchoolDymaticDetailActivity.getIntent(mActivity, position, mWidth, true);
                     mActivity.startActivity(intent);
                 }
             });
             holder.mContentTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = CircleDetailActivity.getIntent(mActivity, position, mWidth);
+                    Intent intent = SchoolDymaticDetailActivity.getIntent(mActivity, position, mWidth);
                     mActivity.startActivity(intent);
                 }
             });
@@ -235,46 +214,19 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
             });
         }
 
-
-        holder.mContentTextView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                String[] items = {"复制"};
-                AlertDialog dialog = new AlertDialog.Builder(mActivity)
-                        .setItems(items, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == 0) {
-                                    ClipboardManager myClipboard;
-                                    myClipboard = (ClipboardManager)
-                                            mActivity.getSystemService(mActivity.CLIPBOARD_SERVICE);
-                                    ClipData clipData;
-                                    clipData = ClipData.newPlainText("text"
-                                            , holder.mContentTextView.getText().toString());
-                                    myClipboard.setPrimaryClip(clipData);
-                                }
-                            }
-                        })
-                        .create();
-                dialog.show();
-                return true;
-            }
-        });
-
     }
-
 
     @Override
     public int getItemCount() {
-        if (mPostListBeen == null) {
+        if (mSchoolDymatics == null) {
             return 0;
+        } else {
+            return mSchoolDymatics.size();
         }
-        return mPostListBeen.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.headImageDraweeView)
-        SimpleDraweeView mHeadImageDraweeView;
+
         @BindView(R.id.nicknameTextView)
         TextView mNicknameTextView;
         @BindView(R.id.postInfoTextView)
@@ -283,20 +235,24 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         TextView mContentTextView;
         @BindView(R.id.photoRecyclerView)
         RecyclerView mPhotoRecyclerView;
-        @BindView(R.id.zanTextView)
-        TextView mZanTextView;
-        @BindView(R.id.commentTextView)
-        TextView mCommentTextView;
-        @BindView(R.id.postDeviceTextView)
-        TextView mPostDeviceTextView;
+        @BindView(R.id.horDivLine)
+        View mHorDivLine;
         @BindView(R.id.thumbUpView)
         ThumbUpView mThumbUpView;
+        @BindView(R.id.zanTextView)
+        TextView mZanTextView;
         @BindView(R.id.thumbUpLinearLayout)
         LinearLayout mThumbUpLinearLayout;
-        @BindView(R.id.itemCardView)
-        CardView mItemCardView;
+        @BindView(R.id.commentTextView)
+        TextView mCommentTextView;
         @BindView(R.id.commentLinearLayout)
         LinearLayout mCommentLinearLayout;
+        @BindView(R.id.webTextView)
+        TextView mWebTextView;
+        @BindView(R.id.webLinearLayout)
+        LinearLayout mWebLinearLayout;
+        @BindView(R.id.itemCardView)
+        CardView mItemCardView;
 
         public ViewHolder(View itemView) {
             super(itemView);

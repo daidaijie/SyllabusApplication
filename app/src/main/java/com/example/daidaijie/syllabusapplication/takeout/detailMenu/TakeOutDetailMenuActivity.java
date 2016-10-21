@@ -40,12 +40,11 @@ import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
 import com.example.daidaijie.syllabusapplication.takeout.searchMenu.SearchTakeOutActivity;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.BuyPopWindow;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
-import com.liaoinstan.springview.utils.DensityUtil;
 
 import javax.inject.Inject;
 

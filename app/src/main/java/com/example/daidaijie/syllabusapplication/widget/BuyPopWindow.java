@@ -25,8 +25,8 @@ import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
-import com.liaoinstan.springview.utils.DensityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

@@ -16,8 +16,8 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.PhotoDetailAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.widget.MultiTouchViewPager;
-import com.liaoinstan.springview.utils.DensityUtil;
 
 import org.greenrobot.eventbus.EventBus;
 

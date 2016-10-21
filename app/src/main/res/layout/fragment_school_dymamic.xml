@@ -1,14 +1,14 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/defaultDarkBackground"
     tools:context="com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.mainmenu.StuCircleFragment">
 
-    <com.liaoinstan.springview.widget.SpringView
-        android:id="@+id/springView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -19,19 +19,19 @@
 
         </android.support.v7.widget.RecyclerView>
 
-    </com.liaoinstan.springview.widget.SpringView>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <android.support.design.widget.FloatingActionButton
-        android:src="@drawable/ic_edit_white"
         android:id="@+id/postContentButton"
-        app:backgroundTint="@color/colorAccent"
-        app:pressedTranslationZ="4dp"
-        app:rippleColor="@color/colorAccentDark"
-        app:elevation="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
         android:layout_marginBottom="24dp"
         android:layout_marginRight="24dp"
-        android:layout_gravity="bottom|right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:src="@drawable/ic_edit_white"
+        app:backgroundTint="@color/colorAccent"
+        app:elevation="8dp"
+        app:pressedTranslationZ="4dp"
+        app:rippleColor="@color/colorAccentDark"/>
 
 </android.support.design.widget.CoordinatorLayout>

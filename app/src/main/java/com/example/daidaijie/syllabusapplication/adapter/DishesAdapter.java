@@ -18,8 +18,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.liaoinstan.springview.utils.DensityUtil;
-import com.orhanobut.logger.Logger;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 
 import java.util.List;
 import java.util.Map;

@@ -44,6 +44,7 @@ import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryActivity;
 import com.example.daidaijie.syllabusapplication.takeout.mainMenu.TakeOutActivity;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;
 import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
@@ -53,7 +54,6 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.liaoinstan.springview.utils.DensityUtil;
 
 import java.util.List;
 

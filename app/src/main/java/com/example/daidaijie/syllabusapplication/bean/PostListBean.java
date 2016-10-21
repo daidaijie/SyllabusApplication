@@ -10,7 +10,7 @@ public class PostListBean implements Serializable {
 
     private String content;
 
-    public boolean isMyLove;
+    public boolean isMyLove = false;
 
     /**
      * account : 15jhzhao3

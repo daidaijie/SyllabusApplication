@@ -1,4 +1,10 @@
+package com.example.daidaijie.syllabusapplication.util;
+
 import android.content.Context;
+
+/**
+ * Created by daidaijie on 2016/10/22.
+ */
 
 public class DensityUtil {
 

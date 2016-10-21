@@ -4,146 +4,138 @@ package com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.mainMe
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.adapter.SchoolDymamicAdapter;
-import com.example.daidaijie.syllabusapplication.bean.HttpResult;
-import com.example.daidaijie.syllabusapplication.bean.SchoolDynamic;
-import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolDynamicService;
-import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
+import com.example.daidaijie.syllabusapplication.base.BaseFragment;
+import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.SchoolDymaticModelComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
-import com.liaoinstan.springview.container.MeituanFooter;
-import com.liaoinstan.springview.container.MeituanHeader;
-import com.liaoinstan.springview.widget.SpringView;
+import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
+import com.github.ybq.endless.Endless;
 
-import java.util.ArrayList;
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SchoolDymaticFragment extends Fragment implements SpringView.OnFreshListener {
+public class SchoolDymaticFragment extends BaseFragment implements SchoolDymaticContract.view, Endless.LoadMoreListener, SwipeRefreshLayout.OnRefreshListener {
 
-    public static final String TAG = "SchoolDymaticFragment";
-
-    //已经加载的页数
-    private int loadPage;
-
-    private SchoolDymamicAdapter mSchoolDymamicAdapter;
-
-    private List<SchoolDynamic> mSchoolDynamics;
-
-    private int[] pullAnimSrcs = new int[]{R.drawable.mt_pull, R.drawable.mt_pull01, R.drawable.mt_pull02, R.drawable.mt_pull03, R.drawable.mt_pull04, R.drawable.mt_pull05};
-    private int[] refreshAnimSrcs = new int[]{R.drawable.mt_refreshing01, R.drawable.mt_refreshing02, R.drawable.mt_refreshing03, R.drawable.mt_refreshing04, R.drawable.mt_refreshing05, R.drawable.mt_refreshing06};
-    private int[] loadingAnimSrcs = new int[]{R.drawable.mt_loading01, R.drawable.mt_loading02};
 
     @BindView(R.id.dymamicRecyclerView)
-    RecyclerView mDymamicRecyclerView;
-    @BindView(R.id.springView)
-    SpringView mSpringView;
+    RecyclerView mDymaticRecyclerView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @BindView(R.id.postContentButton)
     FloatingActionButton mPostContentButton;
 
+    View mLoadMoreView;
+
+    private SchoolDymaticAdapter mSchoolDymaticAdapter;
+
+    Endless mEndless;
+
+    @Inject
+    SchoolDymaticPresenter mSchoolDymaticPresenter;
 
     public static SchoolDymaticFragment newInstance() {
         SchoolDymaticFragment fragment = new SchoolDymaticFragment();
-
         return fragment;
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_school_dymamic, container, false);
-        ButterKnife.bind(this, view);
+    protected void init(Bundle savedInstanceState) {
+//        EventBus.getDefault().register(this);
 
-        mSpringView.setType(SpringView.Type.FOLLOW);
-        mSpringView.setListener(this);
-        mSpringView.setHeader(new MeituanHeader(getActivity(), pullAnimSrcs, refreshAnimSrcs));
-        mSpringView.setFooter(new MeituanFooter(getActivity(), loadingAnimSrcs));
+        DaggerSchoolDymaticComponent.builder()
+                .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE())
+                .schoolDymaticModule(new SchoolDymaticModule(this))
+                .build().inject(this);
 
-        mSchoolDynamics = new ArrayList<>();
-        mSchoolDymamicAdapter = new SchoolDymamicAdapter(getActivity(), mSchoolDynamics);
-        mDymamicRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mDymamicRecyclerView.setAdapter(mSchoolDymamicAdapter);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        setupSwipeRefreshLayout(mSwipeRefreshLayout);
 
-        loadPage = 0;
+        mSchoolDymaticAdapter = new SchoolDymaticAdapter(getActivity(), null);
+        mDymaticRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mDymaticRecyclerView.setAdapter(mSchoolDymaticAdapter);
+        mDymaticRecyclerView.setItemAnimator(new MyItemAnimator());
 
-        mSpringView.post(new Runnable() {
+        mLoadMoreView = mActivity.getLayoutInflater().inflate(R.layout.bottom_load_more, null);
+
+        mEndless = Endless.applyTo(mDymaticRecyclerView, mLoadMoreView);
+        mEndless.setLoadMoreListener(this);
+
+        mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                mSpringView.callFresh();
+                mSchoolDymaticPresenter.refresh();
             }
         });
-
-        return view;
     }
 
-    private void loadPage() {
-        SchoolDynamicService schoolDynamicService = RetrofitUtil.getDefault().create(SchoolDynamicService.class);
-        schoolDynamicService.getSchoolDynamic(1, loadPage + 1, 10)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<HttpResult<List<SchoolDynamic>>>() {
-                    @Override
-                    public void onCompleted() {
-                        mSchoolDymamicAdapter.setSchoolDynamics(mSchoolDynamics);
-                        mSchoolDymamicAdapter.notifyDataSetChanged();
-                        mSpringView.onFinishFreshAndLoad();
-                        loadPage++;
-                    }
+    @Override
+    protected int getContentView() {
+        return R.layout.fragment_school_dymamic;
+    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mSpringView.onFinishFreshAndLoad();
-                    }
+    @Override
+    public void showRefresh(boolean isShow) {
+        mSwipeRefreshLayout.setRefreshing(isShow);
+    }
 
-                    @Override
-                    public void onNext(HttpResult<List<SchoolDynamic>> listHttpResult) {
-                        if (!RetrofitUtil.isSuccessful(listHttpResult)) {
-                            showFailBanner(listHttpResult.getMessage());
-                        } else {
-                            mSchoolDynamics.addAll(listHttpResult.getData());
-                        }
-                    }
-                });
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mPostContentButton,
+                msg,
+                SnackbarUtil.Alert
+        ).show();
+    }
+
+    @Override
+    public void showSuccessMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mPostContentButton,
+                msg,
+                SnackbarUtil.Confirm
+        ).show();
+    }
+
+    @Override
+    public void loadMoreFinish() {
+        mEndless.loadMoreComplete();
+    }
+
+    @Override
+    public void showData(List<SchoolDymatic> schoolDymatics) {
+        mSchoolDymaticAdapter.setSchoolDymatics(schoolDymatics);
+        mSchoolDymaticAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoadMore(int i) {
+        mSchoolDymaticPresenter.loadData();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+//        EventBus.getDefault().unregister(this);
+        SchoolDymaticModelComponent.destroy();
     }
 
     @Override
     public void onRefresh() {
-        loadPage = 0;
-        mSchoolDynamics.clear();
-        loadPage();
-    }
-
-    @Override
-    public void onLoadmore() {
-        loadPage();
-    }
-
-    public void showFailBanner(String msg) {
-        SnackbarUtil.LongSnackbar(
-                mPostContentButton,
-                msg.toUpperCase(),
-                SnackbarUtil.Alert
-        ).setAction("再次获取", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadPage();
-            }
-        }).show();
+        mSchoolDymaticPresenter.refresh();
     }
 }

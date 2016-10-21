@@ -8,10 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
+import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.liaoinstan.springview.utils.DensityUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

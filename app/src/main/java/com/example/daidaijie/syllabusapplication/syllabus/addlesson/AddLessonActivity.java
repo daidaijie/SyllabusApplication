@@ -24,7 +24,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.TimeGrid;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
 import com.example.daidaijie.syllabusapplication.model.User;
-import com.liaoinstan.springview.utils.DensityUtil;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -24,11 +24,11 @@ import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.StuCircleModelComponent;
+import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.liaoinstan.springview.utils.DensityUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

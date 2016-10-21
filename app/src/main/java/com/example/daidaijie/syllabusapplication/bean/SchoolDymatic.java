@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Created by daidaijie on 2016/9/14.
  */
-public class SchoolDynamic {
+public class SchoolDymatic {
 
 
     /**
@@ -17,13 +17,13 @@ public class SchoolDynamic {
      * thumb_ups : [{"uid":2,"id":1469},{"uid":116,"id":1475},{"uid":2721,"id":1481}]
      * id : 900
      * photo_list_json : {
-     "photo_list" : [
-     {
-     "size_big" : "http:\/\/bmob-cdn-5361.b0.upaiyun.com\/2016\/09\/13\/00dd57e8f4d94541809d820558644a54.jpg",
-     "size_small" : "http:\/\/bmob-cdn-5361.b0.upaiyun.com\/2016\/09\/13\/00dd57e8f4d94541809d820558644a54.jpg"
-     }
-     ]
-     }
+     * "photo_list" : [
+     * {
+     * "size_big" : "http:\/\/bmob-cdn-5361.b0.upaiyun.com\/2016\/09\/13\/00dd57e8f4d94541809d820558644a54.jpg",
+     * "size_small" : "http:\/\/bmob-cdn-5361.b0.upaiyun.com\/2016\/09\/13\/00dd57e8f4d94541809d820558644a54.jpg"
+     * }
+     * ]
+     * }
      * post_time : 2016-09-13 17:55:15
      * content :
      * source : 汕大课程表团队
@@ -41,6 +41,10 @@ public class SchoolDynamic {
     private String post_time;
     private String content;
     private String source;
+
+    public boolean isMyLove = false;
+
+
     /**
      * image : http://bmob-cdn-5361.b0.upaiyun.com/2016/09/13/1cee50d2285e4f41802335d179080d85.jpg
      * nickname : 铲晒菲律宾的香蕉🐔🌶
