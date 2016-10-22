@@ -18,4 +18,6 @@ public interface ISTULibraryModel {
     Observable<List<LibraryBean>> getLibraryFromMemory(int position);
 
     Observable<List<LibraryBean>> getLibraryFromNet(int position);
+
+    LibraryBean getLibraryBean(int position, int subPosition);
 }

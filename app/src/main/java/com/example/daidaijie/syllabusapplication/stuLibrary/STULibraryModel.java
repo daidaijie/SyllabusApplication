@@ -132,5 +132,10 @@ public class STULibraryModel implements ISTULibraryModel {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    @Override
+    public LibraryBean getLibraryBean(int position, int subPosition) {
+        return mStoreQueryMap.get(position).get(subPosition);
+    }
+
 
 }

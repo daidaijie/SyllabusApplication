@@ -27,6 +27,20 @@ public class LibItemAdapter extends RecyclerView.Adapter<LibItemAdapter.ViewHold
 
     List<LibraryBean> mLibraryBeen;
 
+    public interface OnLibItemSelectCallBack {
+        void onLibSelect(int position);
+    }
+
+    OnLibItemSelectCallBack mOnLibItemSelectCallBack;
+
+    public OnLibItemSelectCallBack getOnLibItemSelectCallBack() {
+        return mOnLibItemSelectCallBack;
+    }
+
+    public void setOnLibItemSelectCallBack(OnLibItemSelectCallBack onLibItemSelectCallBack) {
+        mOnLibItemSelectCallBack = onLibItemSelectCallBack;
+    }
+
     public LibItemAdapter(Activity activity, List<LibraryBean> libraryBeen) {
         mActivity = activity;
         mLibraryBeen = libraryBeen;
@@ -49,7 +63,7 @@ public class LibItemAdapter extends RecyclerView.Adapter<LibItemAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         final LibraryBean libraryBean = mLibraryBeen.get(position);
 
         holder.mLibTitleTextView.setText(libraryBean.getName());
@@ -71,8 +85,9 @@ public class LibItemAdapter extends RecyclerView.Adapter<LibItemAdapter.ViewHold
         holder.mLibCardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = BookDetailActivity.getIntent(mActivity,libraryBean);
-                mActivity.startActivity(intent);
+                if (mOnLibItemSelectCallBack != null) {
+                    mOnLibItemSelectCallBack.onLibSelect(position);
+                }
             }
         });
     }

@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +14,7 @@ import com.example.daidaijie.syllabusapplication.adapter.LibItemAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseFragment;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.stuLibrary.LibModelComponent;
+import com.example.daidaijie.syllabusapplication.stuLibrary.bookDetail.BookDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.List;
@@ -24,7 +26,7 @@ import butterknife.BindView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class LibraryFragment extends BaseFragment implements LibraryContract.view, SwipeRefreshLayout.OnRefreshListener {
+public class LibraryFragment extends BaseFragment implements LibraryContract.view, SwipeRefreshLayout.OnRefreshListener, LibItemAdapter.OnLibItemSelectCallBack {
 
     @BindView(R.id.libRecyclerView)
     RecyclerView mLibRecyclerView;
@@ -37,6 +39,7 @@ public class LibraryFragment extends BaseFragment implements LibraryContract.vie
 
     private static final String EXTRA_POS = CLASS_NAME + ".mPosition";
 
+    private int mPosition;
 
     @Inject
     LibraryPresenter mLibraryPresenter;
@@ -55,12 +58,11 @@ public class LibraryFragment extends BaseFragment implements LibraryContract.vie
         super.onCreate(savedInstanceState);
         Bundle args = getArguments();
 
+        mPosition = args.getInt(EXTRA_POS, 0);
         DaggerLibraryComponent.builder()
                 .libModelComponent(LibModelComponent.getInstance())
-                .libraryModule(new LibraryModule(this,
-                        args.getInt(EXTRA_POS, 0)))
+                .libraryModule(new LibraryModule(this, mPosition))
                 .build().inject(this);
-
     }
 
     @Override
@@ -68,6 +70,7 @@ public class LibraryFragment extends BaseFragment implements LibraryContract.vie
         mLibItemAdapter = new LibItemAdapter(mActivity, null);
         mLibRecyclerView.setLayoutManager(new LinearLayoutManager(mActivity));
         mLibRecyclerView.setAdapter(mLibItemAdapter);
+        mLibItemAdapter.setOnLibItemSelectCallBack(this);
 
         setupSwipeRefreshLayout(mRefreshLibLayout);
         mRefreshLibLayout.setOnRefreshListener(this);
@@ -109,5 +112,11 @@ public class LibraryFragment extends BaseFragment implements LibraryContract.vie
         if (libraryBeen.size() == 0) {
             showFailMessage("NULL");
         }
+    }
+
+    @Override
+    public void onLibSelect(int position) {
+        Intent intent = BookDetailActivity.getIntent(mActivity, mPosition, position);
+        startActivity(intent);
     }
 }

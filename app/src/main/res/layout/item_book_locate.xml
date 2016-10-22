@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/examView"
+    android:id="@+id/bookLocateView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -19,13 +19,13 @@
         android:paddingRight="8dp">
 
         <TextView
-            android:id="@+id/gradeNameTextView"
+            android:id="@+id/bookLocateTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:textColor="@color/defaultTextColor"
             android:textSize="14sp"
-            tools:text="程序设计基础"/>
+            tools:text="二楼西北区外侧64排3列3层"/>
 
         <View
             android:layout_marginLeft="8dp"
@@ -35,13 +35,13 @@
             android:background="@color/defaultShowColor"/>
 
         <TextView
-            android:id="@+id/gradeTextView"
+            android:id="@+id/bookStateTextView"
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/defaultTextColor"
             android:textSize="14sp"
-            tools:text="93"/>
+            tools:text="可供出借"/>
 
         <View
             android:layout_marginLeft="8dp"
@@ -51,13 +51,13 @@
             android:background="@color/defaultShowColor"/>
 
         <TextView
-            android:id="@+id/creditTextView"
+            android:id="@+id/bookTypeTextView"
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textColor="@color/defaultTextColor"
             android:textSize="14sp"
-            tools:text="4.0"/>
+            tools:text="普通图书"/>
 
     </LinearLayout>
 
