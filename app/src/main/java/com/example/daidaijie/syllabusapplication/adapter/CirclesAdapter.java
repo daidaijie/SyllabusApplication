@@ -24,6 +24,7 @@ import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.PostUserBean;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity;
+import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
@@ -245,13 +246,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 if (which == 0) {
-                                    ClipboardManager myClipboard;
-                                    myClipboard = (ClipboardManager)
-                                            mActivity.getSystemService(mActivity.CLIPBOARD_SERVICE);
-                                    ClipData clipData;
-                                    clipData = ClipData.newPlainText("text"
-                                            , holder.mContentTextView.getText().toString());
-                                    myClipboard.setPrimaryClip(clipData);
+                                    ClipboardUtil.copyToClipboard(holder.mContentTextView.getText().toString());
                                 }
                             }
                         })

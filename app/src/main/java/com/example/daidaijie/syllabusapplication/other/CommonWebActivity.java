@@ -69,7 +69,7 @@ public class CommonWebActivity extends BaseActivity {
         if (title.isEmpty()) {
             hasTitle = false;
         } else {
-            hasTitle = true.;
+            hasTitle = true;
             mTitleTextView.setText(title);
         }
 

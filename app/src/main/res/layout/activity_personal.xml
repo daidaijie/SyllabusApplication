@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/defaultLightBackground"
+    android:orientation="vertical"
+    tools:context="com.example.daidaijie.syllabusapplication.schoolDynamatic.personal.PersonalActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height"
+        android:background="?attr/colorPrimary"
+        android:clipToPadding="true"
+        android:fitsSystemWindows="true"
+        android:gravity="center_vertical"
+        android:theme="@style/AppTheme.PopupOverlay"
+        app:titleTextColor="@android:color/white">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:singleLine="true"
+            android:text="个人信息"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
+
+    </android.support.v7.widget.Toolbar>
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/headImageDraweeView"
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_headimage"
+        android:padding="1dp"
+        fresco:roundAsCircle="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="账号　"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/accountEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:editable="false"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColorHint="?attr/colorPrimary"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_margin="8dp"
+        android:background="@color/defaultShowColor"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="昵称　"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/niceNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="起一个响当当的不超过10个字的昵称"
+            android:maxLength="10"
+            android:singleLine="true"
+            android:textColorHint="?attr/colorPrimary"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_margin="8dp"
+        android:background="@color/defaultShowColor"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:text="签名　"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:hint="说一下你的心情"
+            android:id="@+id/sayEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:maxLength="20"
+            android:singleLine="true"
+            android:textColorHint="?attr/colorPrimary"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_margin="8dp"
+        android:background="@color/defaultShowColor"/>
+
+
+    <info.hoang8f.widget.FButton
+        android:id="@+id/finishButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="完成修改"
+        android:textColor="@color/material_white"
+        android:textSize="16sp"
+        app:buttonColor="?attr/colorPrimary"
+        app:cornerRadius="4dp"
+        app:shadowColor="@color/defaultShowColor"
+        app:shadowHeight="1dp"/>
+
+</LinearLayout>

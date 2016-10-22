@@ -141,6 +141,7 @@ public class SchoolDymaticDetailActivity extends BaseActivity implements SchoolD
         List<SchoolDymatic> schoolDymatics = new ArrayList<>();
         schoolDymatics.add(schoolDymatic);
         mSchoolDymaticAdapter.setSchoolDymatics(schoolDymatics);
+        mSchoolDymaticAdapter.notifyDataSetChanged();
     }
 
     @Override

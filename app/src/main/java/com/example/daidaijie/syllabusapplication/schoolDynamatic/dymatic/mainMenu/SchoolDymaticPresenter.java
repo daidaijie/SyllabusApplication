@@ -3,9 +3,11 @@ package com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.mainMe
 import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.ISchoolDymaticModel;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
+import com.example.daidaijie.syllabusapplication.user.IUserModel;
+import com.google.gson.JsonSyntaxException;
 
 import java.util.List;
 
@@ -23,15 +25,21 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter {
 
     ISchoolDymaticModel mISchoolDymaticModel;
 
+    IUserModel mIUserModel;
+
     @Inject
     @PerFragment
-    public SchoolDymaticPresenter(SchoolDymaticContract.view view, ISchoolDymaticModel ISchoolDymaticModel) {
+    public SchoolDymaticPresenter(SchoolDymaticContract.view view,
+                                  ISchoolDymaticModel ISchoolDymaticModel,
+                                  @LoginUser IUserModel userModel) {
         mView = view;
         mISchoolDymaticModel = ISchoolDymaticModel;
+        mIUserModel = userModel;
     }
 
     @Override
     public void refresh() {
+        mView.loadStart();
         mView.showRefresh(true);
         mISchoolDymaticModel.loadSchoolDynamicListFromNet()
                 .subscribe(new Subscriber<List<SchoolDymatic>>() {
@@ -42,13 +50,8 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        LoggerUtil.printStack(e);
                         mView.showRefresh(false);
-                        if (e.getMessage() == null) {
-                            mView.showFailMessage("获取失败");
-                        } else {
-                            mView.showFailMessage(e.getMessage().toUpperCase());
-                        }
+                        mView.showFailMessage("获取失败");
                     }
 
                     @Override
@@ -69,12 +72,17 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        if (e.getMessage() == null) {
-                            mView.showFailMessage("获取失败");
-                        } else {
-                            mView.showFailMessage(e.getMessage().toUpperCase());
-                        }
                         mView.loadMoreFinish();
+
+                        /**
+                         * 这里表明滚动到底部了,不要问我为什么，问晓拂
+                         */
+                        if (e instanceof JsonSyntaxException) {
+                            mView.loadEnd();
+                            mView.showInfoMessage("已经是最后一条");
+                            return;
+                        }
+                        mView.showFailMessage("获取失败");
                     }
 
                     @Override
@@ -83,6 +91,15 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter {
                     }
                 });
 
+    }
+
+    @Override
+    public void handlerFAB() {
+        if (mIUserModel.getUserBaseBeanNormal().getLevel() < 1) {
+            mView.showInfoMessage("只有组织和社团负责人可以发布，请联系管理员获得权限");
+        } else {
+            mView.toPostDymatic();
+        }
     }
 
     @Override

@@ -67,7 +67,6 @@ public class SchoolDymaticModel implements ISchoolDymaticModel {
                 .flatMap(new Func1<HttpResult<ThumbUpReturn>, Observable<ThumbUpReturn>>() {
                     @Override
                     public Observable<ThumbUpReturn> call(HttpResult<ThumbUpReturn> thumbUpReturnHttpResult) {
-                        Logger.t("thumpUp like").json(GsonUtil.getDefault().toJson(thumbUpReturnHttpResult));
                         if (thumbUpReturnHttpResult.getCode() == 201) {
                             ThumbUpReturn thumbUpReturn = thumbUpReturnHttpResult.getData();
                             ThumbUpsBean bean = new ThumbUpsBean();
@@ -104,7 +103,6 @@ public class SchoolDymaticModel implements ISchoolDymaticModel {
                 .flatMap(new Func1<HttpResult<Void>, Observable<Void>>() {
                     @Override
                     public Observable<Void> call(HttpResult<Void> voidHttpResult) {
-                        Logger.t("thumpUp unlike").json(GsonUtil.getDefault().toJson(voidHttpResult));
                         if (RetrofitUtil.isSuccessful(voidHttpResult)) {
                             schoolDymatic.getThumb_ups().remove(finalMyThumbUpsBean);
                             schoolDymatic.isMyLove = false;
@@ -121,6 +119,7 @@ public class SchoolDymaticModel implements ISchoolDymaticModel {
     public Observable<List<SchoolDymatic>> getSchoolDynamicListFromNet() {
         return mSchoolDymaticApi.getSchoolDymatic(1, loadPage + 1, 10)
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<HttpResult<List<SchoolDymatic>>, Observable<List<SchoolDymatic>>>() {
                     @Override
                     public Observable<List<SchoolDymatic>> call(HttpResult<List<SchoolDymatic>> listHttpResult) {

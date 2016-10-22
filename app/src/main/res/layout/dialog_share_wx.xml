@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/greyF6Color"
+              android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:text="分享到"
+        android:textColor="@color/grey66Color"
+        android:textSize="16sp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/shareFriendLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/shareFriendText"
+                android:layout_margin="8dp"
+                android:layout_weight="0"
+                android:src="@drawable/ic_syllabus_icon"/>
+
+            <TextView
+                android:id="@+id/shareFriendText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="微信好友"
+                android:textColor="@color/grey66Color"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/shareCircleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/shareCircleText"
+                android:layout_margin="8dp"
+                android:layout_weight="0"
+                android:src="@drawable/ic_syllabus_icon"/>
+
+            <TextView
+                android:id="@+id/shareCircleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="朋友圈"
+                android:textColor="@color/grey66Color"
+                android:textSize="14sp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/shareClipBoardLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/clipBoardText"
+                android:layout_margin="8dp"
+                android:layout_weight="0"
+                android:src="@drawable/ic_syllabus_icon"/>
+
+            <TextView
+                android:id="@+id/clipBoardText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="粘贴板"
+                android:textColor="@color/grey66Color"
+                android:textSize="14sp"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

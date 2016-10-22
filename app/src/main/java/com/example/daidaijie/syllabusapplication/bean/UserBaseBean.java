@@ -1,5 +1,8 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -47,6 +50,14 @@ public class UserBaseBean extends RealmObject {
     }
 
     public String getImage() {
+        return image;
+    }
+
+    public String getPhoto(){
+        if (image == null || image.isEmpty()) {
+            return "res://" + App.getContext().getPackageName()
+                    + "/" + R.drawable.ic_syllabus_icon;
+        }
         return image;
     }
 

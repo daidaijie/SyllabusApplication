@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.mainMenu;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -8,17 +9,24 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseFragment;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
+import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
+import com.example.daidaijie.syllabusapplication.event.DymaticStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.SchoolDymaticModelComponent;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.postDymatic.PostDymaticActivity;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.github.ybq.endless.Endless;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -45,6 +53,10 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
 
     Endless mEndless;
 
+    boolean isLoaded;
+
+    boolean singleLock;
+
     @Inject
     SchoolDymaticPresenter mSchoolDymaticPresenter;
 
@@ -55,7 +67,7 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
 
     @Override
     protected void init(Bundle savedInstanceState) {
-//        EventBus.getDefault().register(this);
+        EventBus.getDefault().register(this);
 
         DaggerSchoolDymaticComponent.builder()
                 .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE())
@@ -73,14 +85,22 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
         mSchoolDymaticAdapter.setOnLikeCallBack(mSchoolDymaticPresenter);
 
         mLoadMoreView = mActivity.getLayoutInflater().inflate(R.layout.bottom_load_more, null);
-
-        mEndless = Endless.applyTo(mDymaticRecyclerView, mLoadMoreView);
-        mEndless.setLoadMoreListener(this);
+        mLoadMoreView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
                 mSchoolDymaticPresenter.refresh();
+            }
+        });
+
+        mEndless = Endless.applyTo(mDymaticRecyclerView, mLoadMoreView);
+        mEndless.setLoadMoreListener(this);
+
+        mPostContentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSchoolDymaticPresenter.handlerFAB();
             }
         });
     }
@@ -114,7 +134,17 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
     }
 
     @Override
+    public void showInfoMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(
+                mPostContentButton,
+                msg,
+                SnackbarUtil.Info
+        ).show();
+    }
+
+    @Override
     public void loadMoreFinish() {
+        singleLock = false;
         mEndless.loadMoreComplete();
     }
 
@@ -125,19 +155,54 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
     }
 
     @Override
+    public void loadEnd() {
+        isLoaded = true;
+        mLoadMoreView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void loadStart() {
+        singleLock = false;
+        isLoaded = false;
+        mLoadMoreView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void toPostDymatic() {
+        Intent intent = new Intent(mActivity, PostDymaticActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void onLoadMore(int i) {
-        mSchoolDymaticPresenter.loadData();
+        mDymaticRecyclerView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!singleLock && !isLoaded) {
+                    singleLock = true;
+                    mSchoolDymaticPresenter.loadData();
+                } else {
+                    loadMoreFinish();
+                }
+            }
+        }, 500);
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        EventBus.getDefault().unregister(this);
+        EventBus.getDefault().unregister(this);
         SchoolDymaticModelComponent.destroy();
     }
 
     @Override
     public void onRefresh() {
         mSchoolDymaticPresenter.refresh();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void circleStateChange(DymaticStateChangeEvent event) {
+        mSchoolDymaticAdapter.notifyItemChanged(event.position);
     }
 }

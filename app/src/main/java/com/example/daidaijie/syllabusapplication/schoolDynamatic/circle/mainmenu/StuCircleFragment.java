@@ -131,7 +131,6 @@ public class StuCircleFragment extends BaseFragment implements StuCircleContract
         if (toTopEvent.isShowSuccuess) {
             SnackbarUtil.ShortSnackbar(mCircleRecyclerView, "发送成功", SnackbarUtil.Confirm).show();
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

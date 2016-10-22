@@ -14,7 +14,8 @@
     android:orientation="vertical"
     app:cardBackgroundColor="@color/material_white"
     app:cardCornerRadius="4dp"
-    app:cardElevation="1dp">
+    app:cardElevation="1dp"
+    app:cardPreventCornerOverlap="false">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -127,20 +128,20 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:tint="@color/defaultShowColor"
-                    android:src="@drawable/ic_comment"
                     android:layout_width="16dp"
-                    android:layout_height="16dp"/>
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_comment"
+                    android:tint="@color/defaultShowColor"/>
 
                 <TextView
-                    android:layout_marginLeft="8dp"
                     android:id="@+id/commentTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:maxLines="1"
                     android:text="评论[0]"
                     android:textColor="@color/defaultShowColor"
-                    android:textSize="14sp"
-                    android:maxLines="1"/>
+                    android:textSize="14sp"/>
             </LinearLayout>
 
             <View
@@ -156,17 +157,18 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="horizontal">
+
                 <ImageView
-                    android:tint="@color/defaultShowColor"
-                    android:src="@drawable/ic_wechat_web"
                     android:layout_width="16dp"
-                    android:layout_height="16dp"/>
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_wechat_web"
+                    android:tint="@color/defaultShowColor"/>
 
                 <TextView
-                    android:layout_marginLeft="8dp"
                     android:id="@+id/webTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="推文"
                     android:textColor="@color/defaultShowColor"
                     android:textSize="14sp"/>

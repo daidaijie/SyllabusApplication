@@ -13,10 +13,12 @@ import java.util.List;
 
 public class SchoolDymaticContract {
 
-    interface presenter extends BasePresenter ,SchoolDymaticAdapter.OnLikeCallBack{
+    interface presenter extends BasePresenter, SchoolDymaticAdapter.OnLikeCallBack {
         void refresh();
 
         void loadData();
+
+        void handlerFAB();
     }
 
     interface view extends BaseView<presenter> {
@@ -27,9 +29,17 @@ public class SchoolDymaticContract {
 
         void showSuccessMessage(String msg);
 
+        void showInfoMessage(String msg);
+
         void loadMoreFinish();
 
         void showData(List<SchoolDymatic> schoolDymatics);
+
+        void loadEnd();
+
+        void loadStart();
+
+        void toPostDymatic();
     }
 
 }

@@ -8,6 +8,7 @@ import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
+import com.example.daidaijie.syllabusapplication.event.DymaticStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.ISchoolDymaticModel;
 
 import org.greenrobot.eventbus.EventBus;
@@ -99,7 +100,7 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
                 .subscribe(new Subscriber<List<CommentInfo.CommentsBean>>() {
                     @Override
                     public void onCompleted() {
-                        EventBus.getDefault().post(new CircleStateChangeEvent(mPosition));
+                        EventBus.getDefault().post(new DymaticStateChangeEvent(mPosition));
                         mView.showRefresh(false);
                         mView.clearDialog(postID);
                         mView.showSuccessMessage("评论成功");
@@ -157,6 +158,7 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
                         @Override
                         public void onCompleted() {
                             onLikeStateChangeListener.onFinish();
+                            EventBus.getDefault().post(new DymaticStateChangeEvent(mPosition));
                         }
 
                         @Override
@@ -172,7 +174,6 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
                         @Override
                         public void onNext(ThumbUpReturn thumbUpReturn) {
                             onLikeStateChangeListener.onLike(true);
-                            EventBus.getDefault().post(new CircleStateChangeEvent(mPosition));
                         }
                     });
         } else {
@@ -181,6 +182,7 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
                         @Override
                         public void onCompleted() {
                             onLikeStateChangeListener.onFinish();
+                            EventBus.getDefault().post(new DymaticStateChangeEvent(mPosition));
                         }
 
                         @Override
@@ -196,7 +198,6 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
                         @Override
                         public void onNext(Void aVoid) {
                             onLikeStateChangeListener.onLike(false);
-                            EventBus.getDefault().post(new CircleStateChangeEvent(mPosition));
                         }
                     });
         }

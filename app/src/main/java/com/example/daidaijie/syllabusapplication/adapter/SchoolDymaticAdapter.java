@@ -19,6 +19,7 @@ import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 
 import java.util.List;
@@ -67,7 +68,6 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
     OnCommentListener mCommentListener;
 
 
-
     public List<SchoolDymatic> getSchoolDymatics() {
         return mSchoolDymatics;
     }
@@ -104,7 +104,7 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
 
         //没传入就直接计算
         if (mWidth == 0) {
-            mWidth = parent.getWidth() - DensityUtil.dip2px(mActivity, 48 + 7f) + 1;
+            mWidth = parent.getWidth() - DensityUtil.dip2px(mActivity, 48 + 1) + 2;
         }
 
         return new ViewHolder(view);

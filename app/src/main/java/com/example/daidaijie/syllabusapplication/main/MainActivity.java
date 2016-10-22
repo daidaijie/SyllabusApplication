@@ -3,6 +3,8 @@ package com.example.daidaijie.syllabusapplication.main;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,35 +27,42 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.bigkoo.convenientbanner.ConvenientBanner;
 import com.bigkoo.convenientbanner.holder.CBViewHolderCreator;
 import com.bigkoo.convenientbanner.holder.Holder;
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.EmailWebActivity;
-import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity;
-import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.STUCircleActivity;
-import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
-import com.example.daidaijie.syllabusapplication.syllabus.main.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.activity.ThemePickerFragment;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.grade.GradeActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
+import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.STUCircleActivity;
+import com.example.daidaijie.syllabusapplication.schoolDynamatic.personal.PersonalActivity;
 import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryActivity;
+import com.example.daidaijie.syllabusapplication.syllabus.main.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.takeout.mainMenu.TakeOutActivity;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
+import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;
 import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
+import com.example.daidaijie.syllabusapplication.widget.ShareWXDialog;
 import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
+import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
+import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 
 import java.util.List;
 
@@ -61,7 +70,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 
-public class MainActivity extends BaseActivity implements MainContract.view, NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends BaseActivity implements MainContract.view, NavigationView.OnNavigationItemSelectedListener, ShareWXDialog.OnShareSelectCallBack {
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner mConvenientBanner;
@@ -244,6 +253,11 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
         } else if (id == R.id.nav_about_us) {
             Intent intent = new Intent(this, AboutUsActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_share_app) {
+            showShareDialog();
+        } else if (id == R.id.nav_personal_info) {
+            Intent intent = new Intent(this, PersonalActivity.class);
+            startActivity(intent);
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -366,4 +380,40 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
             }
         });
     }
+
+    private void share(int scene) {
+        WXWebpageObject webpage = new WXWebpageObject();
+        webpage.webpageUrl = "http://fir.im/syllabus";
+        WXMediaMessage msg = new WXMediaMessage(webpage);
+        msg.title = "汕大课程表";
+        msg.description = "汕大课程表下载地址";
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_syllabus_icon);
+        msg.setThumbImage(bitmap);
+
+        SendMessageToWX.Req req = new SendMessageToWX.Req();
+        req.transaction = String.valueOf(System.currentTimeMillis());
+        req.message = msg;
+        req.scene = scene;
+        ((App) getApplication()).getApi().sendReq(req);
+    }
+
+
+    private void showShareDialog() {
+        ShareWXDialog dialog = new ShareWXDialog();
+        dialog.setOnShareSelectCallBack(this);
+        dialog.show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void onShareSelect(int position) {
+        if (position == 0) {
+            share(0);
+        } else if (position == 1) {
+            share(1);
+        } else {
+            ClipboardUtil.copyToClipboard("http://fir.im/syllabus");
+            showInfoMessage("已复制下载链接到剪贴板");
+        }
+    }
+
 }

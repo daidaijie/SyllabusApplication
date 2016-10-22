@@ -9,6 +9,8 @@ import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.retrofitApi.InterenetService;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.mm.sdk.openapi.IWXAPI;
+import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -31,6 +33,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+
 /**
  * Created by daidaijie on 2016/7/24.
  */
@@ -48,6 +51,10 @@ public class App extends Application {
 
     AppComponent mAppComponent;
 
+    private static final String APP_ID = "wxcce81e2a1528e155";
+
+    private IWXAPI api;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -58,7 +65,7 @@ public class App extends Application {
         // TODO: 2016/10/11 暂时在这里进行初始化
         RealmConfiguration.Builder builder = new RealmConfiguration.Builder(this)
                 .schemaVersion(userVersion);
-        if (isDebug){
+        if (isDebug) {
             builder.deleteRealmIfMigrationNeeded();
         }
         Realm.setDefaultConfiguration(builder.build());
@@ -74,6 +81,16 @@ public class App extends Application {
 
         updateStreamInfo();
 
+        regToWX();
+    }
+
+    public IWXAPI getApi() {
+        return api;
+    }
+
+    private void regToWX() {
+        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
+        api.registerApp(APP_ID);
     }
 
 

@@ -12,6 +12,7 @@
     android:layout_marginTop="4dp"
     android:foreground="@drawable/fg_circle_card"
     android:orientation="vertical"
+    app:cardPreventCornerOverlap="false"
     app:cardBackgroundColor="@color/material_white"
     app:cardCornerRadius="4dp"
     app:cardElevation="1dp">
@@ -156,16 +157,16 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:tint="@color/defaultShowColor"
-                    android:src="@drawable/ic_comment"
                     android:layout_width="16dp"
-                    android:layout_height="16dp"/>
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_comment"
+                    android:tint="@color/defaultShowColor"/>
 
                 <TextView
-                    android:layout_marginLeft="8dp"
                     android:id="@+id/commentTextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="评论[0]"
                     android:textColor="@color/defaultShowColor"
                     android:textSize="14sp"/>
