@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.retrofitApi;
 
+import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.LessonDetailInfo;
 
 import retrofit2.http.GET;
@@ -11,6 +12,6 @@ import rx.Observable;
  */
 public interface LessonDetailService {
 
-    @GET("credit/api/v2/member")
-    Observable<LessonDetailInfo> getLessonDetail(@Query("class_id") String  classID);
+    @GET("credit/api/v2.1/member")
+    Observable<HttpResult<LessonDetailInfo>> getLessonDetail(@Query("class_id") String classID);
 }

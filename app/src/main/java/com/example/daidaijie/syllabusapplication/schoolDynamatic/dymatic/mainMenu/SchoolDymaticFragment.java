@@ -66,9 +66,11 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
         setupSwipeRefreshLayout(mSwipeRefreshLayout);
 
         mSchoolDymaticAdapter = new SchoolDymaticAdapter(getActivity(), null);
+
         mDymaticRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mDymaticRecyclerView.setAdapter(mSchoolDymaticAdapter);
         mDymaticRecyclerView.setItemAnimator(new MyItemAnimator());
+        mSchoolDymaticAdapter.setOnLikeCallBack(mSchoolDymaticPresenter);
 
         mLoadMoreView = mActivity.getLayoutInflater().inflate(R.layout.bottom_load_more, null);
 

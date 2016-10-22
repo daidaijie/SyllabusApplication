@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.mainMenu;
 
+import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
 import com.example.daidaijie.syllabusapplication.base.BasePresenter;
 import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
@@ -12,7 +13,7 @@ import java.util.List;
 
 public class SchoolDymaticContract {
 
-    interface presenter extends BasePresenter {
+    interface presenter extends BasePresenter ,SchoolDymaticAdapter.OnLikeCallBack{
         void refresh();
 
         void loadData();

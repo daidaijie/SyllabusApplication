@@ -33,7 +33,7 @@
     </android.support.v7.widget.Toolbar>
 
     <ProgressBar
-        android:id="@+id/emailLoadingBar"
+        android:id="@+id/loadingBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="2dp"
@@ -42,7 +42,7 @@
         android:progressDrawable="@drawable/progress_email"/>
 
     <WebView
-        android:id="@+id/emailWebView"
+        android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

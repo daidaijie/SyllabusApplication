@@ -10,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
+import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
@@ -63,6 +65,8 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
     }
 
     OnCommentListener mCommentListener;
+
+
 
     public List<SchoolDymatic> getSchoolDymatics() {
         return mSchoolDymatics;
@@ -138,6 +142,9 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
             holder.mPhotoRecyclerView.setVisibility(View.GONE);
         }
 
+        holder.mZanTextView.setText("赞 [" + schoolDymatic.getThumb_ups().size() + "]");
+        holder.mCommentTextView.setText("评论 [" + schoolDymatic.getComments().size() + "]");
+
         /**
          * 点赞
          */
@@ -176,6 +183,17 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
             }
         });
 
+        holder.mWebLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (schoolDymatic.getContent() != null && !schoolDymatic.getContent().isEmpty()) {
+                    Intent intent = CommonWebActivity.getIntent(mActivity, schoolDymatic.getContent(), "推文详情");
+                    mActivity.startActivity(intent);
+                } else {
+                    Toast.makeText(mActivity, "本篇无推文", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         if (!isOnlyOne) {
             holder.mItemCardView.setOnClickListener(new View.OnClickListener() {

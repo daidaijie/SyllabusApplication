@@ -1,5 +1,6 @@
-package com.example.daidaijie.syllabusapplication.activity;
+package com.example.daidaijie.syllabusapplication.other;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.net.http.SslError;
@@ -22,16 +23,22 @@ import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 
 import butterknife.BindView;
 
-public class EmailWebActivity extends BaseActivity {
+public class CommonWebActivity extends BaseActivity {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.webView)
-    WebView mEmailWebView;
+    WebView mWebView;
     @BindView(R.id.loadingBar)
-    ProgressBar mEmailLoadingBar;
+    ProgressBar mProgressBar;
+
+    private static final String EXTRA_URL = CommonWebActivity.class.getCanonicalName() + ".url";
+
+    private static final String EXTRA_TITLE = CommonWebActivity.class.getCanonicalName() + ".title";
+
+    private boolean hasTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +46,12 @@ public class EmailWebActivity extends BaseActivity {
 
         setupTitleBar(mToolbar);
 
-        WebSettings setting = mEmailWebView.getSettings();
+        WebSettings setting = mWebView.getSettings();
         setting.setAllowFileAccess(true);
         setting.setAppCacheEnabled(true);
         setting.setDomStorageEnabled(true);
         setting.setJavaScriptEnabled(true);
-        mEmailWebView.setWebViewClient(new WebViewClient() {
+        mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
                 handler.proceed();
@@ -58,25 +65,43 @@ public class EmailWebActivity extends BaseActivity {
 
         });
 
-        mEmailWebView.setWebChromeClient(new WebChromeClient() {
+        String title = getIntent().getStringExtra(EXTRA_TITLE);
+        if (title.isEmpty()) {
+            hasTitle = false;
+        } else {
+            hasTitle = true.;
+            mTitleTextView.setText(title);
+        }
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onReceivedTitle(WebView view, String title) {
+                super.onReceivedTitle(view, title);
+                if (!hasTitle) {
+                    mTitleTextView.setText(title);
+                }
+            }
+
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
-                mEmailLoadingBar.setProgress(newProgress);
+                mProgressBar.setProgress(newProgress);
                 if (newProgress >= 100) {
-                    mEmailLoadingBar.setVisibility(View.GONE);
+                    mProgressBar.setVisibility(View.GONE);
                 } else {
-                    mEmailLoadingBar.setVisibility(View.VISIBLE);
+                    mProgressBar.setVisibility(View.VISIBLE);
                 }
 
                 super.onProgressChanged(view, newProgress);
             }
         });
-        mEmailWebView.loadUrl("https://sso.stu.edu.cn/login?service=https%3A%2F%2Fmy.stu.edu.cn%2Fv3%2Fdiscussion%2F");
 
-        mEmailWebView.setDownloadListener(new DownloadListener() {
+        mWebView.loadUrl(getIntent().getStringExtra(EXTRA_URL));
+
+        mWebView.setDownloadListener(new DownloadListener() {
             @Override
             public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
-                Toast.makeText(EmailWebActivity.this, "url: " + url, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CommonWebActivity.this, "url: " + url, Toast.LENGTH_SHORT).show();
                 Uri uri = Uri.parse(url);
                 Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(intent);
@@ -87,8 +112,8 @@ public class EmailWebActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (mEmailWebView.canGoBack()) {
-            mEmailWebView.goBack();
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
         } else {
             super.onBackPressed();
         }
@@ -107,5 +132,20 @@ public class EmailWebActivity extends BaseActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static Intent getIntent(Context context, String url) {
+        Intent intent = new Intent(context, CommonWebActivity.class);
+        intent.putExtra(EXTRA_URL, url);
+
+        return intent;
+    }
+
+    public static Intent getIntent(Context context, String url, String title) {
+        Intent intent = new Intent(context, CommonWebActivity.class);
+        intent.putExtra(EXTRA_URL, url);
+        intent.putExtra(EXTRA_TITLE, title);
+
+        return intent;
     }
 }

@@ -78,7 +78,7 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
             mISchoolDymaticModel.getDymaticByPosition(mPosition, new IBaseModel.OnGetSuccessCallBack<SchoolDymatic>() {
                 @Override
                 public void onGetSuccess(SchoolDymatic dymatic) {
-                    mView.showCommentDialog(-1, dymatic.getUser().getNickname());
+                    mView.showCommentDialog(-1, dymatic.getSource());
                 }
             });
             return;

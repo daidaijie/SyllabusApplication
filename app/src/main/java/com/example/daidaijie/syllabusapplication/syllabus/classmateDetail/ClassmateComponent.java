@@ -5,4 +5,6 @@ package com.example.daidaijie.syllabusapplication.syllabus.classmateDetail;
  */
 
 public class ClassmateComponent {
+
+
 }
