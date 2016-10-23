@@ -26,6 +26,8 @@ public interface BookDetailContract {
         void showData(LibraryBean libraryBean);
 
         void showResult(List<BookDetailBean> mBookDetailBeen);
+
+        void showInfoMessage(String msg);
     }
 
 }

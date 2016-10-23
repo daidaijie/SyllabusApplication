@@ -113,27 +113,12 @@ public class BookDetailPresenter implements BookDetailContract.presenter {
 
                     @Override
                     public void onNext(List<BookDetailBean> bookDetailBeen) {
-                        mView.showResult(bookDetailBeen);
+                        if (bookDetailBeen == null || bookDetailBeen.size() == 0) {
+                            mView.showInfoMessage("查找不到图书位置");
+                        } else {
+                            mView.showResult(bookDetailBeen);
+                        }
                     }
                 });
-               /* .subscribe(new Action1<String>() {
-                    @Override
-                    public void call(String s) {
-                        Logger.t("html").e(s);
-                        mView.showLoading(false);
-                    }
-                });*/
-        /*Element body = Jsoup.parseBodyFragment(html).body();
-        Element table = body.select("table.tb").first();
-        Elements items = table.getElementsByTag("tr");
-        final Element span = items.get(1).getElementsByTag("td").first().getElementsByTag("span").first();
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mWebInfoTextView.setText(span.text());
-                BookDetailActivity.this.showLoading(false);
-            }
-        });*/
     }
 }

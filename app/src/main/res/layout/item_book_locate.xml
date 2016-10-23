@@ -23,15 +23,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:textColor="@color/defaultTextColor"
+            android:textColor="@color/grey66Color"
             android:textSize="14sp"
             tools:text="二楼西北区外侧64排3列3层"/>
 
         <View
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_width="1px"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:background="@color/defaultShowColor"/>
 
         <TextView
@@ -39,15 +39,15 @@
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/defaultTextColor"
+            android:textColor="@color/grey66Color"
             android:textSize="14sp"
             tools:text="可供出借"/>
 
         <View
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
             android:layout_width="1px"
             android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:background="@color/defaultShowColor"/>
 
         <TextView
@@ -55,7 +55,7 @@
             android:layout_width="72dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textColor="@color/defaultTextColor"
+            android:textColor="@color/grey66Color"
             android:textSize="14sp"
             tools:text="普通图书"/>
 

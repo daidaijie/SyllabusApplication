@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
@@ -20,12 +19,10 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.BookDetailBean;
-import com.example.daidaijie.syllabusapplication.bean.GradeBean;
 import com.example.daidaijie.syllabusapplication.bean.LibraryBean;
 import com.example.daidaijie.syllabusapplication.stuLibrary.LibModelComponent;
-import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.DaggerLibraryComponent;
-import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryModule;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.List;
 
@@ -125,7 +122,6 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
 
     @Override
     public void showResult(List<BookDetailBean> mBookDetailBeen) {
-        if (mBookDetailBeen == null || mBookDetailBeen.size() == 0) return;
         mResultLinearLayout.removeAllViews();
         for (int i = 0; i <= mBookDetailBeen.size(); i++) {
             View view = getLayoutInflater().inflate(R.layout.item_book_locate, null, false);
@@ -151,6 +147,11 @@ public class BookDetailActivity extends BaseActivity implements BookDetailContra
             mResultLinearLayout.addView(view);
         }
         mResultLinearLayout.requestLayout();
+    }
+
+    @Override
+    public void showInfoMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mResultLinearLayout, msg, SnackbarUtil.Info).show();
     }
 
     @Override
