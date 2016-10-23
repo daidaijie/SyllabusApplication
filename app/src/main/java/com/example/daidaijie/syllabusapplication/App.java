@@ -3,6 +3,8 @@ package com.example.daidaijie.syllabusapplication;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
@@ -51,6 +53,10 @@ public class App extends Application {
 
     public static final int userVersion = 1;
 
+    public static int versionCode = Integer.MAX_VALUE;
+
+    public static String versionName = "";
+
     AppComponent mAppComponent;
 
     private static final String APP_ID = "wxcce81e2a1528e155";
@@ -84,6 +90,20 @@ public class App extends Application {
         updateStreamInfo();
 
         regToWX();
+
+        initVersion();
+    }
+
+    private void initVersion() {
+        try {
+            PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
+            versionCode = pi.versionCode;
+            versionName = pi.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public IWXAPI getApi() {

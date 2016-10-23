@@ -8,7 +8,10 @@ import com.example.daidaijie.syllabusapplication.di.qualifier.realm.DefaultRealm
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.example.daidaijie.syllabusapplication.di.qualifier.semester.CurrentSemester;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
+import com.example.daidaijie.syllabusapplication.other.update.IUpdateModel;
+import com.example.daidaijie.syllabusapplication.other.update.UpdateModel;
 import com.example.daidaijie.syllabusapplication.retrofitApi.BannerApi;
+import com.example.daidaijie.syllabusapplication.retrofitApi.UpdateApi;
 import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
 import com.example.daidaijie.syllabusapplication.widget.picker.LinkagePicker;
 
@@ -52,5 +55,12 @@ public class MainModule {
                                     @SchoolRetrofit Retrofit retrofit) {
         return new BannerModel(realm, retrofit.create(BannerApi.class));
     }
+
+    @Provides
+    @PerActivity
+    IUpdateModel provideUpdateModel(@SchoolRetrofit Retrofit retrofit) {
+        return new UpdateModel(retrofit.create(UpdateApi.class));
+    }
+
 
 }

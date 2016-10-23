@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.bigkoo.convenientbanner.ConvenientBanner;
@@ -44,6 +43,7 @@ import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.Offic
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
 import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
 import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
+import com.example.daidaijie.syllabusapplication.other.update.UpdateActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.STUCircleActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.personal.PersonalActivity;
 import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryActivity;
@@ -266,6 +266,9 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
             showShareDialog();
         } else if (id == R.id.nav_personal_info) {
             Intent intent = new Intent(this, PersonalActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_show_update) {
+            Intent intent = new Intent(this, UpdateActivity.class);
             startActivity(intent);
         }
 

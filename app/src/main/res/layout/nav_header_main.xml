@@ -23,7 +23,6 @@
         fresco:roundAsCircle="true"/>
 
     <TextView
-        android:textColor="@color/material_white"
         android:id="@+id/nicknameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,25 +31,22 @@
         android:layout_toRightOf="@id/headImageDraweeView"
         android:ellipsize="end"
         android:singleLine="true"
+        android:textColor="@color/material_white"
         android:textSize="16sp"
         tools:text="Android Studio"/>
 
-    <com.balysv.materialripple.MaterialRippleLayout
-        android:padding="8dp"
+
+    <TextView
+        android:id="@+id/semesterTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/headImageDraweeView"
-        android:layout_marginTop="8dp">
-
-        <TextView
-            android:id="@+id/semesterTextView"
-            android:singleLine="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="2016-2017  秋季学期"
-            android:textColor="@android:color/white"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
-    </com.balysv.materialripple.MaterialRippleLayout>
+        android:layout_marginTop="8dp"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="2016-2017  秋季学期"/>
 
 </RelativeLayout>

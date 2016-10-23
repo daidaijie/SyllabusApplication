@@ -10,8 +10,8 @@ android {
         applicationId "com.example.daidaijie.syllabusapplication"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 40
+        versionName "2.0.0 beta"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

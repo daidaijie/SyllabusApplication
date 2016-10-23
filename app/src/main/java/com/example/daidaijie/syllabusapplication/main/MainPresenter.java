@@ -1,12 +1,15 @@
 package com.example.daidaijie.syllabusapplication.main;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.BannerBeen;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
+import com.example.daidaijie.syllabusapplication.bean.UpdateInfoBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
+import com.example.daidaijie.syllabusapplication.other.update.IUpdateModel;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
@@ -23,6 +26,8 @@ import rx.functions.Action1;
 
 public class MainPresenter implements MainContract.presenter {
 
+    IUpdateModel mIUpdateModel;
+
     IBannerModel mBannerModel;
 
     IUserModel mUserModel;
@@ -33,11 +38,16 @@ public class MainPresenter implements MainContract.presenter {
 
     @Inject
     @PerActivity
-    public MainPresenter(MainContract.view view, IBannerModel bannerModel, @LoginUser IUserModel userModel, ILoginModel ILoginModel) {
+    public MainPresenter(MainContract.view view,
+                         IBannerModel bannerModel,
+                         @LoginUser IUserModel userModel,
+                         ILoginModel ILoginModel,
+                         IUpdateModel updateModel) {
         mView = view;
         mBannerModel = bannerModel;
         mUserModel = userModel;
         mILoginModel = ILoginModel;
+        mIUpdateModel = updateModel;
     }
 
     @Override
@@ -70,6 +80,16 @@ public class MainPresenter implements MainContract.presenter {
                     @Override
                     public void call(Throwable throwable) {
 
+                    }
+                });
+
+        mIUpdateModel.getUpdateInfo()
+                .subscribe(new Action1<UpdateInfoBean>() {
+                    @Override
+                    public void call(UpdateInfoBean updateInfoBean) {
+                        if (updateInfoBean.getIntVersionCode() > App.versionCode) {
+                            mView.showInfoMessage("需要更新啦");
+                        }
                     }
                 });
     }

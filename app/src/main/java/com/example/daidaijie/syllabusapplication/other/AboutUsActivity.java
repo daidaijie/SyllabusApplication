@@ -1,10 +1,13 @@
 package com.example.daidaijie.syllabusapplication.other;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -47,6 +50,7 @@ public class AboutUsActivity extends BaseActivity {
         mIOSDeveloperHeadImageView.setImageURI("https://avatars3.githubusercontent.com/u/11157226?v=3&s=64");
         mBackendDeveloperHeadImageView.setImageURI("https://avatars1.githubusercontent.com/u/12378280?v=3&s=64");
         mAndroidDeveloperHeadImageView.setImageURI("https://avatars3.githubusercontent.com/u/12541192?v=3&s=64");
+        mVersionTextView.setText(App.versionName);
     }
 
     @Override

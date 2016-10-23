@@ -54,15 +54,26 @@
                 app:roundedCornerRadius="4dp"/>
 
             <TextView
-                android:id="@+id/versionTextView"
+                android:id="@+id/syllabusTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/syllabusIconView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="8dp"
-                android:text="汕大课程表 v2.0 beta"
+                android:text="汕大课程表"
                 android:textColor="@color/defaultTextColor"
                 android:textSize="16sp"/>
+
+            <TextView
+                android:id="@+id/versionTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/syllabusTextView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/defaultTextColor"
+                android:textSize="14sp"
+                tools:text="v2.0 beta"/>
 
             <TextView
                 android:id="@+id/descTextView"
