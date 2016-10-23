@@ -11,11 +11,17 @@ import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 public interface PersonalContract {
 
     interface presenter extends BasePresenter {
+
+        void selectHeadImg();
     }
 
     interface view extends BaseView<presenter> {
 
         void showUserBase(UserBaseBean userBaseBean);
+
+        void showHead(String uri);
+
+        void showFailMessage(String msg);
     }
 
 }

@@ -17,6 +17,8 @@ import com.example.daidaijie.syllabusapplication.adapter.PhotoDetailAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
+import com.example.daidaijie.syllabusapplication.util.FrescoUtil;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.MultiTouchViewPager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,7 +28,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class PhotoDetailActivity extends BaseActivity {
+public class PhotoDetailActivity extends BaseActivity implements PhotoDetailAdapter.OnPhotoLongClickListener {
 
     public static final String EXTRA_PHOTO_INFO
             = "com.example.daidaijie.syllabusapplication.activity.PhotoInfoList";
@@ -67,10 +69,7 @@ public class PhotoDetailActivity extends BaseActivity {
         Intent intent = getIntent();
         mMode = intent.getIntExtra(EXTRA_PHOTO_Mode, 0);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
 
         mPhotoUrls = (List<String>) intent.getSerializableExtra(EXTRA_PHOTO_INFO);
@@ -88,6 +87,10 @@ public class PhotoDetailActivity extends BaseActivity {
                 pointTitle(position);
             }
         });
+
+        if (mMode != 1) {
+            mPhotoDetailAdapter.setOnPhotoLongClickListener(this);
+        }
 
     }
 
@@ -157,4 +160,34 @@ public class PhotoDetailActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void showSuccessMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mTitleTextView, msg, SnackbarUtil.Confirm).show();
+    }
+
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mTitleTextView, msg, SnackbarUtil.Alert).show();
+    }
+
+    @Override
+    public void onLongClick(final int position) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setItems(new String[]{"保存图片到本地"}, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FrescoUtil.savePicture(mPhotoUrls.get(position), PhotoDetailActivity.this, new FrescoUtil.OnSaveFileCallBack() {
+                            @Override
+                            public void onSuccess() {
+                                showSuccessMessage("保存图片成功");
+                            }
+
+                            @Override
+                            public void onFail(String msg) {
+                                showFailMessage(msg);
+                            }
+                        });
+                    }
+                }).create();
+        dialog.show();
+
+    }
 }

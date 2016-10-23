@@ -114,7 +114,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
 
         //没传入就直接计算
         if (mWidth == 0) {
-            mWidth = parent.getWidth() - DensityUtil.dip2px(mActivity, 48 + 7f) + 1;
+            mWidth = parent.getWidth() - DensityUtil.dip2px(mActivity, 48 + 1) + 2;
         }
 
         return new ViewHolder(view);

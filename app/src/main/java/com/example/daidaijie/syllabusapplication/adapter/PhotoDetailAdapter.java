@@ -30,6 +30,21 @@ public class PhotoDetailAdapter extends PagerAdapter {
 
     private List<String> mPhotoInfo;
 
+
+    public interface OnPhotoLongClickListener {
+        void onLongClick(int position);
+    }
+
+    OnPhotoLongClickListener mOnPhotoLongClickListener;
+
+    public OnPhotoLongClickListener getOnPhotoLongClickListener() {
+        return mOnPhotoLongClickListener;
+    }
+
+    public void setOnPhotoLongClickListener(OnPhotoLongClickListener onPhotoLongClickListener) {
+        mOnPhotoLongClickListener = onPhotoLongClickListener;
+    }
+
     public PhotoDetailAdapter(Activity activity, List<String> photoInfo) {
         mActivity = activity;
         mPhotoInfo = photoInfo;
@@ -49,7 +64,7 @@ public class PhotoDetailAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem(ViewGroup container, int position) {
+    public Object instantiateItem(ViewGroup container, final int position) {
         final PhotoDraweeView photoDraweeView = new PhotoDraweeView(mActivity);
         PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
         controller.setUri(mPhotoInfo.get(position));
@@ -72,6 +87,16 @@ public class PhotoDetailAdapter extends PagerAdapter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        photoDraweeView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnPhotoLongClickListener != null) {
+                    mOnPhotoLongClickListener.onLongClick(position);
+                }
+                return true;
+            }
+        });
 
         return photoDraweeView;
     }

@@ -84,8 +84,8 @@
     </style>
 
     <style name="AppThemeCyan" parent="AppThemeBase">
-        <item name="colorPrimary">@color/material_cyan_500</item>
-        <item name="colorPrimaryDark">@color/material_cyan_700</item>
+        <item name="colorPrimary">@color/material_cyan_700</item>
+        <item name="colorPrimaryDark">@color/material_cyan_900</item>
     </style>
 
     <style name="AppThemeTeal" parent="AppThemeBase">
@@ -105,8 +105,8 @@
     </style>
 
     <style name="AppThemeLime" parent="AppThemeBase">
-        <item name="colorPrimary">@color/material_Lime_500</item>
-        <item name="colorPrimaryDark">@color/material_Lime_700</item>
+        <item name="colorPrimary">@color/material_Lime_700</item>
+        <item name="colorPrimaryDark">@color/material_Lime_900</item>
     </style>
 
     <style name="AppThemeClassic" parent="AppThemeBase">
@@ -115,8 +115,8 @@
     </style>
 
     <style name="AppThemeAmber" parent="AppThemeBase">
-        <item name="colorPrimary">@color/material_amber_500</item>
-        <item name="colorPrimaryDark">@color/material_amber_700</item>
+        <item name="colorPrimary">@color/material_amber_700</item>
+        <item name="colorPrimaryDark">@color/material_amber_900</item>
     </style>
 
     <style name="AppThemeOrange" parent="AppThemeBase">

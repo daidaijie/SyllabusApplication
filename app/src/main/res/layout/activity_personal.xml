@@ -41,7 +41,7 @@
         android:layout_height="96dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:background="@drawable/bg_headimage"
+        android:background="@drawable/bg_headimage2"
         android:padding="1dp"
         fresco:roundAsCircle="true"/>
 
@@ -134,11 +134,11 @@
             android:textSize="16sp"/>
 
         <EditText
-            android:hint="说一下你的心情"
             android:id="@+id/sayEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
+            android:hint="说一下你的心情"
             android:maxLength="20"
             android:singleLine="true"
             android:textColorHint="?attr/colorPrimary"

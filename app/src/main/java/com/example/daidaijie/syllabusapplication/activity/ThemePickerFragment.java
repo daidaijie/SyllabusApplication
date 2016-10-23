@@ -26,13 +26,12 @@ import butterknife.ButterKnife;
  */
 public class ThemePickerFragment extends DialogFragment {
 
-    public static final String DIALOG_THEME_PICKER = "com.example.daidaijie.syllabusapplication" +
-            ".activity.ThemePickerFragment";
+    public static final String DIALOG_THEME_PICKER = ThemePickerFragment.class.getCanonicalName();
 
     private ThemePickerAdapter mThemePickerAdapter;
 
     public interface OnItemClickListener {
-        void onClick(int position);
+        void onClick(String name);
     }
 
     OnItemClickListener mOnItemClickListener;
@@ -61,8 +60,8 @@ public class ThemePickerFragment extends DialogFragment {
 
         mThemePickerAdapter.setOnItemClickListener(new ThemePickerAdapter.OnItemClickListener() {
             @Override
-            public void onClick(int position) {
-                mOnItemClickListener.onClick(position);
+            public void onClick(String name) {
+                mOnItemClickListener.onClick(name);
             }
         });
 
@@ -83,7 +82,7 @@ public class ThemePickerFragment extends DialogFragment {
         }
 
         public interface OnItemClickListener {
-            void onClick(int position);
+            void onClick(String name);
         }
 
         OnItemClickListener mOnItemClickListener;
@@ -106,7 +105,7 @@ public class ThemePickerFragment extends DialogFragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            ThemeModel.ThemeBean themeBean = ThemeModel.getInstance().mThemeBeen.get(position);
+            final ThemeModel.ThemeBean themeBean = ThemeModel.getInstance().mThemeBeen.get(position);
             GradientDrawable shape = (GradientDrawable) mActivity.getResources()
                     .getDrawable(R.drawable.bg_theme_picker);
 
@@ -115,10 +114,10 @@ public class ThemePickerFragment extends DialogFragment {
             holder.mThemePickerView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mOnItemClickListener.onClick(position);
+                    mOnItemClickListener.onClick(themeBean.name);
                 }
             });
-            holder.mShowCurrent.setVisibility(position == ThemeModel.getInstance().mPosition ?
+            holder.mShowCurrent.setVisibility(themeBean.name.equals(ThemeModel.getInstance().mCurrentThemeName) ?
                     View.VISIBLE : View.GONE);
 
         }

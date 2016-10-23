@@ -2,14 +2,15 @@ package com.example.daidaijie.syllabusapplication.schoolDynamatic.personal;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
-import com.example.daidaijie.syllabusapplication.main.MainPresenter;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import javax.inject.Inject;
@@ -49,6 +50,13 @@ public class PersonalActivity extends BaseActivity implements PersonalContract.v
                 .build().inject(this);
 
         mPersonalPresenter.start();
+
+        mHeadImageDraweeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPersonalPresenter.selectHeadImg();
+            }
+        });
     }
 
     @Override
@@ -63,5 +71,15 @@ public class PersonalActivity extends BaseActivity implements PersonalContract.v
         mAccountEditText.setText(userBaseBean.getAccount());
         mSayEditText.setText(userBaseBean.getProfile());
 
+    }
+
+    @Override
+    public void showHead(String uri) {
+        mHeadImageDraweeView.setImageURI(uri);
+    }
+
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mHeadImageDraweeView,msg,SnackbarUtil.Alert).show();
     }
 }

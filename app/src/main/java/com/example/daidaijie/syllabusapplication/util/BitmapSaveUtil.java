@@ -32,14 +32,13 @@ public class BitmapSaveUtil {
     }
 
 
-    public static void saveFile(final Bitmap bm, final String fileName, final String path, final int quality, final OnSaveFileCallBack onSaveFileCallBack) {
+    public static void saveFile(final Bitmap bm, final String fileName, final int quality, final OnSaveFileCallBack onSaveFileCallBack) {
 
         RxPermissions.getInstance(App.getContext())
                 .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Subscriber<Boolean>() {
                     @Override
                     public void onCompleted() {
-                        onSaveFileCallBack.onSuccess();
                         bm.recycle();
                     }
 
@@ -52,7 +51,7 @@ public class BitmapSaveUtil {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         if (aBoolean) {
-                            String subFolder = FileUtil.get_app_folder(true) + path;
+                            String subFolder = FileUtil.get_app_folder(true) + App.FOIDER_NAME;
                             File folder = new File(subFolder);
                             if (!folder.exists()) {
                                 folder.mkdirs();
@@ -75,6 +74,7 @@ public class BitmapSaveUtil {
                             Uri uri = Uri.fromFile(myCaptureFile);
                             intent.setData(uri);
                             App.getContext().sendBroadcast(intent);
+                            onSaveFileCallBack.onSuccess();
                         } else {
                             onSaveFileCallBack.onFail("截图失败");
                         }

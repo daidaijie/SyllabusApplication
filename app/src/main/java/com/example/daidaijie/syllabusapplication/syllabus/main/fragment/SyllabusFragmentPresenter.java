@@ -92,7 +92,7 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
 
         BitmapSaveUtil.saveFile(
-                result, "Syllabus" + System.currentTimeMillis() + ".jpg", "STUOA", 100, new BitmapSaveUtil.OnSaveFileCallBack() {
+                result, "Syllabus" + System.currentTimeMillis() + ".jpg", 100, new BitmapSaveUtil.OnSaveFileCallBack() {
                     @Override
                     public void onSuccess() {
                         mView.showSuccessMessage("已保存课表到图库");

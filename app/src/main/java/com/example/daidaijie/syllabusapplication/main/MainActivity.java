@@ -42,6 +42,8 @@ import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
 import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
+import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
+import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.STUCircleActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.personal.PersonalActivity;
 import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryActivity;
@@ -64,6 +66,7 @@ import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -198,9 +201,15 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
                             "查看详情", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Toast.makeText(MainActivity.this,
-                                            banner.getDescription(), Toast.LENGTH_SHORT)
-                                            .show();
+                                    Intent intent = null;
+                                    if (banner.getLink().equals(banner.getUrl())) {
+                                        List urls = new ArrayList();
+                                        urls.add(banner.getLink());
+                                        intent = PhotoDetailActivity.getIntent(MainActivity.this, urls, 0);
+                                    } else {
+                                        intent = CommonWebActivity.getIntent(MainActivity.this, banner.getUrl(), banner.getDescription());
+                                    }
+                                    startActivity(intent);
                                 }
                             }
                     ).setPositiveButton("取消", new DialogInterface.OnClickListener() {
@@ -235,8 +244,8 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
 
             themePickerFragment.setOnItemClickListener(new ThemePickerFragment.OnItemClickListener() {
                 @Override
-                public void onClick(int position) {
-                    ThemeModel.getInstance().setStyle(position);
+                public void onClick(String name) {
+                    ThemeModel.getInstance().setStyle(name);
                     recreate();
                     themePickerFragment.dismiss();
                 }

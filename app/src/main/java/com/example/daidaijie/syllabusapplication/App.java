@@ -43,6 +43,8 @@ public class App extends Application {
 
     public static final String TAG = "App";
 
+    public static final String FOIDER_NAME = "汕大课程表";
+
     public static boolean isDebug = true;
 
     public static boolean isLogger = true;
