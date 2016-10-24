@@ -17,7 +17,7 @@ import com.example.daidaijie.syllabusapplication.adapter.LibraryPagerAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.LibSearchBean;
 import com.example.daidaijie.syllabusapplication.event.LibPageCountEvent;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.stuLibrary.LibModelComponent;
 import com.example.daidaijie.syllabusapplication.stuLibrary.LibraryUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
@@ -81,7 +81,7 @@ public class LibraryActivity extends BaseActivity {
 
         mLibraryUtil = new LibraryUtil();
 
-        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
+        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeUtil.getInstance().colorPrimary);
 
         final String[] rangeItems = getResources().getStringArray(R.array.query_lib_string);
         searchWordWhich = 0;

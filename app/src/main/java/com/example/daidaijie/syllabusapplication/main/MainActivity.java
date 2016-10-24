@@ -38,7 +38,7 @@ import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.grade.GradeActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
 import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
@@ -245,7 +245,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
             themePickerFragment.setOnItemClickListener(new ThemePickerFragment.OnItemClickListener() {
                 @Override
                 public void onClick(String name) {
-                    ThemeModel.getInstance().setStyle(name);
+                    ThemeUtil.getInstance().setStyle(name);
                     recreate();
                     themePickerFragment.dismiss();
                 }
@@ -406,7 +406,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
         req.transaction = String.valueOf(System.currentTimeMillis());
         req.message = msg;
         req.scene = scene;
-        ((App) getApplication()).getApi().sendReq(req);
+        App.getApi().sendReq(req);
     }
 
 

@@ -7,7 +7,7 @@ import android.text.style.ForegroundColorSpan;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
 import org.joda.time.DateTime;
@@ -66,7 +66,7 @@ public class ExamItemModel implements IExamItemModel {
                     0, 6, Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             style.setSpan(new ForegroundColorSpan(
-                            ThemeModel.getInstance().colorPrimary),
+                            ThemeUtil.getInstance().colorPrimary),
                     6, sb.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             return style;

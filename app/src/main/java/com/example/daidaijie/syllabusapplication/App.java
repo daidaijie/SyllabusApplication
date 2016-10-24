@@ -61,7 +61,7 @@ public class App extends Application {
 
     private static final String APP_ID = "wxcce81e2a1528e155";
 
-    private IWXAPI api;
+    private static IWXAPI api;
 
     @Override
     public void onCreate() {
@@ -106,7 +106,7 @@ public class App extends Application {
 
     }
 
-    public IWXAPI getApi() {
+    public static IWXAPI getApi() {
         return api;
     }
 

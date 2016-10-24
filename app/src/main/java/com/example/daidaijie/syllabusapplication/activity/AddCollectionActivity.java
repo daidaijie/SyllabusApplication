@@ -15,7 +15,7 @@ import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.event.CollectionStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.model.SyllabusCollectionModel;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.model.User;
 import com.example.daidaijie.syllabusapplication.retrofitApi.SyllabusCollectionService;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
@@ -57,7 +57,7 @@ public class AddCollectionActivity extends BaseActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
+        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeUtil.getInstance().colorPrimary);
         mLinkagePicker = SelectSemesterBuilder.getSelectSemesterPicker(this);
         mSelectSemester = User.getInstance().getCurrentSemester();
         setSelectButtonText();

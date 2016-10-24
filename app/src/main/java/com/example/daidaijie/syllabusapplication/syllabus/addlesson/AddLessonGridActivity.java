@@ -19,7 +19,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.SelectTimeActivity;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.ArrayList;
@@ -187,21 +187,21 @@ public class AddLessonGridActivity extends BaseActivity {
     private void setWeekType() {
         if (isAll) {
             mAllTextView.setTextColor(getResources().getColor(R.color.material_white));
-            mAllTextView.setBackgroundColor(ThemeModel.getInstance().colorPrimary);
+            mAllTextView.setBackgroundColor(ThemeUtil.getInstance().colorPrimary);
         } else {
             mAllTextView.setTextColor(getResources().getColor(R.color.defaultTextColor));
             mAllTextView.setBackgroundColor(getResources().getColor(R.color.material_white));
         }
         if (isSingle) {
             mSingleTextView.setTextColor(getResources().getColor(R.color.material_white));
-            mSingleTextView.setBackgroundColor(ThemeModel.getInstance().colorPrimary);
+            mSingleTextView.setBackgroundColor(ThemeUtil.getInstance().colorPrimary);
         } else {
             mSingleTextView.setTextColor(getResources().getColor(R.color.defaultTextColor));
             mSingleTextView.setBackgroundColor(getResources().getColor(R.color.material_white));
         }
         if (isDouble) {
             mDoubleTextView.setTextColor(getResources().getColor(R.color.material_white));
-            mDoubleTextView.setBackgroundColor(ThemeModel.getInstance().colorPrimary);
+            mDoubleTextView.setBackgroundColor(ThemeUtil.getInstance().colorPrimary);
         } else {
             mDoubleTextView.setTextColor(getResources().getColor(R.color.defaultTextColor));
             mDoubleTextView.setBackgroundColor(getResources().getColor(R.color.material_white));
@@ -235,7 +235,7 @@ public class AddLessonGridActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
             if (selectWeeks.get(position)) {
-                holder.mWeekTextView.setBackgroundColor(ThemeModel.getInstance().colorPrimary);
+                holder.mWeekTextView.setBackgroundColor(ThemeUtil.getInstance().colorPrimary);
                 holder.mWeekTextView.setTextColor(getResources().getColor(R.color.material_white));
             } else {
                 holder.mWeekTextView.setBackgroundColor(getResources().getColor(R.color.material_white));
@@ -251,7 +251,7 @@ public class AddLessonGridActivity extends BaseActivity {
                         selectWeeks.set(position, true);
                     }
                     if (selectWeeks.get(position)) {
-                        holder.mWeekTextView.setBackgroundColor(ThemeModel.getInstance().colorPrimary);
+                        holder.mWeekTextView.setBackgroundColor(ThemeUtil.getInstance().colorPrimary);
                         holder.mWeekTextView.setTextColor(getResources().getColor(R.color.material_white));
                     } else {
                         holder.mWeekTextView.setBackgroundColor(getResources().getColor(R.color.material_white));

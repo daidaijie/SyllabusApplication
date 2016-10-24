@@ -18,7 +18,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import info.hoang8f.widget.FButton;
 
-public class PersonalActivity extends BaseActivity implements PersonalContract.view {
+public class PersonalActivity extends BaseActivity implements PersonalContract.view{
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -57,6 +57,14 @@ public class PersonalActivity extends BaseActivity implements PersonalContract.v
                 mPersonalPresenter.selectHeadImg();
             }
         });
+
+        mFinishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPersonalPresenter.pushData(mNiceNameEditText.getText().toString().trim(),
+                        mSayEditText.getText().toString().trim());
+            }
+        });
     }
 
     @Override
@@ -80,6 +88,11 @@ public class PersonalActivity extends BaseActivity implements PersonalContract.v
 
     @Override
     public void showFailMessage(String msg) {
-        SnackbarUtil.ShortSnackbar(mHeadImageDraweeView,msg,SnackbarUtil.Alert).show();
+        SnackbarUtil.ShortSnackbar(mHeadImageDraweeView, msg, SnackbarUtil.Alert).show();
+    }
+
+    @Override
+    public void showSuccessMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mHeadImageDraweeView, msg, SnackbarUtil.Confirm).show();
     }
 }

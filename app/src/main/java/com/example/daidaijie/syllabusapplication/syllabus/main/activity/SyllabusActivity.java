@@ -36,7 +36,7 @@ import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
 import com.example.daidaijie.syllabusapplication.syllabus.addlesson.AddLessonActivity;
 import com.example.daidaijie.syllabusapplication.syllabus.main.fragment.SyllabusFragment;
@@ -264,10 +264,10 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
                         }
                     } else {
                         mToolbar.setBackgroundColor(ColorUtils.setAlphaComponent(
-                                ThemeModel.getInstance().colorPrimary
+                                ThemeUtil.getInstance().colorPrimary
                                 , 192));
                         navHeadRelativeLayout.setBackgroundColor(
-                                ThemeModel.getInstance().colorPrimary
+                                ThemeUtil.getInstance().colorPrimary
                         );
                     }
                 }

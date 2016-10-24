@@ -24,7 +24,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.StringUtil;
 
@@ -261,10 +261,10 @@ public class BuyPopWindow extends Dialog {
             GradientDrawable addDrawable = (GradientDrawable) mContext.getResources().getDrawable(R.drawable.bg_add_dishes);
             GradientDrawable minusDrawable = (GradientDrawable) mContext.getResources().getDrawable(R.drawable.bg_minus_dishes);
 
-            addDrawable.setColor(ThemeModel.getInstance().colorPrimary);
+            addDrawable.setColor(ThemeUtil.getInstance().colorPrimary);
             holder.mAddButton.setBackgroundDrawable(addDrawable);
 
-            minusDrawable.setStroke(DensityUtil.dip2px(mContext, 1), ThemeModel.getInstance().colorPrimary);
+            minusDrawable.setStroke(DensityUtil.dip2px(mContext, 1), ThemeUtil.getInstance().colorPrimary);
             holder.mMinusButton.setBackgroundDrawable(minusDrawable);
 
             holder.mDishesNameTextView.setText(dishes.getName());

@@ -1,8 +1,6 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -22,7 +20,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.PostUserBean;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
@@ -133,7 +131,7 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         if (postBean.getSource() != null) {
             String str = "来自 " + postBean.getSource();
             SpannableStringBuilder style = new SpannableStringBuilder(str);
-            style.setSpan(new ForegroundColorSpan(ThemeModel.getInstance().colorPrimary),
+            style.setSpan(new ForegroundColorSpan(ThemeUtil.getInstance().colorPrimary),
                     3, str.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
             );
             holder.mPostDeviceTextView.setText(style);

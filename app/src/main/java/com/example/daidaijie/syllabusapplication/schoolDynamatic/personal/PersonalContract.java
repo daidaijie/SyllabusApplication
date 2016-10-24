@@ -13,6 +13,8 @@ public interface PersonalContract {
     interface presenter extends BasePresenter {
 
         void selectHeadImg();
+
+        void pushData(String nickName,String profile);
     }
 
     interface view extends BaseView<presenter> {
@@ -22,6 +24,8 @@ public interface PersonalContract {
         void showHead(String uri);
 
         void showFailMessage(String msg);
+
+        void showSuccessMessage(String msg);
     }
 
 }

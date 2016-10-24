@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 
 import java.util.List;
@@ -134,7 +134,7 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
             } else {
                 SpannableStringBuilder style = new SpannableStringBuilder(dishes.getName());
                 int index = dishes.getName().indexOf(mKeyword);
-                style.setSpan(new ForegroundColorSpan(ThemeModel.getInstance().colorPrimary),
+                style.setSpan(new ForegroundColorSpan(ThemeUtil.getInstance().colorPrimary),
                         index, index + mKeyword.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE
                 );
 
@@ -175,10 +175,10 @@ public class DishesAdapter extends RecyclerView.Adapter<DishesAdapter.ViewHolder
         GradientDrawable addDrawable = (GradientDrawable) mActivity.getResources().getDrawable(R.drawable.bg_add_dishes);
         GradientDrawable minusDrawable = (GradientDrawable) mActivity.getResources().getDrawable(R.drawable.bg_minus_dishes);
 
-        addDrawable.setColor(ThemeModel.getInstance().colorPrimary);
+        addDrawable.setColor(ThemeUtil.getInstance().colorPrimary);
         holder.mAddButton.setBackgroundDrawable(addDrawable);
 
-        minusDrawable.setStroke(DensityUtil.dip2px(mActivity, 1), ThemeModel.getInstance().colorPrimary);
+        minusDrawable.setStroke(DensityUtil.dip2px(mActivity, 1), ThemeUtil.getInstance().colorPrimary);
         holder.mMinusButton.setBackgroundDrawable(minusDrawable);
 
         if (mBuyMap.get(dishes) != null && mBuyMap.get(dishes) > 0) {

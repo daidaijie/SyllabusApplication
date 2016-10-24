@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.model;
+package com.example.daidaijie.syllabusapplication.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by daidaijie on 2016/9/1.
  */
-public class ThemeModel {
+public class ThemeUtil {
 
     SharedPreferences mSharedPreferences;
 
@@ -32,13 +32,13 @@ public class ThemeModel {
 
     public String mCurrentThemeName;
 
-    private static ThemeModel ourInstance = new ThemeModel();
+    private static ThemeUtil ourInstance = new ThemeUtil();
 
-    public static ThemeModel getInstance() {
+    public static ThemeUtil getInstance() {
         return ourInstance;
     }
 
-    private ThemeModel() {
+    private ThemeUtil() {
         mThemeBeen = new ArrayList<>();
         mThemeBeen.add(new ThemeBean("blue", R.color.material_blue_500, R.style.AppTheme));
         mThemeBeen.add(new ThemeBean("lightBlue", R.color.material_lightBlue_500, R.style.AppThemeLightBlue));

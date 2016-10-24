@@ -19,8 +19,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.exam.ExamModelComponent;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.widget.CustomMarqueeTextView;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout;
 
@@ -163,7 +162,7 @@ public class ExamDetailActivity extends BaseActivity implements ExamDetailContra
             mExamTipLayout.setTitleTextColor(getResources().getColor(R.color.defaultShowColor));
         } else {
             mExamTipLayout.setTitleText(exam.getExam_comment());
-            mExamTipLayout.setTitleTextColor(ThemeModel.getInstance().colorPrimary);
+            mExamTipLayout.setTitleTextColor(ThemeUtil.getInstance().colorPrimary);
         }
 
     }

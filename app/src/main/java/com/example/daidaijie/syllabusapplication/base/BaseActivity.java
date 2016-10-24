@@ -17,8 +17,7 @@ import android.widget.EditText;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
-import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryFragment;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 
 import butterknife.ButterKnife;
 import cn.nekocode.emojix.Emojix;
@@ -42,14 +41,14 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_MODE_OVERLAY);
 
-        setTheme(ThemeModel.getInstance().getStyle());
+        setTheme(ThemeUtil.getInstance().getStyle());
 
         TypedValue typedValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.colorPrimary, typedValue, true);
-        ThemeModel.getInstance().colorPrimary = typedValue.data;
+        ThemeUtil.getInstance().colorPrimary = typedValue.data;
 
         getTheme().resolveAttribute(R.attr.colorPrimaryDark, typedValue, true);
-        ThemeModel.getInstance().colorPrimaryDark = typedValue.data;
+        ThemeUtil.getInstance().colorPrimaryDark = typedValue.data;
         setContentView(getContentView());
 
         ButterKnife.bind(this);

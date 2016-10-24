@@ -15,7 +15,7 @@ import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.LoginInfo;
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.model.InternetModel;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.retrofitApi.InterenetService;
 import com.example.daidaijie.syllabusapplication.retrofitApi.LoginInternetService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
@@ -52,8 +52,6 @@ public class LoginInternetActivity extends BaseActivity {
     EditText mPasswordEditText;
     @BindView(R.id.loginButton)
     FButton mLoginButton;
-
-    AlertDialog mLoadingDialog;
     @BindView(R.id.logoutButton)
     FButton mLogoutButton;
     @BindView(R.id.loginInfoTextView)
@@ -62,8 +60,6 @@ public class LoginInternetActivity extends BaseActivity {
     MaterialCheckBox mIsRememberCheckBox;
     @BindView(R.id.switchAccountButton)
     ImageButton mSwitchAccountButton;
-
-    AlertDialog mSwitchAccountDialog;
     @BindView(R.id.usernameItem)
     StreamItemLayout mUsernameItem;
     @BindView(R.id.nowStreamItem)
@@ -75,6 +71,9 @@ public class LoginInternetActivity extends BaseActivity {
     @BindView(R.id.stateItem)
     StreamItemLayout mStateItem;
 
+    AlertDialog mSwitchAccountDialog;
+    AlertDialog mLoadingDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +84,7 @@ public class LoginInternetActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(
-                this, ThemeModel.getInstance().colorPrimary
+                this, ThemeUtil.getInstance().colorPrimary
         );
 
         mLoginButton.setOnClickListener(new View.OnClickListener() {

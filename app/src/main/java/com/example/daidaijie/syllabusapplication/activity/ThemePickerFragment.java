@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,7 +105,7 @@ public class ThemePickerFragment extends DialogFragment {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            final ThemeModel.ThemeBean themeBean = ThemeModel.getInstance().mThemeBeen.get(position);
+            final ThemeUtil.ThemeBean themeBean = ThemeUtil.getInstance().mThemeBeen.get(position);
             GradientDrawable shape = (GradientDrawable) mActivity.getResources()
                     .getDrawable(R.drawable.bg_theme_picker);
 
@@ -117,14 +117,14 @@ public class ThemePickerFragment extends DialogFragment {
                     mOnItemClickListener.onClick(themeBean.name);
                 }
             });
-            holder.mShowCurrent.setVisibility(themeBean.name.equals(ThemeModel.getInstance().mCurrentThemeName) ?
+            holder.mShowCurrent.setVisibility(themeBean.name.equals(ThemeUtil.getInstance().mCurrentThemeName) ?
                     View.VISIBLE : View.GONE);
 
         }
 
         @Override
         public int getItemCount() {
-            return ThemeModel.getInstance().mThemeBeen.size();
+            return ThemeUtil.getInstance().mThemeBeen.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {

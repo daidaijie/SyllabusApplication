@@ -37,7 +37,7 @@ import com.example.daidaijie.syllabusapplication.adapter.SubMenuAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
 import com.example.daidaijie.syllabusapplication.takeout.searchMenu.SearchTakeOutActivity;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
@@ -349,7 +349,7 @@ public class TakeOutDetailMenuActivity extends BaseActivity implements TakeOutDe
         text.setText(Html.fromHtml("<b>1</b>"));
         text.setGravity(Gravity.CENTER);
         GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.bg_add_dishes);
-        drawable.setColor(ThemeModel.getInstance().colorPrimary);
+        drawable.setColor(ThemeUtil.getInstance().colorPrimary);
         text.setBackgroundDrawable(drawable);
         text.setTextColor(getResources().getColor(R.color.material_white));
         text.setTextSize(12);

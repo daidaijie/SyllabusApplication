@@ -1,7 +1,6 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -12,10 +11,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.takeout.detailMenu.TakeOutDetailMenuActivity;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.widget.CallPhoneDialog;
-import com.example.daidaijie.syllabusapplication.widget.SelectLessonPopWindow;
 
 import java.util.List;
 

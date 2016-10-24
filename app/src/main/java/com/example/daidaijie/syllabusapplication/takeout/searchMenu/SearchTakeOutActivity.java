@@ -35,7 +35,7 @@ import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Dishes;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutBuyBean;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.takeout.TakeOutModelComponent;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -238,7 +238,7 @@ public class SearchTakeOutActivity extends BaseActivity implements DishesAdapter
         text.setText(Html.fromHtml("<b>1</b>"));
         text.setGravity(Gravity.CENTER);
         GradientDrawable drawable = (GradientDrawable) getResources().getDrawable(R.drawable.bg_add_dishes);
-        drawable.setColor(ThemeModel.getInstance().colorPrimary);
+        drawable.setColor(ThemeUtil.getInstance().colorPrimary);
         text.setBackgroundDrawable(drawable);
         text.setTextColor(getResources().getColor(R.color.material_white));
         text.setTextSize(12);

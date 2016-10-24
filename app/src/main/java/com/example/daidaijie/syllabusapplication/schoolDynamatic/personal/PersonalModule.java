@@ -1,8 +1,11 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.personal;
 
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
+import com.example.daidaijie.syllabusapplication.retrofitApi.PushPostApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.UpdateUserApi;
+import com.example.daidaijie.syllabusapplication.user.IUserModel;
 
 import dagger.Module;
 import dagger.Provides;
@@ -29,7 +32,9 @@ public class PersonalModule {
 
     @PerActivity
     @Provides
-    IPersonalModel providePersonModel(@SchoolRetrofit Retrofit retrofit) {
-        return new PersonalModel(retrofit.create(UpdateUserApi.class));
+    IPersonalModel providePersonModel(@SchoolRetrofit Retrofit retrofit,
+                                      @LoginUser IUserModel userModel) {
+        return new PersonalModel(retrofit.create(UpdateUserApi.class),
+                retrofit.create(PushPostApi.class), userModel);
     }
 }

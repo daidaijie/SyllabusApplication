@@ -21,7 +21,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.StuCircleModelComponent;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
@@ -71,7 +71,7 @@ public class PostContentActivity extends BaseActivity implements PostContentCont
 
         mPostAsPhoneButton.setText(Build.MODEL);
 
-        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeModel.getInstance().colorPrimary);
+        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeUtil.getInstance().colorPrimary);
 
         DaggerPostContentComponent.builder()
                 .stuCircleModelComponent(StuCircleModelComponent.getInstance())

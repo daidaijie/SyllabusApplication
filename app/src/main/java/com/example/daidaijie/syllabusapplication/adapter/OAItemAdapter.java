@@ -1,7 +1,6 @@
 package com.example.daidaijie.syllabusapplication.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.officeAutomation.oaDetail.OADetailActivity;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
-import com.example.daidaijie.syllabusapplication.bean.OARead;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
 
 import java.util.List;
 
@@ -70,11 +67,11 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
         final OABean oaBean = mOABeen.get(position);
 
         if (oaBean.isRead()) {
-            holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
+            holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeUtil.getInstance().colorPrimary, 136));
             holder.mOASubTextView.setTextColor(ColorUtils.setAlphaComponent(
                     mActivity.getResources().getColor(R.color.defaultTextColor), 136));
         } else {
-            holder.mOATitleTextView.setTextColor(ThemeModel.getInstance().colorPrimary);
+            holder.mOATitleTextView.setTextColor(ThemeUtil.getInstance().colorPrimary);
             holder.mOASubTextView.setTextColor(mActivity.getResources().getColor(R.color.defaultTextColor));
         }
 
@@ -97,7 +94,7 @@ public class OAItemAdapter extends RecyclerView.Adapter<OAItemAdapter.ViewHolder
 
                /* OARead.save(oaBean);
                 oaBean.setRead(true);
-                holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 136));
+                holder.mOATitleTextView.setTextColor(ColorUtils.setAlphaComponent(ThemeUtil.getInstance().colorPrimary, 136));
                 holder.mOASubTextView.setTextColor(ColorUtils.setAlphaComponent(
                         mActivity.getResources().getColor(R.color.defaultTextColor), 136));*/
             }

@@ -1,7 +1,6 @@
 package com.example.daidaijie.syllabusapplication.schoolDynamatic.personal;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
@@ -19,6 +18,7 @@ import cn.finalteam.galleryfinal.GalleryFinal;
 import cn.finalteam.galleryfinal.model.PhotoInfo;
 import id.zelory.compressor.Compressor;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -32,19 +32,27 @@ public class PersonalPresenter implements PersonalContract.presenter {
 
     IUserModel mIUserModel;
 
+    IPersonalModel mIPersonalModel;
+
     PersonalContract.view mView;
+
+    String newImageFileName;
 
     @Inject
     @PerActivity
-    public PersonalPresenter(@LoginUser IUserModel IUserModel, PersonalContract.view view) {
+    public PersonalPresenter(@LoginUser IUserModel IUserModel,
+                             PersonalContract.view view,
+                             IPersonalModel personalModel) {
         mIUserModel = IUserModel;
         mView = view;
+        mIPersonalModel = personalModel;
     }
 
     @Override
     public void start() {
         UserBaseBean userBaseBean = mIUserModel.getUserBaseBeanNormal();
         mView.showUserBase(userBaseBean);
+        newImageFileName = null;
     }
 
     @Override
@@ -79,6 +87,7 @@ public class PersonalPresenter implements PersonalContract.presenter {
                             @Override
                             public void call(File file) {
                                 mView.showHead(file.toURI().toString());
+                                newImageFileName = file.toString();
                             }
                         });
             }
@@ -89,4 +98,41 @@ public class PersonalPresenter implements PersonalContract.presenter {
             }
         });
     }
+
+    @Override
+    public void pushData(final String nickName, final String profile) {
+        mIPersonalModel.postPhotoToBmob(newImageFileName, new IPersonalModel.OnPostPhotoCallBack() {
+            @Override
+            public void onSuccess(String photoJson) {
+                mIPersonalModel.updateUserInfo(nickName, profile, photoJson)
+                        .subscribe(new Subscriber<Void>() {
+                            @Override
+                            public void onCompleted() {
+                                mView.showSuccessMessage("更新成功");
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                if (e.getMessage() == null) {
+                                    mView.showFailMessage("更新失败");
+                                } else {
+                                    mView.showFailMessage(e.getMessage());
+                                }
+                            }
+
+                            @Override
+                            public void onNext(Void aVoid) {
+
+                            }
+                        });
+            }
+
+            @Override
+            public void onFail(String msg) {
+                mView.showFailMessage(msg);
+            }
+        });
+    }
+
+
 }

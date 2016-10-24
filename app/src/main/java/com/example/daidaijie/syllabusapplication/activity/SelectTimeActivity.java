@@ -21,7 +21,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.model.AddLessonModel;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.orhanobut.logger.Logger;
 
@@ -97,7 +97,7 @@ public class SelectTimeActivity extends BaseActivity {
         final GradientDrawable selectShape = (GradientDrawable) getResources().getDrawable(R.drawable.grid_background);
         final GradientDrawable unselectShape = (GradientDrawable) getResources().getDrawable(R.drawable.grid_background);
 
-        selectShape.setColor(ColorUtils.setAlphaComponent(ThemeModel.getInstance().colorPrimary, 192));
+        selectShape.setColor(ColorUtils.setAlphaComponent(ThemeUtil.getInstance().colorPrimary, 192));
         unselectShape.setColor(getResources().getColor(android.R.color.transparent));
 
         for (int i = 0; i < 7; i++) {

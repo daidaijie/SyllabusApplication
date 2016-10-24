@@ -22,9 +22,8 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.OAFileBean;
-import com.example.daidaijie.syllabusapplication.model.ThemeModel;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.officeAutomation.OAModelComponent;
-import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OAModule;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import java.util.List;
@@ -130,7 +129,7 @@ public class OADetailActivity extends BaseActivity implements OADetailContract.v
         mTipButton.setVisibility(View.GONE);
         mTipTextView.setText(Html.fromHtml("<b>附件</b> (PS: 附件只能在内网上下载)"));
         mTipTextView.setTextSize(16);
-        mTipTextView.setTextColor(ThemeModel.getInstance().colorPrimary);
+        mTipTextView.setTextColor(ThemeUtil.getInstance().colorPrimary);
         mOaFileLinearLayout.addView(tipView);
 
         for (int i = 0; i < oaFileBeen.size(); i++) {

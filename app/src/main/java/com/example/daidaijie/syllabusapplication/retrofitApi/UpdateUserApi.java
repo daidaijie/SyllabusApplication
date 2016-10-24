@@ -1,12 +1,13 @@
 package com.example.daidaijie.syllabusapplication.retrofitApi;
 
 
+import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.UpdateUserBody;
 
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Headers;
 import retrofit2.http.PUT;
+import rx.Observable;
 
 /**
  * Created by smallfly on 16-3-27.
@@ -15,5 +16,5 @@ import retrofit2.http.PUT;
 public interface UpdateUserApi {
     @Headers("Content-type: application/json")
     @PUT("/interaction/api/v2.1/user")
-    Call<Void> update(@Body UpdateUserBody updateUserBody);
+    Observable<HttpResult<Void>> update(@Body UpdateUserBody updateUserBody);
 }
