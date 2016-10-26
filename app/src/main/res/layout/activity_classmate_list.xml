@@ -17,8 +17,8 @@
         android:clipToPadding="true"
         android:fitsSystemWindows="true"
         android:gravity="center_vertical"
-        android:theme="@style/AppTheme.PopupOverlay"
         android:popupTheme="@style/AppTheme.PopupOverlay"
+        android:theme="@style/AppTheme.PopupOverlay"
         android:transitionName="tool_bar"
         tool_bar:titleTextColor="@android:color/white"
         tools:targetApi="lollipop">
@@ -29,44 +29,47 @@
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
+            android:maxLines="1"
             android:paddingTop="8dp"
             android:text="班级同学"
             android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:maxLines="1"/>
+            android:textSize="20sp"/>
 
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/findNumberTextView"
-        android:background="@color/material_white"
-        android:padding="8dp"
-        android:gravity="center"
-        android:textColor="@color/defaultTextColor"
-        android:textSize="16sp"
-        tools:text="查找到10位同学"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <FrameLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport
-            android:id="@+id/classmateRecyclerView"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        </com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport>
 
-        <TextView
-            android:id="@+id/tv_empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:gravity="center_horizontal"
-            android:text="查找不到任何选项"
-            android:textColor="@color/defaultShowColor"
-            android:textSize="16sp"/>
-    </FrameLayout>
+            <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
+                android:id="@+id/headerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/findNumberTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/material_white"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:textColor="@color/defaultTextColor"
+                    android:textSize="16sp"
+                    tools:text="共查找到0位同学"/>
+            </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/classmateRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </android.support.v7.widget.RecyclerView>
+        </FrameLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

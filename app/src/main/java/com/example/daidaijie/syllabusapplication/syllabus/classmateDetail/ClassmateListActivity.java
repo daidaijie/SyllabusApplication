@@ -3,13 +3,13 @@ package com.example.daidaijie.syllabusapplication.syllabus.classmateDetail;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -17,76 +17,73 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.StudentInfoAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
-import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
-import com.example.daidaijie.syllabusapplication.util.StringUtil;
-import com.example.daidaijie.syllabusapplication.widget.RecyclerViewEmptySupport;
+import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
-import rx.Observable;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
-public class ClassmateListActivity extends BaseActivity {
-
-    public static final String EXTRA_STUDENT_LIST =
-            "com.example.daidaijie.syllabusapplication.student_list";
-
-    public static final String EXTRA_BG_COLOR =
-            "com.example.daidaijie.syllabusapplication.bg_color";
+public class ClassmateListActivity extends BaseActivity implements ClassmateContract.view, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.classmateRecyclerView)
-    RecyclerViewEmptySupport mClassmateRecyclerView;
+    RecyclerView mClassmateRecyclerView;
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
     @BindView(R.id.classmateRootLayout)
     LinearLayout mClassmateRootLayout;
-    SearchView mSearchView;
-    @BindView(R.id.tv_empty_view)
-    TextView mTvEmptyView;
     @BindView(R.id.findNumberTextView)
     TextView mFindNumberTextView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.headerView)
+    RecyclerViewHeader mHeaderView;
+    SearchView mSearchView;
 
-    private List<StudentInfo> mStudentInfos;
-    private StudentInfoAdapter mStudentInfoAdapter;
+    StudentInfoAdapter mStudentInfoAdapter;
+
+    @Inject
+    ClassmatePresenter mClassmatePresenter;
+
+    private static final String EXTRA_LESSON_ID
+            = ClassmateListActivity.class.getCanonicalName() + ".LessonID";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Explode().setDuration(300));
-        }
+        setupSwipeRefreshLayout(mSwipeRefreshLayout);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        mStudentInfos = (List<StudentInfo>) getIntent().getSerializableExtra(EXTRA_STUDENT_LIST);
-        mStudentInfoAdapter = new StudentInfoAdapter(this, mStudentInfos);
+        mStudentInfoAdapter = new StudentInfoAdapter(this, null);
         mClassmateRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mClassmateRecyclerView.setEmptyView(mTvEmptyView);
         mClassmateRecyclerView.setAdapter(mStudentInfoAdapter);
+        mHeaderView.attachTo(mClassmateRecyclerView);
 
-        int bgColor = getResources()
-                .getColor(getIntent().getIntExtra(EXTRA_BG_COLOR, ThemeUtil.getInstance().colorPrimary));
-        mToolbar.setBackgroundColor(bgColor);
-        mToolbar.setTitle("");
+        setupTitleBar(mToolbar);
+        mTitleTextView.setText("查看同学");
 
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        DaggerClassmateComponent.builder()
+                .syllabusComponent(SyllabusComponent.getINSTANCE())
+                .classmateModule(new ClassmateModule(this, getIntent().getLongExtra(EXTRA_LESSON_ID, 0)))
+                .build().inject(this);
 
-        mTitleTextView.setText("查看同学(" + mStudentInfos.size() + ")");
-        mFindNumberTextView.setVisibility(View.GONE);
-
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mClassmatePresenter.start();
+            }
+        });
     }
 
     @Override
@@ -94,18 +91,12 @@ public class ClassmateListActivity extends BaseActivity {
         return R.layout.activity_classmate_list;
     }
 
-    public static Intent getIntent(Context packageContext, List<StudentInfo> studentInfos, int bgColor) {
+    public static Intent getIntent(Context packageContext, long lessonID) {
         Intent intent = new Intent(packageContext, ClassmateListActivity.class);
-        intent.putExtra(EXTRA_STUDENT_LIST, (Serializable) studentInfos);
-        intent.putExtra(EXTRA_BG_COLOR, bgColor);
+        intent.putExtra(EXTRA_LESSON_ID, lessonID);
         return intent;
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        this.finish();
-    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -125,7 +116,7 @@ public class ClassmateListActivity extends BaseActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                queryClassmateList(newText);
+//                queryClassmateList(newText);
                 return true;
             }
         });
@@ -137,9 +128,9 @@ public class ClassmateListActivity extends BaseActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                mFindNumberTextView.setVisibility(View.GONE);
-                mStudentInfoAdapter.setStudentInfos(mStudentInfos);
-                mStudentInfoAdapter.notifyDataSetChanged();
+//                mFindNumberTextView.setVisibility(View.GONE);
+//                mStudentInfoAdapter.setStudentInfos(mStudentInfos);
+//                mStudentInfoAdapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -147,6 +138,7 @@ public class ClassmateListActivity extends BaseActivity {
     }
 
     private void queryClassmateList(final String quertText) {
+/*
         Observable.from(mStudentInfos)
                 .subscribeOn(Schedulers.computation())
                 .filter(new Func1<StudentInfo, Boolean>() {
@@ -202,58 +194,35 @@ public class ClassmateListActivity extends BaseActivity {
                         mQueryInfo.add(studentInfo);
                     }
                 });
+*/
+    }
+
+
+    @Override
+    public void setTitleBg(int color) {
+        mToolbar.setBackgroundColor(getResources().getColor(color));
     }
 
     @Override
-    public void onBackPressed() {
-        super.onBackPressed();
+    public void showData(List<StudentInfo> mStudentInfos) {
+        mFindNumberTextView.setText("共查找到" + mStudentInfos.size() + "位同学");
+        mStudentInfoAdapter.setStudentInfos(mStudentInfos);
+        mStudentInfoAdapter.notifyDataSetChanged();
     }
 
-    /*public void getStudentList() {
-        Retrofit retrofit = RetrofitUtil.getDefault();
-        LessonDetailService lessonDetailService = retrofit.create(LessonDetailService.class);
-        lessonDetailService.getLessonDetail(lesson.getId())
-                .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<LessonDetailInfo, Observable<StudentInfo>>() {
-                    @Override
-                    public Observable<StudentInfo> call(LessonDetailInfo lessonDetailInfo) {
-                        return Observable.from(lessonDetailInfo.getClass_info().getStudent());
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<StudentInfo>() {
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                        mStudentInfos = new ArrayList<>();
-                    }
+    @Override
+    public void showLoading(boolean isShow) {
+        mSwipeRefreshLayout.setRefreshing(isShow);
+    }
 
-                    @Override
-                    public void onCompleted() {
-                        mLoadingDialog.dismiss();
-                        Intent intent = ClassmateListActivity.getIntent(
-                                LessonInfoActivity.this, mStudentInfos, lesson.getBgColor()
-                        );
+    @Override
+    public void showFailMessage(String msg) {
+        mFindNumberTextView.setText("共查找到" + 0 + "位同学");
+        SnackbarUtil.ShortSnackbar(mClassmateRecyclerView, msg, SnackbarUtil.Alert).show();
+    }
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(LessonInfoActivity.this,
-                                    mToolbarLayout, "tool_bar");
-                            startActivity(intent, options.toBundle());
-                        } else {
-                            startActivity(intent);
-                        }
-                        singleLock = false;
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mLoadingDialog.dismiss();
-                        singleLock = false;
-                    }
-
-                    @Override
-                    public void onNext(StudentInfo studentInfo) {
-                        mStudentInfos.add(studentInfo);
-                    }
-                });
-    }*/
+    @Override
+    public void onRefresh() {
+        mClassmatePresenter.loadData();
+    }
 }

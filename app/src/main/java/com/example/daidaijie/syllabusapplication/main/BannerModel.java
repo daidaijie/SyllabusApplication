@@ -103,7 +103,7 @@ public class BannerModel implements IBannerModel {
 
     @Override
     public void getBannerNormal(OnGetSuccessCallBack<BannerBeen> onGetCallBack) {
-        if (mBannerBeen != null) {
+        if (mBannerBeen != null && mBannerBeen.getBanners() != null) {
             onGetCallBack.onGetSuccess(mBannerBeen);
             return;
         }
@@ -117,6 +117,10 @@ public class BannerModel implements IBannerModel {
                 }
             }
         });
-        onGetCallBack.onGetSuccess(mBannerBeen);
+
+        if (mBannerBeen != null && mBannerBeen.getBanners() != null) {
+            onGetCallBack.onGetSuccess(mBannerBeen);
+        }
+
     }
 }

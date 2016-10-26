@@ -58,6 +58,9 @@ public class StudentInfoAdapter extends RecyclerView.Adapter<StudentInfoAdapter.
 
     @Override
     public int getItemCount() {
+        if (mStudentInfos == null) {
+            return 0;
+        }
         return mStudentInfos.size();
     }
 

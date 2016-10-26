@@ -20,6 +20,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
+import com.example.daidaijie.syllabusapplication.syllabus.classmateDetail.ClassmateListActivity;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout;
 
 import javax.inject.Inject;
@@ -58,7 +59,7 @@ public class LessonInfoActivity extends BaseActivity implements LessonInfoContra
     @BindView(R.id.lessonCreditLayout)
     LessonDetailLayout mLessonCreditLayout;
 
-    public static final String EXTRA_LESSON_ID
+    private static final String EXTRA_LESSON_ID
             = LessonInfoActivity.class.getCanonicalName() + ".LessonID";
 
     private enum CollapsingToolbarLayoutState {
@@ -71,6 +72,8 @@ public class LessonInfoActivity extends BaseActivity implements LessonInfoContra
     LessonInfoPresenter mLessonInfoPresenter;
 
     private CollapsingToolbarLayoutState state;
+
+    long mID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,18 +107,22 @@ public class LessonInfoActivity extends BaseActivity implements LessonInfoContra
             }
         });
 
-        mShowClassMateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mID = getIntent().getLongExtra(EXTRA_LESSON_ID, 0);
 
-            }
-        });
 
         DaggerLessonInfoComponent.builder()
                 .syllabusComponent(SyllabusComponent.getINSTANCE())
-                .lessonInfoModule(new LessonInfoModule(getIntent().getLongExtra(EXTRA_LESSON_ID, 0), this))
+                .lessonInfoModule(new LessonInfoModule(mID, this))
                 .build().inject(this);
         mLessonInfoPresenter.start();
+
+        mShowClassMateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ClassmateListActivity.getIntent(LessonInfoActivity.this, mID);
+                startActivity(intent);
+            }
+        });
 
         setResult(RESULT_OK);
     }

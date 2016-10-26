@@ -1,15 +1,28 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
-import java.io.Serializable;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by daidaijie on 2016/7/30.
  */
-public class StudentInfo implements Serializable{
+public class StudentInfo extends RealmObject {
+
+    @PrimaryKey
+    private long id;
+
     private String major;
     private String gender;
     private String number;
     private String name;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getMajor() {
         return major;

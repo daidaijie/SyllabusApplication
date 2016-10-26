@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 app:mrl_rippleAlpha="0.1"
                 app:mrl_rippleColor="#2B2B2B"
-                app:mrl_rippleDuration="500"
+                app:mrl_rippleDuration="100"
                 app:mrl_rippleOverlay="true"
                 app:mrl_rippleRoundedCorners="8dp">
 

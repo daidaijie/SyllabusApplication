@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.syllabus.classmateDetail;
 
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
+import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
 
 import java.util.List;
@@ -14,6 +15,8 @@ import rx.Observable;
 public interface IClassmateModel {
 
     void getStuDentInfoNormal(IBaseModel.OnGetSuccessCallBack<List<StudentInfo>> getSuccessCallBack);
+
+    void getLessonNormal(IBaseModel.OnGetSuccessCallBack<Lesson> getSuccessCallBack);
 
     Observable<List<StudentInfo>> getStudentsFromNet();
 }

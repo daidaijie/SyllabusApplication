@@ -2,10 +2,14 @@ package com.example.daidaijie.syllabusapplication.syllabus;
 
 import com.example.daidaijie.syllabusapplication.IConfigModel;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
+import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
+import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 
 import dagger.Component;
+import io.realm.Realm;
+import retrofit2.Retrofit;
 
 /**
  * Created by daidaijie on 2016/10/19.
@@ -41,4 +45,9 @@ public abstract class SyllabusComponent {
 
     public abstract IConfigModel getConfigModel();
 
+    @UserRealm
+    public abstract Realm getUserRealm();
+
+    @SchoolRetrofit
+    public abstract Retrofit getSchoolRetrofit();
 }

@@ -10,8 +10,8 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/7/30.
  */
-public interface LessonDetailService {
+public interface LessonDetailApi {
 
     @GET("credit/api/v2.1/member")
-    Observable<HttpResult<LessonDetailInfo>> getLessonDetail(@Query("class_id") String classID);
+    Observable<HttpResult<LessonDetailInfo>> getLessonDetail(@Query("class_id") long lessonID);
 }
