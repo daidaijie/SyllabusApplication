@@ -91,6 +91,11 @@ public class MainPresenter implements MainContract.presenter {
                             mView.showInfoMessage("需要更新啦");
                         }
                     }
+                }, new Action1<Throwable>() {
+                    @Override
+                    public void call(Throwable throwable) {
+
+                    }
                 });
     }
 

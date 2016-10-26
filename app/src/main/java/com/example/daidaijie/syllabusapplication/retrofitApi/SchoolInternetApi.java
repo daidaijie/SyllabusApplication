@@ -6,7 +6,7 @@ import rx.Observable;
 /**
  * Created by daidaijie on 2016/8/28.
  */
-public interface InterenetService {
+public interface SchoolInternetApi {
 
     @POST("userflux")
     Observable<String> getInternetInfo();

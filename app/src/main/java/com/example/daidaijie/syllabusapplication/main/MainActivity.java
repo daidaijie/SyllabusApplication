@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,10 +35,16 @@ import com.example.daidaijie.syllabusapplication.activity.ThemePickerFragment;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
+import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.grade.GradeActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
+import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
+import com.example.daidaijie.syllabusapplication.services.StreamService;
+import com.example.daidaijie.syllabusapplication.stream.IStreamModel;
+import com.example.daidaijie.syllabusapplication.stream.StreamModel;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
@@ -66,12 +73,26 @@ import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements MainContract.view, NavigationView.OnNavigationItemSelectedListener, ShareWXDialog.OnShareSelectCallBack {
 
@@ -119,6 +140,8 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
 
     LinkagePicker picker;
 
+    Timer mTimer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,6 +183,8 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
                 .build().inject(this);
 
         mMainPresenter.start();
+
+        updateStreamInfo();
     }
 
     @Override
@@ -428,4 +453,44 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
         }
     }
 
+    private void updateStreamInfo() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://1.1.1.2/ac_portal/")
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build();
+
+        final SchoolInternetApi schoolInternetApi = retrofit.create(SchoolInternetApi.class);
+        mTimer = new Timer();
+        final IStreamModel streamModel = new StreamModel(schoolInternetApi);
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                streamModel.getStreamInfo()
+                        .subscribe(new Action1<StreamInfo>() {
+                            @Override
+                            public void call(StreamInfo streamInfo) {
+                                Intent intent = StreamService.getIntent(MainActivity.this);
+                                startService(intent);
+                            }
+                        }, new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                Intent intent = StreamService.getIntent(MainActivity.this);
+                                startService(intent);
+                            }
+                        });
+            }
+        }, 0, 3000);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mTimer.cancel();
+        Intent intent = StreamService.getIntent(MainActivity.this);
+        stopService(intent);
+
+    }
 }

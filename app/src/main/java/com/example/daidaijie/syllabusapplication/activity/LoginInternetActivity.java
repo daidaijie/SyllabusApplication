@@ -16,7 +16,7 @@ import com.example.daidaijie.syllabusapplication.bean.LoginInfo;
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.model.InternetModel;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
-import com.example.daidaijie.syllabusapplication.retrofitApi.InterenetService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.LoginInternetService;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
@@ -159,7 +159,7 @@ public class LoginInternetActivity extends BaseActivity {
     private void login() {
         mLoadingDialog.show();
 
-        InterenetService interenetService = InternetModel.getInstance().mRetrofit.create(InterenetService.class);
+        SchoolInternetApi schoolInternetApi = InternetModel.getInstance().mRetrofit.create(SchoolInternetApi.class);
 
         final LoginInternetService loginInternetService = InternetModel.getInstance().mRetrofit.create(
                 LoginInternetService.class
@@ -168,7 +168,7 @@ public class LoginInternetActivity extends BaseActivity {
         final String username = mUsernameEditText.getText().toString().trim();
         final String password = mPasswordEditText.getText().toString().trim();
 
-        interenetService.getInternetInfo()
+        schoolInternetApi.getInternetInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<String, Boolean>() {
@@ -237,13 +237,13 @@ public class LoginInternetActivity extends BaseActivity {
     private void logout() {
         mLoadingDialog.show();
 
-        InterenetService interenetService = InternetModel.getInstance().mRetrofit.create(InterenetService.class);
+        SchoolInternetApi schoolInternetApi = InternetModel.getInstance().mRetrofit.create(SchoolInternetApi.class);
 
         final LoginInternetService loginInternetService = InternetModel.getInstance().mRetrofit.create(
                 LoginInternetService.class
         );
 
-        interenetService.getInternetInfo()
+        schoolInternetApi.getInternetInfo()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .filter(new Func1<String, Boolean>() {

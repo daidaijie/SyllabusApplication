@@ -71,7 +71,7 @@ public class ThemeUtil {
 
         mCurrentThemeName = mSharedPreferences.getString(EXTRA_THEME, "");
 
-        if (mCurrentThemeName == null||mCurrentThemeName.isEmpty()) {
+        if (mCurrentThemeName == null || mCurrentThemeName.isEmpty()) {
             mCurrentThemeName = "blue";
         }
         ThemeBean themeBean = mThemeBeanMap.get(mCurrentThemeName);
@@ -84,8 +84,9 @@ public class ThemeUtil {
     }
 
     public void setStyle(String name) {
-        this.style = mThemeBeanMap.get(name).styleRec;
-        mEditor.putString(EXTRA_THEME, name);
+        mCurrentThemeName = name;
+        this.style = mThemeBeanMap.get(mCurrentThemeName).styleRec;
+        mEditor.putString(EXTRA_THEME, mCurrentThemeName);
         mEditor.commit();
     }
 
