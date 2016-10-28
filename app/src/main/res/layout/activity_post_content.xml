@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/defaultLightBackground"
     android:orientation="vertical"
-    tools:context="com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.postContent.PostContentActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.schoolDymatic.circle.postContent.PostContentActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

@@ -19,4 +19,6 @@ public interface IClassmateModel {
     void getLessonNormal(IBaseModel.OnGetSuccessCallBack<Lesson> getSuccessCallBack);
 
     Observable<List<StudentInfo>> getStudentsFromNet();
+
+    void searchStudentsList(String keyword, IBaseModel.OnGetSuccessCallBack<List<StudentInfo>> getSuccessCallBack, IBaseModel.OnGetFailCallBack getFailCallBack);
 }

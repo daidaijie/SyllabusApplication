@@ -54,6 +54,8 @@ public class ClassmateListActivity extends BaseActivity implements ClassmateCont
     @Inject
     ClassmatePresenter mClassmatePresenter;
 
+    MenuItem searchMenuItem;
+
     private static final String EXTRA_LESSON_ID
             = ClassmateListActivity.class.getCanonicalName() + ".LessonID";
 
@@ -78,10 +80,11 @@ public class ClassmateListActivity extends BaseActivity implements ClassmateCont
                 .classmateModule(new ClassmateModule(this, getIntent().getLongExtra(EXTRA_LESSON_ID, 0)))
                 .build().inject(this);
 
+        mClassmatePresenter.start();
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                mClassmatePresenter.start();
+                mClassmatePresenter.loadData();
             }
         });
     }
@@ -101,8 +104,8 @@ public class ClassmateListActivity extends BaseActivity implements ClassmateCont
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_classmate_list, menu);
-        MenuItem menuItem = menu.findItem(R.id.action_search);//在菜单中找到对应控件的item
-        mSearchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+        searchMenuItem = menu.findItem(R.id.action_search);//在菜单中找到对应控件的item
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
         mSearchView.setQueryHint("搜索姓名\\学号\\专业\\性别");
         SearchView.SearchAutoComplete textView = (SearchView.SearchAutoComplete) mSearchView.findViewById(R.id.search_src_text);
         textView.setHintTextColor(getResources().getColor(R.color.material_grey_400));
@@ -116,85 +119,31 @@ public class ClassmateListActivity extends BaseActivity implements ClassmateCont
 
             @Override
             public boolean onQueryTextChange(String newText) {
-//                queryClassmateList(newText);
+                mClassmatePresenter.search(newText);
                 return true;
             }
         });
-        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
+        MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {//设置打开关闭动作监听
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    showFailMessage("正在搜索中");
+                    item.collapseActionView();
+                    return false;
+                } else {
+                    mSwipeRefreshLayout.setEnabled(false);
+                    return true;
+                }
             }
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-//                mFindNumberTextView.setVisibility(View.GONE);
-//                mStudentInfoAdapter.setStudentInfos(mStudentInfos);
-//                mStudentInfoAdapter.notifyDataSetChanged();
+                mSwipeRefreshLayout.setEnabled(true);
+                mClassmatePresenter.start();
                 return true;
             }
         });
         return super.onCreateOptionsMenu(menu);
-    }
-
-    private void queryClassmateList(final String quertText) {
-/*
-        Observable.from(mStudentInfos)
-                .subscribeOn(Schedulers.computation())
-                .filter(new Func1<StudentInfo, Boolean>() {
-                    @Override
-                    public Boolean call(StudentInfo studentInfo) {
-                        if (quertText.length() == 0) {
-                            return true;
-                        }
-                        //判断为学号
-                        if (StringUtil.isNumberic(quertText)) {
-                            if (studentInfo.getNumber().contains(quertText)) {
-                                return true;
-                            }
-                        }
-                        //判断性别
-                        if (quertText.length() == 1) {
-                            if (studentInfo.getGender().equals(quertText)) {
-                                return true;
-                            }
-                        }
-                        if (studentInfo.getName().contains(quertText) ||
-                                studentInfo.getMajor().contains(quertText)) {
-                            return true;
-                        }
-
-                        return false;
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<StudentInfo>() {
-
-                    List<StudentInfo> mQueryInfo;
-
-                    @Override
-                    public void onStart() {
-                        super.onStart();
-                        mQueryInfo = new ArrayList<StudentInfo>();
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        mStudentInfoAdapter.setStudentInfos(mQueryInfo);
-                        mStudentInfoAdapter.notifyDataSetChanged();
-                        mFindNumberTextView.setVisibility(View.VISIBLE);
-                        mFindNumberTextView.setText("查找到" + mQueryInfo.size() + "位同学");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                    }
-
-                    @Override
-                    public void onNext(StudentInfo studentInfo) {
-                        mQueryInfo.add(studentInfo);
-                    }
-                });
-*/
     }
 
 
@@ -217,7 +166,7 @@ public class ClassmateListActivity extends BaseActivity implements ClassmateCont
 
     @Override
     public void showFailMessage(String msg) {
-        mFindNumberTextView.setText("共查找到" + 0 + "位同学");
+        mFindNumberTextView.setText("共查找到" + mStudentInfoAdapter.getItemCount() + "位同学");
         SnackbarUtil.ShortSnackbar(mClassmateRecyclerView, msg, SnackbarUtil.Alert).show();
     }
 

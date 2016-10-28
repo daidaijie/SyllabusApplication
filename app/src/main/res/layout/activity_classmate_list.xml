@@ -49,18 +49,30 @@
             <com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader
                 android:id="@+id/headerView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/findNumberTextView"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/material_white"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:textColor="@color/defaultTextColor"
-                    android:textSize="16sp"
-                    tools:text="共查找到0位同学"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/findNumberTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/material_white"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textColor="@color/defaultTextColor"
+                        android:textSize="16sp"
+                        tools:text="共查找到0位同学"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/defaultShowColor"/>
+                </LinearLayout>
+
             </com.bartoszlipinski.recyclerviewheader2.RecyclerViewHeader>
 
             <android.support.v7.widget.RecyclerView

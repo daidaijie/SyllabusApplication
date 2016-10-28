@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/defaultLightBackground"
     android:orientation="vertical"
-    tools:context="com.example.daidaijie.syllabusapplication.schoolDynamatic.personal.PersonalActivity">
+    tools:context="com.example.daidaijie.syllabusapplication.schoolDymatic.personal.PersonalActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

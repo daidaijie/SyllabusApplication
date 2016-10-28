@@ -16,10 +16,9 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity;
+import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 
 import java.util.List;

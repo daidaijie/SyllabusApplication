@@ -4,8 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.dymatic.mainMenu.SchoolDymaticFragment;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.mainmenu.StuCircleFragment;
+import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.mainMenu.SchoolDymaticFragment;
+import com.example.daidaijie.syllabusapplication.schoolDymatic.circle.mainmenu.StuCircleFragment;
 
 /**
  * Created by daidaijie on 2016/7/17.

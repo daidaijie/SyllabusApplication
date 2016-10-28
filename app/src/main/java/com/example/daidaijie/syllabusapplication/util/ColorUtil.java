@@ -52,7 +52,7 @@ public class ColorUtil {
             R.color.material_brown_300,
             R.color.material_pink_400,
             R.color.material_lightBlue_500,
-            R.color.material_lightGreen_300,
+            R.color.material_lightGreen_500,
 //            R.color.material_primaryIndigo_300,
 //            R.color.material_grey_300,
             R.color.material_Lime_500,

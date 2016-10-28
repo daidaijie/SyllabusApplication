@@ -14,6 +14,8 @@ public interface ClassmateContract {
 
     interface presenter extends BasePresenter {
         void loadData();
+
+        void search(String keyword);
     }
 
     interface view extends BaseView<presenter> {

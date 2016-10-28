@@ -16,7 +16,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,15 +43,14 @@ import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.example.daidaijie.syllabusapplication.stream.IStreamModel;
 import com.example.daidaijie.syllabusapplication.stream.StreamModel;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
 import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
 import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.other.update.UpdateActivity;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.STUCircleActivity;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.personal.PersonalActivity;
+import com.example.daidaijie.syllabusapplication.schoolDymatic.STUCircleActivity;
+import com.example.daidaijie.syllabusapplication.schoolDymatic.personal.PersonalActivity;
 import com.example.daidaijie.syllabusapplication.stuLibrary.mainMenu.LibraryActivity;
 import com.example.daidaijie.syllabusapplication.syllabus.main.activity.SyllabusActivity;
 import com.example.daidaijie.syllabusapplication.takeout.mainMenu.TakeOutActivity;
@@ -73,11 +71,6 @@ import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -89,10 +82,7 @@ import butterknife.BindView;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity implements MainContract.view, NavigationView.OnNavigationItemSelectedListener, ShareWXDialog.OnShareSelectCallBack {
 

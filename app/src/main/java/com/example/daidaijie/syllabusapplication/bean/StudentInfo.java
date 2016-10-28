@@ -1,27 +1,28 @@
 package com.example.daidaijie.syllabusapplication.bean;
 
 import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
+import io.realm.annotations.Index;
 
 /**
  * Created by daidaijie on 2016/7/30.
  */
 public class StudentInfo extends RealmObject {
 
-    @PrimaryKey
-    private long id;
+
+    @Index
+    private long lessonId;
 
     private String major;
     private String gender;
     private String number;
     private String name;
 
-    public long getId() {
-        return id;
+    public long getLessonId() {
+        return lessonId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setLessonId(long lessonId) {
+        this.lessonId = lessonId;
     }
 
     public String getMajor() {

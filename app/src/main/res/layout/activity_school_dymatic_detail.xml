@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/defaultLightBackground"
     android:orientation="vertical"
-    tools:context=".schoolDynamatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity">
+    tools:context=".schoolDymatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

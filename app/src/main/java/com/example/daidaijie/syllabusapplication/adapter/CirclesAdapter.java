@@ -21,7 +21,7 @@ import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.PostUserBean;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
-import com.example.daidaijie.syllabusapplication.schoolDynamatic.circle.circleDetail.CircleDetailActivity;
+import com.example.daidaijie.syllabusapplication.schoolDymatic.circle.circleDetail.CircleDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;

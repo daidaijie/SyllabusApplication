@@ -31,6 +31,7 @@
             app:mrl_rippleRoundedCorners="4dp">
 
             <LinearLayout
+                android:background="@color/material_white"
                 android:id="@+id/cardContentLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

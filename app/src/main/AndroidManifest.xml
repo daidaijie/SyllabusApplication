@@ -48,7 +48,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".schoolDynamatic.STUCircleActivity"
+            android:name=".schoolDymatic.STUCircleActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -56,7 +56,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".schoolDynamatic.circle.circleDetail.CircleDetailActivity"
+            android:name=".schoolDymatic.circle.circleDetail.CircleDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
@@ -65,7 +65,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".schoolDynamatic.circle.postContent.PostContentActivity"
+            android:name=".schoolDymatic.circle.postContent.PostContentActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -170,7 +170,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".schoolDynamatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity"
+            android:name=".schoolDymatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity"
             android:screenOrientation="portrait">
         </activity>
         <activity
@@ -178,9 +178,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
         </activity>
-        <activity android:name=".schoolDynamatic.personal.PersonalActivity">
+        <activity android:name=".schoolDymatic.personal.PersonalActivity">
         </activity>
-        <activity android:name=".schoolDynamatic.dymatic.postDymatic.PostDymaticActivity">
+        <activity android:name=".schoolDymatic.dymatic.postDymatic.PostDymaticActivity">
         </activity>
         <activity android:name=".other.update.UpdateActivity">
         </activity>

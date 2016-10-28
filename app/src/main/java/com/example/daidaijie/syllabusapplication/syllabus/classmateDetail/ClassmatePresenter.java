@@ -5,6 +5,7 @@ import com.example.daidaijie.syllabusapplication.bean.Lesson;
 import com.example.daidaijie.syllabusapplication.bean.StudentInfo;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -55,6 +56,21 @@ public class ClassmatePresenter implements ClassmateContract.presenter {
     }
 
     @Override
+    public void search(String keyword) {
+        mIClassmateModel.searchStudentsList(keyword, new IBaseModel.OnGetSuccessCallBack<List<StudentInfo>>() {
+            @Override
+            public void onGetSuccess(List<StudentInfo> studentInfos) {
+                mView.showData(studentInfos);
+            }
+        }, new IBaseModel.OnGetFailCallBack() {
+            @Override
+            public void onGetFail() {
+                mView.showData(new ArrayList<StudentInfo>());
+            }
+        });
+    }
+
+    @Override
     public void start() {
         mIClassmateModel.getLessonNormal(new IBaseModel.OnGetSuccessCallBack<Lesson>() {
             @Override
@@ -70,7 +86,5 @@ public class ClassmatePresenter implements ClassmateContract.presenter {
             }
 
         });
-
-        loadData();
     }
 }
