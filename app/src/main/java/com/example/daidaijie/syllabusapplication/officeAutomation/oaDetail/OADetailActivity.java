@@ -180,5 +180,4 @@ public class OADetailActivity extends BaseActivity implements OADetailContract.v
         ).show();
 
     }
-
 }

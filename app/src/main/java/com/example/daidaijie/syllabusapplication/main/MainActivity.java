@@ -44,6 +44,7 @@ import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.example.daidaijie.syllabusapplication.stream.IStreamModel;
 import com.example.daidaijie.syllabusapplication.stream.StreamModel;
+import com.example.daidaijie.syllabusapplication.util.ShareWXUtil;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
@@ -415,19 +416,9 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     }
 
     private void share(int scene) {
-        WXWebpageObject webpage = new WXWebpageObject();
-        webpage.webpageUrl = "http://fir.im/syllabus";
-        WXMediaMessage msg = new WXMediaMessage(webpage);
-        msg.title = "汕大课程表";
-        msg.description = "汕大课程表下载地址";
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_syllabus_icon);
-        msg.setThumbImage(bitmap);
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-        req.transaction = String.valueOf(System.currentTimeMillis());
-        req.message = msg;
-        req.scene = scene;
-        App.getApi().sendReq(req);
+        ShareWXUtil.shareUrl("http://fir.im/syllabus", "汕大课程表", "汕大课程表下载地址",
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_syllabus_icon), scene
+        );
     }
 
 

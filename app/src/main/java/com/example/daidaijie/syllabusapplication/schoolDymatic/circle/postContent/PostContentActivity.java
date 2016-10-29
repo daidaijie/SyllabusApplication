@@ -191,7 +191,7 @@ public class PostContentActivity extends BaseActivity implements PostContentCont
     @Override
     public void onBackPressed() {
         hideInput(mContentEditText);
-        if (mPostContentPresenter.isNonePhoto() || !mContentEditText.getText().toString().trim().isEmpty()) {
+        if (!mPostContentPresenter.isNonePhoto() || !mContentEditText.getText().toString().trim().isEmpty()) {
             TextView textView = new TextView(this);
             textView.setTextSize(16);
             textView.setTextColor(getResources().getColor(R.color.defaultTextColor));

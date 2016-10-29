@@ -2,10 +2,12 @@ package com.example.daidaijie.syllabusapplication.other;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.DownloadListener;
@@ -20,10 +22,14 @@ import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
+import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
+import com.example.daidaijie.syllabusapplication.util.ShareWXUtil;
+import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.widget.ShareWXDialog;
 
 import butterknife.BindView;
 
-public class CommonWebActivity extends BaseActivity {
+public class CommonWebActivity extends BaseActivity implements ShareWXDialog.OnShareSelectCallBack {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -126,10 +132,9 @@ public class CommonWebActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            //判断是返回键然后退出当前Activity
-            this.finish();
-            return true;
+        int id = item.getItemId();
+        if (id == R.id.action_share_url) {
+            showShareDialog();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -147,5 +152,40 @@ public class CommonWebActivity extends BaseActivity {
         intent.putExtra(EXTRA_TITLE, title);
 
         return intent;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_common_web, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+    private void showShareDialog() {
+        ShareWXDialog dialog = new ShareWXDialog();
+        dialog.setOnShareSelectCallBack(this);
+        dialog.show(getSupportFragmentManager());
+    }
+
+    public void showInfoMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mWebView, msg, SnackbarUtil.Info).show();
+    }
+
+    @Override
+    public void onShareSelect(int position) {
+        if (position == 0) {
+            share(0);
+        } else if (position == 1) {
+            share(1);
+        } else {
+            ClipboardUtil.copyToClipboard(mWebView.getUrl());
+            showInfoMessage("已复制链接到剪贴板");
+        }
+    }
+
+    private void share(int scene) {
+        ShareWXUtil.shareUrl(mWebView.getUrl(), mWebView.getTitle(), "汕大课程表分享",
+                BitmapFactory.decodeResource(getResources(), R.drawable.ic_syllabus_icon), scene
+        );
     }
 }

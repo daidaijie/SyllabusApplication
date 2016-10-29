@@ -127,7 +127,7 @@ public class ClassmateListActivity extends BaseActivity implements ClassmateCont
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
                 if (mSwipeRefreshLayout.isRefreshing()) {
-                    showFailMessage("正在搜索中");
+                    showWarningMessage("正在搜索中");
                     item.collapseActionView();
                     return false;
                 } else {
@@ -168,6 +168,11 @@ public class ClassmateListActivity extends BaseActivity implements ClassmateCont
     public void showFailMessage(String msg) {
         mFindNumberTextView.setText("共查找到" + mStudentInfoAdapter.getItemCount() + "位同学");
         SnackbarUtil.ShortSnackbar(mClassmateRecyclerView, msg, SnackbarUtil.Alert).show();
+    }
+
+    @Override
+    public void showWarningMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mClassmateRecyclerView, msg, SnackbarUtil.Warning).show();
     }
 
     @Override

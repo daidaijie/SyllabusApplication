@@ -26,6 +26,8 @@ public interface ClassmateContract {
         void showLoading(boolean isShow);
 
         void showFailMessage(String msg);
+
+        void showWarningMessage(String msg);
     }
 
 }

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@color/greyF6Color"
+              android:background="@color/defaultLightBackground"
               android:orientation="vertical">
 
     <TextView
@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="分享到"
+        android:text="分享或复制"
         android:textColor="@color/grey66Color"
         android:textSize="16sp"/>
 
@@ -31,12 +31,13 @@
 
 
             <ImageView
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/shareFriendText"
                 android:layout_margin="8dp"
                 android:layout_weight="0"
-                android:src="@drawable/ic_syllabus_icon"/>
+                android:src="@drawable/ic_share_wechat"/>
 
             <TextView
                 android:id="@+id/shareFriendText"
@@ -47,7 +48,7 @@
                 android:gravity="center"
                 android:text="微信好友"
                 android:textColor="@color/grey66Color"
-                android:textSize="14sp"/>
+                android:textSize="12sp"/>
         </RelativeLayout>
 
 
@@ -61,12 +62,14 @@
 
 
             <ImageView
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/shareCircleText"
                 android:layout_margin="8dp"
                 android:layout_weight="0"
-                android:src="@drawable/ic_syllabus_icon"/>
+                android:src="@drawable/ic_share_circle"
+                android:tint="?attr/colorPrimary"/>
 
             <TextView
                 android:id="@+id/shareCircleText"
@@ -77,7 +80,7 @@
                 android:gravity="center"
                 android:text="朋友圈"
                 android:textColor="@color/grey66Color"
-                android:textSize="14sp"/>
+                android:textSize="12sp"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -90,12 +93,14 @@
 
 
             <ImageView
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/clipBoardText"
                 android:layout_margin="8dp"
                 android:layout_weight="0"
-                android:src="@drawable/ic_syllabus_icon"/>
+                android:src="@drawable/ic_share_copy"
+                android:tint="?attr/colorPrimary"/>
 
             <TextView
                 android:id="@+id/clipBoardText"
@@ -106,7 +111,7 @@
                 android:gravity="center"
                 android:text="粘贴板"
                 android:textColor="@color/grey66Color"
-                android:textSize="14sp"/>
+                android:textSize="12sp"/>
 
         </RelativeLayout>
 

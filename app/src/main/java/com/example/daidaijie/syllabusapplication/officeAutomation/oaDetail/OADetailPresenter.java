@@ -65,8 +65,9 @@ public class OADetailPresenter implements OADetailContract.presenter {
     @Override
     public void screenShot() {
         Bitmap webViewScreen = mView.captureScreen();
+
         if (webViewScreen != null) {
-            BitmapSaveUtil.saveFile(webViewScreen, "STUOA" + SystemClock.currentThreadTimeMillis() + ".jpg", 80, new BitmapSaveUtil.OnSaveFileCallBack() {
+            BitmapSaveUtil.saveFile(webViewScreen, SystemClock.currentThreadTimeMillis() + ".jpg", 80, new BitmapSaveUtil.OnSaveFileCallBack() {
                 @Override
                 public void onSuccess() {
                     mView.showSuccessMessage("截取成功");
