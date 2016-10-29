@@ -60,7 +60,7 @@ public class ClassmateModel implements IClassmateModel {
                         .equalTo("lessonId", mLessonID)
                         .findAll();
                 if (results.size() != 0) {
-                    mStudentInfos = realm.copyFromRealm(results);
+                    mStudentInfos = realm.copyFromRealm(results.sort("number"));
                 }
             }
         });

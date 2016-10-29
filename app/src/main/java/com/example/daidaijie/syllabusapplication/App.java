@@ -6,6 +6,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.mm.sdk.openapi.IWXAPI;
 import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
@@ -40,20 +41,24 @@ public class App extends Application {
 
     AppComponent mAppComponent;
 
-    private static final String APP_ID = "wxcce81e2a1528e155";
+    private static final String WX_APP_ID = "wxcce81e2a1528e155";
 
     private static IWXAPI api;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+
         Fresco.initialize(this);
 
         context = getApplicationContext();
 
-        // TODO: 2016/10/11 暂时在这里进行初始化
+        CrashReport.initCrashReport(context, "900058134", isDebug);
+
         RealmConfiguration.Builder builder = new RealmConfiguration.Builder(this)
                 .schemaVersion(userVersion);
+
         if (isDebug) {
             builder.deleteRealmIfMigrationNeeded();
         }
@@ -90,8 +95,8 @@ public class App extends Application {
     }
 
     private void regToWX() {
-        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
-        api.registerApp(APP_ID);
+        api = WXAPIFactory.createWXAPI(this, WX_APP_ID, true);
+        api.registerApp(WX_APP_ID);
     }
 
 
