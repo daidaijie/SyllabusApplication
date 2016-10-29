@@ -6,9 +6,12 @@ import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.event.UpdateUserInfoEvent;
 import com.example.daidaijie.syllabusapplication.retrofitApi.GetUserBaseApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.UserInfoApi;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -218,6 +221,7 @@ public class UserModel implements IUserModel {
                             if (!isLogin) {
                                 realm.close();
                             }
+                            EventBus.getDefault().post(new UpdateUserInfoEvent());
                             return Observable.just(mUserInfo);
                         } else {
                             return Observable.error(new Throwable(userInfoHttpResult.getMessage()));
@@ -254,6 +258,28 @@ public class UserModel implements IUserModel {
             }
         });
         return mUserInfo;
+    }
+
+    @Override
+    public void updateUserInfo(final UserInfo userInfo) {
+        mUserInfo = userInfo;
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(mUserInfo);
+            }
+        });
+    }
+
+    @Override
+    public void updateUserBaseBean(UserBaseBean userBaseBean) {
+        mUserBaseBean = userBaseBean;
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(mUserBaseBean);
+            }
+        });
     }
 
     private Realm getRealm() {

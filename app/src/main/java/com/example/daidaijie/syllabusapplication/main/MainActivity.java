@@ -36,6 +36,7 @@ import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.event.UpdateUserInfoEvent;
 import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.grade.GradeActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
@@ -43,6 +44,7 @@ import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.example.daidaijie.syllabusapplication.stream.IStreamModel;
 import com.example.daidaijie.syllabusapplication.stream.StreamModel;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.officeAutomation.mainMenu.OfficeAutomationActivity;
 import com.example.daidaijie.syllabusapplication.other.AboutUsActivity;
@@ -70,6 +72,10 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.tencent.mm.sdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.sdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.sdk.modelmsg.WXWebpageObject;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -135,6 +141,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
 
         /**
          * 设置Banner的高,使其符合16:9
@@ -474,13 +481,17 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
         }, 0, 3000);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateInfo(UpdateUserInfoEvent event) {
+        mMainPresenter.showUserInfo();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         mTimer.cancel();
         Intent intent = StreamService.getIntent(MainActivity.this);
         stopService(intent);
-
     }
 }

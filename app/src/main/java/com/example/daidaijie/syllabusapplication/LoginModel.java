@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication;
 
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
@@ -82,6 +83,28 @@ public class LoginModel implements ILoginModel {
                         return userLogin != null;
                     }
                 }).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public void getUserLoginNormal(IBaseModel.OnGetSuccessCallBack<UserLogin> onGetSuccessCallBack) {
+        if (mUserLogin != null) {
+            onGetSuccessCallBack.onGetSuccess(mUserLogin);
+            return;
+        }
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<UserLogin> results = realm.where(UserLogin.class).findAll();
+                if (results.size() != 0) {
+                    mUserLogin = realm.copyFromRealm(results.first());
+                }
+                LoggerUtil.e("userlogin", results.size() + "");
+
+            }
+        });
+        if (mUserLogin != null) {
+            onGetSuccessCallBack.onGetSuccess(mUserLogin);
+        }
     }
 
     @Override

@@ -30,4 +30,8 @@ public interface IUserModel {
     Observable<UserInfo> getUserInfo();
 
     UserInfo getUserInfoNormal();
+
+    void updateUserInfo(UserInfo userInfo);
+
+    void updateUserBaseBean(UserBaseBean userBaseBean);
 }

@@ -4,9 +4,13 @@ import android.graphics.Bitmap;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.bean.UserBaseBean;
+import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
+import com.example.daidaijie.syllabusapplication.event.UpdateUserInfoEvent;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.util.List;
@@ -103,12 +107,26 @@ public class PersonalPresenter implements PersonalContract.presenter {
     public void pushData(final String nickName, final String profile) {
         mIPersonalModel.postPhotoToBmob(newImageFileName, new IPersonalModel.OnPostPhotoCallBack() {
             @Override
-            public void onSuccess(String photoJson) {
+            public void onSuccess(final String photoJson) {
                 mIPersonalModel.updateUserInfo(nickName, profile, photoJson)
                         .subscribe(new Subscriber<Void>() {
                             @Override
                             public void onCompleted() {
+                                UserInfo userInfo = mIUserModel.getUserInfoNormal();
+                                UserBaseBean baseBean = mIUserModel.getUserBaseBeanNormal();
+                                userInfo.setNickname(nickName);
+                                baseBean.setNickname(nickName);
+                                baseBean.setProfile(profile);
+                                if (photoJson != null && !photoJson.isEmpty()) {
+                                    userInfo.setAvatar(photoJson);
+                                    baseBean.setImage(photoJson);
+                                }
+                                mIUserModel.updateUserInfo(userInfo);
+                                mIUserModel.updateUserBaseBean(baseBean);
+
                                 mView.showSuccessMessage("更新成功");
+
+                                EventBus.getDefault().post(new UpdateUserInfoEvent());
                             }
 
                             @Override

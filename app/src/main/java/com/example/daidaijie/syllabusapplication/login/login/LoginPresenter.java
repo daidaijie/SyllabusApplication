@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.login.login;
 
 import com.example.daidaijie.syllabusapplication.ILoginModel;
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.bean.UserLogin;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.UnLoginUser;
@@ -38,15 +39,12 @@ public class LoginPresenter implements LoginContract.presenter {
 
     @Override
     public void start() {
-        mILoginModel.getUserLoginFromCache()
-                .subscribe(new Action1<UserLogin>() {
-                    @Override
-                    public void call(UserLogin userLogin) {
-                        if (userLogin != null) {
-                            mView.setLogin(userLogin);
-                        }
-                    }
-                });
+        mILoginModel.getUserLoginNormal(new IBaseModel.OnGetSuccessCallBack<UserLogin>() {
+            @Override
+            public void onGetSuccess(UserLogin userLogin) {
+                mView.setLogin(userLogin);
+            }
+        });
     }
 
     @Override

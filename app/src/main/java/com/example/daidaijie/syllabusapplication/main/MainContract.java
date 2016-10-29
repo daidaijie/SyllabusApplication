@@ -15,6 +15,8 @@ import java.util.List;
 public interface MainContract {
 
     interface presenter extends BasePresenter {
+        void showUserInfo();
+
         void setCurrentSemester(Semester semester);
 
         void showSemesterSelect();

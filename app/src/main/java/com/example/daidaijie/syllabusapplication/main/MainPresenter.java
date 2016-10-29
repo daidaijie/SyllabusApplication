@@ -52,13 +52,9 @@ public class MainPresenter implements MainContract.presenter {
 
     @Override
     public void start() {
-        mUserModel.getUserInfo()
-                .subscribe(new Action1<UserInfo>() {
-                    @Override
-                    public void call(UserInfo userInfo) {
-                        mView.showUserInfo(userInfo);
-                    }
-                });
+
+        showUserInfo();
+
         mView.showSemester(mILoginModel.getCurrentSemester());
 
         //先使用缓存的
@@ -97,6 +93,11 @@ public class MainPresenter implements MainContract.presenter {
 
                     }
                 });
+    }
+
+    @Override
+    public void showUserInfo() {
+        mView.showUserInfo(mUserModel.getUserInfoNormal());
     }
 
     @Override
