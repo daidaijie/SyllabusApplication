@@ -101,7 +101,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         EventBus.getDefault().register(this);
         DaggerSyllabusFragmentComponent.builder()
                 .syllabusComponent(SyllabusComponent.getINSTANCE())
-                .syllabusFragmentModule(new SyllabusFragmentModule(this))
+                .syllabusFragmentModule(new SyllabusFragmentModule(this, mWeek))
                 .build().inject(this);
 
         gridWidth = deviceWidth * 2 / 15;

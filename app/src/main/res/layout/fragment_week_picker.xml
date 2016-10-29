@@ -6,7 +6,7 @@
     android:gravity="center_horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context="com.example.daidaijie.syllabusapplication.activity.WeekPickerFragment">
+    tools:context="com.example.daidaijie.syllabusapplication.dialog.WeekPickerFragment">
 
     <TextView
         android:layout_width="match_parent"

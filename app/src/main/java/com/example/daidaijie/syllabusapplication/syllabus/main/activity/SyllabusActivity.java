@@ -27,7 +27,7 @@ import android.widget.TextView;
 
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.SyllabusCollectionActivity;
-import com.example.daidaijie.syllabusapplication.activity.WeekPickerFragment;
+import com.example.daidaijie.syllabusapplication.dialog.WeekPickerFragment;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;

@@ -216,7 +216,6 @@ public class LoginInternetActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         SnackbarUtil.ShortSnackbar(mLoginButton, "登录失败", SnackbarUtil.Alert).show();
-                        Toast.makeText(LoginInternetActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         updateState();
                         mLoadingDialog.dismiss();
                     }

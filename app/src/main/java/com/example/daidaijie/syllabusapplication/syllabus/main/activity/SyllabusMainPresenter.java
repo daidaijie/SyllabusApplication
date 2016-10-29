@@ -11,8 +11,10 @@ import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
+import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalDate;
 import org.joda.time.Period;
 import org.joda.time.PeriodType;
@@ -159,11 +161,9 @@ public class SyllabusMainPresenter implements SyllabusContract.presenter {
         mView.showSemester(semester);
         loadWallpaper();
 
-       /* if (semester.getStartWeekTime() == 0) {
-            EventBus.getDefault().post(new SettingWeekEvent());
-        } else {
+        if (semester.getStartWeekTime() != 0) {
             moveToNowWeek(semester.getStartWeekTime());
-        }*/
+        }
     }
 
 }

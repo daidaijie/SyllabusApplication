@@ -98,7 +98,6 @@ public class LoginModel implements ILoginModel {
                 if (results.size() != 0) {
                     mUserLogin = realm.copyFromRealm(results.first());
                 }
-                LoggerUtil.e("userlogin", results.size() + "");
 
             }
         });
@@ -135,12 +134,15 @@ public class LoginModel implements ILoginModel {
                 }
 
                 /**
-                 * 再删除原有的并作为当前写入
+                 * 再复制原有的并作为当前写入
                  */
-                realm.where(Semester.class)
+                RealmResults<Semester> results2 = realm.where(Semester.class)
                         .equalTo("season", currentSemester.getSeason())
-                        .equalTo("startYear", currentSemester.getStartYear())
-                        .findAll().deleteAllFromRealm();
+                        .equalTo("startYear", currentSemester.getStartYear()).findAll();
+                if (results2.size() > 0) {
+                    mCurrentSemester.setStartWeekTime(results2.first().getStartWeekTime());
+                    results2.deleteAllFromRealm();
+                }
 
                 realm.copyToRealm(mCurrentSemester);
             }

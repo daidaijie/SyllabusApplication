@@ -14,14 +14,23 @@ public class SyllabusFragmentModule {
 
     private SyllabusFragmentContract.view mView;
 
-    public SyllabusFragmentModule(SyllabusFragmentContract.view view) {
+    private int mWeek;
+
+    public SyllabusFragmentModule(SyllabusFragmentContract.view view, int week) {
         mView = view;
+        mWeek = week;
     }
 
     @PerFragment
     @Provides
     SyllabusFragmentContract.view provideView() {
         return mView;
+    }
+
+    @PerFragment
+    @Provides
+    int provideWeek() {
+        return mWeek;
     }
 
 }

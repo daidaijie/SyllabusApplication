@@ -10,10 +10,14 @@ import com.example.daidaijie.syllabusapplication.IConfigModel;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
+import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
+import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.syllabus.ISyllabusModel;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 
@@ -34,16 +38,20 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
 
     IConfigModel mIConfigModel;
 
+    int mWeek;
+
     @Inject
     @PerFragment
     public SyllabusFragmentPresenter(ILoginModel loginModel,
                                      ISyllabusModel ISyllabusModel,
                                      IConfigModel IConfigModel,
-                                     SyllabusFragmentContract.view view) {
+                                     SyllabusFragmentContract.view view,
+                                     int week) {
         mILoginModel = loginModel;
         mISyllabusModel = ISyllabusModel;
         mIConfigModel = IConfigModel;
         mView = view;
+        mWeek = week;
     }
 
     @Override
@@ -117,6 +125,10 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
             @Override
             public void onGetSuccess(Syllabus syllabus) {
                 mView.showSyllabus(syllabus);
+                Semester semester = mILoginModel.getCurrentSemester();
+                if (semester.getStartWeekTime() == 0 && mWeek == 0) {
+                    EventBus.getDefault().post(new SettingWeekEvent());
+                }
             }
         }, new IBaseModel.OnGetFailCallBack() {
             @Override
@@ -137,6 +149,10 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
         @Override
         public void onCompleted() {
             if (isShowMsg) {
+                Semester semester = mILoginModel.getCurrentSemester();
+                if (semester.getStartWeekTime() == 0) {
+                    EventBus.getDefault().post(new SettingWeekEvent());
+                }
                 mView.onLoadEnd(true);
                 mView.showLoading(false);
                 mView.showSuccessMessage("同步成功");
