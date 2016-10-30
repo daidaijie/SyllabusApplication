@@ -1,10 +1,13 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.circle.mainmenu;
 
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.circle.ISchoolCircleModel;
+import com.example.daidaijie.syllabusapplication.user.IUserModel;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
 import java.util.List;
@@ -17,17 +20,22 @@ import rx.Subscriber;
  * Created by daidaijie on 2016/10/21.
  */
 
-public class StuCirclePresenter implements StuCircleContract.presenter {
+public class StuCirclePresenter implements StuCircleContract.presenter, CirclesAdapter.OnLongClickCallBack {
 
     ISchoolCircleModel mISchoolCircleModel;
 
     StuCircleContract.view mView;
 
+    IUserModel mIUserModel;
+
     @Inject
     @PerFragment
-    public StuCirclePresenter(ISchoolCircleModel ISchoolCircleModel, StuCircleContract.view view) {
+    public StuCirclePresenter(ISchoolCircleModel ISchoolCircleModel,
+                              StuCircleContract.view view,
+                              @LoginUser IUserModel userModel) {
         mISchoolCircleModel = ISchoolCircleModel;
         mView = view;
+        mIUserModel = userModel;
     }
 
     @Override
@@ -75,6 +83,34 @@ public class StuCirclePresenter implements StuCircleContract.presenter {
                             mView.showFailMessage(e.getMessage().toUpperCase());
                         }
                         mView.loadMoreFinish();
+                    }
+
+                    @Override
+                    public void onNext(List<PostListBean> postListBeen) {
+                        mView.showData(postListBeen);
+                    }
+                });
+    }
+
+    @Override
+    public void deletePost(int position) {
+        mView.showLoading(true);
+        mISchoolCircleModel.deletePost(position)
+                .subscribe(new Subscriber<List<PostListBean>>() {
+                    @Override
+                    public void onCompleted() {
+                        mView.showLoading(false);
+                        mView.showSuccessMessage("删除成功");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.showLoading(false);
+                        if (e.getMessage() == null) {
+                            mView.showFailMessage("删除失败");
+                        } else {
+                            mView.showFailMessage(e.getMessage());
+                        }
                     }
 
                     @Override
@@ -138,5 +174,21 @@ public class StuCirclePresenter implements StuCircleContract.presenter {
     @Override
     public void start() {
         refresh();
+    }
+
+    @Override
+    public void onLongClick(final int position, final int mode) {
+        mISchoolCircleModel.getCircleByPosition(position, new IBaseModel.OnGetSuccessCallBack<PostListBean>() {
+            @Override
+            public void onGetSuccess(PostListBean postListBean) {
+                boolean canDelete = false;
+                if (mIUserModel.getUserBaseBeanNormal().getLevel() > 1 ||
+                        postListBean.getUser().getId() == mIUserModel.getUserBaseBeanNormal().getId()) {
+                    canDelete = true;
+                }
+                mView.showContentDialog(postListBean, mIUserModel.getUserBaseBeanNormal().getLevel() > 1,
+                        mode == CirclesAdapter.MODE_ITEM_CLICK && canDelete, position);
+            }
+        });
     }
 }

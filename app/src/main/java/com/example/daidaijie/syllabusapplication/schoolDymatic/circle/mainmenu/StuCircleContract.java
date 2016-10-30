@@ -17,11 +17,17 @@ public interface StuCircleContract {
         void refresh();
 
         void loadData();
+
+        void deletePost(int position);
     }
 
     interface view extends BaseView<presenter> {
 
+        void showEnsureDeleteDialog(int position);
+
         void showRefresh(boolean isShow);
+
+        void showLoading(boolean isShow);
 
         void showFailMessage(String msg);
 
@@ -30,5 +36,7 @@ public interface StuCircleContract {
         void loadMoreFinish();
 
         void showData(List<PostListBean> postListBeen);
+
+        void showContentDialog(PostListBean postListBean, boolean isShowTitle, boolean isShowDelete, int position);
     }
 }

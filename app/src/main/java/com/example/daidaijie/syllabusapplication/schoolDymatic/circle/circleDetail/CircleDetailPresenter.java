@@ -6,9 +6,11 @@ import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
 import com.example.daidaijie.syllabusapplication.bean.CommentsBean;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.event.CircleStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.circle.ISchoolCircleModel;
+import com.example.daidaijie.syllabusapplication.user.IUserModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +25,7 @@ import rx.Subscriber;
  * Created by daidaijie on 2016/10/21.
  */
 
-public class CircleDetailPresenter implements CircleDetailContract.presenter {
+public class CircleDetailPresenter implements CircleDetailContract.presenter, CirclesAdapter.OnLongClickCallBack {
 
     int mPosition;
 
@@ -33,16 +35,20 @@ public class CircleDetailPresenter implements CircleDetailContract.presenter {
 
     ICommentModel mICommentModel;
 
+    IUserModel mIUserModel;
+
     @Inject
     @PerActivity
     public CircleDetailPresenter(int position,
                                  CircleDetailContract.view view,
                                  ISchoolCircleModel ISchoolCircleModel,
-                                 ICommentModel commentModel) {
+                                 ICommentModel commentModel,
+                                 @LoginUser IUserModel userModel) {
         mPosition = position;
         mView = view;
         mISchoolCircleModel = ISchoolCircleModel;
         mICommentModel = commentModel;
+        mIUserModel = userModel;
     }
 
     @Override
@@ -201,5 +207,15 @@ public class CircleDetailPresenter implements CircleDetailContract.presenter {
                     });
         }
 
+    }
+
+    @Override
+    public void onLongClick(int position, int mode) {
+        mISchoolCircleModel.getCircleByPosition(mPosition, new IBaseModel.OnGetSuccessCallBack<PostListBean>() {
+            @Override
+            public void onGetSuccess(PostListBean postListBean) {
+                mView.showContentDialog(postListBean, mIUserModel.getUserBaseBeanNormal().getLevel() > 1);
+            }
+        });
     }
 }

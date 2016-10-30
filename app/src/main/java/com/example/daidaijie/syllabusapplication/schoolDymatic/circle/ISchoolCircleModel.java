@@ -23,4 +23,6 @@ public interface ISchoolCircleModel {
     Observable<ThumbUpReturn> like(int position);
 
     Observable<Void> unlike(int position);
+
+    Observable<List<PostListBean>> deletePost(int position);
 }

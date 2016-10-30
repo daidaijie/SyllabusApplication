@@ -37,5 +37,7 @@ public interface CircleDetailContract {
         void showCommentDialog(int position, String msg);
 
         void clearDialog(int position);
+
+        void showContentDialog(PostListBean postListBean,boolean isShowTitle);
     }
 }

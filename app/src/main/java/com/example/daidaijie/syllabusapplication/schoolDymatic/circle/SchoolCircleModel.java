@@ -7,7 +7,9 @@ import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUp;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpsBean;
+import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.retrofitApi.CirclesApi;
+import com.example.daidaijie.syllabusapplication.retrofitApi.DeletePostApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.ThumbUpApi;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
@@ -36,12 +38,16 @@ public class SchoolCircleModel implements ISchoolCircleModel {
 
     ThumbUpApi mThumbUpApi;
 
+    DeletePostApi mDeletePostApi;
+
     private int lowID;
 
-    public SchoolCircleModel(CirclesApi circlesApi, IUserModel IUserModel, ThumbUpApi thumbUpApi) {
+    public SchoolCircleModel(CirclesApi circlesApi, IUserModel IUserModel,
+                             ThumbUpApi thumbUpApi, DeletePostApi deletePostApi) {
         mCirclesApi = circlesApi;
         mThumbUpApi = thumbUpApi;
         mIUserModel = IUserModel;
+        mDeletePostApi = deletePostApi;
         lowID = Integer.MAX_VALUE;
         mPostListBeen = new ArrayList<>();
     }
@@ -150,6 +156,27 @@ public class SchoolCircleModel implements ISchoolCircleModel {
                             postListBean.getThumb_ups().remove(finalMyThumbUpsBean);
                             postListBean.isMyLove = false;
                             return Observable.just(voidHttpResult.getData());
+                        } else {
+                            return Observable.error(new Throwable(voidHttpResult.getMessage()));
+                        }
+                    }
+                }).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<PostListBean>> deletePost(final int position) {
+        final PostListBean postListBean = mPostListBeen.get(position);
+        UserInfo userInfo = mIUserModel.getUserInfoNormal();
+
+        return mDeletePostApi.deletePost(postListBean.getId(),
+                userInfo.getUser_id(), userInfo.getToken())
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<HttpResult<Void>, Observable<List<PostListBean>>>() {
+                    @Override
+                    public Observable<List<PostListBean>> call(HttpResult<Void> voidHttpResult) {
+                        if (RetrofitUtil.isSuccessful(voidHttpResult)) {
+                            mPostListBeen.remove(position);
+                            return Observable.just(mPostListBeen);
                         } else {
                             return Observable.error(new Throwable(voidHttpResult.getMessage()));
                         }

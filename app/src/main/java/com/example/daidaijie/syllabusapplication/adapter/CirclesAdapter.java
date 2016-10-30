@@ -83,6 +83,23 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         mOnLikeCallBack = onLikeCallBack;
     }
 
+    public static final int MODE_ITEM_CLICK = 0;
+    public static final int MODE_TEXT_CLICK = 1;
+
+    public interface OnLongClickCallBack {
+        void onLongClick(int position, int mode);
+    }
+
+    OnLongClickCallBack mOnLongClickCallBack;
+
+    public OnLongClickCallBack getOnLongClickCallBack() {
+        return mOnLongClickCallBack;
+    }
+
+    public void setOnLongClickCallBack(OnLongClickCallBack onLongClickCallBack) {
+        mOnLongClickCallBack = onLongClickCallBack;
+    }
+
     public CirclesAdapter(Activity activity, List<PostListBean> postListBeen) {
         mActivity = activity;
         mPostListBeen = postListBeen;
@@ -238,22 +255,35 @@ public class CirclesAdapter extends RecyclerView.Adapter<CirclesAdapter.ViewHold
         holder.mContentTextView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                String[] items = {"复制"};
-                AlertDialog dialog = new AlertDialog.Builder(mActivity)
-                        .setItems(items, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (which == 0) {
-                                    ClipboardUtil.copyToClipboard(holder.mContentTextView.getText().toString());
-                                }
-                            }
-                        })
-                        .create();
-                dialog.show();
+                if (mOnLongClickCallBack != null) {
+                    mOnLongClickCallBack.onLongClick(position, MODE_TEXT_CLICK);
+                }
                 return true;
             }
         });
 
+        holder.mItemCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnLongClickCallBack != null) {
+                    mOnLongClickCallBack.onLongClick(position, MODE_ITEM_CLICK);
+                }
+                return true;
+            }
+        });
+
+//        String[] items = {"复制"};
+//        AlertDialog dialog = new AlertDialog.Builder(mActivity)
+//                .setItems(items, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        if (which == 0) {
+//                            ClipboardUtil.copyToClipboard(holder.mContentTextView.getText().toString());
+//                        }
+//                    }
+//                })
+//                .create();
+//        dialog.show();
     }
 
 

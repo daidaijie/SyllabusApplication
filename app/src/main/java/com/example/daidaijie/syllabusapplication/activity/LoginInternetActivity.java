@@ -78,10 +78,7 @@ public class LoginInternetActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mToolbar.setTitle("");
-        setupToolbar(mToolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupTitleBar(mToolbar);
 
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(
                 this, ThemeUtil.getInstance().colorPrimary
