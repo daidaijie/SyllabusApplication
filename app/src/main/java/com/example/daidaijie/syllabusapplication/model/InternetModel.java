@@ -21,6 +21,8 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
  */
 public class InternetModel {
 
+    boolean isOpen;
+
     public Retrofit mRetrofit;
 
     SharedPreferences mSharedPreferences;
@@ -35,8 +37,9 @@ public class InternetModel {
 
     private List<LoginAccount> mLoginAccounts;
 
-    public static final String EXTRA_LOGIN_ACCOUNTS = "com.example.daidaijie.syllabusapplication" +
-            ".model.InternetModel.mLoginAccounts";
+    public static final String EXTRA_LOGIN_ACCOUNTS = "mLoginAccounts";
+
+    public static final String EXTRA_IS_OPEN_INTERNET = "isOpen";
 
     private InternetModel() {
         mRetrofit = new Retrofit.Builder()
@@ -46,6 +49,8 @@ public class InternetModel {
                 .build();
         mSharedPreferences = App.getContext().getSharedPreferences("Internet", Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
+
+        isOpen = mSharedPreferences.getBoolean(EXTRA_IS_OPEN_INTERNET, false);
 
         String loginAccountsString = mSharedPreferences.getString(EXTRA_LOGIN_ACCOUNTS, "");
         if (loginAccountsString.trim().isEmpty()) {
@@ -57,6 +62,16 @@ public class InternetModel {
             );
         }
 
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
+        mEditor.putBoolean(EXTRA_IS_OPEN_INTERNET, open);
+        mEditor.commit();
     }
 
     public static class LoginAccount {

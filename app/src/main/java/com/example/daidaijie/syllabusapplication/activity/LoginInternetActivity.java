@@ -3,8 +3,11 @@ package com.example.daidaijie.syllabusapplication.activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -14,16 +17,18 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.LoginInfo;
 import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
+import com.example.daidaijie.syllabusapplication.event.InternetOpenEvent;
 import com.example.daidaijie.syllabusapplication.model.InternetModel;
-import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
-import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.LoginInternetService;
+import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.MaterialCheckBox;
 import com.example.daidaijie.syllabusapplication.widget.StreamItemLayout;
 
+import org.greenrobot.eventbus.EventBus;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -70,9 +75,13 @@ public class LoginInternetActivity extends BaseActivity {
     StreamItemLayout mOutTimeItem;
     @BindView(R.id.stateItem)
     StreamItemLayout mStateItem;
+    @BindView(R.id.openInternetLoginSwitch)
+    SwitchCompat mOpenInternetLoginSwitch;
 
     AlertDialog mSwitchAccountDialog;
     AlertDialog mLoadingDialog;
+    @BindView(R.id.internetInfoCardView)
+    CardView mInternetInfoCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +130,24 @@ public class LoginInternetActivity extends BaseActivity {
             selectAccount(InternetModel.getInstance().getLoginAccounts().get(0));
         }
 
+        mOpenInternetLoginSwitch.setChecked(InternetModel.getInstance().isOpen());
+        if (InternetModel.getInstance().isOpen()) {
+            mInternetInfoCardView.setVisibility(View.VISIBLE);
+        } else {
+            mInternetInfoCardView.setVisibility(View.GONE);
+        }
+        mOpenInternetLoginSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                InternetModel.getInstance().setOpen(isChecked);
+                EventBus.getDefault().post(new InternetOpenEvent(isChecked));
+                if (isChecked) {
+                    mInternetInfoCardView.setVisibility(View.VISIBLE);
+                } else {
+                    mInternetInfoCardView.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void switchAccont() {
