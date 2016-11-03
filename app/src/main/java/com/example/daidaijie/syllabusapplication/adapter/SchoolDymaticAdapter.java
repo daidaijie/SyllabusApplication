@@ -115,14 +115,20 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
 
         holder.mNicknameTextView.setText(schoolDymatic.getSource());
 
-        StringBuilder sb = new StringBuilder();
-        sb.append(schoolDymatic.getActivity_start_time().substring(0, schoolDymatic.getActivity_start_time().length() - 3));
-        if (schoolDymatic.getActivity_end_time() != null && !schoolDymatic.getActivity_end_time().trim().isEmpty()) {
-            sb.append("　——>　");
-            sb.append(schoolDymatic.getActivity_end_time().substring(0, schoolDymatic.getActivity_end_time().length() - 3));
+        holder.mPostTimeTextView.setText("发布时间: " + schoolDymatic.getPost_time());
+
+        if (schoolDymatic.getActivity_end_time() != null) {
+            StringBuilder sb = new StringBuilder();
+            sb.append(schoolDymatic.getActivity_start_time().substring(0, schoolDymatic.getActivity_start_time().length() - 3));
+            if (schoolDymatic.getActivity_end_time() != null && !schoolDymatic.getActivity_end_time().trim().isEmpty()) {
+                sb.append("　——>　");
+                sb.append(schoolDymatic.getActivity_end_time().substring(0, schoolDymatic.getActivity_end_time().length() - 3));
+            }
+            holder.mPostInfoTextView.setText("活动时间: " + sb.toString());
+        } else {
+            holder.mPostInfoTextView.setVisibility(View.GONE);
         }
 
-        holder.mPostInfoTextView.setText(sb.toString());
 
         holder.mContentTextView.setText(schoolDymatic.getDescription());
 
@@ -270,6 +276,8 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
         LinearLayout mWebLinearLayout;
         @BindView(R.id.itemCardView)
         CardView mItemCardView;
+        @BindView(R.id.postTimeTextView)
+        TextView mPostTimeTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);

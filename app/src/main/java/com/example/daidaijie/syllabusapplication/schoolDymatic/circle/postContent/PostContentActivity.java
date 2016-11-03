@@ -21,11 +21,11 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
 import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
-import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.circle.StuCircleModelComponent;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -75,7 +75,7 @@ public class PostContentActivity extends BaseActivity implements PostContentCont
 
         DaggerPostContentComponent.builder()
                 .stuCircleModelComponent(StuCircleModelComponent.getInstance())
-                .postConentModule(new PostConentModule(this))
+                .postContentModule(new PostContentModule(this))
                 .build().inject(this);
 
         mPostContentPresenter.start();

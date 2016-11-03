@@ -15,11 +15,11 @@ import retrofit2.Retrofit;
  */
 
 @Module
-public class PostConentModule {
+public class PostContentModule {
 
     PostContentContract.view mView;
 
-    public PostConentModule(PostContentContract.view view) {
+    public PostContentModule(PostContentContract.view view) {
         mView = view;
     }
 

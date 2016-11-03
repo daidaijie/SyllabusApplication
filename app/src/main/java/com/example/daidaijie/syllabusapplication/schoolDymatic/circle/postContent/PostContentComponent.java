@@ -10,7 +10,7 @@ import dagger.Component;
  */
 
 @PerActivity
-@Component(dependencies = StuCircleModelComponent.class, modules = PostConentModule.class)
+@Component(dependencies = StuCircleModelComponent.class, modules = PostContentModule.class)
 public interface PostContentComponent {
 
     void inject(PostContentActivity postContentActivity);

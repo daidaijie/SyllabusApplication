@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/defaultLightBackground"
+    android:background="@color/defaultDarkBackground"
     android:orientation="vertical"
     tools:context="com.example.daidaijie.syllabusapplication.schoolDymatic.circle.postContent.PostContentActivity">
 
@@ -87,12 +87,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="发布平台"
         android:textColor="@color/defaultShowColor"
         android:textSize="16sp"/>
 
     <RadioGroup
+        android:layout_marginTop="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@color/material_white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

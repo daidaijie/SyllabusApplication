@@ -278,7 +278,7 @@ public class MaterialCheckBox extends View {
         this.listener = listener;
     }
 
-    interface OnCheckedChangeListener {
+    public interface OnCheckedChangeListener {
         void onCheckedChanged(View view, boolean isChecked);
     }
 

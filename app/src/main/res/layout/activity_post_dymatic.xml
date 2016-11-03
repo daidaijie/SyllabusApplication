@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/defaultLightBackground"
+    android:background="@color/defaultDarkBackground"
     android:orientation="vertical"
     tools:context=".schoolDymatic.dymatic.postDymatic.PostDymaticActivity">
 
@@ -35,133 +35,250 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/material_white"
-        android:orientation="vertical"
-        android:paddingBottom="16dp">
+        android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/contentEditText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="160dp"
-            android:background="@color/material_white"
-            android:gravity="top|left"
-            android:hint="输入你想要发布的动态吧(140字)..."
-            android:maxLength="140"
-            android:maxLines="10"
-            android:padding="8dp"
-            android:textColor="@color/defaultTextColor"
-            android:textColorHint="@color/defaultShowColor"
-            android:textSize="16sp"/>
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:text="添加照片"
-            android:textColor="@color/defaultShowColor"
-            android:textSize="16sp"/>
 
-        <com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout
-            android:id="@+id/postImgFlowLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            app:LayoutType="1">
-        </com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/material_white"
+                android:orientation="vertical"
+                android:paddingBottom="16dp">
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/contentEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="@color/material_white"
+                    android:gravity="top|left"
+                    android:hint="输入你想要发布的动态吧(140字)..."
+                    android:maxLength="140"
+                    android:maxLines="10"
+                    android:padding="8dp"
+                    android:textColor="@color/defaultTextColor"
+                    android:textColorHint="@color/defaultShowColor"
+                    android:textSize="16sp"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/defaultShowColor"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="添加照片"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="16sp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="活动开始和结束时间(非必填)"
-        android:textColor="@color/defaultShowColor"
-        android:textSize="16sp"/>
+                <com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout
+                    android:id="@+id/postImgFlowLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    app:LayoutType="1">
+                </com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:orientation="horizontal"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp">
+            </LinearLayout>
 
-        <info.hoang8f.widget.FButton
-            android:id="@+id/selectStartDateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:calendarViewShown="false"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="14sp"
-            app:buttonColor="@color/material_white"
-            app:cornerRadius="4dp"
-            app:shadowColor="@color/defaultDarkBackground"
-            app:shadowEnabled="true"
-            app:shadowHeight="1dp"
-            tools:text="2016年9月14号"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/defaultShowColor"/>
 
-        <TextView
-            android:id="@+id/toTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:text="到"
-            android:textSize="16sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-        <info.hoang8f.widget.FButton
-            android:id="@+id/selectEndDateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:calendarViewShown="false"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textColor="@color/defaultTextColor"
-            android:textSize="14sp"
-            app:buttonColor="@color/material_white"
-            app:cornerRadius="4dp"
-            app:shadowColor="@color/defaultDarkBackground"
-            app:shadowEnabled="true"
-            app:shadowHeight="1dp"
-            tools:text="2016年9月14号"/>
-    </LinearLayout>
+                <com.example.daidaijie.syllabusapplication.widget.MaterialCheckBox
+                    android:id="@+id/isHaveTimeCheckBox"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="4dp"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:text="发布平台"
-        android:textColor="@color/defaultShowColor"
-        android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="活动时间限制"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
 
-    <EditText
-        android:id="@+id/postNameEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@color/material_white"
-        android:hint="部门名称,如汕头大学学生会..."
-        android:padding="8dp"
-        android:singleLine="true"
-        android:textColor="@color/defaultTextColor"
-        android:textColorHint="@color/defaultShowColor"
-        android:textSize="14sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/timeSelectLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="活动开始和结束时间"
+                    android:textColor="@color/defaultShowColor"
+                    android:textSize="14sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/material_white"
+                    android:orientation="vertical"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:text="开始时间"
+                            android:textColor="@color/defaultTextColor"
+                            android:textSize="12sp"/>
+
+                        <TextView
+                            android:id="@+id/selectStartDateButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:calendarViewShown="false"
+                            android:padding="8dp"
+                            android:text="2016.09.16 22:29"
+                            android:textColor="@color/grey66Color"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/defaultShowColor"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="8dp"
+                            android:text="结束时间"
+                            android:textColor="@color/defaultTextColor"
+                            android:textSize="12sp"/>
+
+                        <TextView
+                            android:id="@+id/selectEndDateButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:calendarViewShown="false"
+                            android:padding="8dp"
+                            android:text="2016.09.16 22:29"
+                            android:textColor="@color/grey66Color"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="推文地址"
+                android:textColor="@color/defaultShowColor"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/postUrlEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/material_white"
+                android:hint="推文地址，如http://fir.im/syllabus"
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/defaultTextColor"
+                android:textColorHint="@color/defaultShowColor"
+                android:textSize="14sp"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="发布平台"
+                android:textColor="@color/defaultShowColor"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/postNameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/material_white"
+                android:hint="部门名称, 如汕大课程表..."
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/defaultTextColor"
+                android:textColorHint="@color/defaultShowColor"
+                android:textSize="14sp"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:text="活动地点(非必填)"
+                android:textColor="@color/defaultShowColor"
+                android:textSize="14sp"/>
+
+            <EditText
+                android:id="@+id/postPlaceEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/material_white"
+                android:hint="活动地点, 如金三角..."
+                android:paddingBottom="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="16dp"
+                android:singleLine="true"
+                android:textColor="@color/defaultTextColor"
+                android:textColorHint="@color/defaultShowColor"
+                android:textSize="14sp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </LinearLayout>

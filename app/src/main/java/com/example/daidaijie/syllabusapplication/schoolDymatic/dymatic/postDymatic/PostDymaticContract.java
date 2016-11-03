@@ -1,4 +1,4 @@
-package com.example.daidaijie.syllabusapplication.schoolDymatic.circle.postContent;
+package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.postDymatic;
 
 import com.example.daidaijie.syllabusapplication.base.BasePresenter;
 import com.example.daidaijie.syllabusapplication.base.BaseView;
@@ -9,7 +9,7 @@ import java.util.List;
  * Created by daidaijie on 2016/10/8.
  */
 
-public interface PostContentContract {
+public interface PostDymaticContract {
 
     interface presenter extends BasePresenter {
         void selectPhoto();
@@ -18,12 +18,17 @@ public interface PostContentContract {
 
         boolean isNonePhoto();
 
-        void postContent(String msg, String source);
+        void postContent(String msg, String source,String url, String locate,boolean hasTime);
 
+        void setTime(boolean isStart, int year, int month, int day, int hour, int minute);
+
+        void selectTime(boolean isStart);
 
     }
 
     interface view extends BaseView<presenter> {
+
+        void selectTime(final boolean isStart, int year, int month, int day, int hour, int minute);
 
         void showLoading(boolean isShow);
 
@@ -33,6 +38,8 @@ public interface PostContentContract {
 
         void showWarningMessage(String msg);
 
-        void onPostFinishCallBack();
+        void setStartTimeString(String timeString);
+
+        void setEndTimeString(String timeString);
     }
 }
