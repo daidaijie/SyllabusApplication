@@ -146,9 +146,9 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
             }
         });
 
-        SyllabusComponent.newInstance();
+        SyllabusComponent.newInstance(mAppComponent);
         DaggerSyllabusMainComponent.builder()
-                .userComponent(UserComponent.getINSTANCE())
+                .userComponent(UserComponent.buildInstance(mAppComponent))
                 .syllabusMainModule(new SyllabusMainModule(this))
                 .build().inject(this);
 

@@ -81,7 +81,7 @@ public class OfficeAutomationActivity extends BaseActivity {
         mOAUtil = new OAUtil();
         mOASearchBean = new OASearchBean();
         OAModelComponent.destory();
-        OAModelComponent.newInstance(UserComponent.getINSTANCE(), mOASearchBean);
+        OAModelComponent.newInstance(UserComponent.buildInstance(mAppComponent), mOASearchBean);
         mOAPagerAdapter = new OAPagerAdapter(getSupportFragmentManager());
         mContentViewPager.setAdapter(mOAPagerAdapter);
         mContentViewPager.setCurrentItem(0);
@@ -134,7 +134,7 @@ public class OfficeAutomationActivity extends BaseActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         mOASearchBean.setKeyword(keywordEditText.getText().toString().trim());
                         OAModelComponent.destory();
-                        OAModelComponent.newInstance(UserComponent.getINSTANCE(), mOASearchBean);
+                        OAModelComponent.newInstance(UserComponent.buildInstance(mAppComponent), mOASearchBean);
                         mOAPagerAdapter = new OAPagerAdapter(getSupportFragmentManager());
                         mContentViewPager.setAdapter(mOAPagerAdapter);
                         mContentViewPager.setCurrentItem(0);

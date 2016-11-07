@@ -68,7 +68,7 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
         EventBus.getDefault().register(this);
 
         DaggerSchoolDymaticComponent.builder()
-                .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE())
+                .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE(mAppComponent))
                 .schoolDymaticModule(new SchoolDymaticModule(this))
                 .build().inject(this);
 

@@ -85,7 +85,7 @@ public class SearchTakeOutPresenter implements SearchTakeOutContract.presenter {
 
                     @Override
                     public void onCompleted() {
-                        mView.showSearchResult(takeOutInfoBean.getTakeOutBuyBean()  , searchDishes, keyWord);
+                        mView.showSearchResult(takeOutInfoBean.getTakeOutBuyBean(), searchDishes, keyWord);
                     }
 
                     @Override

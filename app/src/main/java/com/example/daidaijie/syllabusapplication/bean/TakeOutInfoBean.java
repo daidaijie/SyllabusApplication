@@ -145,6 +145,9 @@ public class TakeOutInfoBean extends RealmObject {
     }
 
     public List<Dishes> getDishes() {
+        if (mDishes == null) {
+            this.loadTakeOutSubMenus();
+        }
         return mDishes;
     }
 

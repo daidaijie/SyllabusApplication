@@ -45,7 +45,7 @@ public class PersonalActivity extends BaseActivity implements PersonalContract.v
         setupTitleBar(mToolbar);
 
         DaggerPersonalComponent.builder()
-                .userComponent(UserComponent.getINSTANCE())
+                .userComponent(UserComponent.buildInstance(mAppComponent))
                 .personalModule(new PersonalModule(this))
                 .build().inject(this);
 

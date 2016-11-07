@@ -36,17 +36,11 @@ public abstract class UserComponent {
         return INSTANCE;
     }
 
-
-    public static UserComponent getINSTANCE() {
-        return INSTANCE;
-    }
-
     @SchoolRetrofit
     public abstract Retrofit getSchoolRetrofit();
 
     @OARetrofit
     public abstract Retrofit getOARetrofit();
-
 
     @DefaultRealm
     public abstract Realm getDefaultRealm();

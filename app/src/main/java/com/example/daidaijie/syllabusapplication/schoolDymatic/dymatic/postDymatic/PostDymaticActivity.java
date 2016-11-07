@@ -115,7 +115,7 @@ public class PostDymaticActivity extends BaseActivity implements PostDymaticCont
         });
 
         DaggerPostDymaticComponent.builder()
-                .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE())
+                .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE(mAppComponent))
                 .postDymaticModule(new PostDymaticModule(this))
                 .build().inject(this);
 

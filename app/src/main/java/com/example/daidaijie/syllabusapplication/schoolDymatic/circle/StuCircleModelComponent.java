@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.circle;
 
+import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
@@ -19,10 +20,10 @@ public abstract class StuCircleModelComponent {
 
     private static StuCircleModelComponent INSTANCE;
 
-    public static StuCircleModelComponent getInstance() {
+    public static StuCircleModelComponent getInstance(AppComponent appComponent) {
         if (INSTANCE == null) {
             INSTANCE = DaggerStuCircleModelComponent.builder()
-                    .userComponent(UserComponent.getINSTANCE())
+                    .userComponent(UserComponent.buildInstance(appComponent))
                     .stuCircleModelModule(new StuCircleModelModule())
                     .build();
         }

@@ -83,7 +83,7 @@ public class CircleDetailActivity extends BaseActivity implements CircleDetailCo
         mHeader.attachTo(mCommentRecyclerView);
 
         DaggerCircleDetailComponent.builder()
-                .stuCircleModelComponent(StuCircleModelComponent.getInstance())
+                .stuCircleModelComponent(StuCircleModelComponent.getInstance(mAppComponent))
                 .circleDetailModule(new CircleDetailModule(getIntent().getIntExtra(EXTRA_POST_BEAN_POS, 0), this))
                 .build().inject(this);
 

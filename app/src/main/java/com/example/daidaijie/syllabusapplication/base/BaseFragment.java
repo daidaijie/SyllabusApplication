@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.AppComponent;
 
 import butterknife.ButterKnife;
@@ -29,7 +30,7 @@ public abstract class BaseFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivity = (BaseActivity) getActivity();
-        mAppComponent = mActivity.mAppComponent;
+        mAppComponent = ((App) getActivity().getApplication()).getAppComponent();
 
         deviceWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();
         deviceHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();

@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.syllabus;
 
+import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.IConfigModel;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.di.qualifier.realm.UserRealm;
@@ -20,10 +21,10 @@ public abstract class SyllabusComponent {
 
     private static SyllabusComponent INSTANCE;
 
-    public static SyllabusComponent newInstance() {
+    public static SyllabusComponent newInstance(AppComponent appComponent) {
         if (INSTANCE == null) {
             INSTANCE = DaggerSyllabusComponent.builder()
-                    .userComponent(UserComponent.getINSTANCE())
+                    .userComponent(UserComponent.buildInstance(appComponent))
                     .syllabusModelModule(new SyllabusModelModule())
                     .build();
         }

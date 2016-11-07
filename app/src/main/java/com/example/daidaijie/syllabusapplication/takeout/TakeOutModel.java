@@ -4,6 +4,7 @@ import com.example.daidaijie.syllabusapplication.bean.BmobResult;
 import com.example.daidaijie.syllabusapplication.bean.TakeOutInfoBean;
 import com.example.daidaijie.syllabusapplication.retrofitApi.TakeOutInfoApi;
 import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -172,6 +173,9 @@ public class TakeOutModel implements ITakeOutModel {
                 .takeFirst(new Func1<TakeOutInfoBean, Boolean>() {
                     @Override
                     public Boolean call(TakeOutInfoBean takeOutInfoBeen) {
+                        if (takeOutInfoBeen == null) {
+                            return false;
+                        }
                         if (takeOutInfoBeen.getMenu() != null && !takeOutInfoBeen.getMenu().isEmpty()) {
                             takeOutInfoBeen.loadTakeOutSubMenus();
                             return true;
@@ -183,10 +187,14 @@ public class TakeOutModel implements ITakeOutModel {
 
     @Override
     public TakeOutInfoBean getTakeOutInfoBeanById(String objectID) {
-        TakeOutInfoBean bean = mInfoBeanMap.get(objectID);
-        if (bean != null) {
-            return bean;
+        TakeOutInfoBean bean;
+        if (mInfoBeanMap != null) {
+            bean = mInfoBeanMap.get(objectID);
+            if (bean != null) {
+                return bean;
+            }
         }
+
         bean = mRealm.where(TakeOutInfoBean.class)
                 .equalTo("objectId", objectID)
                 .findFirst();

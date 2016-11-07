@@ -72,7 +72,7 @@ public class StuCircleFragment extends BaseFragment implements StuCircleContract
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerStuCircleComponent.builder()
-                .stuCircleModelComponent(StuCircleModelComponent.getInstance())
+                .stuCircleModelComponent(StuCircleModelComponent.getInstance(mAppComponent))
                 .stuCircleModule(new StuCircleModule(this))
                 .build().inject(this);
     }

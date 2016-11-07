@@ -79,7 +79,7 @@ public class SchoolDymaticDetailActivity extends BaseActivity implements SchoolD
         mHeader.attachTo(mCommentRecyclerView);
 
         DaggerSchoolDymaticDetailComponent.builder()
-                .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE())
+                .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE(mAppComponent))
                 .schoolDymaticDetailModule(new SchoolDymaticDetailModule(getIntent().getIntExtra(EXTRA_SCHOOL_DYMATIC_POS, 0), this))
                 .build().inject(this);
 

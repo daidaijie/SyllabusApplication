@@ -74,7 +74,7 @@ public class PostContentActivity extends BaseActivity implements PostContentCont
         mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(this, ThemeUtil.getInstance().colorPrimary);
 
         DaggerPostContentComponent.builder()
-                .stuCircleModelComponent(StuCircleModelComponent.getInstance())
+                .stuCircleModelComponent(StuCircleModelComponent.getInstance(mAppComponent))
                 .postContentModule(new PostContentModule(this))
                 .build().inject(this);
 
