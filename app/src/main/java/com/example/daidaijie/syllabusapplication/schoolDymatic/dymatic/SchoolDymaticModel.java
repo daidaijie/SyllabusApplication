@@ -2,10 +2,13 @@ package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic;
 
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
+import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUp;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpsBean;
+import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.retrofitApi.DeletePostApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolDymaticApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.ThumbUpApi;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
@@ -35,10 +38,14 @@ public class SchoolDymaticModel implements ISchoolDymaticModel {
 
     ThumbUpApi mThumbUpApi;
 
-    public SchoolDymaticModel(SchoolDymaticApi schoolDymaticApi, IUserModel IUserModel, ThumbUpApi thumbUpApi) {
+    DeletePostApi mDeletePostApi;
+
+    public SchoolDymaticModel(SchoolDymaticApi schoolDymaticApi, IUserModel IUserModel,
+                              ThumbUpApi thumbUpApi, DeletePostApi deletePostApi) {
         mSchoolDymaticApi = schoolDymaticApi;
         mThumbUpApi = thumbUpApi;
         mIUserModel = IUserModel;
+        mDeletePostApi = deletePostApi;
         loadPage = 0;
     }
 
@@ -105,6 +112,27 @@ public class SchoolDymaticModel implements ISchoolDymaticModel {
                             schoolDymatic.getThumb_ups().remove(finalMyThumbUpsBean);
                             schoolDymatic.isMyLove = false;
                             return Observable.just(voidHttpResult.getData());
+                        } else {
+                            return Observable.error(new Throwable(voidHttpResult.getMessage()));
+                        }
+                    }
+                }).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
+    public Observable<List<SchoolDymatic>> deletePost(final int position) {
+        final SchoolDymatic schoolDymatic = mSchoolDymatics.get(position);
+        UserInfo userInfo = mIUserModel.getUserInfoNormal();
+
+        return mDeletePostApi.deletePost(schoolDymatic.getId(),
+                userInfo.getUser_id(), userInfo.getToken())
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<HttpResult<Void>, Observable<List<SchoolDymatic>>>() {
+                    @Override
+                    public Observable<List<SchoolDymatic>> call(HttpResult<Void> voidHttpResult) {
+                        if (RetrofitUtil.isSuccessful(voidHttpResult)) {
+                            mSchoolDymatics.remove(position);
+                            return Observable.just(mSchoolDymatics);
                         } else {
                             return Observable.error(new Throwable(voidHttpResult.getMessage()));
                         }

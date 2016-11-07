@@ -19,9 +19,14 @@ public class SchoolDymaticContract {
         void loadData();
 
         void handlerFAB();
+
+        void deletePost(int position);
+
     }
 
     interface view extends BaseView<presenter> {
+
+        void showLoading(boolean isShow);
 
         void showRefresh(boolean isShow);
 
@@ -40,6 +45,11 @@ public class SchoolDymaticContract {
         void loadStart();
 
         void toPostDymatic();
+
+        void showContentDialog(SchoolDymatic schoolDymatic, boolean isShowTitle, boolean isShowDelete, int position);
+
+        void showEnsureDeleteDialog(final int position);
+
     }
 
 }

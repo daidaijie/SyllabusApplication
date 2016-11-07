@@ -2,6 +2,8 @@ package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.postDyma
 
 import com.example.daidaijie.syllabusapplication.base.BasePresenter;
 import com.example.daidaijie.syllabusapplication.base.BaseView;
+import com.example.daidaijie.syllabusapplication.bean.PostListBean;
+import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ public interface PostDymaticContract {
 
         boolean isNonePhoto();
 
-        void postContent(String msg, String source,String url, String locate,boolean hasTime);
+        void postContent(String msg, String source, String url, String locate, boolean hasTime);
 
         void setTime(boolean isStart, int year, int month, int day, int hour, int minute);
 
@@ -41,5 +43,7 @@ public interface PostDymaticContract {
         void setStartTimeString(String timeString);
 
         void setEndTimeString(String timeString);
+
+        void onPostFinishCallBack();
     }
 }

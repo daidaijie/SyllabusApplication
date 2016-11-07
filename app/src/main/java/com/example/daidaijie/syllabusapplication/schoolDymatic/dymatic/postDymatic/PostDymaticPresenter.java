@@ -94,8 +94,7 @@ public class PostDymaticPresenter implements PostDymaticContract.presenter {
                             @Override
                             public void onCompleted() {
                                 mView.showLoading(false);
-                                mView.showFailMessage("发送成功");
-//                                mView.onPostFinishCallBack();
+                                mView.onPostFinishCallBack();
                             }
 
                             @Override

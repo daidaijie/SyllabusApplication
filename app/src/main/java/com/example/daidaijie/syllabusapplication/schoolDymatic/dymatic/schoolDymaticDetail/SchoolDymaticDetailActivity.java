@@ -1,9 +1,11 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.schoolDymaticDetail;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +19,7 @@ import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.SchoolDymaticModelComponent;
+import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.widget.EditTextDialog;
 
@@ -83,6 +86,7 @@ public class SchoolDymaticDetailActivity extends BaseActivity implements SchoolD
                 .schoolDymaticDetailModule(new SchoolDymaticDetailModule(getIntent().getIntExtra(EXTRA_SCHOOL_DYMATIC_POS, 0), this))
                 .build().inject(this);
 
+        mSchoolDymaticAdapter.setOnLongClickCallBack(mDymaticDetailPresenter);
         mDymaticDetailPresenter.start();
         mSchoolDymaticAdapter.setOnLikeCallBack(mDymaticDetailPresenter);
 
@@ -186,6 +190,25 @@ public class SchoolDymaticDetailActivity extends BaseActivity implements SchoolD
     @Override
     public void clearDialog(int position) {
         mEditTextDialogMap.remove(position);
+    }
+
+    @Override
+    public void showContentDialog(final SchoolDymatic schoolDymatic, boolean isShowTitle) {
+        String[] items = {"复制"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            ClipboardUtil.copyToClipboard(schoolDymatic.getDescription().toString());
+                        }
+                    }
+                });
+        if (isShowTitle) {
+            builder.setTitle(schoolDymatic.getUser().getAccount());
+        }
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

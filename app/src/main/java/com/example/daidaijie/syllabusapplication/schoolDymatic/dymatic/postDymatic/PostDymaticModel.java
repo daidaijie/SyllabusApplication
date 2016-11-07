@@ -171,6 +171,7 @@ public class PostDymaticModel implements IPostDymaticModel {
         postActivityBean.content = url;
         postActivityBean.source = source;
         postActivityBean.description = msg;
+        postActivityBean.activity_location = locate;
 
         Long startTime = null;
         Long endTime = null;
@@ -182,8 +183,8 @@ public class PostDymaticModel implements IPostDymaticModel {
                 return Observable.error(new Throwable("结束时间不能少于开始时间"));
             }
 
-            postActivityBean.activity_start_time = startTime;
-            postActivityBean.activity_end_time = endTime;
+            postActivityBean.activity_start_time = startTime / 1000;
+            postActivityBean.activity_end_time = endTime / 1000;
         }
 
 

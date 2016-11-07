@@ -3,6 +3,7 @@ package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic;
 import com.example.daidaijie.syllabusapplication.di.qualifier.retrofitQualifier.SchoolRetrofit;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
+import com.example.daidaijie.syllabusapplication.retrofitApi.DeletePostApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolDymaticApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.ThumbUpApi;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
@@ -23,6 +24,6 @@ public class SchoolDymaticModelModule {
     ISchoolDymaticModel provideSchoolDymaticModel(@LoginUser IUserModel userModel,
                                                   @SchoolRetrofit Retrofit retrofit) {
         return new SchoolDymaticModel(retrofit.create(SchoolDymaticApi.class), userModel,
-                retrofit.create(ThumbUpApi.class));
+                retrofit.create(ThumbUpApi.class), retrofit.create(DeletePostApi.class));
     }
 }

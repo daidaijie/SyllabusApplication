@@ -37,5 +37,7 @@ public interface SchoolDymaticDetailContract {
         void showCommentDialog(int position, String msg);
 
         void clearDialog(int position);
+
+        void showContentDialog(SchoolDymatic schoolDymatic, boolean isShowTitle);
     }
 }

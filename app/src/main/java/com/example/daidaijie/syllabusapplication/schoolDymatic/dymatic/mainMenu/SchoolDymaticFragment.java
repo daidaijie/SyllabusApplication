@@ -1,11 +1,13 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.mainMenu;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,9 +18,13 @@ import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseFragment;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.event.DymaticStateChangeEvent;
+import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.SchoolDymaticModelComponent;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.postDymatic.PostDymaticActivity;
+import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
+import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.MyItemAnimator;
 import com.github.ybq.endless.Endless;
 
@@ -55,6 +61,8 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
 
     boolean singleLock;
 
+    AlertDialog mLoadingDialog;
+
     @Inject
     SchoolDymaticPresenter mSchoolDymaticPresenter;
 
@@ -66,6 +74,8 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
     @Override
     protected void init(Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
+
+        mLoadingDialog = LoadingDialogBuiler.getLoadingDialog(mActivity, ThemeUtil.getInstance().colorPrimary);
 
         DaggerSchoolDymaticComponent.builder()
                 .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE(mAppComponent))
@@ -81,6 +91,7 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
         mDymaticRecyclerView.setAdapter(mSchoolDymaticAdapter);
         mDymaticRecyclerView.setItemAnimator(new MyItemAnimator());
         mSchoolDymaticAdapter.setOnLikeCallBack(mSchoolDymaticPresenter);
+        mSchoolDymaticAdapter.setOnLongClickCallBack(mSchoolDymaticPresenter);
 
         mLoadMoreView = mActivity.getLayoutInflater().inflate(R.layout.bottom_load_more, null);
         mLoadMoreView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -106,6 +117,15 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
     @Override
     protected int getContentView() {
         return R.layout.fragment_school_dymamic;
+    }
+
+    @Override
+    public void showLoading(boolean isShow) {
+        if (isShow) {
+            mLoadingDialog.show();
+        } else {
+            mLoadingDialog.dismiss();
+        }
     }
 
     @Override
@@ -172,6 +192,46 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
     }
 
     @Override
+    public void showContentDialog(final SchoolDymatic schoolDymatic, boolean isShowTitle, boolean isShowDelete, final int position) {
+        String[] items;
+        if (isShowDelete) {
+            items = new String[]{"复制", "删除"};
+        } else {
+            items = new String[]{"复制"};
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            ClipboardUtil.copyToClipboard(schoolDymatic.getDescription().toString());
+                        } else {
+                            showEnsureDeleteDialog(position);
+                        }
+                    }
+                });
+        if (isShowTitle) {
+            builder.setTitle(schoolDymatic.getUser().getAccount());
+        }
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void showEnsureDeleteDialog(final int position) {
+        AlertDialog dialog = new AlertDialog.Builder(mActivity)
+                .setMessage("确认删除?")
+                .setNegativeButton("确认", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mSchoolDymaticPresenter.deletePost(position);
+                    }
+                })
+                .setPositiveButton("取消", null).create();
+        dialog.show();
+    }
+
+    @Override
     public void onLoadMore(int i) {
         mDymaticRecyclerView.postDelayed(new Runnable() {
             @Override
@@ -202,5 +262,21 @@ public class SchoolDymaticFragment extends BaseFragment implements SchoolDymatic
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void circleStateChange(DymaticStateChangeEvent event) {
         mSchoolDymaticAdapter.notifyItemChanged(event.position);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void toTop(ToTopEvent toTopEvent) {
+        mDymaticRecyclerView.smoothScrollToPosition(0);
+        if (toTopEvent.isRefresh) {
+            mDymaticRecyclerView.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSchoolDymaticPresenter.refresh();
+                }
+            }, 100);
+        }
+        if (toTopEvent.isShowSuccuess) {
+            SnackbarUtil.ShortSnackbar(mDymaticRecyclerView, "发送成功", SnackbarUtil.Confirm).show();
+        }
     }
 }

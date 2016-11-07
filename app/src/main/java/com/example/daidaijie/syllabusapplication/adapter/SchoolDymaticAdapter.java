@@ -19,6 +19,7 @@ import com.example.daidaijie.syllabusapplication.other.CommonWebActivity;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.widget.ThumbUpView;
 
 import java.util.List;
@@ -85,6 +86,7 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
         void onLike(int position, boolean isLike, OnLikeStateChangeListener onLikeStateChangeListener);
     }
 
+
     OnLikeCallBack mOnLikeCallBack;
 
     public OnLikeCallBack getOnLikeCallBack() {
@@ -95,6 +97,22 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
         mOnLikeCallBack = onLikeCallBack;
     }
 
+    public static final int MODE_ITEM_CLICK = 0;
+    public static final int MODE_TEXT_CLICK = 1;
+
+    public interface OnLongClickCallBack {
+        void onLongClick(int position, int mode);
+    }
+
+    OnLongClickCallBack mOnLongClickCallBack;
+
+    public OnLongClickCallBack getOnLongClickCallBack() {
+        return mOnLongClickCallBack;
+    }
+
+    public void setOnLongClickCallBack(OnLongClickCallBack onLongClickCallBack) {
+        mOnLongClickCallBack = onLongClickCallBack;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -117,18 +135,24 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
 
         holder.mPostTimeTextView.setText("发布时间: " + schoolDymatic.getPost_time());
 
-        if (schoolDymatic.getActivity_end_time() != null) {
+        if (schoolDymatic.getActivity_start_time() != null) {
             StringBuilder sb = new StringBuilder();
             sb.append(schoolDymatic.getActivity_start_time().substring(0, schoolDymatic.getActivity_start_time().length() - 3));
             if (schoolDymatic.getActivity_end_time() != null && !schoolDymatic.getActivity_end_time().trim().isEmpty()) {
-                sb.append("　——>　");
+                sb.append(" —> ");
                 sb.append(schoolDymatic.getActivity_end_time().substring(0, schoolDymatic.getActivity_end_time().length() - 3));
             }
             holder.mPostInfoTextView.setText("活动时间: " + sb.toString());
         } else {
             holder.mPostInfoTextView.setVisibility(View.GONE);
         }
-
+        if (schoolDymatic.getActivity_location() == null || schoolDymatic.getActivity_location().isEmpty()
+                || schoolDymatic.getActivity_location().equals("未指定")) {
+            holder.mPostLocateTextView.setVisibility(View.GONE);
+        } else {
+            holder.mPostLocateTextView.setVisibility(View.VISIBLE);
+            holder.mPostLocateTextView.setText("活动地点: " + schoolDymatic.getActivity_location());
+        }
 
         holder.mContentTextView.setText(schoolDymatic.getDescription());
 
@@ -237,6 +261,26 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
             });
         }
 
+        holder.mContentTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnLongClickCallBack != null) {
+                    mOnLongClickCallBack.onLongClick(position, MODE_TEXT_CLICK);
+                }
+                return true;
+            }
+        });
+
+        holder.mItemCardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnLongClickCallBack != null) {
+                    mOnLongClickCallBack.onLongClick(position, MODE_ITEM_CLICK);
+                }
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -278,6 +322,8 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
         CardView mItemCardView;
         @BindView(R.id.postTimeTextView)
         TextView mPostTimeTextView;
+        @BindView(R.id.postLocateTextView)
+        TextView mPostLocateTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);

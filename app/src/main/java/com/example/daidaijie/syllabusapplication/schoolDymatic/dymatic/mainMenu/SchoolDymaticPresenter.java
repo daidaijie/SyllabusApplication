@@ -1,6 +1,8 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.mainMenu;
 
+import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
+import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
@@ -19,7 +21,7 @@ import rx.Subscriber;
  * Created by daidaijie on 2016/10/21.
  */
 
-public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter {
+public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter, SchoolDymaticAdapter.OnLongClickCallBack {
 
     SchoolDymaticContract.view mView;
 
@@ -103,6 +105,34 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter {
     }
 
     @Override
+    public void deletePost(int position) {
+        mView.showLoading(true);
+        mISchoolDymaticModel.deletePost(position)
+                .subscribe(new Subscriber<List<SchoolDymatic>>() {
+                    @Override
+                    public void onCompleted() {
+                        mView.showLoading(false);
+                        mView.showSuccessMessage("删除成功");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.showLoading(false);
+                        if (e.getMessage() == null) {
+                            mView.showFailMessage("删除失败");
+                        } else {
+                            mView.showFailMessage(e.getMessage());
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<SchoolDymatic> schoolDymatics) {
+                        mView.showData(schoolDymatics);
+                    }
+                });
+    }
+
+    @Override
     public void start() {
         refresh();
     }
@@ -157,5 +187,21 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter {
                     });
         }
 
+    }
+
+    @Override
+    public void onLongClick(final int position, final int mode) {
+        mISchoolDymaticModel.getDymaticByPosition(position, new IBaseModel.OnGetSuccessCallBack<SchoolDymatic>() {
+            @Override
+            public void onGetSuccess(SchoolDymatic schoolDymatic) {
+                boolean canDelete = false;
+                if (mIUserModel.getUserBaseBeanNormal().getLevel() > 1 ||
+                        schoolDymatic.getUser().getId() == mIUserModel.getUserBaseBeanNormal().getId()) {
+                    canDelete = true;
+                }
+                mView.showContentDialog(schoolDymatic, mIUserModel.getUserBaseBeanNormal().getLevel() > 1,
+                        mode == CirclesAdapter.MODE_ITEM_CLICK && canDelete, position);
+            }
+        });
     }
 }

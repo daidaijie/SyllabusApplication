@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic;
 
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
+import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
 
@@ -23,4 +24,7 @@ public interface ISchoolDymaticModel {
     Observable<ThumbUpReturn> like(int position);
 
     Observable<Void> unlike(int position);
+
+    Observable<List<SchoolDymatic>> deletePost(int position);
+
 }

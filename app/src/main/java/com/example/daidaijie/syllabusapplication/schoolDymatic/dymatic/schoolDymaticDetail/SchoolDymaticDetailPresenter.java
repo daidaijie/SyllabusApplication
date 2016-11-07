@@ -4,11 +4,14 @@ import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
 import com.example.daidaijie.syllabusapplication.bean.CommentsBean;
+import com.example.daidaijie.syllabusapplication.bean.PostListBean;
 import com.example.daidaijie.syllabusapplication.bean.SchoolDymatic;
 import com.example.daidaijie.syllabusapplication.bean.ThumbUpReturn;
+import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.event.DymaticStateChangeEvent;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.ISchoolDymaticModel;
+import com.example.daidaijie.syllabusapplication.user.IUserModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +26,7 @@ import rx.Subscriber;
  * Created by daidaijie on 2016/10/21.
  */
 
-public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract.presenter {
+public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract.presenter, SchoolDymaticAdapter.OnLongClickCallBack {
 
     int mPosition;
 
@@ -33,16 +36,20 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
 
     ICommentModel mICommentModel;
 
+    IUserModel mIUserModel;
+
     @Inject
     @PerActivity
     public SchoolDymaticDetailPresenter(int position,
                                         SchoolDymaticDetailContract.view view,
                                         ISchoolDymaticModel schoolDymaticModel,
-                                        ICommentModel commentModel) {
+                                        ICommentModel commentModel,
+                                        @LoginUser IUserModel userModel) {
         mPosition = position;
         mView = view;
         mISchoolDymaticModel = schoolDymaticModel;
         mICommentModel = commentModel;
+        mIUserModel = userModel;
     }
 
     @Override
@@ -201,5 +208,15 @@ public class SchoolDymaticDetailPresenter implements SchoolDymaticDetailContract
                     });
         }
 
+    }
+
+    @Override
+    public void onLongClick(int position, int mode) {
+        mISchoolDymaticModel.getDymaticByPosition(mPosition, new IBaseModel.OnGetSuccessCallBack<SchoolDymatic>() {
+            @Override
+            public void onGetSuccess(SchoolDymatic schoolDymatic) {
+                mView.showContentDialog(schoolDymatic, mIUserModel.getUserBaseBeanNormal().getLevel() > 1);
+            }
+        });
     }
 }

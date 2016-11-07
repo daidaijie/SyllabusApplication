@@ -64,12 +64,24 @@
             android:textSize="12sp"
             tools:text="2016-08-06 17:58:20"/>
 
+        <TextView
+            android:id="@+id/postLocateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/postTimeTextView"
+            android:layout_marginTop="4dp"
+            android:gravity="top"
+            android:singleLine="true"
+            android:textColor="@color/defaultShowColor"
+            android:textSize="12sp"
+            tools:text="2016-08-06 17:58:20"/>
 
         <TextView
             android:id="@+id/contentTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/postTimeTextView"
+            android:layout_below="@+id/postLocateTextView"
             android:layout_marginTop="8dp"
             android:background="@drawable/bg_circle_cotent"
             android:textColor="@color/defaultTextColor"

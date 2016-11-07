@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.event.DeletePhotoEvent;
+import com.example.daidaijie.syllabusapplication.event.ToTopEvent;
 import com.example.daidaijie.syllabusapplication.other.PhotoDetailActivity;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.SchoolDymaticModelComponent;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
@@ -156,6 +157,12 @@ public class PostDymaticActivity extends BaseActivity implements PostDymaticCont
         } else {
             mLoadingDialog.dismiss();
         }
+    }
+
+    @Override
+    public void onPostFinishCallBack() {
+        EventBus.getDefault().post(new ToTopEvent(true, "发送成功"));
+        this.finish();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
