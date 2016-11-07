@@ -19,6 +19,7 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.exam.ExamModelComponent;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.widget.CustomMarqueeTextView;
 import com.example.daidaijie.syllabusapplication.widget.LessonDetailLayout;
@@ -65,7 +66,6 @@ public class ExamDetailActivity extends BaseActivity implements ExamDetailContra
     @BindView(R.id.examStateLayout)
     LessonDetailLayout mExamStateLayout;
 
-
     @Inject
     ExamDetailPresenter mExamDetailPresenter;
 
@@ -84,10 +84,6 @@ public class ExamDetailActivity extends BaseActivity implements ExamDetailContra
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setEnterTransition(new Explode().setDuration(300));
-        }
 
         mToolbarLayout.setTitle("");
         mToolbar.setTitle("");
@@ -122,14 +118,19 @@ public class ExamDetailActivity extends BaseActivity implements ExamDetailContra
         });
 
         DaggerExamDetailComponent.builder()
-                .examModelComponent(ExamModelComponent.getINSTANCE())
+                .examModelComponent(ExamModelComponent.newInstance(mAppComponent))
                 .examDetailModule(
                         new ExamDetailModule(this, getIntent().getIntExtra(EXTRA_EXAM_POS, 0)))
                 .build().inject(this);
 
 
-        mExamDetailPresenter.start();
-        mExamDetailPresenter.setUpstate();
+        mExamStateLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mExamDetailPresenter.start();
+                mExamDetailPresenter.setUpstate();
+            }
+        });
 
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
@@ -142,7 +143,7 @@ public class ExamDetailActivity extends BaseActivity implements ExamDetailContra
                     }
                 });
             }
-        }, 0, 30000);
+        }, 0, 3000);
 
     }
 

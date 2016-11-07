@@ -485,7 +485,6 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
         mTimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                LoggerUtil.e("aaaaaa");
                 streamModel.getStreamInfo()
                         .subscribe(new Action1<StreamInfo>() {
                             @Override

@@ -27,10 +27,12 @@ public abstract class UserComponent {
     private static UserComponent INSTANCE;
 
     public static UserComponent buildInstance(AppComponent appComponent) {
-        INSTANCE = DaggerUserComponent.builder()
-                .appComponent(appComponent)
-                .userModule(new UserModule())
-                .build();
+        if (INSTANCE == null) {
+            INSTANCE = DaggerUserComponent.builder()
+                    .appComponent(appComponent)
+                    .userModule(new UserModule())
+                    .build();
+        }
         return INSTANCE;
     }
 

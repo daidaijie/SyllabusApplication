@@ -13,9 +13,11 @@ import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.OAItemAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseFragment;
 import com.example.daidaijie.syllabusapplication.bean.OABean;
+import com.example.daidaijie.syllabusapplication.bean.OASearchBean;
 import com.example.daidaijie.syllabusapplication.event.OAClearEvent;
 import com.example.daidaijie.syllabusapplication.officeAutomation.OAModelComponent;
 import com.example.daidaijie.syllabusapplication.officeAutomation.oaDetail.OADetailActivity;
+import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -63,7 +65,7 @@ public class OfficeAutomationFragment extends BaseFragment implements OAContract
         Bundle args = getArguments();
         mPosition = args.getInt(EXTRA_POS, 0);
         DaggerOAComponent.builder()
-                .oAModelComponent(OAModelComponent.getINSTANCE())
+                .oAModelComponent(OAModelComponent.newInstance(UserComponent.buildInstance(mAppComponent), new OASearchBean()))
                 .oAModule(new OAModule(this, mPosition))
                 .build().inject(this);
     }

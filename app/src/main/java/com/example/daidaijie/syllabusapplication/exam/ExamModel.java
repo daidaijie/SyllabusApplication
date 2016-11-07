@@ -5,7 +5,11 @@ import com.example.daidaijie.syllabusapplication.bean.Exam;
 import com.example.daidaijie.syllabusapplication.bean.ExamInfo;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.retrofitApi.ExamInfoApi;
+import com.example.daidaijie.syllabusapplication.util.GsonUtil;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +113,23 @@ public class ExamModel implements IExamModel {
 
     @Override
     public Exam getExamInList(int position) {
+        if (mExams != null) {
+            return mExams.get(position);
+        }
+
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<Exam> results = realm.where(Exam.class)
+                        .equalTo("mSemester.startYear", mILoginModel.getCurrentSemester().getStartYear())
+                        .equalTo("mSemester.season", mILoginModel.getCurrentSemester().getSeason())
+                        .findAll();
+                if (results.size() != 0) {
+                    mExams = realm.copyFromRealm(results);
+                }
+            }
+        });
+
         return mExams.get(position);
     }
 

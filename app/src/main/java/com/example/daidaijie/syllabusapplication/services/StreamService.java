@@ -17,9 +17,6 @@ import com.example.daidaijie.syllabusapplication.bean.StreamInfo;
 
 public class StreamService extends Service {
 
-    public static final String EXTRA_STREAM_INFO = "com.example.daidaijie.syllabusapplication" +
-            ".services.StreamService.StreamInfo";
-
     public static Intent getIntent(Context context) {
         Intent intent = new Intent(context, StreamService.class);
         return intent;
@@ -44,7 +41,6 @@ public class StreamService extends Service {
         );
 
         if (type == StreamInfo.TYPE_SUCCESS && mStreamInfo != null) {
-
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext());
             double progress = (mStreamInfo.getNowByte() / mStreamInfo.getAllByte()) * 100;

@@ -38,6 +38,19 @@ public class LoginModel implements ILoginModel {
 
     @Override
     public UserLogin getUserLogin() {
+        if (mUserLogin != null) {
+            return mUserLogin;
+        } else {
+            mRealm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<UserLogin> results = realm.where(UserLogin.class).findAll();
+                    if (results.size() != 0) {
+                        mUserLogin = realm.copyFromRealm(results.first());
+                    }
+                }
+            });
+        }
         return mUserLogin;
     }
 
@@ -98,7 +111,6 @@ public class LoginModel implements ILoginModel {
                 if (results.size() != 0) {
                     mUserLogin = realm.copyFromRealm(results.first());
                 }
-
             }
         });
         if (mUserLogin != null) {

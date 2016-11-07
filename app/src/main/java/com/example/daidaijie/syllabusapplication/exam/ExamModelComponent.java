@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.exam;
 
+import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.di.scope.PerModule;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
 
@@ -17,11 +18,13 @@ public abstract class ExamModelComponent {
 
     private static ExamModelComponent INSTANCE;
 
-    public static ExamModelComponent newInstance() {
-        INSTANCE = DaggerExamModelComponent.builder()
-                .userComponent(UserComponent.getINSTANCE())
-                .examModelModule(new ExamModelModule())
-                .build();
+    public static ExamModelComponent newInstance(AppComponent appComponent) {
+        if (INSTANCE == null) {
+            INSTANCE = DaggerExamModelComponent.builder()
+                    .userComponent(UserComponent.buildInstance(appComponent))
+                    .examModelModule(new ExamModelModule())
+                    .build();
+        }
         return INSTANCE;
     }
 

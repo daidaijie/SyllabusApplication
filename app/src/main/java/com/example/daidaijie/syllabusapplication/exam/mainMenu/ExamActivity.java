@@ -40,8 +40,6 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
     @Inject
     ExamPresenter mExamPresenter;
 
-    public static final String EXTRA_IS_LOADED = ExamActivity.class.getCanonicalName() + ".isLoaded";
-
     boolean isLoaded;
 
     @Override
@@ -60,19 +58,14 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
         mExamAdapter = new ExamAdapter(this, null);
         mExamListRecycleList.setAdapter(mExamAdapter);
 
-        ExamModelComponent.newInstance();
         DaggerExamComponent.builder()
-                .examModelComponent(ExamModelComponent.getINSTANCE())
+                .examModelComponent(ExamModelComponent.newInstance(mAppComponent))
                 .examModule(new ExamModule(this))
                 .build().inject(this);
 
         mRefreshExamLayout.post(new Runnable() {
             @Override
             public void run() {
-                if (savedInstanceState != null) {
-                    isLoaded = savedInstanceState.getBoolean(EXTRA_IS_LOADED, false);
-                    mExamPresenter.setIsLoaded(isLoaded);
-                }
                 mExamPresenter.start();
             }
         });
@@ -89,12 +82,6 @@ public class ExamActivity extends BaseActivity implements ExamContract.view, Swi
                 });
             }
         }, 0, 1000 * 30);
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(EXTRA_IS_LOADED, isLoaded);
     }
 
     @Override

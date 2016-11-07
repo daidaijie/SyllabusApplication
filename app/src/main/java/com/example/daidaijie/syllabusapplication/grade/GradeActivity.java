@@ -64,7 +64,7 @@ public class GradeActivity extends BaseActivity implements GradeContract.view, S
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         DaggerGradeComponent.builder()
-                .userComponent(UserComponent.getINSTANCE())
+                .userComponent(UserComponent.buildInstance(mAppComponent))
                 .gradeModule(new GradeModule(this))
                 .build().inject(this);
 
