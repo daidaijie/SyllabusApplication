@@ -18,12 +18,12 @@
             <item
                 android:id="@+id/nav_add_lesson"
                 android:icon="@drawable/ic_add_lesson"
-                android:title="添加课程"/>
+                android:title="添加课程(未完成)"/>
 
             <item
                 android:id="@+id/nav_syllabus_collection"
                 android:icon="@drawable/ic_syllabus_collection"
-                android:title="课表收集"/>
+                android:title="课表收集(未完成)"/>
 
         </menu>
     </item>

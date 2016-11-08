@@ -18,6 +18,7 @@ import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.AppComponent;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import cn.nekocode.emojix.Emojix;
@@ -144,5 +145,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         setupToolbar(toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(this.getClass().getName());
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(this.getClass().getName());
+        MobclickAgent.onPause(this);
     }
 }

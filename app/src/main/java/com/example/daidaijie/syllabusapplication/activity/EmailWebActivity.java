@@ -71,7 +71,7 @@ public class EmailWebActivity extends BaseActivity {
                 super.onProgressChanged(view, newProgress);
             }
         });
-        mEmailWebView.loadUrl("https://sso.stu.edu.cn/login?service=https%3A%2F%2Fmy.stu.edu.cn%2Fv3%2Fdiscussion%2F");
+        mEmailWebView.loadUrl("https://partner.outlook.cn/owa/?realm=stu.edu.cn#path=/mail/inbox");
 
         mEmailWebView.setDownloadListener(new DownloadListener() {
             @Override

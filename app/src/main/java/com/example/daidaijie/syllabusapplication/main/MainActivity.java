@@ -365,6 +365,21 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
         });
     }
 
+    @Override
+    public void showUpdateInfo(String updateInfo, final OnUpdateClickCallBack onUpdateClickCallBack) {
+        AlertDialog updateDialog = new AlertDialog.Builder(this)
+                .setTitle("更新详情")
+                .setMessage(updateInfo)
+                .setPositiveButton("取消", null)
+                .setNegativeButton("更新", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        onUpdateClickCallBack.onUpdate();
+                    }
+                }).create();
+        updateDialog.show();
+    }
+
     private void setOnItemClick() {
         mToWifiItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -477,7 +492,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     protected void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
-
+        stopStreamListen();
     }
 
     private void startStreamListen() {
@@ -489,7 +504,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
                         .subscribe(new Action1<StreamInfo>() {
                             @Override
                             public void call(StreamInfo streamInfo) {
-                                if (InternetModel.getInstance().isOpen()){
+                                if (InternetModel.getInstance().isOpen()) {
                                     Intent intent = StreamService.getIntent(MainActivity.this);
                                     startService(intent);
                                 }
@@ -497,7 +512,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
                         }, new Action1<Throwable>() {
                             @Override
                             public void call(Throwable throwable) {
-                                if (InternetModel.getInstance().isOpen()){
+                                if (InternetModel.getInstance().isOpen()) {
                                     Intent intent = StreamService.getIntent(MainActivity.this);
                                     startService(intent);
                                 }
@@ -508,7 +523,7 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     }
 
     private void stopStreamListen() {
-        if (mTimer!=null){
+        if (mTimer != null) {
             mTimer.cancel();
             Intent intent = StreamService.getIntent(MainActivity.this);
             stopService(intent);

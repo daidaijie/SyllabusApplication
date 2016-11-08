@@ -17,6 +17,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="565fd457e0f55adeec0002dd" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="smallfly" />
+
         <activity
             android:name=".syllabus.main.activity.SyllabusActivity"
             android:screenOrientation="portrait">

@@ -6,14 +6,11 @@ import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.BannerBeen;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UpdateInfoBean;
-import com.example.daidaijie.syllabusapplication.bean.UserInfo;
 import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.other.update.IUpdateModel;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
-import com.example.daidaijie.syllabusapplication.util.GsonUtil;
-import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
-import com.orhanobut.logger.Logger;
+import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
 
@@ -53,6 +50,8 @@ public class MainPresenter implements MainContract.presenter {
     @Override
     public void start() {
 
+        MobclickAgent.onProfileSignIn(mUserModel.getUserInfoNormal().getUsername());
+
         showUserInfo();
 
         mView.showSemester(mILoginModel.getCurrentSemester());
@@ -80,17 +79,29 @@ public class MainPresenter implements MainContract.presenter {
                 });
 
         mIUpdateModel.getUpdateInfo()
-                .subscribe(new Action1<UpdateInfoBean>() {
+                .subscribe(new Subscriber<UpdateInfoBean>() {
                     @Override
-                    public void call(UpdateInfoBean updateInfoBean) {
-                        if (updateInfoBean.getIntVersionCode() > App.versionCode) {
-                            mView.showInfoMessage("需要更新啦");
-                        }
-                    }
-                }, new Action1<Throwable>() {
-                    @Override
-                    public void call(Throwable throwable) {
+                    public void onCompleted() {
 
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(final UpdateInfoBean updateInfoBean) {
+                        if (updateInfoBean.getIntVersionCode() > App.versionCode) {
+                            final String updateInfo = "更新版本: " + updateInfoBean.getVersionName() + "\n"
+                                    + "版本描述: \n" + updateInfoBean.getVersionDescription();
+                            mView.showUpdateInfo(updateInfo, new MainContract.view.OnUpdateClickCallBack() {
+                                @Override
+                                public void onUpdate() {
+
+                                }
+                            });
+                        }
                     }
                 });
     }

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.AppComponent;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 
@@ -59,6 +60,18 @@ public abstract class BaseFragment extends Fragment {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light
         );
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart(this.getClass().getName());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(this.getClass().getName());
     }
 
 }

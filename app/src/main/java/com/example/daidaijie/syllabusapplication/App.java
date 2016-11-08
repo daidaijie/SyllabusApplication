@@ -64,7 +64,6 @@ public class App extends Application {
         }
         Realm.setDefaultConfiguration(builder.build());
 
-
         mAppComponent = DaggerAppComponent.builder()
                 .applicationModule(new ApplicationModule(this))
                 .retrofitModule(new RetrofitModule())
@@ -83,6 +82,7 @@ public class App extends Application {
             PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
             versionCode = pi.versionCode;
             versionName = pi.versionName;
+            versionCode = 38;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

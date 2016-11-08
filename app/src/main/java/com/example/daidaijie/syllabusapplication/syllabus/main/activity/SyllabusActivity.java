@@ -284,11 +284,11 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
         } else if (id == R.id.nav_save_syllabus) {
             EventBus.getDefault().post(new SaveSyllabusEvent(pageIndex));
         } else if (id == R.id.nav_syllabus_collection) {
-            Intent intent = new Intent(this, SyllabusCollectionActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_add_lesson) {
-            Intent intent = new Intent(this, AddLessonActivity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(this, SyllabusCollectionActivity.class);
+//            startActivity(intent);
+//        } else if (id == R.id.nav_add_lesson) {
+//            Intent intent = new Intent(this, AddLessonActivity.class);
+//            startActivity(intent);
         }
         //点击后关闭drawerLayout
         mDrawerLayout.closeDrawer(GravityCompat.START);

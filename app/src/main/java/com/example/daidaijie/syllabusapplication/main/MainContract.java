@@ -15,6 +15,7 @@ import java.util.List;
 public interface MainContract {
 
     interface presenter extends BasePresenter {
+
         void showUserInfo();
 
         void setCurrentSemester(Semester semester);
@@ -23,6 +24,11 @@ public interface MainContract {
     }
 
     interface view extends BaseView<presenter> {
+
+        interface OnUpdateClickCallBack {
+            void onUpdate();
+        }
+
         void setBannerPage(List<Banner> banners);
 
         void showUserInfo(UserInfo mUserInfo);
@@ -32,6 +38,8 @@ public interface MainContract {
         void showInfoMessage(String msg);
 
         void setCurrentSemester(Semester semester);
+
+        void showUpdateInfo(String updateInfo, OnUpdateClickCallBack onUpdateClickCallBack);
     }
 
 }
