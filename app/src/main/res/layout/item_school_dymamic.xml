@@ -39,7 +39,7 @@
 
 
         <TextView
-            android:id="@+id/postInfoTextView"
+            android:id="@+id/postTimeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -52,11 +52,11 @@
             tools:text="2016-08-06 17:58:20"/>
 
         <TextView
-            android:id="@+id/postTimeTextView"
+            android:id="@+id/postInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/postInfoTextView"
+            android:layout_below="@+id/postTimeTextView"
             android:layout_marginTop="4dp"
             android:gravity="top"
             android:singleLine="true"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@+id/postTimeTextView"
+            android:layout_below="@+id/postInfoTextView"
             android:layout_marginTop="4dp"
             android:gravity="top"
             android:singleLine="true"

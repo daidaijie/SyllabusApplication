@@ -146,6 +146,8 @@ public class SchoolDymaticAdapter extends RecyclerView.Adapter<SchoolDymaticAdap
         } else {
             holder.mPostInfoTextView.setVisibility(View.GONE);
         }
+
+
         if (schoolDymatic.getActivity_location() == null || schoolDymatic.getActivity_location().isEmpty()
                 || schoolDymatic.getActivity_location().equals("未指定")) {
             holder.mPostLocateTextView.setVisibility(View.GONE);

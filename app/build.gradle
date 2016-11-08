@@ -11,7 +11,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 23
         versionCode 40
-        versionName "2.0.0 beta"
+        versionName "2.0.0 beta1"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
