@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.other.update;
 
+import android.content.Context;
+
 import com.example.daidaijie.syllabusapplication.base.BasePresenter;
 import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.UpdateInfoBean;
@@ -14,7 +16,7 @@ public interface UpdateContract {
     }
 
 
-    interface view extends BaseView<presenter> {
+    interface view extends BaseView<presenter>, IDownloadView, UpdateInstaller{
         void showFailMessage(String msg);
 
         void showInfoMessage(String msg);
@@ -22,6 +24,7 @@ public interface UpdateContract {
         void showLoading(boolean isShow);
 
         void showInfo(UpdateInfoBean updateInfoBean);
+
     }
 
 }

@@ -1,5 +1,10 @@
 package com.example.daidaijie.syllabusapplication.other.update;
 
+
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
@@ -12,13 +17,16 @@ import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.UpdateInfoBean;
 import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.util.UpdateAsync;
+
+import java.io.File;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import info.hoang8f.widget.FButton;
 
-public class UpdateActivity extends BaseActivity implements UpdateContract.view, SwipeRefreshLayout.OnRefreshListener {
+public class UpdateActivity extends BaseActivity implements UpdateContract.view, SwipeRefreshLayout.OnRefreshListener, IDownloadView, UpdateInstaller {
 
     @BindView(R.id.titleTextView)
     TextView mTitleTextView;
@@ -41,6 +49,8 @@ public class UpdateActivity extends BaseActivity implements UpdateContract.view,
     UpdatePresenter mUpdatePresenter;
     @BindView(R.id.newVersionTextView)
     TextView mNewVersionTextView;
+
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +111,13 @@ public class UpdateActivity extends BaseActivity implements UpdateContract.view,
         int newVersionCode = Integer.parseInt(updateInfoBean.getVersionCode());
         if (newVersionCode > App.versionCode) {
             mUpdateButton.setVisibility(View.VISIBLE);
+            mUpdateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    UpdateAsync updateAsync = new UpdateAsync(UpdateActivity.this, UpdateActivity.this, updateInfoBean.getDownload_address(), updateInfoBean.getApk_file_name());
+                    updateAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                }
+            });
         }
 
         mCopyUpdateButton.setVisibility(View.VISIBLE);
@@ -116,7 +133,48 @@ public class UpdateActivity extends BaseActivity implements UpdateContract.view,
     }
 
     @Override
+    public void showProgress(int done, int total) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("下载进度");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgress(0);
+            progressDialog.setMax(total);
+            // 暂时不考虑这个功能了
+//            progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    showInfoMessage("取消下载");
+//                }
+//            });
+            progressDialog.setCancelable(false);
+//            progressDialog.show();
+        }
+
+        progressDialog.setMax(total);
+        progressDialog.setProgress(done);
+        progressDialog.show();
+
+
+    }
+
+
+    @Override
     public void onRefresh() {
         mUpdatePresenter.start();
+    }
+
+    @Override
+    public void installUpdate(File apk) {
+        progressDialog.dismiss();
+        if (apk != null && apk.exists()){
+            showInfoMessage("文件下载成功");
+            // 隐式的 intent
+            Intent install_apk = new Intent(Intent.ACTION_VIEW);
+            // 安装 apk 文件
+            install_apk.setDataAndType(Uri.parse("file://" + apk.toString()), "application/vnd.android.package-archive");
+            startActivity(install_apk);
+        }else
+            showInfoMessage("文件下载失败");
     }
 }

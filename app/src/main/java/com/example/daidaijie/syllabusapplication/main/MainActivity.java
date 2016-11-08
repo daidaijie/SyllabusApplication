@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.main;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -43,6 +44,8 @@ import com.example.daidaijie.syllabusapplication.exam.mainMenu.ExamActivity;
 import com.example.daidaijie.syllabusapplication.grade.GradeActivity;
 import com.example.daidaijie.syllabusapplication.login.login.LoginActivity;
 import com.example.daidaijie.syllabusapplication.model.InternetModel;
+import com.example.daidaijie.syllabusapplication.other.update.IDownloadView;
+import com.example.daidaijie.syllabusapplication.other.update.UpdateInstaller;
 import com.example.daidaijie.syllabusapplication.retrofitApi.SchoolInternetApi;
 import com.example.daidaijie.syllabusapplication.services.StreamService;
 import com.example.daidaijie.syllabusapplication.stream.IStreamModel;
@@ -64,6 +67,7 @@ import com.example.daidaijie.syllabusapplication.user.UserComponent;
 import com.example.daidaijie.syllabusapplication.util.ClipboardUtil;
 import com.example.daidaijie.syllabusapplication.util.DensityUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.util.UpdateAsync;
 import com.example.daidaijie.syllabusapplication.widget.ItemCardLayout;
 import com.example.daidaijie.syllabusapplication.widget.SelectSemesterBuilder;
 import com.example.daidaijie.syllabusapplication.widget.ShareWXDialog;
@@ -81,6 +85,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -94,7 +99,8 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import rx.functions.Action1;
 
-public class MainActivity extends BaseActivity implements MainContract.view, NavigationView.OnNavigationItemSelectedListener, ShareWXDialog.OnShareSelectCallBack {
+public class MainActivity extends BaseActivity implements
+        MainContract.view, NavigationView.OnNavigationItemSelectedListener, ShareWXDialog.OnShareSelectCallBack, IDownloadView, UpdateInstaller {
 
     @BindView(R.id.convenientBanner)
     ConvenientBanner mConvenientBanner;
@@ -143,6 +149,10 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     Timer mTimer;
 
     IStreamModel streamModel;
+
+    // 用于显示下载进度
+    private ProgressDialog progressDialog;
+    private UpdateAsync updateAsync;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -206,6 +216,45 @@ public class MainActivity extends BaseActivity implements MainContract.view, Nav
     @Override
     protected int getContentView() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    public void showProgress(int done, int total) {
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("下载进度");
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressDialog.setProgress(0);
+            showInfoMessage("已下载大小" + done + " 总大小" + total);
+            progressDialog.setMax(total);
+            // 暂时不考虑这个功能了
+//            progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//                    showInfoMessage("取消下载");
+//                }
+//            });
+            progressDialog.setCancelable(false);
+//            progressDialog.show();
+        }
+
+        progressDialog.show();
+        progressDialog.setProgress(done);
+
+    }
+
+    @Override
+    public void installUpdate(File apk) {
+        progressDialog.dismiss();
+        if (apk != null && apk.exists()){
+            showInfoMessage("文件下载成功");
+            // 隐式的 intent
+            Intent install_apk = new Intent(Intent.ACTION_VIEW);
+            // 安装 apk 文件
+            install_apk.setDataAndType(Uri.parse("file://" + apk.toString()), "application/vnd.android.package-archive");
+            startActivity(install_apk);
+        }else
+            showInfoMessage("文件下载失败");
     }
 
 

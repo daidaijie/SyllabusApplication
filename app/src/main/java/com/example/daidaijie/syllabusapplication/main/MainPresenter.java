@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.main;
 
+import android.os.AsyncTask;
+
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.ILoginModel;
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
@@ -10,6 +12,7 @@ import com.example.daidaijie.syllabusapplication.di.qualifier.user.LoginUser;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.other.update.IUpdateModel;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
+import com.example.daidaijie.syllabusapplication.util.UpdateAsync;
 import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
@@ -98,7 +101,8 @@ public class MainPresenter implements MainContract.presenter {
                             mView.showUpdateInfo(updateInfo, new MainContract.view.OnUpdateClickCallBack() {
                                 @Override
                                 public void onUpdate() {
-
+                                    UpdateAsync updateAsync = new UpdateAsync(mView, mView, updateInfoBean.getDownload_address(), updateInfoBean.getApk_file_name());
+                                    updateAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
                                 }
                             });
                         }

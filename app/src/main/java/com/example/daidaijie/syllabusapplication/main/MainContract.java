@@ -5,6 +5,8 @@ import com.example.daidaijie.syllabusapplication.base.BaseView;
 import com.example.daidaijie.syllabusapplication.bean.Banner;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.other.update.IDownloadView;
+import com.example.daidaijie.syllabusapplication.other.update.UpdateInstaller;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ public interface MainContract {
         void showSemesterSelect();
     }
 
-    interface view extends BaseView<presenter> {
+    interface view extends BaseView<presenter>, IDownloadView, UpdateInstaller {
 
         interface OnUpdateClickCallBack {
             void onUpdate();
