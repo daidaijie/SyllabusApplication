@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.postDymatic;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.schoolDymatic.circle.postContent.IPostContentModel;
 
@@ -103,7 +105,11 @@ public class PostDymaticPresenter implements PostDymaticContract.presenter {
                                 if (e.getMessage() == null) {
                                     mView.showFailMessage("发送失败");
                                 } else {
-                                    mView.showFailMessage(e.getMessage().toUpperCase());
+                                    if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                        mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                                    } else {
+                                        mView.showFailMessage(e.getMessage().toUpperCase());
+                                    }
                                 }
                             }
 

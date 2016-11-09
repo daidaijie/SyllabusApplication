@@ -32,4 +32,7 @@
     <color name="colorBlack">#393A3F</color>
     <color name="colorBlackDark">#303135</color>
 
+    <color name="colorBili">#FA729A</color>
+    <color name="colorBiliDark">#fc4d80</color>
+
 </resources>

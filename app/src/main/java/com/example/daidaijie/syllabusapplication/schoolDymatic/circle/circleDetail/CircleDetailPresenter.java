@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.circle.circleDetail;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.CommentInfo;
@@ -117,7 +119,11 @@ public class CircleDetailPresenter implements CircleDetailContract.presenter, Ci
                         if (e.getMessage() == null) {
                             mView.showFailMessage("评论失败");
                         } else {
-                            mView.showFailMessage(e.getMessage());
+                            if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                            } else {
+                                mView.showFailMessage(e.getMessage().toUpperCase());
+                            }
                         }
                     }
 
@@ -170,7 +176,11 @@ public class CircleDetailPresenter implements CircleDetailContract.presenter, Ci
                             if (e.getMessage() == null) {
                                 mView.showFailMessage("点赞失败");
                             } else {
-                                mView.showFailMessage(e.getMessage().toUpperCase());
+                                if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                    mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                                } else {
+                                    mView.showFailMessage(e.getMessage().toUpperCase());
+                                }
                             }
                             onLikeStateChangeListener.onFinish();
                         }
@@ -194,7 +204,11 @@ public class CircleDetailPresenter implements CircleDetailContract.presenter, Ci
                             if (e.getMessage() == null) {
                                 mView.showFailMessage("取消点赞失败");
                             } else {
-                                mView.showFailMessage(e.getMessage().toUpperCase());
+                                if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                    mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                                } else {
+                                    mView.showFailMessage(e.getMessage().toUpperCase());
+                                }
                             }
                             onLikeStateChangeListener.onFinish();
                         }

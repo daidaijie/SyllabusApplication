@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.circle.mainmenu;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
 import com.example.daidaijie.syllabusapplication.bean.PostListBean;
@@ -109,7 +111,11 @@ public class StuCirclePresenter implements StuCircleContract.presenter, CirclesA
                         if (e.getMessage() == null) {
                             mView.showFailMessage("删除失败");
                         } else {
-                            mView.showFailMessage(e.getMessage());
+                            if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                            } else {
+                                mView.showFailMessage(e.getMessage().toUpperCase());
+                            }
                         }
                     }
 
@@ -135,7 +141,11 @@ public class StuCirclePresenter implements StuCircleContract.presenter, CirclesA
                             if (e.getMessage() == null) {
                                 mView.showFailMessage("点赞失败");
                             } else {
-                                mView.showFailMessage(e.getMessage().toUpperCase());
+                                if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                    mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                                } else {
+                                    mView.showFailMessage(e.getMessage().toUpperCase());
+                                }
                             }
                             onLikeStateChangeListener.onFinish();
                         }
@@ -156,7 +166,11 @@ public class StuCirclePresenter implements StuCircleContract.presenter, CirclesA
                         @Override
                         public void onError(Throwable e) {
                             if (e.getMessage() == null) {
-                                mView.showFailMessage("取消点赞失败");
+                                if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                    mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                                } else {
+                                    mView.showFailMessage(e.getMessage().toUpperCase());
+                                }
                             } else {
                                 mView.showFailMessage(e.getMessage().toUpperCase());
                             }

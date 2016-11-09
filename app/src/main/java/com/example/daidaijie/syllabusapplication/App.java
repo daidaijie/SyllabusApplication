@@ -82,7 +82,6 @@ public class App extends Application {
             PackageInfo pi = getPackageManager().getPackageInfo(getPackageName(), 0);
             versionCode = pi.versionCode;
             versionName = pi.versionName;
-            versionCode = 38;
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }

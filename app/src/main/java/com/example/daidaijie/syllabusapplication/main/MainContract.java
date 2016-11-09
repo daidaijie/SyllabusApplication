@@ -39,6 +39,10 @@ public interface MainContract {
 
         void showInfoMessage(String msg);
 
+        void showFailMessage(String msg);
+
+        void showSuccessMessage(String msg);
+
         void setCurrentSemester(Semester semester);
 
         void showUpdateInfo(String updateInfo, OnUpdateClickCallBack onUpdateClickCallBack);

@@ -67,5 +67,6 @@
         <item>M_CATALOGDATE</item>
     </string-array>
 
+    <string name="UNAUTHORIZED">登陆超时,请同步课表</string>
 
 </resources>

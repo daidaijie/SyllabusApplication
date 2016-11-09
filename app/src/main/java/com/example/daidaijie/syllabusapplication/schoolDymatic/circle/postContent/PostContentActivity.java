@@ -28,6 +28,7 @@ import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
 import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
+import com.example.daidaijie.syllabusapplication.widget.MaxLinesTextWatcher;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -79,6 +80,8 @@ public class PostContentActivity extends BaseActivity implements PostContentCont
                 .build().inject(this);
 
         mPostContentPresenter.start();
+
+        mContentEditText.addTextChangedListener(new MaxLinesTextWatcher(mContentEditText, 16));
     }
 
     @Override

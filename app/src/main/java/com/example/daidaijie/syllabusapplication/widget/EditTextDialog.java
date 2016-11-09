@@ -50,6 +50,7 @@ public class EditTextDialog extends BaseBottomDialog {
             }
         });
         mInfoTextView.setText("回复: " + postUser);
+        mCommentEditText.addTextChangedListener(new MaxLinesTextWatcher(mCommentEditText, 16));
 
         mSendCommentButton.setOnClickListener(new View.OnClickListener() {
             @Override

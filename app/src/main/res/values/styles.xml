@@ -115,9 +115,9 @@
         <item name="colorPrimaryDark">@color/colorClassicDark</item>
     </style>
 
-    <style name="AppThemeAmber" parent="AppThemeBase">
-        <item name="colorPrimary">@color/material_amber_700</item>
-        <item name="colorPrimaryDark">@color/material_amber_900</item>
+    <style name="AppThemeBili" parent="AppThemeBase">
+        <item name="colorPrimary">@color/colorBili</item>
+        <item name="colorPrimaryDark">@color/colorBiliDark</item>
     </style>
 
     <style name="AppThemeOrange" parent="AppThemeBase">

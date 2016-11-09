@@ -1,5 +1,7 @@
 package com.example.daidaijie.syllabusapplication.schoolDymatic.dymatic.mainMenu;
 
+import com.example.daidaijie.syllabusapplication.App;
+import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.adapter.CirclesAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.SchoolDymaticAdapter;
 import com.example.daidaijie.syllabusapplication.base.IBaseModel;
@@ -121,7 +123,11 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter, 
                         if (e.getMessage() == null) {
                             mView.showFailMessage("删除失败");
                         } else {
-                            mView.showFailMessage(e.getMessage());
+                            if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                            } else {
+                                mView.showFailMessage(e.getMessage().toUpperCase());
+                            }
                         }
                     }
 
@@ -152,7 +158,11 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter, 
                             if (e.getMessage() == null) {
                                 mView.showFailMessage("点赞失败");
                             } else {
-                                mView.showFailMessage(e.getMessage().toUpperCase());
+                                if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                    mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                                } else {
+                                    mView.showFailMessage(e.getMessage().toUpperCase());
+                                }
                             }
                             onLikeStateChangeListener.onFinish();
                         }
@@ -175,7 +185,11 @@ public class SchoolDymaticPresenter implements SchoolDymaticContract.presenter, 
                             if (e.getMessage() == null) {
                                 mView.showFailMessage("取消点赞失败");
                             } else {
-                                mView.showFailMessage(e.getMessage().toUpperCase());
+                                if (e.getMessage().toUpperCase().equals("UNAUTHORIZED")) {
+                                    mView.showFailMessage(App.getContext().getResources().getString(R.string.UNAUTHORIZED));
+                                } else {
+                                    mView.showFailMessage(e.getMessage().toUpperCase());
+                                }
                             }
                             onLikeStateChangeListener.onFinish();
                         }

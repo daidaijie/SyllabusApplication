@@ -57,6 +57,23 @@ public class LoginActivity extends BaseActivity implements LoginContract.view, V
 
         mLoginButton.setOnClickListener(this);
         mLoginPresenter.start();
+
+        final AlertDialog dialog = new AlertDialog.Builder(LoginActivity.this)
+                .setTitle("注意事项")
+                .setMessage("我们不会在服务器保存密码，请放心使用。\n" +
+                        "服务器可能会因为台风天或者其他原因被网络中心断电，非断电期间请相信" +
+                        "我们服务器的稳定性。\n" +
+                        "该版本有部分bug，程序员将尽快修复。")
+                .setPositiveButton("确定", null)
+                .create();
+
+        mTipTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                dialog.show();
+            }
+        });
     }
 
     @Override

@@ -225,7 +225,7 @@ public class MainActivity extends BaseActivity implements
             progressDialog.setMessage("下载进度");
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setProgress(0);
-            showInfoMessage("已下载大小" + done + " 总大小" + total);
+//            showInfoMessage("已下载大小" + done + " 总大小" + total);
             progressDialog.setMax(total);
             // 暂时不考虑这个功能了
 //            progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", new DialogInterface.OnClickListener() {
@@ -246,15 +246,15 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void installUpdate(File apk) {
         progressDialog.dismiss();
-        if (apk != null && apk.exists()){
-            showInfoMessage("文件下载成功");
+        if (apk != null && apk.exists()) {
+            showSuccessMessage("文件下载成功");
             // 隐式的 intent
             Intent install_apk = new Intent(Intent.ACTION_VIEW);
             // 安装 apk 文件
             install_apk.setDataAndType(Uri.parse("file://" + apk.toString()), "application/vnd.android.package-archive");
             startActivity(install_apk);
-        }else
-            showInfoMessage("文件下载失败");
+        } else
+            showFailMessage("文件下载失败");
     }
 
 
@@ -400,6 +400,16 @@ public class MainActivity extends BaseActivity implements
     @Override
     public void showInfoMessage(String msg) {
         SnackbarUtil.ShortSnackbar(mCoordinatorLayout, msg, SnackbarUtil.Info).show();
+    }
+
+    @Override
+    public void showFailMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mCoordinatorLayout, msg, SnackbarUtil.Alert).show();
+    }
+
+    @Override
+    public void showSuccessMessage(String msg) {
+        SnackbarUtil.ShortSnackbar(mCoordinatorLayout, msg, SnackbarUtil.Confirm).show();
     }
 
     @Override

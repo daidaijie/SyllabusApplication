@@ -26,6 +26,7 @@ import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.widget.FlowLabelLayout;
 import com.example.daidaijie.syllabusapplication.widget.LoadingDialogBuiler;
 import com.example.daidaijie.syllabusapplication.widget.MaterialCheckBox;
+import com.example.daidaijie.syllabusapplication.widget.MaxLinesTextWatcher;
 import com.example.daidaijie.syllabusapplication.widget.picker.DateTimePicker;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.orhanobut.logger.Logger;
@@ -114,6 +115,8 @@ public class PostDymaticActivity extends BaseActivity implements PostDymaticCont
                 mPostDymaticPresenter.selectTime(false);
             }
         });
+
+        mContentEditText.addTextChangedListener(new MaxLinesTextWatcher(mContentEditText, 16));
 
         DaggerPostDymaticComponent.builder()
                 .schoolDymaticModelComponent(SchoolDymaticModelComponent.getINSTANCE(mAppComponent))

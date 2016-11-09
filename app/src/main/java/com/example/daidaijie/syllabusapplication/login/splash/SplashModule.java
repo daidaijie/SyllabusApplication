@@ -1,14 +1,14 @@
 package com.example.daidaijie.syllabusapplication.login.splash;
 
 import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
-import com.example.daidaijie.syllabusapplication.takeout.detailMenu.TakeOutDetailContract;
 
 import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by daidaijie on 2016/10/8.
+ * Created by daidaijie on 2016/11/9.
  */
+
 
 @Module
 public class SplashModule {

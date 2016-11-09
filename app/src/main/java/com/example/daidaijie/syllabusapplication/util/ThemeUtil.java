@@ -53,7 +53,7 @@ public class ThemeUtil {
         mThemeBeen.add(new ThemeBean("lightGreen", R.color.material_lightGreen_500, R.style.AppThemeLightGreen));
         mThemeBeen.add(new ThemeBean("lime", R.color.material_Lime_700, R.style.AppThemeLime));
         mThemeBeen.add(new ThemeBean("classic", R.color.colorClassic, R.style.AppThemeClassic));
-        mThemeBeen.add(new ThemeBean("amber", R.color.material_amber_700, R.style.AppThemeAmber));
+        mThemeBeen.add(new ThemeBean("bili", R.color.colorBili, R.style.AppThemeBili));
         mThemeBeen.add(new ThemeBean("orange", R.color.material_orange_500, R.style.AppThemeOrange));
         mThemeBeen.add(new ThemeBean("deepOrange", R.color.material_deepOrange_500, R.style.AppThemeDeepOrange));
         mThemeBeen.add(new ThemeBean("brown", R.color.material_brown_500, R.style.AppThemeBrown));

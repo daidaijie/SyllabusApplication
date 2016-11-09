@@ -1,5 +1,6 @@
 package com.example.daidaijie.syllabusapplication.main;
 
+import android.Manifest;
 import android.os.AsyncTask;
 
 import com.example.daidaijie.syllabusapplication.App;
@@ -13,6 +14,7 @@ import com.example.daidaijie.syllabusapplication.di.scope.PerActivity;
 import com.example.daidaijie.syllabusapplication.other.update.IUpdateModel;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
 import com.example.daidaijie.syllabusapplication.util.UpdateAsync;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
@@ -101,8 +103,28 @@ public class MainPresenter implements MainContract.presenter {
                             mView.showUpdateInfo(updateInfo, new MainContract.view.OnUpdateClickCallBack() {
                                 @Override
                                 public void onUpdate() {
-                                    UpdateAsync updateAsync = new UpdateAsync(mView, mView, updateInfoBean.getDownload_address(), updateInfoBean.getApk_file_name());
-                                    updateAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                                    RxPermissions.getInstance(App.getContext())
+                                            .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                                            .subscribe(new Subscriber<Boolean>() {
+                                                @Override
+                                                public void onCompleted() {
+                                                }
+
+                                                @Override
+                                                public void onError(Throwable e) {
+                                                    mView.showFailMessage("授权失败");
+                                                }
+
+                                                @Override
+                                                public void onNext(Boolean aBoolean) {
+                                                    if (aBoolean) {
+                                                        UpdateAsync updateAsync = new UpdateAsync(mView, mView, updateInfoBean.getDownload_address(), updateInfoBean.getApk_file_name());
+                                                        updateAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+                                                    } else {
+                                                        mView.showFailMessage("授权失败");
+                                                    }
+                                                }
+                                            });
                                 }
                             });
                         }
