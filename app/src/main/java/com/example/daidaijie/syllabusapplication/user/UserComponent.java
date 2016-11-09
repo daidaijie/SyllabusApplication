@@ -36,6 +36,10 @@ public abstract class UserComponent {
         return INSTANCE;
     }
 
+    public static void destory() {
+        INSTANCE = null;
+    }
+
     @SchoolRetrofit
     public abstract Retrofit getSchoolRetrofit();
 

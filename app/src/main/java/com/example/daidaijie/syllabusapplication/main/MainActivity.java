@@ -297,7 +297,7 @@ public class MainActivity extends BaseActivity implements
                                         urls.add(banner.getLink());
                                         intent = PhotoDetailActivity.getIntent(MainActivity.this, urls, 0);
                                     } else {
-                                        intent = CommonWebActivity.getIntent(MainActivity.this, banner.getUrl(), banner.getDescription());
+                                        intent = CommonWebActivity.getIntent(MainActivity.this, banner.getLink(), banner.getDescription());
                                     }
                                     startActivity(intent);
                                 }
@@ -346,6 +346,7 @@ public class MainActivity extends BaseActivity implements
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
+            UserComponent.destory();
             this.finish();
         } else if (id == R.id.nav_change_semester) {
             mMainPresenter.showSemesterSelect();
