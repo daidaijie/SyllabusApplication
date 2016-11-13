@@ -87,9 +87,9 @@ public class Syllabus extends RealmObject {
                                 LessonID lessonID = iterator.next();
                                 Lesson lesson = realm.where(Lesson.class)
                                         .equalTo("id", lessonID.getId() + "").findFirst();
-
                                 if (lesson != null && lesson.getTYPE() == Lesson.TYPE_SYSTEM
                                         && lesson.getSemester().isSame(semester)) {
+                                    LoggerUtil.e("lessonID", lesson.getId());
                                     lesson.deleteFromRealm();
                                     iterator.remove();
                                     mLessonMap.remove(lessonID);
@@ -102,6 +102,12 @@ public class Syllabus extends RealmObject {
         });
     }
 
+    /**
+     * 转化课程
+     * @param realm
+     * @param lessons
+     * @param semester
+     */
     public void convertSyllabus(Realm realm, final List<Lesson> lessons, final Semester semester) {
         int colorIndex = 0;
         this.setSemester(new Semester(semester.getStartYear(), semester.getSeason()));
@@ -130,7 +136,14 @@ public class Syllabus extends RealmObject {
                     syllabusGrid.getLessons().add(new LessonID(lesson.getLongID()));
                 }
             }
-            mLessonMap.put(new LessonID(lesson.getLongID()), lesson);
+
+            /**
+             * 要记住有的课程是没时间的，会出错
+             */
+
+            if (timeGrids.size() > 0) {
+                mLessonMap.put(new LessonID(lesson.getLongID()), lesson);
+            }
         }
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -140,7 +153,11 @@ public class Syllabus extends RealmObject {
                         .equalTo("mSemester.startYear", semester.getStartYear())
                         .findAll().deleteAllFromRealm();
                 realm.copyToRealm(Syllabus.this);
-                realm.copyToRealm(lessons);
+                for (Lesson lesson : lessons) {
+                    if (lesson.getTimeGrids().size() > 0) {
+                        realm.copyToRealm(lesson);
+                    }
+                }
             }
         });
 

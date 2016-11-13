@@ -16,6 +16,7 @@ import com.example.daidaijie.syllabusapplication.di.scope.PerFragment;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
 import com.example.daidaijie.syllabusapplication.syllabus.ISyllabusModel;
 import com.example.daidaijie.syllabusapplication.util.BitmapSaveUtil;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -167,6 +168,7 @@ public class SyllabusFragmentPresenter implements SyllabusFragmentContract.prese
                 if (e.getMessage() == null) {
                     mView.showFailMessage("同步失败");
                 } else {
+                    LoggerUtil.printStack(e);
                     mView.showFailMessage(e.getMessage().toUpperCase());
                 }
             }

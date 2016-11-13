@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -149,6 +150,8 @@ public class MainActivity extends BaseActivity implements
     Timer mTimer;
 
     IStreamModel streamModel;
+
+    boolean isActive;
 
     // 用于显示下载进度
     private ProgressDialog progressDialog;
@@ -556,6 +559,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void startStreamListen() {
+        isActive = true;
         mTimer = new Timer();
         mTimer.schedule(new TimerTask() {
             @Override
@@ -564,7 +568,7 @@ public class MainActivity extends BaseActivity implements
                         .subscribe(new Action1<StreamInfo>() {
                             @Override
                             public void call(StreamInfo streamInfo) {
-                                if (InternetModel.getInstance().isOpen()) {
+                                if (InternetModel.getInstance().isOpen() && isActive) {
                                     Intent intent = StreamService.getIntent(MainActivity.this);
                                     startService(intent);
                                 }
@@ -572,7 +576,7 @@ public class MainActivity extends BaseActivity implements
                         }, new Action1<Throwable>() {
                             @Override
                             public void call(Throwable throwable) {
-                                if (InternetModel.getInstance().isOpen()) {
+                                if (InternetModel.getInstance().isOpen() && isActive) {
                                     Intent intent = StreamService.getIntent(MainActivity.this);
                                     startService(intent);
                                 }
@@ -583,6 +587,7 @@ public class MainActivity extends BaseActivity implements
     }
 
     private void stopStreamListen() {
+        isActive = false;
         if (mTimer != null) {
             mTimer.cancel();
             Intent intent = StreamService.getIntent(MainActivity.this);

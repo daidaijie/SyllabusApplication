@@ -10,8 +10,8 @@ android {
         applicationId "com.hjsmallfly.syllabus"
         minSdkVersion 16
         targetSdkVersion 23
-        versionCode 40
-        versionName "2.0.0 beta1"
+        versionCode 41
+        versionName "2.0.0 beta2"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {

@@ -21,4 +21,6 @@ public interface UserInfoApi {
             @Field("years") String years,
             @Field("semester") String semester
     );
+
+
 }
