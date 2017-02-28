@@ -205,6 +205,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
             );
             mTopBlankView.setText("上课时间");
             mDateLinearLayout.addView(mTopBlankView, layoutParams);
+            mTopBlankView.setVisibility(View.GONE);
         }
 
         {
@@ -477,6 +478,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
 
     @Override
     public void onRefresh() {
+        showDetailTime(false);
         mSyllabusFragmentPresenter.loadData();
     }
 
@@ -484,6 +486,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     @Subscribe
     public void saveSyllaus(SaveSyllabusEvent saveSyllabusEvent) {
         if (saveSyllabusEvent.position == mWeek) {
+            showDetailTime(false);
             Bitmap syllabusBitmap = BitmapSaveUtil.getViewBitmap(mSyllabusGridLayout);
             Bitmap timeBitmap = BitmapSaveUtil.getViewBitmap(mTimeLinearLayout);
             Bitmap dayBitmap = BitmapSaveUtil.getViewBitmap(mDateLinearLayout);

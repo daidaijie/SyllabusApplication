@@ -65,13 +65,14 @@ public class EmailWebActivity extends BaseActivity {
                 if (newProgress >= 100) {
                     mEmailLoadingBar.setVisibility(View.GONE);
                 } else {
+
                     mEmailLoadingBar.setVisibility(View.VISIBLE);
                 }
 
                 super.onProgressChanged(view, newProgress);
             }
         });
-        mEmailWebView.loadUrl("https://partner.outlook.cn/owa/?realm=stu.edu.cn#path=/mail/inbox");
+        mEmailWebView.loadUrl("https://partner.outlook.cn/owa/?realm=stu.edu.cn&exsvurl=1&ll-cc=2052&modurl=0");
 
         mEmailWebView.setDownloadListener(new DownloadListener() {
             @Override
