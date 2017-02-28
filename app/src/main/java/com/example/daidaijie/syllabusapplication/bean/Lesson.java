@@ -65,7 +65,7 @@ public class Lesson extends RealmObject implements Serializable {
     }
 
     public String getRoom() {
-        return room;
+        return room == null ? "" : room;
     }
 
     public void setRoom(String room) {
@@ -105,7 +105,7 @@ public class Lesson extends RealmObject implements Serializable {
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
     public void setName(String name) {
@@ -188,6 +188,10 @@ public class Lesson extends RealmObject implements Serializable {
         for (TimeGrid timeGrid : mTimeGrids) {
             Logger.t("mTimeGrids").e(timeGrid.getWeekDate() + "\n" + timeGrid.getTimeList() + "\n" + timeGrid.getWeekOfTime());
         }
+    }
+
+    public static boolean isNull(Lesson lesson) {
+        return lesson == null || lesson.getTimeGrids() == null;
     }
 
     public int getBgColor() {
@@ -278,7 +282,7 @@ public class Lesson extends RealmObject implements Serializable {
         TimeGrid timeGrid = new TimeGrid();
         timeGrid.startWeek = startWeek;
         timeGrid.endWeek = endWeek;
-        if (!timeOfWeek.trim().equals("None")) {
+        if (timeOfWeek != null && !timeOfWeek.trim().equals("None")) {
             timeGrid.setWeekDate(week);
             if (timeOfWeek.charAt(0) == '单') {
                 timeGrid.setWeekOfTime(startWeek, endWeek, TimeGrid.WeekEum.SINGLE);

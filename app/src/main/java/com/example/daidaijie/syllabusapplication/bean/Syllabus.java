@@ -112,6 +112,27 @@ public class Syllabus extends RealmObject {
         int colorIndex = 0;
         this.setSemester(new Semester(semester.getStartYear(), semester.getSeason()));
         removeSystemLesson(realm, semester);
+        // 测试代码
+//        Lesson lesson1 = new Lesson();
+//        Lesson.Days days1 = new Lesson.Days();
+//        days1.setW1("34");
+//        lesson1.setName("030");
+//        lesson1.setId("12345");
+//        lesson1.setRoom("030");
+//        lesson1.setDays(days1);
+//        lesson1.setDuration("1 -16");
+//        lessons.add(lesson1);
+//
+//        Lesson lesson2 = new Lesson();
+//        Lesson.Days days2 = new Lesson.Days();
+//        days2.setW1("12");
+//        lesson2.setName("123");
+//        lesson2.setId("12346");
+//        lesson2.setRoom("123");
+//        lesson2.setDuration("1 -16");
+//        lesson2.setDays(days2);
+//        lessons.add(lesson2);
+
         for (final Lesson lesson : lessons) {
             //将lesson的时间格式化
             lesson.convertDays();

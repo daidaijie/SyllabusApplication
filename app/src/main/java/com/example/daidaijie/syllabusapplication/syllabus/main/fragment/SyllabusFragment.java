@@ -297,6 +297,12 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                 //在当前节点上找在本周上课的课程
                 for (LessonID lessonID : syllabusGrid.getLessons()) {
                     Lesson tmpLesson = syllabus.getLessonByID(lessonID);
+
+                    // 避免崩溃
+                    if (Lesson.isNull(tmpLesson)) {
+                        continue;
+                    }
+
                     boolean flag = false;
                     for (TimeGrid timeGird : tmpLesson.getTimeGrids()) {
                         if (timeGird.getWeekDate() == i && timeGird.getTimeString().contains(Syllabus.time2char((j + 1)) + "")) {
@@ -331,6 +337,12 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                         Lesson nextLesson = null;
                         for (LessonID lessonID : nextSyllabusGrid.getLessons()) {
                             Lesson tmpLesson = syllabus.getLessonByID(lessonID);
+
+                            // 避免崩溃
+                            if (Lesson.isNull(tmpLesson)) {
+                                continue;
+                            }
+
                             boolean flag = false;
                             for (TimeGrid timeGird : tmpLesson.getTimeGrids()) {
                                 if (timeGird.getWeekDate() == i && timeGird.getTimeString().contains(Syllabus.time2char((k + 1)) + "")) {
