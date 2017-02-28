@@ -67,6 +67,22 @@
         <item>M_CATALOGDATE</item>
     </string-array>
 
+    <string-array name="detail_time">
+        <item>08:00 - 08:45</item>
+        <item>08:55 - 09:40</item>
+        <item>10:00 - 10:45</item>
+        <item>10:55 - 11:40</item>
+        <item>11:50 - 12:35</item>
+        <item>14:00 - 14:45</item>
+        <item>14:55 - 15:40</item>
+        <item>16:00 - 16:45</item>
+        <item>16:55 - 17:40</item>
+        <item>17:50 - 18:35</item>
+        <item>19:20 - 20:05</item>
+        <item>20:15 - 21:00</item>
+        <item>21:10 - 21:55</item>
+    </string-array>
+
     <string name="UNAUTHORIZED">登陆超时,请同步课表</string>
 
 </resources>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
@@ -24,6 +25,7 @@ import com.example.daidaijie.syllabusapplication.bean.Syllabus;
 import com.example.daidaijie.syllabusapplication.bean.SyllabusGrid;
 import com.example.daidaijie.syllabusapplication.bean.TimeGrid;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
+import com.example.daidaijie.syllabusapplication.event.ShowTimeEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
 import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
 import com.example.daidaijie.syllabusapplication.syllabus.lessonDetail.LessonInfoActivity;
@@ -56,6 +58,9 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     SyllabusScrollView mSyllabusScrollView;
     @BindView(R.id.syllabusRefreshLayout)
     SwipeRefreshLayout mSyllabusRefreshLayout;
+    @BindView(R.id.detailTimeLinearLayout)
+    LinearLayout mDetailTimeLinearLayout;
+    TextView mTopBlankView;
 
     private static final String WEEK_DAY = SyllabusFragment.class.getCanonicalName() + ".WeekDate";
 
@@ -66,10 +71,12 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
     @Inject
     SyllabusFragmentPresenter mSyllabusFragmentPresenter;
 
+
     //这里除了显示，在程序中皆从0开始，为第一周
     private int mWeek;
 
     private int timeWidth;
+    private int detailTimeWidth;
     private int gridWidth;
     private int gridHeight;
 
@@ -107,6 +114,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         gridWidth = deviceWidth * 2 / 15;
         timeWidth = deviceWidth - gridWidth * 7;
         gridHeight = getResources().getDimensionPixelOffset(R.dimen.syllabus_grid_height);
+        detailTimeWidth = getResources().getDimensionPixelOffset(R.dimen.detail_time_width);
 
         //解决滑动冲突
         mSyllabusScrollView.setSwipeRefreshLayout(mSyllabusRefreshLayout);
@@ -114,8 +122,9 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         setupSwipeRefreshLayout(mSyllabusRefreshLayout);
         mSyllabusRefreshLayout.setOnRefreshListener(this);
 
-        showTime();
         showDate();
+        showDetailTime();
+        showTime();
 
         if (savedInstanceState != null) {
             isLoaded = savedInstanceState.getBoolean(IS_LOADED);
@@ -164,7 +173,40 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleUpdateSyllabus(ShowTimeEvent event) {
+        if (event.messageWeek == mWeek) {
+            if (event.isHide) {
+                showDetailTime(false);
+                return;
+            }
+
+            if (mDetailTimeLinearLayout.getVisibility() == View.VISIBLE) {
+                showDetailTime(false);
+            } else {
+                showDetailTime(true);
+            }
+        }
+    }
+
+    private void showDetailTime(boolean isShow) {
+        int visible = isShow ? View.VISIBLE : View.GONE;
+        mDetailTimeLinearLayout.setVisibility(visible);
+        mTopBlankView.setVisibility(visible);
+    }
+
     private void showDate() {
+        {
+            mTopBlankView = (TextView) getActivity().getLayoutInflater()
+                    .inflate(R.layout.week_grid, null, false);
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    detailTimeWidth, ViewGroup.LayoutParams.MATCH_PARENT
+            );
+            mTopBlankView.setText("上课时间");
+            mDateLinearLayout.addView(mTopBlankView, layoutParams);
+        }
+
         {
             TextView blankTextView = (TextView) getActivity().getLayoutInflater()
                     .inflate(R.layout.week_grid, null, false);
@@ -208,7 +250,25 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                     timeWidth, gridHeight);
             mTimeLinearLayout.addView(timeTextView, layoutParams);
         }
+    }
 
+    /**
+     * 显示具体时间
+     */
+    private void showDetailTime() {
+        String[] detailTimeStrings = mActivity.getResources().getStringArray(R.array.detail_time);
+
+        for (int i = 1; i <= 13; i++) {
+            TextView timeTextView = (TextView) LayoutInflater
+                    .from(getActivity()).inflate(R.layout.detail_time_grid, null, false);
+            timeTextView.setText(detailTimeStrings[i - 1]);
+            if (i == 13) {
+                timeTextView.setBackground(getResources().getDrawable(R.drawable.bg_grid_time_end));
+            }
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    detailTimeWidth, gridHeight);
+            mDetailTimeLinearLayout.addView(timeTextView, layoutParams);
+        }
     }
 
 

@@ -20,22 +20,30 @@
                 android:id="@+id/dateLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/week_grid_height"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="horizontal">
             </LinearLayout>
 
             <com.example.daidaijie.syllabusapplication.widget.SyllabusScrollView
-                android:scrollbars="none"
                 android:id="@+id/syllabusScrollView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/detailTimeLinearLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                    </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/timeLinearLayout"
                         android:layout_width="wrap_content"
@@ -43,6 +51,7 @@
                         android:orientation="vertical">
 
                     </LinearLayout>
+
                     <GridLayout
                         android:id="@+id/syllabusGridLayout"
                         android:layout_width="match_parent"

@@ -7,6 +7,9 @@
 
     <dimen name="syllabus_grid_height">44dp</dimen>
 
+    <dimen name="detail_time_width">80dp</dimen>
+
+
     <dimen name="toolbar_height">48dp</dimen>
 
 

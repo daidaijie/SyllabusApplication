@@ -18,31 +18,33 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.daidaijie.syllabusapplication.R;
-import com.example.daidaijie.syllabusapplication.activity.SyllabusCollectionActivity;
-import com.example.daidaijie.syllabusapplication.dialog.WeekPickerFragment;
 import com.example.daidaijie.syllabusapplication.adapter.SyllabusPagerAdapter;
 import com.example.daidaijie.syllabusapplication.adapter.WeekAdapter;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
 import com.example.daidaijie.syllabusapplication.bean.Semester;
 import com.example.daidaijie.syllabusapplication.bean.UserInfo;
+import com.example.daidaijie.syllabusapplication.dialog.WeekPickerFragment;
 import com.example.daidaijie.syllabusapplication.event.SaveSyllabusEvent;
 import com.example.daidaijie.syllabusapplication.event.SettingWeekEvent;
+import com.example.daidaijie.syllabusapplication.event.ShowTimeEvent;
 import com.example.daidaijie.syllabusapplication.event.SyllabusEvent;
-import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.syllabus.SyllabusComponent;
-import com.example.daidaijie.syllabusapplication.syllabus.addlesson.AddLessonActivity;
 import com.example.daidaijie.syllabusapplication.syllabus.main.fragment.SyllabusFragment;
 import com.example.daidaijie.syllabusapplication.syllabus.main.fragment.SyllabusFragmentContract;
 import com.example.daidaijie.syllabusapplication.user.UserComponent;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.SnackbarUtil;
+import com.example.daidaijie.syllabusapplication.util.ThemeUtil;
 import com.example.daidaijie.syllabusapplication.widget.SyllabusViewPager;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -189,6 +191,7 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
         syllabusPagerAdapter = new SyllabusPagerAdapter(manager);
         mSyllabusViewPager.setAdapter(syllabusPagerAdapter);
         mSyllabusViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position
                     , float positionOffset, int positionOffsetPixels) {
@@ -205,6 +208,10 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
 
             @Override
             public void onPageScrollStateChanged(int state) {
+                if (state == 1) {
+                    LoggerUtil.e("onPageScrollStateChanged: " + state);
+                    EventBus.getDefault().post(new ShowTimeEvent(mSyllabusViewPager.getCurrentItem(), true));
+                }
             }
         });
 
@@ -293,6 +300,21 @@ public class SyllabusActivity extends BaseActivity implements NavigationView.OnN
         //点击后关闭drawerLayout
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_syllabus, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_show_time) {
+            EventBus.getDefault().post(new ShowTimeEvent(mSyllabusViewPager.getCurrentItem()));
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
