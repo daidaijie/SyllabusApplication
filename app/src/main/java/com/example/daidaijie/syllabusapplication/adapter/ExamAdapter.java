@@ -36,6 +36,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
 
     private List<Exam> mExams;
 
+    private String weeks = "日一二三四五六";
+
     public ExamAdapter(Activity activity, List<Exam> exams) {
         mActivity = activity;
         mExams = exams;
@@ -59,10 +61,9 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         holder.mExamNameTextView.setText(exam.getTrueName());
         holder.mExamPositionTextView.setText("座位号 : " + exam.getExam_stu_position());
         holder.mExamRoomTextView.setText("试室　 : " + exam.getExam_location());
-        holder.mExamTimeTextView.setText("时间　 : " + exam.getTrueTime());
 
-        DateTime examTime = exam.getExamTime();
         DateTime now = DateTime.now();
+        DateTime examTime = exam.getExamTime();
 
         if (DateTimeComparator.getInstance().compare(examTime, now) > 0) {
             Period period = new Period(now, examTime);
@@ -101,6 +102,9 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
             holder.mExamStateTextView.setText("已结束");
         }
 
+        holder.mExamTimeTextView.setText("时间　 : " + exam.getTrueTime());
+        holder.mExamWeekTextView.setText("星期　 : 周" + weeks.charAt(examTime.getDayOfWeek() % 7));
+
         holder.mExamLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,6 +135,8 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         TextView mExamPositionTextView;
         @BindView(R.id.examStateTextView)
         TextView mExamStateTextView;
+        @BindView(R.id.examWeekTextView)
+        TextView mExamWeekTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
