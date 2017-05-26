@@ -8,14 +8,14 @@
     android:background="@color/transparent">
 
     <android.support.v7.widget.CardView
-        app:cardBackgroundColor="@color/material_white"
         android:id="@+id/cardItemLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
+        android:layout_margin="1dp"
         android:layout_weight="1"
         android:padding="0dp"
-        app:cardCornerRadius="4dp"
+        app:cardBackgroundColor="@color/material_white"
+        app:cardCornerRadius="2dp"
         app:cardElevation="1dp"
         app:cardPreventCornerOverlap="false"
         app:contentPadding="0dp">
@@ -28,7 +28,7 @@
             app:mrl_rippleColor="#2B2B2B"
             app:mrl_rippleDuration="100"
             app:mrl_rippleOverlay="true"
-            app:mrl_rippleRoundedCorners="4dp">
+            app:mrl_rippleRoundedCorners="2dp">
 
             <LinearLayout
                 android:id="@+id/cardContentLayout"
@@ -36,7 +36,10 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="8dp">
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp"
+                android:paddingRight="8dp"
+                android:paddingLeft="8dp">
 
                 <ImageView
                     android:id="@+id/cardIconImageView"

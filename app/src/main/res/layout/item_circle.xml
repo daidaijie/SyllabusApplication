@@ -14,7 +14,7 @@
     android:orientation="vertical"
     app:cardPreventCornerOverlap="false"
     app:cardBackgroundColor="@color/material_white"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="2dp"
     app:cardElevation="1dp">
 
     <RelativeLayout

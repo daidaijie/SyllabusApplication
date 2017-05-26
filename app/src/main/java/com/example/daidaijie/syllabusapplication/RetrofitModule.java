@@ -26,7 +26,7 @@ public class RetrofitModule {
     @Singleton
     public Retrofit provideSchoolRetrofit() {
         return new Retrofit.Builder()
-                .baseUrl("http://119.29.95.245:8080/")
+                .baseUrl("https://class.stuapps.com")
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

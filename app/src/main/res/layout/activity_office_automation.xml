@@ -103,7 +103,7 @@
                 android:textColor="@color/material_white"
                 android:textSize="14sp"
                 fbutton:buttonColor="?attr/colorPrimary"
-                fbutton:cornerRadius="4dp"
+                fbutton:cornerRadius="2dp"
                 fbutton:shadowColor="@color/defaultShowColor"
                 fbutton:shadowEnabled="true"
                 fbutton:shadowHeight="1dp"/>

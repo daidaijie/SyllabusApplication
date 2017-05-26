@@ -13,7 +13,7 @@
     android:foreground="@drawable/fg_oa_card"
     android:orientation="vertical"
     app:cardBackgroundColor="@color/material_white"
-    app:cardCornerRadius="4dp"
+    app:cardCornerRadius="2dp"
     app:cardPreventCornerOverlap="false"
     app:cardElevation="1dp">
 

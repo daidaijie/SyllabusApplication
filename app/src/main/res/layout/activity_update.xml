@@ -182,7 +182,7 @@
                     android:textColor="@color/material_white"
                     android:textSize="16sp"
                     app:buttonColor="?attr/colorPrimary"
-                    app:cornerRadius="4dp"
+                    app:cornerRadius="2dp"
                     app:shadowColor="@color/defaultShowColor"
                     app:shadowHeight="1dp"/>
 
@@ -196,7 +196,7 @@
                     android:textColor="@color/material_white"
                     android:textSize="16sp"
                     app:buttonColor="?attr/colorPrimary"
-                    app:cornerRadius="4dp"
+                    app:cornerRadius="2dp"
                     app:shadowColor="@color/defaultShowColor"
                     app:shadowHeight="1dp"/>
             </LinearLayout>

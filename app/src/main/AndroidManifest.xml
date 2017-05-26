@@ -56,6 +56,7 @@
         </activity>
         <activity
             android:name=".schoolDymatic.STUCircleActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
         </activity>
         <activity

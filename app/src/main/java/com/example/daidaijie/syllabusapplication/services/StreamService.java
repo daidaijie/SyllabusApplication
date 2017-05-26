@@ -46,10 +46,10 @@ public class StreamService extends Service {
             double progress = (mStreamInfo.getNowByte() / mStreamInfo.getAllByte()) * 100;
 
             builder.setProgress(100, (int) progress, false)
-                    .setContentTitle(mStreamInfo.getName() + "的流量使用情况: " +
+                    .setContentTitle(mStreamInfo.getName() + "已用: " +
                             String.format("%.2f%%", progress))
                     .setSmallIcon(R.mipmap.ic_launcher)
-                    .setContentText("已用" + mStreamInfo.getNowStream() + ",总共" + mStreamInfo
+                    .setContentText("已用" + mStreamInfo.getNowStream() + "，总共" + mStreamInfo
                             .getAllStream() + "。状态" + mStreamInfo.getState())
                     .setContentIntent(contentIntent)
                     .setWhen(System.currentTimeMillis());

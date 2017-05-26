@@ -18,7 +18,7 @@
 
     <info.hoang8f.widget.FButton
         app:buttonColor="@color/material_white"
-        app:cornerRadius="4dp"
+        app:cornerRadius="2dp"
         app:shadowColor="@color/defaultDarkBackground"
         app:shadowEnabled="true"
         app:shadowHeight="1dp"
