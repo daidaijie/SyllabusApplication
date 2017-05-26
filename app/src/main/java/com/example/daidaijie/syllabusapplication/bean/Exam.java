@@ -165,15 +165,10 @@ public class Exam extends RealmObject implements Serializable {
     }
 
     public DateTime getExamTime() {
-        int timeZoneOffset = 8;
-        String[] timeIDs = java.util.TimeZone.getAvailableIDs(timeZoneOffset * 60 * 60 * 1000);
-        TimeZone examTimeZone = new SimpleTimeZone(
-                timeZoneOffset * 60 * 60 * 1000, timeIDs[0]
-        );
         DateTime examTime = DateTime.parse(getStartTime(), DateTimeFormat.forPattern(
                 "yyyy.MM.dd  HH:mm"
         ));
-        examTime = new DateTime(examTime, DateTimeZone.forTimeZone(examTimeZone));
+        examTime = new DateTime(examTime, DateTimeZone.forOffsetHours(8));
         return examTime;
     }
 
