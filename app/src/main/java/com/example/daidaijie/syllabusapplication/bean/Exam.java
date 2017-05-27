@@ -147,6 +147,15 @@ public class Exam extends RealmObject implements Serializable {
         }
     }
 
+    public String getTruePreTime() {
+        int index = exam_time.indexOf("(");
+        if (index != -1) {
+            return exam_time.substring(0, index);
+        } else {
+            return exam_time;
+        }
+    }
+
     public String getStartTime() {
         String time = getTrueTime();
         int index = time.lastIndexOf("-");

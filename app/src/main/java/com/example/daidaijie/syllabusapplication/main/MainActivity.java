@@ -339,8 +339,11 @@ public class MainActivity extends BaseActivity implements
                 @Override
                 public void onClick(String name) {
                     ThemeUtil.getInstance().setStyle(name);
-                    recreate();
                     themePickerFragment.dismiss();
+                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    MainActivity.this.finish();
+                    MainActivity.this.overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 }
             });
 

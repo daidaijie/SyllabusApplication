@@ -103,7 +103,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ViewHolder> {
         }
 
         holder.mExamTimeTextView.setText("时间　 : " + exam.getTrueTime());
-        holder.mExamWeekTextView.setText("星期　 : 周" + weeks.charAt(examTime.getDayOfWeek() % 7));
+        holder.mExamWeekTextView.setText("　　　   " + exam.getTruePreTime());
 
         holder.mExamLayout.setOnClickListener(new View.OnClickListener() {
             @Override
