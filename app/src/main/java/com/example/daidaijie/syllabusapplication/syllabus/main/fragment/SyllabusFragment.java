@@ -43,6 +43,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import io.codetail.widget.RevealLinearLayout;
+import io.realm.Realm;
 
 public class SyllabusFragment extends BaseFragment implements SyllabusFragmentContract.view, SwipeRefreshLayout.OnRefreshListener {
 
@@ -364,7 +365,7 @@ public class SyllabusFragment extends BaseFragment implements SyllabusFragmentCo
                             span++;
                         }
                     }
-                    final Lesson finalLesson = lesson;
+                    final Lesson finalLesson = Realm.getDefaultInstance().copyFromRealm(lesson);
                     final int finalSpan = span;
                     final int finalI = i;
                     final int finalJ = j;
