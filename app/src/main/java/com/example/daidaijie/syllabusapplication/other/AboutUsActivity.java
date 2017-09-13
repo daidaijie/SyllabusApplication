@@ -1,7 +1,5 @@
 package com.example.daidaijie.syllabusapplication.other;
 
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.LinearLayout;
@@ -10,7 +8,7 @@ import android.widget.TextView;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.example.daidaijie.syllabusapplication.widget.imageview.SyllabusImageView;
 
 import butterknife.BindView;
 
@@ -21,7 +19,7 @@ public class AboutUsActivity extends BaseActivity {
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.syllabusIconView)
-    SimpleDraweeView mSyllabusIconView;
+    SyllabusImageView mSyllabusIconView;
     @BindView(R.id.descTextView)
     TextView mDescTextView;
     @BindView(R.id.activity_about_us)
@@ -29,15 +27,15 @@ public class AboutUsActivity extends BaseActivity {
     @BindView(R.id.versionTextView)
     TextView mVersionTextView;
     @BindView(R.id.backendDeveloperHeadImageView)
-    SimpleDraweeView mBackendDeveloperHeadImageView;
+    SyllabusImageView mBackendDeveloperHeadImageView;
     @BindView(R.id.backendDeveloper)
     LinearLayout mBackendDeveloper;
     @BindView(R.id.iOSDeveloperHeadImageView)
-    SimpleDraweeView mIOSDeveloperHeadImageView;
+    SyllabusImageView mIOSDeveloperHeadImageView;
     @BindView(R.id.iOSDeveloper)
     LinearLayout mIOSDeveloper;
     @BindView(R.id.androidDeveloperHeadImageView)
-    SimpleDraweeView mAndroidDeveloperHeadImageView;
+    SyllabusImageView mAndroidDeveloperHeadImageView;
     @BindView(R.id.androidDeveloper)
     LinearLayout mAndroidDeveloper;
 

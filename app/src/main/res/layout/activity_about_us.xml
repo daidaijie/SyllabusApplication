@@ -44,14 +44,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <com.example.daidaijie.syllabusapplication.widget.imageview.SyllabusImageView
                 android:id="@+id/syllabusIconView"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"
-                app:placeholderImage="@drawable/ic_syllabus_icon"
-                app:roundedCornerRadius="4dp"/>
+                app:srcImage="@drawable/ic_syllabus_icon"
+                app:roundCornerRadius="4dp"/>
 
             <TextView
                 android:id="@+id/syllabusTextView"
@@ -117,11 +117,11 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <com.example.daidaijie.syllabusapplication.widget.imageview.SyllabusImageView
                     android:id="@+id/backendDeveloperHeadImageView"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    app:roundedCornerRadius="4dp"/>
+                    app:roundCornerRadius="4dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -155,11 +155,11 @@
                 android:paddingRight="16dp"
                 android:paddingTop="8dp">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <com.example.daidaijie.syllabusapplication.widget.imageview.SyllabusImageView
                     android:id="@+id/iOSDeveloperHeadImageView"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    app:roundedCornerRadius="4dp"/>
+                    app:roundCornerRadius="4dp"/>
 
 
                 <TextView
@@ -193,11 +193,11 @@
                 android:paddingRight="16dp"
                 android:paddingTop="8dp">
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <com.example.daidaijie.syllabusapplication.widget.imageview.SyllabusImageView
                     android:id="@+id/androidDeveloperHeadImageView"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    app:roundedCornerRadius="4dp"/>
+                    app:roundCornerRadius="4dp"/>
 
 
                 <TextView

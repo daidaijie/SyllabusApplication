@@ -35,5 +35,11 @@
         <attr name="mhv_HeightDimen" format="reference|dimension" />
     </declare-styleable>
 
+    <declare-styleable name="SyllabusImageView">
+        <attr name="roundCornerRadius" format="dimension"/>
+        <attr name="placeHolderImage" format="reference"/>
+        <attr name="srcImage" format="reference"/>
+    </declare-styleable>
+
 
 </resources>
