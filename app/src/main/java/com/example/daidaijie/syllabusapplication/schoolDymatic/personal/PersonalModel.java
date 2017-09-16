@@ -4,11 +4,13 @@ import android.support.annotation.Nullable;
 
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
+import com.example.daidaijie.syllabusapplication.bean.QiNiuImageInfo;
 import com.example.daidaijie.syllabusapplication.bean.UpdateUserBody;
 import com.example.daidaijie.syllabusapplication.retrofitApi.PushPostApi;
 import com.example.daidaijie.syllabusapplication.retrofitApi.UpdateUserApi;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
 import com.example.daidaijie.syllabusapplication.util.ImageUploader;
+import com.example.daidaijie.syllabusapplication.util.LoggerUtil;
 import com.example.daidaijie.syllabusapplication.util.RetrofitUtil;
 
 import java.io.File;
@@ -74,7 +76,6 @@ public class PersonalModel implements IPersonalModel {
             return;
         }
 
-        final MediaType mediaType = MediaType.parse("image/*");
         Observable.just(headImage)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<String, File>() {
@@ -84,15 +85,14 @@ public class PersonalModel implements IPersonalModel {
                     }
                 })
                 .observeOn(Schedulers.io())
-                .flatMap(new Func1<File, Observable<BmobPhoto>>() {
+                .flatMap(new Func1<File, Observable<QiNiuImageInfo>>() {
                     @Override
-                    public Observable<BmobPhoto> call(File file) {
-                        return ImageUploader.getObservableAsBombPhoto(mediaType,
-                                file.toString(), file);
+                    public Observable<QiNiuImageInfo> call(File file) {
+                        return ImageUploader.getObservableAsQiNiu(file);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BmobPhoto>() {
+                .subscribe(new Subscriber<QiNiuImageInfo>() {
 
                     String url;
 
@@ -108,8 +108,8 @@ public class PersonalModel implements IPersonalModel {
                     }
 
                     @Override
-                    public void onNext(BmobPhoto bmobPhoto) {
-                        url = bmobPhoto.getUrl();
+                    public void onNext(QiNiuImageInfo qiNiuImageInfo) {
+                        url = qiNiuImageInfo.getMsg();
                     }
                 });
 

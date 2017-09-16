@@ -3,10 +3,10 @@ package com.example.daidaijie.syllabusapplication.schoolDymatic.circle.postConte
 import android.support.annotation.Nullable;
 
 import com.example.daidaijie.syllabusapplication.App;
-import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
 import com.example.daidaijie.syllabusapplication.bean.HttpResult;
 import com.example.daidaijie.syllabusapplication.bean.PhotoInfo;
 import com.example.daidaijie.syllabusapplication.bean.PostContent;
+import com.example.daidaijie.syllabusapplication.bean.QiNiuImageInfo;
 import com.example.daidaijie.syllabusapplication.retrofitApi.PushPostApi;
 import com.example.daidaijie.syllabusapplication.user.IUserModel;
 import com.example.daidaijie.syllabusapplication.util.GsonUtil;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import id.zelory.compressor.Compressor;
-import okhttp3.MediaType;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -55,7 +54,6 @@ public class PostContentModel implements IPostContentModel {
             return;
         }
 
-        final MediaType mediaType = MediaType.parse("image/*");
         Observable.from(mPhotoImgs)
                 .subscribeOn(Schedulers.io())
                 .map(new Func1<String, File>() {
@@ -73,15 +71,14 @@ public class PostContentModel implements IPostContentModel {
                     }
                 })
                 .observeOn(Schedulers.io())
-                .flatMap(new Func1<File, Observable<BmobPhoto>>() {
+                .flatMap(new Func1<File, Observable<QiNiuImageInfo>>() {
                     @Override
-                    public Observable<BmobPhoto> call(File file) {
-                        return ImageUploader.getObservableAsBombPhoto(mediaType,
-                                file.toString(), file);
+                    public Observable<QiNiuImageInfo> call(File file) {
+                        return ImageUploader.getObservableAsQiNiu( file);
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<BmobPhoto>() {
+                .subscribe(new Subscriber<QiNiuImageInfo>() {
                     PhotoInfo photoInfo = new PhotoInfo();
 
                     @Override
@@ -104,10 +101,10 @@ public class PostContentModel implements IPostContentModel {
                     }
 
                     @Override
-                    public void onNext(BmobPhoto bmobPhoto) {
+                    public void onNext(QiNiuImageInfo qiNiuImageInfo) {
                         PhotoInfo.PhotoListBean photoListBean = new PhotoInfo.PhotoListBean();
-                        photoListBean.setSize_big(bmobPhoto.getUrl());
-                        photoListBean.setSize_small(bmobPhoto.getUrl());
+                        photoListBean.setSize_big(qiNiuImageInfo.getMsg());
+                        photoListBean.setSize_small(qiNiuImageInfo.getMsg());
                         photoInfo.getPhoto_list().add(photoListBean);
                     }
                 });

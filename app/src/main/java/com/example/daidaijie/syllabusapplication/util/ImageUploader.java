@@ -1,6 +1,7 @@
 package com.example.daidaijie.syllabusapplication.util;
 
 import com.example.daidaijie.syllabusapplication.bean.BmobPhoto;
+import com.example.daidaijie.syllabusapplication.bean.QiNiuImageInfo;
 import com.example.daidaijie.syllabusapplication.retrofitApi.UploadImageApi;
 
 import java.io.File;
@@ -42,6 +43,10 @@ public class ImageUploader {
             (MediaType mediaType, String filename, File image_file) {
         RequestBody requestBody = RequestBody.create(mediaType, image_file);
         return uploadImageApi.upload(requestBody, filename);
+    }
+
+    public static Observable<QiNiuImageInfo> getObservableAsQiNiu(File image_file) {
+        return LWYRetrofit.getInstance().uploadFile(image_file);
     }
 
 }
