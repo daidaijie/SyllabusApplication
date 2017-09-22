@@ -32,6 +32,7 @@ import com.bigkoo.convenientbanner.holder.Holder;
 import com.example.daidaijie.syllabusapplication.App;
 import com.example.daidaijie.syllabusapplication.R;
 import com.example.daidaijie.syllabusapplication.activity.EmailWebActivity;
+import com.example.daidaijie.syllabusapplication.activity.LibraryWebActivity;
 import com.example.daidaijie.syllabusapplication.activity.LoginInternetActivity;
 import com.example.daidaijie.syllabusapplication.dialog.ThemePickerFragment;
 import com.example.daidaijie.syllabusapplication.base.BaseActivity;
@@ -480,7 +481,7 @@ public class MainActivity extends BaseActivity implements
         mToLibraryCardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, LibraryActivity.class);
+                Intent intent = new Intent(MainActivity.this, LibraryWebActivity.class);
                 startActivity(intent);
             }
         });
