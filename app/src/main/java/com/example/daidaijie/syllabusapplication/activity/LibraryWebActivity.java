@@ -38,6 +38,7 @@ public class LibraryWebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setupTitleBar(mToolbar);
+        mTitleTextView.setText("图书检索");
 
         WebSettings setting = mLibraryWebView.getSettings();
         setting.setAllowFileAccess(true);

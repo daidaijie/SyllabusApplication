@@ -27,7 +27,6 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:singleLine="true"
-            android:text="图书检索"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
     </android.support.v7.widget.Toolbar>

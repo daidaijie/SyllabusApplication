@@ -38,6 +38,7 @@ public class EmailWebActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         setupTitleBar(mToolbar);
+        mTitleTextView.setText("校内邮箱");
 
         WebSettings setting = mEmailWebView.getSettings();
         setting.setAllowFileAccess(true);

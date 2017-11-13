@@ -184,6 +184,7 @@
         </activity>
         <activity
             android:name=".schoolDymatic.dymatic.schoolDymaticDetail.SchoolDymaticDetailActivity"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
         </activity>
         <activity

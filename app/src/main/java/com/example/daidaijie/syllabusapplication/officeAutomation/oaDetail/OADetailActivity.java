@@ -143,7 +143,7 @@ public class OADetailActivity extends BaseActivity implements OADetailContract.v
             mDownFileButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = "http://notes.stu.edu.cn/weaver/weaver.file.FileDownload?fileid="
+                    String url = "http://oa.stu.edu.cn/weaver/weaver.file.FileDownload?fileid="
                             + oaFileBean.getIMAGEFILEID() + "&download=1&requestid=0";
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
