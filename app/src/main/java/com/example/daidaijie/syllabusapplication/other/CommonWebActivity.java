@@ -59,11 +59,6 @@ public class CommonWebActivity extends BaseActivity implements ShareWXDialog.OnS
         setting.setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed();
-            }
-
-            @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
                 return true;
